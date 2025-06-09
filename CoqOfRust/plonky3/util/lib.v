@@ -544,86 +544,99 @@ Definition value_BIT_REVERSE_6BIT (ε : list Value.t) (τ : list Ty.t) (α : lis
   ltac:(M.monadic
     (M.alloc (|
       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-      (* Unsize *)
-      M.pointer_coercion
-        (M.borrow (|
-          Pointer.Kind.Ref,
-          M.deref (|
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.alloc (|
-                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 64 ] [ Ty.path "u8" ],
-                Value.Array
-                  [
-                    Value.Integer IntegerKind.U8 0;
-                    Value.Integer IntegerKind.U8 32;
-                    Value.Integer IntegerKind.U8 16;
-                    Value.Integer IntegerKind.U8 48;
-                    Value.Integer IntegerKind.U8 8;
-                    Value.Integer IntegerKind.U8 40;
-                    Value.Integer IntegerKind.U8 24;
-                    Value.Integer IntegerKind.U8 56;
-                    Value.Integer IntegerKind.U8 4;
-                    Value.Integer IntegerKind.U8 36;
-                    Value.Integer IntegerKind.U8 20;
-                    Value.Integer IntegerKind.U8 52;
-                    Value.Integer IntegerKind.U8 12;
-                    Value.Integer IntegerKind.U8 44;
-                    Value.Integer IntegerKind.U8 28;
-                    Value.Integer IntegerKind.U8 60;
-                    Value.Integer IntegerKind.U8 2;
-                    Value.Integer IntegerKind.U8 34;
-                    Value.Integer IntegerKind.U8 18;
-                    Value.Integer IntegerKind.U8 50;
-                    Value.Integer IntegerKind.U8 10;
-                    Value.Integer IntegerKind.U8 42;
-                    Value.Integer IntegerKind.U8 26;
-                    Value.Integer IntegerKind.U8 58;
-                    Value.Integer IntegerKind.U8 6;
-                    Value.Integer IntegerKind.U8 38;
-                    Value.Integer IntegerKind.U8 22;
-                    Value.Integer IntegerKind.U8 54;
-                    Value.Integer IntegerKind.U8 14;
-                    Value.Integer IntegerKind.U8 46;
-                    Value.Integer IntegerKind.U8 30;
-                    Value.Integer IntegerKind.U8 62;
-                    Value.Integer IntegerKind.U8 1;
-                    Value.Integer IntegerKind.U8 33;
-                    Value.Integer IntegerKind.U8 17;
-                    Value.Integer IntegerKind.U8 49;
-                    Value.Integer IntegerKind.U8 9;
-                    Value.Integer IntegerKind.U8 41;
-                    Value.Integer IntegerKind.U8 25;
-                    Value.Integer IntegerKind.U8 57;
-                    Value.Integer IntegerKind.U8 5;
-                    Value.Integer IntegerKind.U8 37;
-                    Value.Integer IntegerKind.U8 21;
-                    Value.Integer IntegerKind.U8 53;
-                    Value.Integer IntegerKind.U8 13;
-                    Value.Integer IntegerKind.U8 45;
-                    Value.Integer IntegerKind.U8 29;
-                    Value.Integer IntegerKind.U8 61;
-                    Value.Integer IntegerKind.U8 3;
-                    Value.Integer IntegerKind.U8 35;
-                    Value.Integer IntegerKind.U8 19;
-                    Value.Integer IntegerKind.U8 51;
-                    Value.Integer IntegerKind.U8 11;
-                    Value.Integer IntegerKind.U8 43;
-                    Value.Integer IntegerKind.U8 27;
-                    Value.Integer IntegerKind.U8 59;
-                    Value.Integer IntegerKind.U8 7;
-                    Value.Integer IntegerKind.U8 39;
-                    Value.Integer IntegerKind.U8 23;
-                    Value.Integer IntegerKind.U8 55;
-                    Value.Integer IntegerKind.U8 15;
-                    Value.Integer IntegerKind.U8 47;
-                    Value.Integer IntegerKind.U8 31;
-                    Value.Integer IntegerKind.U8 63
-                  ]
+      M.call_closure (|
+        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+        M.pointer_coercion
+          M.PointerCoercion.Unsize
+          (Ty.apply
+            (Ty.path "&")
+            []
+            [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 64 ] [ Ty.path "u8" ] ])
+          (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+        [
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer IntegerKind.Usize 64 ]
+                    [ Ty.path "u8" ],
+                  Value.Array
+                    [
+                      Value.Integer IntegerKind.U8 0;
+                      Value.Integer IntegerKind.U8 32;
+                      Value.Integer IntegerKind.U8 16;
+                      Value.Integer IntegerKind.U8 48;
+                      Value.Integer IntegerKind.U8 8;
+                      Value.Integer IntegerKind.U8 40;
+                      Value.Integer IntegerKind.U8 24;
+                      Value.Integer IntegerKind.U8 56;
+                      Value.Integer IntegerKind.U8 4;
+                      Value.Integer IntegerKind.U8 36;
+                      Value.Integer IntegerKind.U8 20;
+                      Value.Integer IntegerKind.U8 52;
+                      Value.Integer IntegerKind.U8 12;
+                      Value.Integer IntegerKind.U8 44;
+                      Value.Integer IntegerKind.U8 28;
+                      Value.Integer IntegerKind.U8 60;
+                      Value.Integer IntegerKind.U8 2;
+                      Value.Integer IntegerKind.U8 34;
+                      Value.Integer IntegerKind.U8 18;
+                      Value.Integer IntegerKind.U8 50;
+                      Value.Integer IntegerKind.U8 10;
+                      Value.Integer IntegerKind.U8 42;
+                      Value.Integer IntegerKind.U8 26;
+                      Value.Integer IntegerKind.U8 58;
+                      Value.Integer IntegerKind.U8 6;
+                      Value.Integer IntegerKind.U8 38;
+                      Value.Integer IntegerKind.U8 22;
+                      Value.Integer IntegerKind.U8 54;
+                      Value.Integer IntegerKind.U8 14;
+                      Value.Integer IntegerKind.U8 46;
+                      Value.Integer IntegerKind.U8 30;
+                      Value.Integer IntegerKind.U8 62;
+                      Value.Integer IntegerKind.U8 1;
+                      Value.Integer IntegerKind.U8 33;
+                      Value.Integer IntegerKind.U8 17;
+                      Value.Integer IntegerKind.U8 49;
+                      Value.Integer IntegerKind.U8 9;
+                      Value.Integer IntegerKind.U8 41;
+                      Value.Integer IntegerKind.U8 25;
+                      Value.Integer IntegerKind.U8 57;
+                      Value.Integer IntegerKind.U8 5;
+                      Value.Integer IntegerKind.U8 37;
+                      Value.Integer IntegerKind.U8 21;
+                      Value.Integer IntegerKind.U8 53;
+                      Value.Integer IntegerKind.U8 13;
+                      Value.Integer IntegerKind.U8 45;
+                      Value.Integer IntegerKind.U8 29;
+                      Value.Integer IntegerKind.U8 61;
+                      Value.Integer IntegerKind.U8 3;
+                      Value.Integer IntegerKind.U8 35;
+                      Value.Integer IntegerKind.U8 19;
+                      Value.Integer IntegerKind.U8 51;
+                      Value.Integer IntegerKind.U8 11;
+                      Value.Integer IntegerKind.U8 43;
+                      Value.Integer IntegerKind.U8 27;
+                      Value.Integer IntegerKind.U8 59;
+                      Value.Integer IntegerKind.U8 7;
+                      Value.Integer IntegerKind.U8 39;
+                      Value.Integer IntegerKind.U8 23;
+                      Value.Integer IntegerKind.U8 55;
+                      Value.Integer IntegerKind.U8 15;
+                      Value.Integer IntegerKind.U8 47;
+                      Value.Integer IntegerKind.U8 31;
+                      Value.Integer IntegerKind.U8 63
+                    ]
+                |)
               |)
             |)
           |)
-        |))
+        ]
+      |)
     |))).
 
 Global Instance Instance_IsConstant_value_BIT_REVERSE_6BIT :
@@ -2833,9 +2846,60 @@ Definition iter_next_chunk (ε : list Value.t) (τ : list Ty.t) (α : list Value
                                                         [ Ty.path "usize" ]
                                                       |),
                                                       [
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.borrow (| Pointer.Kind.MutRef, buf |));
+                                                        M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "&mut")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                []
+                                                                [
+                                                                  Ty.associated_in_trait
+                                                                    "core::iter::traits::iterator::Iterator"
+                                                                    []
+                                                                    []
+                                                                    I
+                                                                    "Item"
+                                                                ]
+                                                            ],
+                                                          M.pointer_coercion
+                                                            M.PointerCoercion.Unsize
+                                                            (Ty.apply
+                                                              (Ty.path "&mut")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "array")
+                                                                  [ BUFLEN ]
+                                                                  [
+                                                                    Ty.associated_in_trait
+                                                                      "core::iter::traits::iterator::Iterator"
+                                                                      []
+                                                                      []
+                                                                      I
+                                                                      "Item"
+                                                                  ]
+                                                              ])
+                                                            (Ty.apply
+                                                              (Ty.path "&mut")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [
+                                                                    Ty.associated_in_trait
+                                                                      "core::iter::traits::iterator::Iterator"
+                                                                      []
+                                                                      []
+                                                                      I
+                                                                      "Item"
+                                                                  ]
+                                                              ]),
+                                                          [ M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                          ]
+                                                        |);
                                                         M.read (| i |)
                                                       ]
                                                     |)
@@ -3071,8 +3135,28 @@ Definition apply_to_chunks (ε : list Value.t) (τ : list Ty.t) (α : list Value
                                           ]
                                         |),
                                         [
-                                          (* Unsize *)
-                                          M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, buf |));
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                            M.pointer_coercion
+                                              M.PointerCoercion.Unsize
+                                              (Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ BUFLEN ]
+                                                    [ Ty.path "u8" ]
+                                                ])
+                                              (Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                                            [ M.borrow (| Pointer.Kind.Ref, buf |) ]
+                                          |);
                                           Value.mkStructRecord
                                             "core::ops::range::RangeTo"
                                             []
@@ -4296,7 +4380,14 @@ Definition reconstitute_from_base (ε : list Value.t) (τ : list Ty.t) (α : lis
                         Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ BaseArray ] ],
                         M.get_function (| "core::slice::raw::from_raw_parts", [], [ BaseArray ] |),
                         [
-                          (* MutToConstPointer *) M.pointer_coercion (M.read (| buf_ptr |));
+                          M.call_closure (|
+                            Ty.apply (Ty.path "*const") [] [ BaseArray ],
+                            M.pointer_coercion
+                              M.PointerCoercion.MutToConstPointer
+                              (Ty.apply (Ty.path "*mut") [] [ BaseArray ])
+                              (Ty.apply (Ty.path "*const") [] [ BaseArray ]),
+                            [ M.read (| buf_ptr |) ]
+                          |);
                           M.read (| new_len |)
                         ]
                       |) in

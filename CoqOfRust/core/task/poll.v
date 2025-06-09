@@ -144,12 +144,22 @@ Module task.
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ready" |) |) |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                          |))
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
+                        |)
                       ]
                     |)));
                 fun γ =>
@@ -1924,7 +1934,7 @@ Module task.
                     []
                     [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ];
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ] ]
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
                       []
@@ -1940,12 +1950,10 @@ Module task.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ] ]
-                              (Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]),
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
                             M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], α0 |),
                             [
                               fun γ =>

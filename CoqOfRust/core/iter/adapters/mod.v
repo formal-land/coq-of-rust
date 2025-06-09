@@ -501,16 +501,13 @@ Module iter.
                       B;
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              B;
-                              Ty.associated_in_trait
-                                "core::iter::traits::iterator::Iterator"
-                                []
-                                []
-                                I
-                                "Item"
-                            ]
+                          B;
+                          Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            I
+                            "Item"
                         ]
                         (Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ T; B ]);
                       Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ T; B ]
@@ -533,46 +530,20 @@ Module iter.
                           | [ α0; α1 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        B;
-                                        Ty.associated_in_trait
-                                          "core::iter::traits::iterator::Iterator"
-                                          []
-                                          []
-                                          I
-                                          "Item"
-                                      ]
-                                  ]
-                                  (Ty.apply
-                                    (Ty.path "core::ops::control_flow::ControlFlow")
-                                    []
-                                    [ T; B ]),
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [ T; B ],
                                 M.alloc (| B, α0 |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let acc := M.copy (| B, γ |) in
                                       M.match_operator (|
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                B;
-                                                Ty.associated_in_trait
-                                                  "core::iter::traits::iterator::Iterator"
-                                                  []
-                                                  []
-                                                  I
-                                                  "Item"
-                                              ]
-                                          ]
-                                          (Ty.apply
-                                            (Ty.path "core::ops::control_flow::ControlFlow")
-                                            []
-                                            [ T; B ]),
+                                        Ty.apply
+                                          (Ty.path "core::ops::control_flow::ControlFlow")
+                                          []
+                                          [ T; B ],
                                         M.alloc (|
                                           Ty.associated_in_trait
                                             "core::iter::traits::iterator::Iterator"

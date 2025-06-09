@@ -882,27 +882,34 @@ Module sync.
                   Ty.path "u8",
                   M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "u8" ] |),
                   [
-                    (* MutToConstPointer *)
-                    M.pointer_coercion
-                      (M.call_closure (|
-                        Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::sync::atomic::AtomicBool",
-                              "v"
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                      M.pointer_coercion
+                        M.PointerCoercion.MutToConstPointer
+                        (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                        (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]),
+                      [
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
+                            "get",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::sync::atomic::AtomicBool",
+                                "v"
+                              |)
                             |)
-                          |)
-                        ]
-                      |));
+                          ]
+                        |)
+                      ]
+                    |);
                     M.read (| order |)
                   ]
                 |);
@@ -2862,30 +2869,37 @@ Module sync.
                 [ Ty.apply (Ty.path "*mut") [] [ T ] ]
               |),
               [
-                (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
-                    Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::cell::UnsafeCell")
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ])
+                    (Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ]),
+                  [
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::cell::UnsafeCell")
+                          []
+                          [ Ty.apply (Ty.path "*mut") [] [ T ] ],
+                        "get",
+                        [],
                         []
-                        [ Ty.apply (Ty.path "*mut") [] [ T ] ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::sync::atomic::AtomicPtr",
-                          "p"
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicPtr",
+                            "p"
+                          |)
                         |)
-                      |)
-                    ]
-                  |));
+                      ]
+                    |)
+                  ]
+                |);
                 M.read (| order |)
               ]
             |)))
@@ -4691,27 +4705,34 @@ Module sync.
               Ty.path "i8",
               M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "i8" ] |),
               [
-                (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
-                    Ty.apply (Ty.path "*mut") [] [ Ty.path "i8" ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::sync::atomic::AtomicI8",
-                          "v"
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ Ty.path "i8" ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ Ty.path "i8" ])
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "i8" ]),
+                  [
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "i8" ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicI8",
+                            "v"
+                          |)
                         |)
-                      |)
-                    ]
-                  |));
+                      ]
+                    |)
+                  ]
+                |);
                 M.read (| order |)
               ]
             |)))
@@ -6239,27 +6260,34 @@ Module sync.
               Ty.path "u8",
               M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "u8" ] |),
               [
-                (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
-                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::sync::atomic::AtomicU8",
-                          "v"
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]),
+                  [
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicU8",
+                            "v"
+                          |)
                         |)
-                      |)
-                    ]
-                  |));
+                      ]
+                    |)
+                  ]
+                |);
                 M.read (| order |)
               ]
             |)))
@@ -7797,27 +7825,34 @@ Module sync.
               Ty.path "i16",
               M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "i16" ] |),
               [
-                (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
-                    Ty.apply (Ty.path "*mut") [] [ Ty.path "i16" ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::sync::atomic::AtomicI16",
-                          "v"
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ Ty.path "i16" ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ Ty.path "i16" ])
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "i16" ]),
+                  [
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "i16" ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicI16",
+                            "v"
+                          |)
                         |)
-                      |)
-                    ]
-                  |));
+                      ]
+                    |)
+                  ]
+                |);
                 M.read (| order |)
               ]
             |)))
@@ -9355,27 +9390,34 @@ Module sync.
               Ty.path "u16",
               M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "u16" ] |),
               [
-                (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
-                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u16" ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::sync::atomic::AtomicU16",
-                          "v"
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ Ty.path "u16" ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ Ty.path "u16" ])
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u16" ]),
+                  [
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u16" ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicU16",
+                            "v"
+                          |)
                         |)
-                      |)
-                    ]
-                  |));
+                      ]
+                    |)
+                  ]
+                |);
                 M.read (| order |)
               ]
             |)))
@@ -10913,27 +10955,34 @@ Module sync.
               Ty.path "i32",
               M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "i32" ] |),
               [
-                (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
-                    Ty.apply (Ty.path "*mut") [] [ Ty.path "i32" ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::sync::atomic::AtomicI32",
-                          "v"
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ Ty.path "i32" ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ Ty.path "i32" ])
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "i32" ]),
+                  [
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "i32" ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicI32",
+                            "v"
+                          |)
                         |)
-                      |)
-                    ]
-                  |));
+                      ]
+                    |)
+                  ]
+                |);
                 M.read (| order |)
               ]
             |)))
@@ -12471,27 +12520,34 @@ Module sync.
               Ty.path "u32",
               M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "u32" ] |),
               [
-                (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
-                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u32" ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::sync::atomic::AtomicU32",
-                          "v"
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ Ty.path "u32" ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ Ty.path "u32" ])
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u32" ]),
+                  [
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u32" ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicU32",
+                            "v"
+                          |)
                         |)
-                      |)
-                    ]
-                  |));
+                      ]
+                    |)
+                  ]
+                |);
                 M.read (| order |)
               ]
             |)))
@@ -14029,27 +14085,34 @@ Module sync.
               Ty.path "i64",
               M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "i64" ] |),
               [
-                (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
-                    Ty.apply (Ty.path "*mut") [] [ Ty.path "i64" ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::sync::atomic::AtomicI64",
-                          "v"
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ Ty.path "i64" ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ Ty.path "i64" ])
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "i64" ]),
+                  [
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "i64" ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicI64",
+                            "v"
+                          |)
                         |)
-                      |)
-                    ]
-                  |));
+                      ]
+                    |)
+                  ]
+                |);
                 M.read (| order |)
               ]
             |)))
@@ -15587,27 +15650,34 @@ Module sync.
               Ty.path "u64",
               M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "u64" ] |),
               [
-                (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
-                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::sync::atomic::AtomicU64",
-                          "v"
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ Ty.path "u64" ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ])
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u64" ]),
+                  [
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicU64",
+                            "v"
+                          |)
                         |)
-                      |)
-                    ]
-                  |));
+                      ]
+                    |)
+                  ]
+                |);
                 M.read (| order |)
               ]
             |)))
@@ -17145,27 +17215,34 @@ Module sync.
               Ty.path "isize",
               M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "isize" ] |),
               [
-                (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
-                    Ty.apply (Ty.path "*mut") [] [ Ty.path "isize" ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::sync::atomic::AtomicIsize",
-                          "v"
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ Ty.path "isize" ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ Ty.path "isize" ])
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "isize" ]),
+                  [
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "isize" ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicIsize",
+                            "v"
+                          |)
                         |)
-                      |)
-                    ]
-                  |));
+                      ]
+                    |)
+                  ]
+                |);
                 M.read (| order |)
               ]
             |)))
@@ -18706,27 +18783,34 @@ Module sync.
               Ty.path "usize",
               M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "usize" ] |),
               [
-                (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
-                    Ty.apply (Ty.path "*mut") [] [ Ty.path "usize" ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::sync::atomic::AtomicUsize",
-                          "v"
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ Ty.path "usize" ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ Ty.path "usize" ])
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "usize" ]),
+                  [
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "usize" ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicUsize",
+                            "v"
+                          |)
                         |)
-                      |)
-                    ]
-                  |));
+                      ]
+                    |)
+                  ]
+                |);
                 M.read (| order |)
               ]
             |)))

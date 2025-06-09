@@ -554,8 +554,53 @@ Module modular.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion (M.borrow (| Pointer.Kind.MutRef, product |))
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 2 ]
+                                              [ Ty.path "u64" ]
+                                          ]
+                                      ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ LIMBS ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 2 ]
+                                                [ Ty.path "u64" ]
+                                            ]
+                                        ])
+                                      (Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 2 ]
+                                                [ Ty.path "u64" ]
+                                            ]
+                                        ]),
+                                    [ M.borrow (| Pointer.Kind.MutRef, product |) ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -571,46 +616,78 @@ Module modular.
                     M.get_function (| "ruint::algorithms::mul::addmul", [], [] |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| product |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                "as_limbs",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, self |) ]
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                  "as_limbs",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, self |) ]
+                              |)
                             |)
                           |)
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                "as_limbs",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, rhs |) ]
+                        ]
+                      |);
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                  "as_limbs",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, rhs |) ]
+                              |)
                             |)
                           |)
-                        |))
+                        ]
+                      |)
                     ]
                   |) in
                 let~ _ : Ty.tuple [] :=
@@ -663,21 +740,37 @@ Module modular.
                     M.get_function (| "ruint::algorithms::div::div", [], [] |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| product |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.SubPointer.get_struct_record_field (|
-                                modulus,
-                                "ruint::Uint",
-                                "limbs"
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ])
+                          (Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  modulus,
+                                  "ruint::Uint",
+                                  "limbs"
+                                |)
                               |)
                             |)
                           |)
-                        |))
+                        ]
+                      |)
                     ]
                   |) in
                 modulus
@@ -1261,81 +1354,145 @@ Module modular.
                     Ty.tuple [],
                     M.get_function (| "ruint::algorithms::mul_redc::mul_redc", [], [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                "as_limbs",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, self |) ]
-                            |)
-                          |)
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                "as_limbs",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, other |) ]
-                            |)
-                          |)
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.SubPointer.get_struct_record_field (|
-                                result,
-                                "ruint::Uint",
-                                "limbs"
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                  "as_limbs",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, self |) ]
                               |)
                             |)
                           |)
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                "as_limbs",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, modulus |) ]
+                        ]
+                      |);
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                  "as_limbs",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, other |) ]
+                              |)
                             |)
                           |)
-                        |));
+                        ]
+                      |);
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ])
+                          (Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  result,
+                                  "ruint::Uint",
+                                  "limbs"
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
+                      |);
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                  "as_limbs",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, modulus |) ]
+                              |)
+                            |)
+                          |)
+                        ]
+                      |);
                       M.read (| inv |)
                     ]
                   |) in

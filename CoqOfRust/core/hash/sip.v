@@ -48,35 +48,55 @@ Module hash.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SipHasher13" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "hasher" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::hash::sip::Hasher")
-                                []
-                                [ Ty.path "core::hash::sip::Sip13Rounds" ]
-                            ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::hash::sip::SipHasher13",
-                              "hasher"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::hash::sip::Hasher")
+                              []
+                              [ Ty.path "core::hash::sip::Sip13Rounds" ]
+                          ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::hash::sip::Hasher")
+                                  []
+                                  [ Ty.path "core::hash::sip::Sip13Rounds" ]
+                              ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::hash::sip::SipHasher13",
+                                "hasher"
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -247,35 +267,55 @@ Module hash.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SipHasher24" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "hasher" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::hash::sip::Hasher")
-                                []
-                                [ Ty.path "core::hash::sip::Sip24Rounds" ]
-                            ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::hash::sip::SipHasher24",
-                              "hasher"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::hash::sip::Hasher")
+                              []
+                              [ Ty.path "core::hash::sip::Sip24Rounds" ]
+                          ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::hash::sip::Hasher")
+                                  []
+                                  [ Ty.path "core::hash::sip::Sip24Rounds" ]
+                              ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::hash::sip::SipHasher24",
+                                "hasher"
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -438,27 +478,37 @@ Module hash.
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SipHasher" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "core::hash::sip::SipHasher24" ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::hash::sip::SipHasher",
-                              0
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "core::hash::sip::SipHasher24" ] ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "core::hash::sip::SipHasher24" ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::hash::sip::SipHasher",
+                                0
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -648,145 +698,282 @@ Module hash.
                         []
                         [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
                     ] :=
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "array")
-                            [ Value.Integer IntegerKind.Usize 7 ]
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
-                            ],
-                          Value.Array
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                    ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 7 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                          ]
+                      ])
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                          ]
+                      ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 7 ]
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                              ],
+                            Value.Array
+                              [
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply (Ty.path "&") [] [ Ty.path "u64" ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::hash::sip::Hasher",
-                                        "k0"
-                                      |)
-                                    |)
-                                  |)
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::hash::sip::Hasher",
-                                        "k1"
-                                      |)
-                                    |)
-                                  |)
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::hash::sip::Hasher",
-                                        "length"
-                                      |)
-                                    |)
-                                  |)
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::hash::sip::Hasher",
-                                        "state"
-                                      |)
-                                    |)
-                                  |)
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::hash::sip::Hasher",
-                                        "tail"
-                                      |)
-                                    |)
-                                  |)
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::hash::sip::Hasher",
-                                        "ntail"
-                                      |)
-                                    |)
-                                  |)
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ S ]
-                                          ],
+                                      M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.SubPointer.get_struct_record_field (|
                                             M.deref (| M.read (| self |) |),
                                             "core::hash::sip::Hasher",
-                                            "_marker"
+                                            "k0"
                                           |)
                                         |)
                                       |)
                                     |)
-                                  |)
-                                |))
-                            ]
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply (Ty.path "&") [] [ Ty.path "u64" ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::hash::sip::Hasher",
+                                            "k1"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply (Ty.path "&") [] [ Ty.path "usize" ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::hash::sip::Hasher",
+                                            "length"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply (Ty.path "&") [] [ Ty.path "core::hash::sip::State" ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::hash::sip::Hasher",
+                                            "state"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply (Ty.path "&") [] [ Ty.path "u64" ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::hash::sip::Hasher",
+                                            "tail"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply (Ty.path "&") [] [ Ty.path "usize" ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::hash::sip::Hasher",
+                                            "ntail"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ S ]
+                                          ]
+                                      ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::marker::PhantomData")
+                                                  []
+                                                  [ S ]
+                                              ],
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::hash::sip::Hasher",
+                                                "_marker"
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |)
+                              ]
+                          |)
                         |)
                       |)
                     |)
-                  |)) in
+                  ]
+                |) in
               M.alloc (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -806,9 +993,38 @@ Module hash.
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Hasher" |) |) |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |));
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        ],
+                      M.pointer_coercion
+                        M.PointerCoercion.Unsize
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 7 ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          ])
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          ]),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |) ]
+                    |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                   ]
                 |)
@@ -868,75 +1084,103 @@ Module hash.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "State" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v0" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::hash::sip::State",
-                          "v0"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply (Ty.path "&") [] [ Ty.path "u64" ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::hash::sip::State",
+                            "v0"
+                          |)
                         |)
                       |)
                     |)
-                  |));
+                  ]
+                |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v2" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::hash::sip::State",
-                          "v2"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply (Ty.path "&") [] [ Ty.path "u64" ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::hash::sip::State",
+                            "v2"
+                          |)
                         |)
                       |)
                     |)
-                  |));
+                  ]
+                |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v1" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::hash::sip::State",
-                          "v1"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply (Ty.path "&") [] [ Ty.path "u64" ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::hash::sip::State",
+                            "v1"
+                          |)
                         |)
                       |)
                     |)
-                  |));
+                  ]
+                |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v3" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::hash::sip::State",
-                              "v3"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::hash::sip::State",
+                                "v3"
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

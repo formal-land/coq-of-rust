@@ -83,16 +83,32 @@ Module bytes.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "ruint::Uint",
-                                "limbs"
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "ruint::Uint",
+                                  "limbs"
+                                |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |)
                     ]
@@ -175,16 +191,32 @@ Module bytes.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (|
-                                      Pointer.Kind.MutRef,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "ruint::Uint",
-                                        "limbs"
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ])
+                                      (Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "ruint::Uint",
+                                          "limbs"
+                                        |)
                                       |)
-                                    |))
+                                    ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -801,7 +833,22 @@ Module bytes.
                   [],
                   []
                 |),
-                [ (* Unsize *) M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, bytes |)) ]
+                [
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "array") [ BYTES ] [ Ty.path "u8" ] ])
+                      (Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                    [ M.borrow (| Pointer.Kind.Ref, bytes |) ]
+                  |)
+                ]
               |) in
             let~ half_len : Ty.path "usize" :=
               M.call_closure (|
@@ -1195,12 +1242,25 @@ Module bytes.
                   []
                 |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.borrow (| Pointer.Kind.Ref, bytes |) |)
-                    |))
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "array") [ BYTES ] [ Ty.path "u8" ] ])
+                      (Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, bytes |) |)
+                      |)
+                    ]
+                  |)
                 ]
               |)
             |)
@@ -2059,12 +2119,25 @@ Module bytes.
                   []
                 |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.borrow (| Pointer.Kind.Ref, bytes |) |)
-                    |))
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "array") [ BYTES ] [ Ty.path "u8" ] ])
+                      (Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, bytes |) |)
+                      |)
+                    ]
+                  |)
                 ]
               |)
             |)

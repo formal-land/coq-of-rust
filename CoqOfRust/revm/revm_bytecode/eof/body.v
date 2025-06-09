@@ -329,126 +329,277 @@ Module eof.
                         []
                         [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
                     ] :=
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "array")
-                            [ Value.Integer IntegerKind.Usize 6 ]
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
-                            ],
-                          Value.Array
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                    ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 6 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                          ]
+                      ])
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                          ]
+                      ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 6 ]
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                              ],
+                            Value.Array
+                              [
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [
+                                            Ty.path
+                                              "revm_bytecode::eof::types_section::TypesSection";
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
+                                      ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "revm_bytecode::eof::body::EofBody",
-                                        "types_section"
-                                      |)
-                                    |)
-                                  |)
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "revm_bytecode::eof::body::EofBody",
-                                        "code_section"
-                                      |)
-                                    |)
-                                  |)
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "revm_bytecode::eof::body::EofBody",
-                                        "code"
-                                      |)
-                                    |)
-                                  |)
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "revm_bytecode::eof::body::EofBody",
-                                        "container_section"
-                                      |)
-                                    |)
-                                  |)
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "revm_bytecode::eof::body::EofBody",
-                                        "data_section"
-                                      |)
-                                    |)
-                                  |)
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Ty.apply (Ty.path "&") [] [ Ty.path "bool" ],
+                                      M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.SubPointer.get_struct_record_field (|
                                             M.deref (| M.read (| self |) |),
                                             "revm_bytecode::eof::body::EofBody",
-                                            "is_data_filled"
+                                            "types_section"
                                           |)
                                         |)
                                       |)
                                     |)
-                                  |)
-                                |))
-                            ]
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ]
+                                      ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "revm_bytecode::eof::body::EofBody",
+                                            "code_section"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "revm_bytecode::eof::body::EofBody",
+                                            "code"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [
+                                            Ty.path "alloy_primitives::bytes_::Bytes";
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
+                                      ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "revm_bytecode::eof::body::EofBody",
+                                            "container_section"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "revm_bytecode::eof::body::EofBody",
+                                            "data_section"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "bool" ],
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "revm_bytecode::eof::body::EofBody",
+                                                "is_data_filled"
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |)
+                              ]
+                          |)
                         |)
                       |)
                     |)
-                  |)) in
+                  ]
+                |) in
               M.alloc (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -468,9 +619,38 @@ Module eof.
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EofBody" |) |) |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |));
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        ],
+                      M.pointer_coercion
+                        M.PointerCoercion.Unsize
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 6 ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          ])
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          ]),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |) ]
+                    |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                   ]
                 |)
@@ -2186,7 +2366,7 @@ Module eof.
                         [
                           Ty.path "alloy_primitives::bytes_::Bytes";
                           Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ] ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
                             (Ty.path "alloy_primitives::bytes_::Bytes")
                         ]
                       |),
@@ -2246,9 +2426,7 @@ Module eof.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ] ]
-                                      (Ty.path "alloy_primitives::bytes_::Bytes"),
+                                    Ty.path "alloy_primitives::bytes_::Bytes",
                                     M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], α0 |),
                                     [
                                       fun γ =>
@@ -2446,7 +2624,7 @@ Module eof.
                             [
                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "usize" ];
                               Ty.function
-                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ] ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
                                 (Ty.path "u16")
                             ],
                           [],
@@ -2468,7 +2646,7 @@ Module eof.
                               [
                                 Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "usize" ];
                                 Ty.function
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
                                   (Ty.path "u16")
                               ],
                             M.get_trait_method (|
@@ -2481,7 +2659,7 @@ Module eof.
                               [
                                 Ty.path "u16";
                                 Ty.function
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
                                   (Ty.path "u16")
                               ]
                             |),
@@ -2537,12 +2715,7 @@ Module eof.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
-                                            ]
-                                            (Ty.path "u16"),
+                                          Ty.path "u16",
                                           M.alloc (|
                                             Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
                                             α0
@@ -2608,13 +2781,10 @@ Module eof.
                                 [ Ty.path "alloy_primitives::bytes_::Bytes" ];
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                 ]
                                 (Ty.path "u16")
                             ],
@@ -2641,13 +2811,10 @@ Module eof.
                                   [ Ty.path "alloy_primitives::bytes_::Bytes" ];
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                   ]
                                   (Ty.path "u16")
                               ],
@@ -2665,13 +2832,10 @@ Module eof.
                                 Ty.path "u16";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                   ]
                                   (Ty.path "u16")
                               ]
@@ -2742,17 +2906,7 @@ Module eof.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                                                ]
-                                            ]
-                                            (Ty.path "u16"),
+                                          Ty.path "u16",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -2914,13 +3068,10 @@ Module eof.
                                 [ Ty.path "alloy_primitives::bytes_::Bytes" ];
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                 ]
                                 (Ty.path "usize")
                             ],
@@ -2942,13 +3093,10 @@ Module eof.
                                   [ Ty.path "alloy_primitives::bytes_::Bytes" ];
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                   ]
                                   (Ty.path "usize")
                               ],
@@ -2966,13 +3114,10 @@ Module eof.
                                 Ty.path "usize";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                   ]
                                   (Ty.path "usize")
                               ]
@@ -3043,17 +3188,7 @@ Module eof.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                                                ]
-                                            ]
-                                            (Ty.path "usize"),
+                                          Ty.path "usize",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -4843,7 +4978,7 @@ Module eof.
                                 [
                                   Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u16" ];
                                   Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                     (Ty.path "usize")
                                 ],
                               M.call_closure (|
@@ -4856,7 +4991,7 @@ Module eof.
                                       []
                                       [ Ty.path "u16" ];
                                     Ty.function
-                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                       (Ty.path "usize")
                                   ],
                                 M.get_trait_method (|
@@ -4870,7 +5005,7 @@ Module eof.
                                         []
                                         [ Ty.path "u16" ];
                                       Ty.function
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                         (Ty.path "usize")
                                     ],
                                   [],
@@ -4890,8 +5025,7 @@ Module eof.
                                           []
                                           [ Ty.path "u16" ];
                                         Ty.function
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
-                                          ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                           (Ty.path "usize")
                                       ],
                                     M.get_trait_method (|
@@ -4907,8 +5041,7 @@ Module eof.
                                       [
                                         Ty.path "usize";
                                         Ty.function
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
-                                          ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                           (Ty.path "usize")
                                       ]
                                     |),
@@ -4969,17 +5102,7 @@ Module eof.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [ Ty.path "u16" ]
-                                                        ]
-                                                    ]
-                                                    (Ty.path "usize"),
+                                                  Ty.path "usize",
                                                   M.alloc (|
                                                     Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
                                                     α0
@@ -5023,10 +5146,7 @@ Module eof.
                                             []
                                             [ Ty.path "u16" ];
                                           Ty.function
-                                            [
-                                              Ty.tuple
-                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
-                                            ]
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                             (Ty.path "usize")
                                         ],
                                       γ
@@ -5060,13 +5180,10 @@ Module eof.
                                                         [ Ty.path "u16" ];
                                                       Ty.function
                                                         [
-                                                          Ty.tuple
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [ Ty.path "u16" ]
-                                                            ]
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "u16" ]
                                                         ]
                                                         (Ty.path "usize")
                                                     ],
@@ -5224,7 +5341,7 @@ Module eof.
                                 [
                                   Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u16" ];
                                   Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                     (Ty.path "usize")
                                 ],
                               M.call_closure (|
@@ -5237,7 +5354,7 @@ Module eof.
                                       []
                                       [ Ty.path "u16" ];
                                     Ty.function
-                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                       (Ty.path "usize")
                                   ],
                                 M.get_trait_method (|
@@ -5251,7 +5368,7 @@ Module eof.
                                         []
                                         [ Ty.path "u16" ];
                                       Ty.function
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                         (Ty.path "usize")
                                     ],
                                   [],
@@ -5271,8 +5388,7 @@ Module eof.
                                           []
                                           [ Ty.path "u16" ];
                                         Ty.function
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
-                                          ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                           (Ty.path "usize")
                                       ],
                                     M.get_trait_method (|
@@ -5288,8 +5404,7 @@ Module eof.
                                       [
                                         Ty.path "usize";
                                         Ty.function
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
-                                          ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                           (Ty.path "usize")
                                       ]
                                     |),
@@ -5350,17 +5465,7 @@ Module eof.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [ Ty.path "u16" ]
-                                                        ]
-                                                    ]
-                                                    (Ty.path "usize"),
+                                                  Ty.path "usize",
                                                   M.alloc (|
                                                     Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
                                                     α0
@@ -5404,10 +5509,7 @@ Module eof.
                                             []
                                             [ Ty.path "u16" ];
                                           Ty.function
-                                            [
-                                              Ty.tuple
-                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
-                                            ]
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                             (Ty.path "usize")
                                         ],
                                       γ
@@ -5441,13 +5543,10 @@ Module eof.
                                                         [ Ty.path "u16" ];
                                                       Ty.function
                                                         [
-                                                          Ty.tuple
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [ Ty.path "u16" ]
-                                                            ]
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "u16" ]
                                                         ]
                                                         (Ty.path "usize")
                                                     ],

@@ -520,21 +520,31 @@ Module panic.
                             |)
                           |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::panic::unwind_safe::AssertUnwindSafe",
-                                  0
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply (Ty.path "&") [] [ T ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::panic::unwind_safe::AssertUnwindSafe",
+                                    0
+                                  |)
                                 |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   |)
@@ -652,17 +662,14 @@ Module panic.
                       F;
                       Ty.function
                         [
-                          Ty.tuple
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
                             [
                               Ty.apply
-                                (Ty.path "&mut")
+                                (Ty.path "core::panic::unwind_safe::AssertUnwindSafe")
                                 []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::panic::unwind_safe::AssertUnwindSafe")
-                                    []
-                                    [ F ]
-                                ]
+                                [ F ]
                             ]
                         ]
                         (Ty.apply (Ty.path "&mut") [] [ F ])
@@ -677,22 +684,7 @@ Module panic.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&mut")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::panic::unwind_safe::AssertUnwindSafe")
-                                              []
-                                              [ F ]
-                                          ]
-                                      ]
-                                  ]
-                                  (Ty.apply (Ty.path "&mut") [] [ F ]),
+                                Ty.apply (Ty.path "&mut") [] [ F ],
                                 M.alloc (|
                                   Ty.apply
                                     (Ty.path "&mut")
@@ -864,17 +856,14 @@ Module panic.
                       S;
                       Ty.function
                         [
-                          Ty.tuple
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
                             [
                               Ty.apply
-                                (Ty.path "&mut")
+                                (Ty.path "core::panic::unwind_safe::AssertUnwindSafe")
                                 []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::panic::unwind_safe::AssertUnwindSafe")
-                                    []
-                                    [ S ]
-                                ]
+                                [ S ]
                             ]
                         ]
                         (Ty.apply (Ty.path "&mut") [] [ S ])
@@ -889,22 +878,7 @@ Module panic.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&mut")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::panic::unwind_safe::AssertUnwindSafe")
-                                              []
-                                              [ S ]
-                                          ]
-                                      ]
-                                  ]
-                                  (Ty.apply (Ty.path "&mut") [] [ S ]),
+                                Ty.apply (Ty.path "&mut") [] [ S ],
                                 M.alloc (|
                                   Ty.apply
                                     (Ty.path "&mut")

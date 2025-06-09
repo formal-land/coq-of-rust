@@ -518,230 +518,371 @@ Module fmt.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.alloc (|
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [
                                                                             Ty.apply
-                                                                              (Ty.path "array")
-                                                                              [
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  1
-                                                                              ]
-                                                                              [
-                                                                                Ty.apply
-                                                                                  (Ty.path "&")
-                                                                                  []
-                                                                                  [ Ty.path "str" ]
-                                                                              ],
-                                                                            Value.Array
-                                                                              [ mk_str (| "" |) ]
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [ Ty.path "str" ]
+                                                                          ]
+                                                                      ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.Unsize
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "array")
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            ]
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "str" ]
+                                                                            ]
+                                                                        ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "str" ]
+                                                                            ]
+                                                                        ]),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Ty.apply
+                                                                                (Ty.path "array")
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    1
+                                                                                ]
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&")
+                                                                                    []
+                                                                                    [ Ty.path "str"
+                                                                                    ]
+                                                                                ],
+                                                                              Value.Array
+                                                                                [ mk_str (| "" |) ]
+                                                                            |)
                                                                           |)
                                                                         |)
                                                                       |)
-                                                                    |));
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.alloc (|
-                                                                            Ty.apply
-                                                                              (Ty.path "array")
-                                                                              [
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  2
-                                                                              ]
-                                                                              [
-                                                                                Ty.path
-                                                                                  "core::fmt::rt::Argument"
-                                                                              ],
-                                                                            Value.Array
-                                                                              [
-                                                                                M.call_closure (|
+                                                                    ]
+                                                                  |);
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument"
+                                                                          ]
+                                                                      ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.Unsize
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "array")
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                2
+                                                                            ]
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Argument"
+                                                                            ]
+                                                                        ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Argument"
+                                                                            ]
+                                                                        ]),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Ty.apply
+                                                                                (Ty.path "array")
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    2
+                                                                                ]
+                                                                                [
                                                                                   Ty.path
-                                                                                    "core::fmt::rt::Argument",
-                                                                                  M.get_associated_function (|
+                                                                                    "core::fmt::rt::Argument"
+                                                                                ],
+                                                                              Value.Array
+                                                                                [
+                                                                                  M.call_closure (|
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
-                                                                                    "new_display",
-                                                                                    [],
-                                                                                    [ Ty.path "u64"
-                                                                                    ]
-                                                                                  |),
-                                                                                  [
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.Ref,
-                                                                                      M.deref (|
-                                                                                        M.borrow (|
-                                                                                          Pointer.Kind.Ref,
-                                                                                          spigot
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
+                                                                                      "new_display",
+                                                                                      [],
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "u64"
+                                                                                      ]
+                                                                                    |),
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            spigot
+                                                                                          |)
                                                                                         |)
                                                                                       |)
-                                                                                    |)
-                                                                                  ]
-                                                                                |);
-                                                                                M.call_closure (|
-                                                                                  Ty.path
-                                                                                    "core::fmt::rt::Argument",
-                                                                                  M.get_associated_function (|
+                                                                                    ]
+                                                                                  |);
+                                                                                  M.call_closure (|
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
-                                                                                    "from_usize",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.Ref,
-                                                                                      M.deref (|
-                                                                                        M.borrow (|
-                                                                                          Pointer.Kind.Ref,
-                                                                                          M.alloc (|
-                                                                                            Ty.path
-                                                                                              "usize",
-                                                                                            M.match_operator (|
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
+                                                                                      "from_usize",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            M.alloc (|
                                                                                               Ty.path
                                                                                                 "usize",
-                                                                                              M.alloc (|
-                                                                                                Ty.tuple
-                                                                                                  [],
-                                                                                                Value.Tuple
-                                                                                                  []
-                                                                                              |),
-                                                                                              [
-                                                                                                fun
-                                                                                                    γ =>
-                                                                                                  ltac:(M.monadic
-                                                                                                    (let
-                                                                                                          γ :=
-                                                                                                      M.use
-                                                                                                        (M.alloc (|
-                                                                                                          Ty.path
-                                                                                                            "bool",
-                                                                                                          M.call_closure (|
+                                                                                              M.match_operator (|
+                                                                                                Ty.path
+                                                                                                  "usize",
+                                                                                                M.alloc (|
+                                                                                                  Ty.tuple
+                                                                                                    [],
+                                                                                                  Value.Tuple
+                                                                                                    []
+                                                                                                |),
+                                                                                                [
+                                                                                                  fun
+                                                                                                      γ =>
+                                                                                                    ltac:(M.monadic
+                                                                                                      (let
+                                                                                                            γ :=
+                                                                                                        M.use
+                                                                                                          (M.alloc (|
                                                                                                             Ty.path
                                                                                                               "bool",
-                                                                                                            BinOp.eq,
-                                                                                                            [
-                                                                                                              M.read (|
-                                                                                                                i
-                                                                                                              |);
-                                                                                                              Value.Integer
-                                                                                                                IntegerKind.Usize
-                                                                                                                0
-                                                                                                            ]
-                                                                                                          |)
-                                                                                                        |)) in
-                                                                                                    let
-                                                                                                          _ :=
-                                                                                                      is_constant_or_break_match (|
-                                                                                                        M.read (|
-                                                                                                          γ
-                                                                                                        |),
-                                                                                                        Value.Bool
-                                                                                                          true
-                                                                                                      |) in
-                                                                                                    Value.Integer
-                                                                                                      IntegerKind.Usize
-                                                                                                      0));
-                                                                                                fun
-                                                                                                    γ =>
-                                                                                                  ltac:(M.monadic
-                                                                                                    (M.read (|
-                                                                                                      get_constant (|
-                                                                                                        "ruint::fmt::base::Base::WIDTH",
-                                                                                                        Ty.path
-                                                                                                          "usize"
-                                                                                                      |)
-                                                                                                    |)))
-                                                                                              ]
+                                                                                                            M.call_closure (|
+                                                                                                              Ty.path
+                                                                                                                "bool",
+                                                                                                              BinOp.eq,
+                                                                                                              [
+                                                                                                                M.read (|
+                                                                                                                  i
+                                                                                                                |);
+                                                                                                                Value.Integer
+                                                                                                                  IntegerKind.Usize
+                                                                                                                  0
+                                                                                                              ]
+                                                                                                            |)
+                                                                                                          |)) in
+                                                                                                      let
+                                                                                                            _ :=
+                                                                                                        is_constant_or_break_match (|
+                                                                                                          M.read (|
+                                                                                                            γ
+                                                                                                          |),
+                                                                                                          Value.Bool
+                                                                                                            true
+                                                                                                        |) in
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        0));
+                                                                                                  fun
+                                                                                                      γ =>
+                                                                                                    ltac:(M.monadic
+                                                                                                      (M.read (|
+                                                                                                        get_constant (|
+                                                                                                          "ruint::fmt::base::Base::WIDTH",
+                                                                                                          Ty.path
+                                                                                                            "usize"
+                                                                                                        |)
+                                                                                                      |)))
+                                                                                                ]
+                                                                                              |)
                                                                                             |)
                                                                                           |)
                                                                                         |)
                                                                                       |)
-                                                                                    |)
-                                                                                  ]
-                                                                                |)
-                                                                              ]
+                                                                                    ]
+                                                                                  |)
+                                                                                ]
+                                                                            |)
                                                                           |)
                                                                         |)
                                                                       |)
-                                                                    |));
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.alloc (|
-                                                                            Ty.apply
-                                                                              (Ty.path "array")
-                                                                              [
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  1
-                                                                              ]
-                                                                              [
-                                                                                Ty.path
-                                                                                  "core::fmt::rt::Placeholder"
-                                                                              ],
-                                                                            Value.Array
-                                                                              [
-                                                                                M.call_closure (|
+                                                                    ]
+                                                                  |);
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder"
+                                                                          ]
+                                                                      ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.Unsize
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "array")
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            ]
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Placeholder"
+                                                                            ]
+                                                                        ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Placeholder"
+                                                                            ]
+                                                                        ]),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Ty.apply
+                                                                                (Ty.path "array")
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    1
+                                                                                ]
+                                                                                [
                                                                                   Ty.path
-                                                                                    "core::fmt::rt::Placeholder",
-                                                                                  M.get_associated_function (|
+                                                                                    "core::fmt::rt::Placeholder"
+                                                                                ],
+                                                                              Value.Array
+                                                                                [
+                                                                                  M.call_closure (|
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Placeholder",
-                                                                                    "new",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    Value.Integer
-                                                                                      IntegerKind.Usize
-                                                                                      0;
-                                                                                    Value.UnicodeChar
-                                                                                      32;
-                                                                                    Value.StructTuple
-                                                                                      "core::fmt::rt::Alignment::Unknown"
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Placeholder",
+                                                                                      "new",
+                                                                                      [],
                                                                                       []
-                                                                                      []
-                                                                                      [];
-                                                                                    Value.Integer
-                                                                                      IntegerKind.U32
-                                                                                      8;
-                                                                                    Value.StructTuple
-                                                                                      "core::fmt::rt::Count::Implied"
-                                                                                      []
-                                                                                      []
-                                                                                      [];
-                                                                                    Value.StructTuple
-                                                                                      "core::fmt::rt::Count::Param"
-                                                                                      []
-                                                                                      []
-                                                                                      [
-                                                                                        Value.Integer
-                                                                                          IntegerKind.Usize
-                                                                                          1
-                                                                                      ]
-                                                                                  ]
-                                                                                |)
-                                                                              ]
+                                                                                    |),
+                                                                                    [
+                                                                                      Value.Integer
+                                                                                        IntegerKind.Usize
+                                                                                        0;
+                                                                                      Value.UnicodeChar
+                                                                                        32;
+                                                                                      Value.StructTuple
+                                                                                        "core::fmt::rt::Alignment::Unknown"
+                                                                                        []
+                                                                                        []
+                                                                                        [];
+                                                                                      Value.Integer
+                                                                                        IntegerKind.U32
+                                                                                        8;
+                                                                                      Value.StructTuple
+                                                                                        "core::fmt::rt::Count::Implied"
+                                                                                        []
+                                                                                        []
+                                                                                        [];
+                                                                                      Value.StructTuple
+                                                                                        "core::fmt::rt::Count::Param"
+                                                                                        []
+                                                                                        []
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            IntegerKind.Usize
+                                                                                            1
+                                                                                        ]
+                                                                                    ]
+                                                                                  |)
+                                                                                ]
+                                                                            |)
                                                                           |)
                                                                         |)
                                                                       |)
-                                                                    |));
+                                                                    ]
+                                                                  |);
                                                                   M.call_closure (|
                                                                     Ty.path
                                                                       "core::fmt::rt::UnsafeArg",
@@ -1211,230 +1352,371 @@ Module fmt.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.alloc (|
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [
                                                                             Ty.apply
-                                                                              (Ty.path "array")
-                                                                              [
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  1
-                                                                              ]
-                                                                              [
-                                                                                Ty.apply
-                                                                                  (Ty.path "&")
-                                                                                  []
-                                                                                  [ Ty.path "str" ]
-                                                                              ],
-                                                                            Value.Array
-                                                                              [ mk_str (| "" |) ]
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [ Ty.path "str" ]
+                                                                          ]
+                                                                      ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.Unsize
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "array")
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            ]
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "str" ]
+                                                                            ]
+                                                                        ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "str" ]
+                                                                            ]
+                                                                        ]),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Ty.apply
+                                                                                (Ty.path "array")
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    1
+                                                                                ]
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&")
+                                                                                    []
+                                                                                    [ Ty.path "str"
+                                                                                    ]
+                                                                                ],
+                                                                              Value.Array
+                                                                                [ mk_str (| "" |) ]
+                                                                            |)
                                                                           |)
                                                                         |)
                                                                       |)
-                                                                    |));
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.alloc (|
-                                                                            Ty.apply
-                                                                              (Ty.path "array")
-                                                                              [
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  2
-                                                                              ]
-                                                                              [
-                                                                                Ty.path
-                                                                                  "core::fmt::rt::Argument"
-                                                                              ],
-                                                                            Value.Array
-                                                                              [
-                                                                                M.call_closure (|
+                                                                    ]
+                                                                  |);
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument"
+                                                                          ]
+                                                                      ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.Unsize
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "array")
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                2
+                                                                            ]
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Argument"
+                                                                            ]
+                                                                        ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Argument"
+                                                                            ]
+                                                                        ]),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Ty.apply
+                                                                                (Ty.path "array")
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    2
+                                                                                ]
+                                                                                [
                                                                                   Ty.path
-                                                                                    "core::fmt::rt::Argument",
-                                                                                  M.get_associated_function (|
+                                                                                    "core::fmt::rt::Argument"
+                                                                                ],
+                                                                              Value.Array
+                                                                                [
+                                                                                  M.call_closure (|
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
-                                                                                    "new_binary",
-                                                                                    [],
-                                                                                    [ Ty.path "u64"
-                                                                                    ]
-                                                                                  |),
-                                                                                  [
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.Ref,
-                                                                                      M.deref (|
-                                                                                        M.borrow (|
-                                                                                          Pointer.Kind.Ref,
-                                                                                          spigot
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
+                                                                                      "new_binary",
+                                                                                      [],
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "u64"
+                                                                                      ]
+                                                                                    |),
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            spigot
+                                                                                          |)
                                                                                         |)
                                                                                       |)
-                                                                                    |)
-                                                                                  ]
-                                                                                |);
-                                                                                M.call_closure (|
-                                                                                  Ty.path
-                                                                                    "core::fmt::rt::Argument",
-                                                                                  M.get_associated_function (|
+                                                                                    ]
+                                                                                  |);
+                                                                                  M.call_closure (|
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
-                                                                                    "from_usize",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.Ref,
-                                                                                      M.deref (|
-                                                                                        M.borrow (|
-                                                                                          Pointer.Kind.Ref,
-                                                                                          M.alloc (|
-                                                                                            Ty.path
-                                                                                              "usize",
-                                                                                            M.match_operator (|
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
+                                                                                      "from_usize",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            M.alloc (|
                                                                                               Ty.path
                                                                                                 "usize",
-                                                                                              M.alloc (|
-                                                                                                Ty.tuple
-                                                                                                  [],
-                                                                                                Value.Tuple
-                                                                                                  []
-                                                                                              |),
-                                                                                              [
-                                                                                                fun
-                                                                                                    γ =>
-                                                                                                  ltac:(M.monadic
-                                                                                                    (let
-                                                                                                          γ :=
-                                                                                                      M.use
-                                                                                                        (M.alloc (|
-                                                                                                          Ty.path
-                                                                                                            "bool",
-                                                                                                          M.call_closure (|
+                                                                                              M.match_operator (|
+                                                                                                Ty.path
+                                                                                                  "usize",
+                                                                                                M.alloc (|
+                                                                                                  Ty.tuple
+                                                                                                    [],
+                                                                                                  Value.Tuple
+                                                                                                    []
+                                                                                                |),
+                                                                                                [
+                                                                                                  fun
+                                                                                                      γ =>
+                                                                                                    ltac:(M.monadic
+                                                                                                      (let
+                                                                                                            γ :=
+                                                                                                        M.use
+                                                                                                          (M.alloc (|
                                                                                                             Ty.path
                                                                                                               "bool",
-                                                                                                            BinOp.eq,
-                                                                                                            [
-                                                                                                              M.read (|
-                                                                                                                i
-                                                                                                              |);
-                                                                                                              Value.Integer
-                                                                                                                IntegerKind.Usize
-                                                                                                                0
-                                                                                                            ]
-                                                                                                          |)
-                                                                                                        |)) in
-                                                                                                    let
-                                                                                                          _ :=
-                                                                                                      is_constant_or_break_match (|
-                                                                                                        M.read (|
-                                                                                                          γ
-                                                                                                        |),
-                                                                                                        Value.Bool
-                                                                                                          true
-                                                                                                      |) in
-                                                                                                    Value.Integer
-                                                                                                      IntegerKind.Usize
-                                                                                                      0));
-                                                                                                fun
-                                                                                                    γ =>
-                                                                                                  ltac:(M.monadic
-                                                                                                    (M.read (|
-                                                                                                      get_constant (|
-                                                                                                        "ruint::fmt::base::Base::WIDTH",
-                                                                                                        Ty.path
-                                                                                                          "usize"
-                                                                                                      |)
-                                                                                                    |)))
-                                                                                              ]
+                                                                                                            M.call_closure (|
+                                                                                                              Ty.path
+                                                                                                                "bool",
+                                                                                                              BinOp.eq,
+                                                                                                              [
+                                                                                                                M.read (|
+                                                                                                                  i
+                                                                                                                |);
+                                                                                                                Value.Integer
+                                                                                                                  IntegerKind.Usize
+                                                                                                                  0
+                                                                                                              ]
+                                                                                                            |)
+                                                                                                          |)) in
+                                                                                                      let
+                                                                                                            _ :=
+                                                                                                        is_constant_or_break_match (|
+                                                                                                          M.read (|
+                                                                                                            γ
+                                                                                                          |),
+                                                                                                          Value.Bool
+                                                                                                            true
+                                                                                                        |) in
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        0));
+                                                                                                  fun
+                                                                                                      γ =>
+                                                                                                    ltac:(M.monadic
+                                                                                                      (M.read (|
+                                                                                                        get_constant (|
+                                                                                                          "ruint::fmt::base::Base::WIDTH",
+                                                                                                          Ty.path
+                                                                                                            "usize"
+                                                                                                        |)
+                                                                                                      |)))
+                                                                                                ]
+                                                                                              |)
                                                                                             |)
                                                                                           |)
                                                                                         |)
                                                                                       |)
-                                                                                    |)
-                                                                                  ]
-                                                                                |)
-                                                                              ]
+                                                                                    ]
+                                                                                  |)
+                                                                                ]
+                                                                            |)
                                                                           |)
                                                                         |)
                                                                       |)
-                                                                    |));
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.alloc (|
-                                                                            Ty.apply
-                                                                              (Ty.path "array")
-                                                                              [
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  1
-                                                                              ]
-                                                                              [
-                                                                                Ty.path
-                                                                                  "core::fmt::rt::Placeholder"
-                                                                              ],
-                                                                            Value.Array
-                                                                              [
-                                                                                M.call_closure (|
+                                                                    ]
+                                                                  |);
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder"
+                                                                          ]
+                                                                      ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.Unsize
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "array")
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            ]
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Placeholder"
+                                                                            ]
+                                                                        ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Placeholder"
+                                                                            ]
+                                                                        ]),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Ty.apply
+                                                                                (Ty.path "array")
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    1
+                                                                                ]
+                                                                                [
                                                                                   Ty.path
-                                                                                    "core::fmt::rt::Placeholder",
-                                                                                  M.get_associated_function (|
+                                                                                    "core::fmt::rt::Placeholder"
+                                                                                ],
+                                                                              Value.Array
+                                                                                [
+                                                                                  M.call_closure (|
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Placeholder",
-                                                                                    "new",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    Value.Integer
-                                                                                      IntegerKind.Usize
-                                                                                      0;
-                                                                                    Value.UnicodeChar
-                                                                                      32;
-                                                                                    Value.StructTuple
-                                                                                      "core::fmt::rt::Alignment::Unknown"
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Placeholder",
+                                                                                      "new",
+                                                                                      [],
                                                                                       []
-                                                                                      []
-                                                                                      [];
-                                                                                    Value.Integer
-                                                                                      IntegerKind.U32
-                                                                                      8;
-                                                                                    Value.StructTuple
-                                                                                      "core::fmt::rt::Count::Implied"
-                                                                                      []
-                                                                                      []
-                                                                                      [];
-                                                                                    Value.StructTuple
-                                                                                      "core::fmt::rt::Count::Param"
-                                                                                      []
-                                                                                      []
-                                                                                      [
-                                                                                        Value.Integer
-                                                                                          IntegerKind.Usize
-                                                                                          1
-                                                                                      ]
-                                                                                  ]
-                                                                                |)
-                                                                              ]
+                                                                                    |),
+                                                                                    [
+                                                                                      Value.Integer
+                                                                                        IntegerKind.Usize
+                                                                                        0;
+                                                                                      Value.UnicodeChar
+                                                                                        32;
+                                                                                      Value.StructTuple
+                                                                                        "core::fmt::rt::Alignment::Unknown"
+                                                                                        []
+                                                                                        []
+                                                                                        [];
+                                                                                      Value.Integer
+                                                                                        IntegerKind.U32
+                                                                                        8;
+                                                                                      Value.StructTuple
+                                                                                        "core::fmt::rt::Count::Implied"
+                                                                                        []
+                                                                                        []
+                                                                                        [];
+                                                                                      Value.StructTuple
+                                                                                        "core::fmt::rt::Count::Param"
+                                                                                        []
+                                                                                        []
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            IntegerKind.Usize
+                                                                                            1
+                                                                                        ]
+                                                                                    ]
+                                                                                  |)
+                                                                                ]
+                                                                            |)
                                                                           |)
                                                                         |)
                                                                       |)
-                                                                    |));
+                                                                    ]
+                                                                  |);
                                                                   M.call_closure (|
                                                                     Ty.path
                                                                       "core::fmt::rt::UnsafeArg",
@@ -1846,230 +2128,371 @@ Module fmt.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.alloc (|
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [
                                                                             Ty.apply
-                                                                              (Ty.path "array")
-                                                                              [
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  1
-                                                                              ]
-                                                                              [
-                                                                                Ty.apply
-                                                                                  (Ty.path "&")
-                                                                                  []
-                                                                                  [ Ty.path "str" ]
-                                                                              ],
-                                                                            Value.Array
-                                                                              [ mk_str (| "" |) ]
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [ Ty.path "str" ]
+                                                                          ]
+                                                                      ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.Unsize
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "array")
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            ]
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "str" ]
+                                                                            ]
+                                                                        ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "str" ]
+                                                                            ]
+                                                                        ]),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Ty.apply
+                                                                                (Ty.path "array")
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    1
+                                                                                ]
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&")
+                                                                                    []
+                                                                                    [ Ty.path "str"
+                                                                                    ]
+                                                                                ],
+                                                                              Value.Array
+                                                                                [ mk_str (| "" |) ]
+                                                                            |)
                                                                           |)
                                                                         |)
                                                                       |)
-                                                                    |));
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.alloc (|
-                                                                            Ty.apply
-                                                                              (Ty.path "array")
-                                                                              [
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  2
-                                                                              ]
-                                                                              [
-                                                                                Ty.path
-                                                                                  "core::fmt::rt::Argument"
-                                                                              ],
-                                                                            Value.Array
-                                                                              [
-                                                                                M.call_closure (|
+                                                                    ]
+                                                                  |);
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument"
+                                                                          ]
+                                                                      ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.Unsize
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "array")
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                2
+                                                                            ]
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Argument"
+                                                                            ]
+                                                                        ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Argument"
+                                                                            ]
+                                                                        ]),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Ty.apply
+                                                                                (Ty.path "array")
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    2
+                                                                                ]
+                                                                                [
                                                                                   Ty.path
-                                                                                    "core::fmt::rt::Argument",
-                                                                                  M.get_associated_function (|
+                                                                                    "core::fmt::rt::Argument"
+                                                                                ],
+                                                                              Value.Array
+                                                                                [
+                                                                                  M.call_closure (|
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
-                                                                                    "new_octal",
-                                                                                    [],
-                                                                                    [ Ty.path "u64"
-                                                                                    ]
-                                                                                  |),
-                                                                                  [
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.Ref,
-                                                                                      M.deref (|
-                                                                                        M.borrow (|
-                                                                                          Pointer.Kind.Ref,
-                                                                                          spigot
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
+                                                                                      "new_octal",
+                                                                                      [],
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "u64"
+                                                                                      ]
+                                                                                    |),
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            spigot
+                                                                                          |)
                                                                                         |)
                                                                                       |)
-                                                                                    |)
-                                                                                  ]
-                                                                                |);
-                                                                                M.call_closure (|
-                                                                                  Ty.path
-                                                                                    "core::fmt::rt::Argument",
-                                                                                  M.get_associated_function (|
+                                                                                    ]
+                                                                                  |);
+                                                                                  M.call_closure (|
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
-                                                                                    "from_usize",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.Ref,
-                                                                                      M.deref (|
-                                                                                        M.borrow (|
-                                                                                          Pointer.Kind.Ref,
-                                                                                          M.alloc (|
-                                                                                            Ty.path
-                                                                                              "usize",
-                                                                                            M.match_operator (|
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
+                                                                                      "from_usize",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            M.alloc (|
                                                                                               Ty.path
                                                                                                 "usize",
-                                                                                              M.alloc (|
-                                                                                                Ty.tuple
-                                                                                                  [],
-                                                                                                Value.Tuple
-                                                                                                  []
-                                                                                              |),
-                                                                                              [
-                                                                                                fun
-                                                                                                    γ =>
-                                                                                                  ltac:(M.monadic
-                                                                                                    (let
-                                                                                                          γ :=
-                                                                                                      M.use
-                                                                                                        (M.alloc (|
-                                                                                                          Ty.path
-                                                                                                            "bool",
-                                                                                                          M.call_closure (|
+                                                                                              M.match_operator (|
+                                                                                                Ty.path
+                                                                                                  "usize",
+                                                                                                M.alloc (|
+                                                                                                  Ty.tuple
+                                                                                                    [],
+                                                                                                  Value.Tuple
+                                                                                                    []
+                                                                                                |),
+                                                                                                [
+                                                                                                  fun
+                                                                                                      γ =>
+                                                                                                    ltac:(M.monadic
+                                                                                                      (let
+                                                                                                            γ :=
+                                                                                                        M.use
+                                                                                                          (M.alloc (|
                                                                                                             Ty.path
                                                                                                               "bool",
-                                                                                                            BinOp.eq,
-                                                                                                            [
-                                                                                                              M.read (|
-                                                                                                                i
-                                                                                                              |);
-                                                                                                              Value.Integer
-                                                                                                                IntegerKind.Usize
-                                                                                                                0
-                                                                                                            ]
-                                                                                                          |)
-                                                                                                        |)) in
-                                                                                                    let
-                                                                                                          _ :=
-                                                                                                      is_constant_or_break_match (|
-                                                                                                        M.read (|
-                                                                                                          γ
-                                                                                                        |),
-                                                                                                        Value.Bool
-                                                                                                          true
-                                                                                                      |) in
-                                                                                                    Value.Integer
-                                                                                                      IntegerKind.Usize
-                                                                                                      0));
-                                                                                                fun
-                                                                                                    γ =>
-                                                                                                  ltac:(M.monadic
-                                                                                                    (M.read (|
-                                                                                                      get_constant (|
-                                                                                                        "ruint::fmt::base::Base::WIDTH",
-                                                                                                        Ty.path
-                                                                                                          "usize"
-                                                                                                      |)
-                                                                                                    |)))
-                                                                                              ]
+                                                                                                            M.call_closure (|
+                                                                                                              Ty.path
+                                                                                                                "bool",
+                                                                                                              BinOp.eq,
+                                                                                                              [
+                                                                                                                M.read (|
+                                                                                                                  i
+                                                                                                                |);
+                                                                                                                Value.Integer
+                                                                                                                  IntegerKind.Usize
+                                                                                                                  0
+                                                                                                              ]
+                                                                                                            |)
+                                                                                                          |)) in
+                                                                                                      let
+                                                                                                            _ :=
+                                                                                                        is_constant_or_break_match (|
+                                                                                                          M.read (|
+                                                                                                            γ
+                                                                                                          |),
+                                                                                                          Value.Bool
+                                                                                                            true
+                                                                                                        |) in
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        0));
+                                                                                                  fun
+                                                                                                      γ =>
+                                                                                                    ltac:(M.monadic
+                                                                                                      (M.read (|
+                                                                                                        get_constant (|
+                                                                                                          "ruint::fmt::base::Base::WIDTH",
+                                                                                                          Ty.path
+                                                                                                            "usize"
+                                                                                                        |)
+                                                                                                      |)))
+                                                                                                ]
+                                                                                              |)
                                                                                             |)
                                                                                           |)
                                                                                         |)
                                                                                       |)
-                                                                                    |)
-                                                                                  ]
-                                                                                |)
-                                                                              ]
+                                                                                    ]
+                                                                                  |)
+                                                                                ]
+                                                                            |)
                                                                           |)
                                                                         |)
                                                                       |)
-                                                                    |));
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.alloc (|
-                                                                            Ty.apply
-                                                                              (Ty.path "array")
-                                                                              [
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  1
-                                                                              ]
-                                                                              [
-                                                                                Ty.path
-                                                                                  "core::fmt::rt::Placeholder"
-                                                                              ],
-                                                                            Value.Array
-                                                                              [
-                                                                                M.call_closure (|
+                                                                    ]
+                                                                  |);
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder"
+                                                                          ]
+                                                                      ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.Unsize
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "array")
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            ]
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Placeholder"
+                                                                            ]
+                                                                        ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Placeholder"
+                                                                            ]
+                                                                        ]),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Ty.apply
+                                                                                (Ty.path "array")
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    1
+                                                                                ]
+                                                                                [
                                                                                   Ty.path
-                                                                                    "core::fmt::rt::Placeholder",
-                                                                                  M.get_associated_function (|
+                                                                                    "core::fmt::rt::Placeholder"
+                                                                                ],
+                                                                              Value.Array
+                                                                                [
+                                                                                  M.call_closure (|
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Placeholder",
-                                                                                    "new",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    Value.Integer
-                                                                                      IntegerKind.Usize
-                                                                                      0;
-                                                                                    Value.UnicodeChar
-                                                                                      32;
-                                                                                    Value.StructTuple
-                                                                                      "core::fmt::rt::Alignment::Unknown"
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Placeholder",
+                                                                                      "new",
+                                                                                      [],
                                                                                       []
-                                                                                      []
-                                                                                      [];
-                                                                                    Value.Integer
-                                                                                      IntegerKind.U32
-                                                                                      8;
-                                                                                    Value.StructTuple
-                                                                                      "core::fmt::rt::Count::Implied"
-                                                                                      []
-                                                                                      []
-                                                                                      [];
-                                                                                    Value.StructTuple
-                                                                                      "core::fmt::rt::Count::Param"
-                                                                                      []
-                                                                                      []
-                                                                                      [
-                                                                                        Value.Integer
-                                                                                          IntegerKind.Usize
-                                                                                          1
-                                                                                      ]
-                                                                                  ]
-                                                                                |)
-                                                                              ]
+                                                                                    |),
+                                                                                    [
+                                                                                      Value.Integer
+                                                                                        IntegerKind.Usize
+                                                                                        0;
+                                                                                      Value.UnicodeChar
+                                                                                        32;
+                                                                                      Value.StructTuple
+                                                                                        "core::fmt::rt::Alignment::Unknown"
+                                                                                        []
+                                                                                        []
+                                                                                        [];
+                                                                                      Value.Integer
+                                                                                        IntegerKind.U32
+                                                                                        8;
+                                                                                      Value.StructTuple
+                                                                                        "core::fmt::rt::Count::Implied"
+                                                                                        []
+                                                                                        []
+                                                                                        [];
+                                                                                      Value.StructTuple
+                                                                                        "core::fmt::rt::Count::Param"
+                                                                                        []
+                                                                                        []
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            IntegerKind.Usize
+                                                                                            1
+                                                                                        ]
+                                                                                    ]
+                                                                                  |)
+                                                                                ]
+                                                                            |)
                                                                           |)
                                                                         |)
                                                                       |)
-                                                                    |));
+                                                                    ]
+                                                                  |);
                                                                   M.call_closure (|
                                                                     Ty.path
                                                                       "core::fmt::rt::UnsafeArg",
@@ -2481,230 +2904,371 @@ Module fmt.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.alloc (|
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [
                                                                             Ty.apply
-                                                                              (Ty.path "array")
-                                                                              [
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  1
-                                                                              ]
-                                                                              [
-                                                                                Ty.apply
-                                                                                  (Ty.path "&")
-                                                                                  []
-                                                                                  [ Ty.path "str" ]
-                                                                              ],
-                                                                            Value.Array
-                                                                              [ mk_str (| "" |) ]
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [ Ty.path "str" ]
+                                                                          ]
+                                                                      ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.Unsize
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "array")
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            ]
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "str" ]
+                                                                            ]
+                                                                        ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "str" ]
+                                                                            ]
+                                                                        ]),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Ty.apply
+                                                                                (Ty.path "array")
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    1
+                                                                                ]
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&")
+                                                                                    []
+                                                                                    [ Ty.path "str"
+                                                                                    ]
+                                                                                ],
+                                                                              Value.Array
+                                                                                [ mk_str (| "" |) ]
+                                                                            |)
                                                                           |)
                                                                         |)
                                                                       |)
-                                                                    |));
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.alloc (|
-                                                                            Ty.apply
-                                                                              (Ty.path "array")
-                                                                              [
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  2
-                                                                              ]
-                                                                              [
-                                                                                Ty.path
-                                                                                  "core::fmt::rt::Argument"
-                                                                              ],
-                                                                            Value.Array
-                                                                              [
-                                                                                M.call_closure (|
+                                                                    ]
+                                                                  |);
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument"
+                                                                          ]
+                                                                      ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.Unsize
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "array")
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                2
+                                                                            ]
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Argument"
+                                                                            ]
+                                                                        ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Argument"
+                                                                            ]
+                                                                        ]),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Ty.apply
+                                                                                (Ty.path "array")
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    2
+                                                                                ]
+                                                                                [
                                                                                   Ty.path
-                                                                                    "core::fmt::rt::Argument",
-                                                                                  M.get_associated_function (|
+                                                                                    "core::fmt::rt::Argument"
+                                                                                ],
+                                                                              Value.Array
+                                                                                [
+                                                                                  M.call_closure (|
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
-                                                                                    "new_lower_hex",
-                                                                                    [],
-                                                                                    [ Ty.path "u64"
-                                                                                    ]
-                                                                                  |),
-                                                                                  [
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.Ref,
-                                                                                      M.deref (|
-                                                                                        M.borrow (|
-                                                                                          Pointer.Kind.Ref,
-                                                                                          spigot
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
+                                                                                      "new_lower_hex",
+                                                                                      [],
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "u64"
+                                                                                      ]
+                                                                                    |),
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            spigot
+                                                                                          |)
                                                                                         |)
                                                                                       |)
-                                                                                    |)
-                                                                                  ]
-                                                                                |);
-                                                                                M.call_closure (|
-                                                                                  Ty.path
-                                                                                    "core::fmt::rt::Argument",
-                                                                                  M.get_associated_function (|
+                                                                                    ]
+                                                                                  |);
+                                                                                  M.call_closure (|
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
-                                                                                    "from_usize",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.Ref,
-                                                                                      M.deref (|
-                                                                                        M.borrow (|
-                                                                                          Pointer.Kind.Ref,
-                                                                                          M.alloc (|
-                                                                                            Ty.path
-                                                                                              "usize",
-                                                                                            M.match_operator (|
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
+                                                                                      "from_usize",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            M.alloc (|
                                                                                               Ty.path
                                                                                                 "usize",
-                                                                                              M.alloc (|
-                                                                                                Ty.tuple
-                                                                                                  [],
-                                                                                                Value.Tuple
-                                                                                                  []
-                                                                                              |),
-                                                                                              [
-                                                                                                fun
-                                                                                                    γ =>
-                                                                                                  ltac:(M.monadic
-                                                                                                    (let
-                                                                                                          γ :=
-                                                                                                      M.use
-                                                                                                        (M.alloc (|
-                                                                                                          Ty.path
-                                                                                                            "bool",
-                                                                                                          M.call_closure (|
+                                                                                              M.match_operator (|
+                                                                                                Ty.path
+                                                                                                  "usize",
+                                                                                                M.alloc (|
+                                                                                                  Ty.tuple
+                                                                                                    [],
+                                                                                                  Value.Tuple
+                                                                                                    []
+                                                                                                |),
+                                                                                                [
+                                                                                                  fun
+                                                                                                      γ =>
+                                                                                                    ltac:(M.monadic
+                                                                                                      (let
+                                                                                                            γ :=
+                                                                                                        M.use
+                                                                                                          (M.alloc (|
                                                                                                             Ty.path
                                                                                                               "bool",
-                                                                                                            BinOp.eq,
-                                                                                                            [
-                                                                                                              M.read (|
-                                                                                                                i
-                                                                                                              |);
-                                                                                                              Value.Integer
-                                                                                                                IntegerKind.Usize
-                                                                                                                0
-                                                                                                            ]
-                                                                                                          |)
-                                                                                                        |)) in
-                                                                                                    let
-                                                                                                          _ :=
-                                                                                                      is_constant_or_break_match (|
-                                                                                                        M.read (|
-                                                                                                          γ
-                                                                                                        |),
-                                                                                                        Value.Bool
-                                                                                                          true
-                                                                                                      |) in
-                                                                                                    Value.Integer
-                                                                                                      IntegerKind.Usize
-                                                                                                      0));
-                                                                                                fun
-                                                                                                    γ =>
-                                                                                                  ltac:(M.monadic
-                                                                                                    (M.read (|
-                                                                                                      get_constant (|
-                                                                                                        "ruint::fmt::base::Base::WIDTH",
-                                                                                                        Ty.path
-                                                                                                          "usize"
-                                                                                                      |)
-                                                                                                    |)))
-                                                                                              ]
+                                                                                                            M.call_closure (|
+                                                                                                              Ty.path
+                                                                                                                "bool",
+                                                                                                              BinOp.eq,
+                                                                                                              [
+                                                                                                                M.read (|
+                                                                                                                  i
+                                                                                                                |);
+                                                                                                                Value.Integer
+                                                                                                                  IntegerKind.Usize
+                                                                                                                  0
+                                                                                                              ]
+                                                                                                            |)
+                                                                                                          |)) in
+                                                                                                      let
+                                                                                                            _ :=
+                                                                                                        is_constant_or_break_match (|
+                                                                                                          M.read (|
+                                                                                                            γ
+                                                                                                          |),
+                                                                                                          Value.Bool
+                                                                                                            true
+                                                                                                        |) in
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        0));
+                                                                                                  fun
+                                                                                                      γ =>
+                                                                                                    ltac:(M.monadic
+                                                                                                      (M.read (|
+                                                                                                        get_constant (|
+                                                                                                          "ruint::fmt::base::Base::WIDTH",
+                                                                                                          Ty.path
+                                                                                                            "usize"
+                                                                                                        |)
+                                                                                                      |)))
+                                                                                                ]
+                                                                                              |)
                                                                                             |)
                                                                                           |)
                                                                                         |)
                                                                                       |)
-                                                                                    |)
-                                                                                  ]
-                                                                                |)
-                                                                              ]
+                                                                                    ]
+                                                                                  |)
+                                                                                ]
+                                                                            |)
                                                                           |)
                                                                         |)
                                                                       |)
-                                                                    |));
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.alloc (|
-                                                                            Ty.apply
-                                                                              (Ty.path "array")
-                                                                              [
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  1
-                                                                              ]
-                                                                              [
-                                                                                Ty.path
-                                                                                  "core::fmt::rt::Placeholder"
-                                                                              ],
-                                                                            Value.Array
-                                                                              [
-                                                                                M.call_closure (|
+                                                                    ]
+                                                                  |);
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder"
+                                                                          ]
+                                                                      ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.Unsize
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "array")
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            ]
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Placeholder"
+                                                                            ]
+                                                                        ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Placeholder"
+                                                                            ]
+                                                                        ]),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Ty.apply
+                                                                                (Ty.path "array")
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    1
+                                                                                ]
+                                                                                [
                                                                                   Ty.path
-                                                                                    "core::fmt::rt::Placeholder",
-                                                                                  M.get_associated_function (|
+                                                                                    "core::fmt::rt::Placeholder"
+                                                                                ],
+                                                                              Value.Array
+                                                                                [
+                                                                                  M.call_closure (|
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Placeholder",
-                                                                                    "new",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    Value.Integer
-                                                                                      IntegerKind.Usize
-                                                                                      0;
-                                                                                    Value.UnicodeChar
-                                                                                      32;
-                                                                                    Value.StructTuple
-                                                                                      "core::fmt::rt::Alignment::Unknown"
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Placeholder",
+                                                                                      "new",
+                                                                                      [],
                                                                                       []
-                                                                                      []
-                                                                                      [];
-                                                                                    Value.Integer
-                                                                                      IntegerKind.U32
-                                                                                      8;
-                                                                                    Value.StructTuple
-                                                                                      "core::fmt::rt::Count::Implied"
-                                                                                      []
-                                                                                      []
-                                                                                      [];
-                                                                                    Value.StructTuple
-                                                                                      "core::fmt::rt::Count::Param"
-                                                                                      []
-                                                                                      []
-                                                                                      [
-                                                                                        Value.Integer
-                                                                                          IntegerKind.Usize
-                                                                                          1
-                                                                                      ]
-                                                                                  ]
-                                                                                |)
-                                                                              ]
+                                                                                    |),
+                                                                                    [
+                                                                                      Value.Integer
+                                                                                        IntegerKind.Usize
+                                                                                        0;
+                                                                                      Value.UnicodeChar
+                                                                                        32;
+                                                                                      Value.StructTuple
+                                                                                        "core::fmt::rt::Alignment::Unknown"
+                                                                                        []
+                                                                                        []
+                                                                                        [];
+                                                                                      Value.Integer
+                                                                                        IntegerKind.U32
+                                                                                        8;
+                                                                                      Value.StructTuple
+                                                                                        "core::fmt::rt::Count::Implied"
+                                                                                        []
+                                                                                        []
+                                                                                        [];
+                                                                                      Value.StructTuple
+                                                                                        "core::fmt::rt::Count::Param"
+                                                                                        []
+                                                                                        []
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            IntegerKind.Usize
+                                                                                            1
+                                                                                        ]
+                                                                                    ]
+                                                                                  |)
+                                                                                ]
+                                                                            |)
                                                                           |)
                                                                         |)
                                                                       |)
-                                                                    |));
+                                                                    ]
+                                                                  |);
                                                                   M.call_closure (|
                                                                     Ty.path
                                                                       "core::fmt::rt::UnsafeArg",
@@ -3116,230 +3680,371 @@ Module fmt.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.alloc (|
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [
                                                                             Ty.apply
-                                                                              (Ty.path "array")
-                                                                              [
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  1
-                                                                              ]
-                                                                              [
-                                                                                Ty.apply
-                                                                                  (Ty.path "&")
-                                                                                  []
-                                                                                  [ Ty.path "str" ]
-                                                                              ],
-                                                                            Value.Array
-                                                                              [ mk_str (| "" |) ]
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [ Ty.path "str" ]
+                                                                          ]
+                                                                      ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.Unsize
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "array")
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            ]
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "str" ]
+                                                                            ]
+                                                                        ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "str" ]
+                                                                            ]
+                                                                        ]),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Ty.apply
+                                                                                (Ty.path "array")
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    1
+                                                                                ]
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&")
+                                                                                    []
+                                                                                    [ Ty.path "str"
+                                                                                    ]
+                                                                                ],
+                                                                              Value.Array
+                                                                                [ mk_str (| "" |) ]
+                                                                            |)
                                                                           |)
                                                                         |)
                                                                       |)
-                                                                    |));
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.alloc (|
-                                                                            Ty.apply
-                                                                              (Ty.path "array")
-                                                                              [
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  2
-                                                                              ]
-                                                                              [
-                                                                                Ty.path
-                                                                                  "core::fmt::rt::Argument"
-                                                                              ],
-                                                                            Value.Array
-                                                                              [
-                                                                                M.call_closure (|
+                                                                    ]
+                                                                  |);
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument"
+                                                                          ]
+                                                                      ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.Unsize
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "array")
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                2
+                                                                            ]
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Argument"
+                                                                            ]
+                                                                        ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Argument"
+                                                                            ]
+                                                                        ]),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Ty.apply
+                                                                                (Ty.path "array")
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    2
+                                                                                ]
+                                                                                [
                                                                                   Ty.path
-                                                                                    "core::fmt::rt::Argument",
-                                                                                  M.get_associated_function (|
+                                                                                    "core::fmt::rt::Argument"
+                                                                                ],
+                                                                              Value.Array
+                                                                                [
+                                                                                  M.call_closure (|
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
-                                                                                    "new_upper_hex",
-                                                                                    [],
-                                                                                    [ Ty.path "u64"
-                                                                                    ]
-                                                                                  |),
-                                                                                  [
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.Ref,
-                                                                                      M.deref (|
-                                                                                        M.borrow (|
-                                                                                          Pointer.Kind.Ref,
-                                                                                          spigot
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
+                                                                                      "new_upper_hex",
+                                                                                      [],
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "u64"
+                                                                                      ]
+                                                                                    |),
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            spigot
+                                                                                          |)
                                                                                         |)
                                                                                       |)
-                                                                                    |)
-                                                                                  ]
-                                                                                |);
-                                                                                M.call_closure (|
-                                                                                  Ty.path
-                                                                                    "core::fmt::rt::Argument",
-                                                                                  M.get_associated_function (|
+                                                                                    ]
+                                                                                  |);
+                                                                                  M.call_closure (|
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
-                                                                                    "from_usize",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.Ref,
-                                                                                      M.deref (|
-                                                                                        M.borrow (|
-                                                                                          Pointer.Kind.Ref,
-                                                                                          M.alloc (|
-                                                                                            Ty.path
-                                                                                              "usize",
-                                                                                            M.match_operator (|
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
+                                                                                      "from_usize",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            M.alloc (|
                                                                                               Ty.path
                                                                                                 "usize",
-                                                                                              M.alloc (|
-                                                                                                Ty.tuple
-                                                                                                  [],
-                                                                                                Value.Tuple
-                                                                                                  []
-                                                                                              |),
-                                                                                              [
-                                                                                                fun
-                                                                                                    γ =>
-                                                                                                  ltac:(M.monadic
-                                                                                                    (let
-                                                                                                          γ :=
-                                                                                                      M.use
-                                                                                                        (M.alloc (|
-                                                                                                          Ty.path
-                                                                                                            "bool",
-                                                                                                          M.call_closure (|
+                                                                                              M.match_operator (|
+                                                                                                Ty.path
+                                                                                                  "usize",
+                                                                                                M.alloc (|
+                                                                                                  Ty.tuple
+                                                                                                    [],
+                                                                                                  Value.Tuple
+                                                                                                    []
+                                                                                                |),
+                                                                                                [
+                                                                                                  fun
+                                                                                                      γ =>
+                                                                                                    ltac:(M.monadic
+                                                                                                      (let
+                                                                                                            γ :=
+                                                                                                        M.use
+                                                                                                          (M.alloc (|
                                                                                                             Ty.path
                                                                                                               "bool",
-                                                                                                            BinOp.eq,
-                                                                                                            [
-                                                                                                              M.read (|
-                                                                                                                i
-                                                                                                              |);
-                                                                                                              Value.Integer
-                                                                                                                IntegerKind.Usize
-                                                                                                                0
-                                                                                                            ]
-                                                                                                          |)
-                                                                                                        |)) in
-                                                                                                    let
-                                                                                                          _ :=
-                                                                                                      is_constant_or_break_match (|
-                                                                                                        M.read (|
-                                                                                                          γ
-                                                                                                        |),
-                                                                                                        Value.Bool
-                                                                                                          true
-                                                                                                      |) in
-                                                                                                    Value.Integer
-                                                                                                      IntegerKind.Usize
-                                                                                                      0));
-                                                                                                fun
-                                                                                                    γ =>
-                                                                                                  ltac:(M.monadic
-                                                                                                    (M.read (|
-                                                                                                      get_constant (|
-                                                                                                        "ruint::fmt::base::Base::WIDTH",
-                                                                                                        Ty.path
-                                                                                                          "usize"
-                                                                                                      |)
-                                                                                                    |)))
-                                                                                              ]
+                                                                                                            M.call_closure (|
+                                                                                                              Ty.path
+                                                                                                                "bool",
+                                                                                                              BinOp.eq,
+                                                                                                              [
+                                                                                                                M.read (|
+                                                                                                                  i
+                                                                                                                |);
+                                                                                                                Value.Integer
+                                                                                                                  IntegerKind.Usize
+                                                                                                                  0
+                                                                                                              ]
+                                                                                                            |)
+                                                                                                          |)) in
+                                                                                                      let
+                                                                                                            _ :=
+                                                                                                        is_constant_or_break_match (|
+                                                                                                          M.read (|
+                                                                                                            γ
+                                                                                                          |),
+                                                                                                          Value.Bool
+                                                                                                            true
+                                                                                                        |) in
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        0));
+                                                                                                  fun
+                                                                                                      γ =>
+                                                                                                    ltac:(M.monadic
+                                                                                                      (M.read (|
+                                                                                                        get_constant (|
+                                                                                                          "ruint::fmt::base::Base::WIDTH",
+                                                                                                          Ty.path
+                                                                                                            "usize"
+                                                                                                        |)
+                                                                                                      |)))
+                                                                                                ]
+                                                                                              |)
                                                                                             |)
                                                                                           |)
                                                                                         |)
                                                                                       |)
-                                                                                    |)
-                                                                                  ]
-                                                                                |)
-                                                                              ]
+                                                                                    ]
+                                                                                  |)
+                                                                                ]
+                                                                            |)
                                                                           |)
                                                                         |)
                                                                       |)
-                                                                    |));
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.alloc (|
-                                                                            Ty.apply
-                                                                              (Ty.path "array")
-                                                                              [
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  1
-                                                                              ]
-                                                                              [
-                                                                                Ty.path
-                                                                                  "core::fmt::rt::Placeholder"
-                                                                              ],
-                                                                            Value.Array
-                                                                              [
-                                                                                M.call_closure (|
+                                                                    ]
+                                                                  |);
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Placeholder"
+                                                                          ]
+                                                                      ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.Unsize
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "array")
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            ]
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Placeholder"
+                                                                            ]
+                                                                        ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Placeholder"
+                                                                            ]
+                                                                        ]),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Ty.apply
+                                                                                (Ty.path "array")
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    1
+                                                                                ]
+                                                                                [
                                                                                   Ty.path
-                                                                                    "core::fmt::rt::Placeholder",
-                                                                                  M.get_associated_function (|
+                                                                                    "core::fmt::rt::Placeholder"
+                                                                                ],
+                                                                              Value.Array
+                                                                                [
+                                                                                  M.call_closure (|
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Placeholder",
-                                                                                    "new",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    Value.Integer
-                                                                                      IntegerKind.Usize
-                                                                                      0;
-                                                                                    Value.UnicodeChar
-                                                                                      32;
-                                                                                    Value.StructTuple
-                                                                                      "core::fmt::rt::Alignment::Unknown"
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Placeholder",
+                                                                                      "new",
+                                                                                      [],
                                                                                       []
-                                                                                      []
-                                                                                      [];
-                                                                                    Value.Integer
-                                                                                      IntegerKind.U32
-                                                                                      8;
-                                                                                    Value.StructTuple
-                                                                                      "core::fmt::rt::Count::Implied"
-                                                                                      []
-                                                                                      []
-                                                                                      [];
-                                                                                    Value.StructTuple
-                                                                                      "core::fmt::rt::Count::Param"
-                                                                                      []
-                                                                                      []
-                                                                                      [
-                                                                                        Value.Integer
-                                                                                          IntegerKind.Usize
-                                                                                          1
-                                                                                      ]
-                                                                                  ]
-                                                                                |)
-                                                                              ]
+                                                                                    |),
+                                                                                    [
+                                                                                      Value.Integer
+                                                                                        IntegerKind.Usize
+                                                                                        0;
+                                                                                      Value.UnicodeChar
+                                                                                        32;
+                                                                                      Value.StructTuple
+                                                                                        "core::fmt::rt::Alignment::Unknown"
+                                                                                        []
+                                                                                        []
+                                                                                        [];
+                                                                                      Value.Integer
+                                                                                        IntegerKind.U32
+                                                                                        8;
+                                                                                      Value.StructTuple
+                                                                                        "core::fmt::rt::Count::Implied"
+                                                                                        []
+                                                                                        []
+                                                                                        [];
+                                                                                      Value.StructTuple
+                                                                                        "core::fmt::rt::Count::Param"
+                                                                                        []
+                                                                                        []
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            IntegerKind.Usize
+                                                                                            1
+                                                                                        ]
+                                                                                    ]
+                                                                                  |)
+                                                                                ]
+                                                                            |)
                                                                           |)
                                                                         |)
                                                                       |)
-                                                                    |));
+                                                                    ]
+                                                                  |);
                                                                   M.call_closure (|
                                                                     Ty.path
                                                                       "core::fmt::rt::UnsafeArg",
@@ -3941,16 +4646,62 @@ Module fmt.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (|
-                                      Pointer.Kind.MutRef,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "ruint::fmt::DisplayBuffer",
-                                        "buf"
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ Ty.path "u8" ]
+                                          ]
+                                      ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ SIZE ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ Ty.path "u8" ]
+                                            ]
+                                        ])
+                                      (Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ Ty.path "u8" ]
+                                            ]
+                                        ]),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "ruint::fmt::DisplayBuffer",
+                                          "buf"
+                                        |)
                                       |)
-                                    |))
+                                    ]
+                                  |)
                                 ]
                               |);
                               M.read (|

@@ -206,86 +206,136 @@ Module interpreter.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "InputsImpl" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "target_address" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "revm_interpreter::interpreter::input::InputsImpl",
-                          "target_address"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "alloy_primitives::bits::address::Address" ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter::input::InputsImpl",
+                            "target_address"
+                          |)
                         |)
                       |)
                     |)
-                  |));
+                  ]
+                |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "caller_address" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "revm_interpreter::interpreter::input::InputsImpl",
-                          "caller_address"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "alloy_primitives::bits::address::Address" ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter::input::InputsImpl",
+                            "caller_address"
+                          |)
                         |)
                       |)
                     |)
-                  |));
+                  ]
+                |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "input" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "revm_interpreter::interpreter::input::InputsImpl",
-                          "input"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter::input::InputsImpl",
+                            "input"
+                          |)
                         |)
                       |)
                     |)
-                  |));
+                  ]
+                |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "call_value" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "ruint::Uint")
-                                [
-                                  Value.Integer IntegerKind.Usize 256;
-                                  Value.Integer IntegerKind.Usize 4
-                                ]
-                                []
-                            ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "revm_interpreter::interpreter::input::InputsImpl",
-                              "call_value"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              []
+                          ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  []
+                              ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "revm_interpreter::interpreter::input::InputsImpl",
+                                "call_value"
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

@@ -857,13 +857,10 @@ Module buf.
                                 Ty.path "u16";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u16")
                               ]
@@ -934,18 +931,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u16"),
+                                          Ty.path "u16",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -1095,14 +1081,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 2 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -1239,13 +1247,10 @@ Module buf.
                                 Ty.path "u16";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u16")
                               ]
@@ -1316,18 +1321,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u16"),
+                                          Ty.path "u16",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -1477,14 +1471,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 2 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -1621,13 +1637,10 @@ Module buf.
                                 Ty.path "u16";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u16")
                               ]
@@ -1698,18 +1711,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u16"),
+                                          Ty.path "u16",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -1859,14 +1861,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 2 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -1998,13 +2022,10 @@ Module buf.
                                 Ty.path "i16";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i16")
                               ]
@@ -2075,18 +2096,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i16"),
+                                          Ty.path "i16",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -2236,14 +2246,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 2 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -2380,13 +2412,10 @@ Module buf.
                                 Ty.path "i16";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i16")
                               ]
@@ -2457,18 +2486,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i16"),
+                                          Ty.path "i16",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -2618,14 +2636,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 2 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -2762,13 +2802,10 @@ Module buf.
                                 Ty.path "i16";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i16")
                               ]
@@ -2839,18 +2876,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i16"),
+                                          Ty.path "i16",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -3000,14 +3026,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 2 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -3139,13 +3187,10 @@ Module buf.
                                 Ty.path "u32";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u32")
                               ]
@@ -3216,18 +3261,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u32"),
+                                          Ty.path "u32",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -3377,14 +3411,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 4 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -3521,13 +3577,10 @@ Module buf.
                                 Ty.path "u32";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u32")
                               ]
@@ -3598,18 +3651,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u32"),
+                                          Ty.path "u32",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -3759,14 +3801,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 4 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -3903,13 +3967,10 @@ Module buf.
                                 Ty.path "u32";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u32")
                               ]
@@ -3980,18 +4041,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u32"),
+                                          Ty.path "u32",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -4141,14 +4191,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 4 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -4280,13 +4352,10 @@ Module buf.
                                 Ty.path "i32";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i32")
                               ]
@@ -4357,18 +4426,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i32"),
+                                          Ty.path "i32",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -4518,14 +4576,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 4 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -4662,13 +4742,10 @@ Module buf.
                                 Ty.path "i32";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i32")
                               ]
@@ -4739,18 +4816,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i32"),
+                                          Ty.path "i32",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -4900,14 +4966,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 4 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -5044,13 +5132,10 @@ Module buf.
                                 Ty.path "i32";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i32")
                               ]
@@ -5121,18 +5206,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i32"),
+                                          Ty.path "i32",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -5282,14 +5356,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 4 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -5421,13 +5517,10 @@ Module buf.
                                 Ty.path "u64";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u64")
                               ]
@@ -5498,18 +5591,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u64"),
+                                          Ty.path "u64",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -5659,14 +5741,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 8 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -5803,13 +5907,10 @@ Module buf.
                                 Ty.path "u64";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u64")
                               ]
@@ -5880,18 +5981,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u64"),
+                                          Ty.path "u64",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -6041,14 +6131,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 8 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -6185,13 +6297,10 @@ Module buf.
                                 Ty.path "u64";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u64")
                               ]
@@ -6262,18 +6371,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u64"),
+                                          Ty.path "u64",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -6423,14 +6521,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 8 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -6562,13 +6682,10 @@ Module buf.
                                 Ty.path "i64";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i64")
                               ]
@@ -6639,18 +6756,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i64"),
+                                          Ty.path "i64",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -6800,14 +6906,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 8 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -6944,13 +7072,10 @@ Module buf.
                                 Ty.path "i64";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i64")
                               ]
@@ -7021,18 +7146,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i64"),
+                                          Ty.path "i64",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -7182,14 +7296,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 8 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -7326,13 +7462,10 @@ Module buf.
                                 Ty.path "i64";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i64")
                               ]
@@ -7403,18 +7536,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i64"),
+                                          Ty.path "i64",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -7564,14 +7686,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 8 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -7704,13 +7848,10 @@ Module buf.
                                 Ty.path "u128";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u128")
                               ]
@@ -7781,18 +7922,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u128"),
+                                          Ty.path "u128",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -7942,14 +8072,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 16 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -8087,13 +8239,10 @@ Module buf.
                                 Ty.path "u128";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u128")
                               ]
@@ -8164,18 +8313,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u128"),
+                                          Ty.path "u128",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -8325,14 +8463,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 16 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -8470,13 +8630,10 @@ Module buf.
                                 Ty.path "u128";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u128")
                               ]
@@ -8547,18 +8704,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u128"),
+                                          Ty.path "u128",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -8708,14 +8854,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 16 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -8848,13 +9016,10 @@ Module buf.
                                 Ty.path "i128";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i128")
                               ]
@@ -8925,18 +9090,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i128"),
+                                          Ty.path "i128",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -9086,14 +9240,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 16 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -9231,13 +9407,10 @@ Module buf.
                                 Ty.path "i128";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i128")
                               ]
@@ -9308,18 +9481,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i128"),
+                                          Ty.path "i128",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -9469,14 +9631,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 16 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -9614,13 +9798,10 @@ Module buf.
                                 Ty.path "i128";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i128")
                               ]
@@ -9691,18 +9872,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i128"),
+                                          Ty.path "i128",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -9852,14 +10022,36 @@ Module buf.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, buf |)
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 16 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, buf |)
+                                                  |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |) in
                                       M.return_ (|
@@ -10096,8 +10288,28 @@ Module buf.
                               ]
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion (M.borrow (| Pointer.Kind.MutRef, buf |));
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 8 ]
+                                        [ Ty.path "u8" ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                                [ M.borrow (| Pointer.Kind.MutRef, buf |) ]
+                              |);
                               Value.mkStructRecord
                                 "core::ops::range::RangeTo"
                                 []
@@ -10443,8 +10655,28 @@ Module buf.
                               ]
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion (M.borrow (| Pointer.Kind.MutRef, buf |));
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 8 ]
+                                        [ Ty.path "u8" ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                                [ M.borrow (| Pointer.Kind.MutRef, buf |) ]
+                              |);
                               Value.mkStructRecord
                                 "core::ops::range::RangeTo"
                                 []

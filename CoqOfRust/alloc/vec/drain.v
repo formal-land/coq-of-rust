@@ -88,41 +88,57 @@ Module vec.
                             |)
                           |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.alloc (|
-                                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                  M.call_closure (|
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
                                     Ty.apply
                                       (Ty.path "&")
                                       []
                                       [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                                      "as_slice",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "alloc::vec::drain::Drain",
-                                          "iter"
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                                        "as_slice",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "alloc::vec::drain::Drain",
+                                            "iter"
+                                          |)
                                         |)
-                                      |)
-                                    ]
+                                      ]
+                                    |)
                                   |)
                                 |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   |)
@@ -601,8 +617,14 @@ Module vec.
                                             BinOp.ne,
                                             [
                                               M.read (| unyielded_ptr |);
-                                              (* MutToConstPointer *)
-                                              M.pointer_coercion (M.read (| start_ptr |))
+                                              M.call_closure (|
+                                                Ty.apply (Ty.path "*const") [] [ T ],
+                                                M.pointer_coercion
+                                                  M.PointerCoercion.MutToConstPointer
+                                                  (Ty.apply (Ty.path "*mut") [] [ T ])
+                                                  (Ty.apply (Ty.path "*const") [] [ T ]),
+                                                [ M.read (| start_ptr |) ]
+                                              |)
                                             ]
                                           |)
                                         |)) in
@@ -930,7 +952,7 @@ Module vec.
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
                 "map",
                 [],
-                [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] T ]
+                [ T; Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] T ]
               |),
               [
                 M.call_closure (|
@@ -962,7 +984,7 @@ Module vec.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] T,
+                            T,
                             M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                             [
                               fun γ =>
@@ -1081,7 +1103,7 @@ Module vec.
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
                 "map",
                 [],
-                [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] T ]
+                [ T; Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] T ]
               |),
               [
                 M.call_closure (|
@@ -1113,7 +1135,7 @@ Module vec.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] T,
+                            T,
                             M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                             [
                               fun γ =>
@@ -1520,7 +1542,14 @@ Module vec.
                       |),
                       [
                         M.read (| drop_ptr |);
-                        (* MutToConstPointer *) M.pointer_coercion (M.read (| vec_ptr |))
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*const") [] [ T ],
+                          M.pointer_coercion
+                            M.PointerCoercion.MutToConstPointer
+                            (Ty.apply (Ty.path "*mut") [] [ T ])
+                            (Ty.apply (Ty.path "*const") [] [ T ]),
+                          [ M.read (| vec_ptr |) ]
+                        |)
                       ]
                     |) in
                   let~ to_drop :

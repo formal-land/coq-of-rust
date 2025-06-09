@@ -587,27 +587,39 @@ Module collections.
                               |)
                             |)
                           |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Ty.apply
-                                      (Ty.path "alloc::collections::btree::map::Keys")
-                                      []
-                                      [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
-                                      ],
-                                    M.call_closure (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::map::Keys")
+                                    []
+                                    [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::map::Keys")
                                         []
                                         [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
                                         ],
-                                      M.get_trait_method (|
-                                        "core::clone::Clone",
+                                      M.call_closure (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::btree::map::Keys")
                                           []
@@ -615,27 +627,39 @@ Module collections.
                                             T;
                                             Ty.path "alloc::collections::btree::set_val::SetValZST"
                                           ],
-                                        [],
-                                        [],
-                                        "clone",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "alloc::collections::btree::set::Iter",
-                                            "iter"
+                                        M.get_trait_method (|
+                                          "core::clone::Clone",
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::map::Keys")
+                                            []
+                                            [
+                                              T;
+                                              Ty.path
+                                                "alloc::collections::btree::set_val::SetValZST"
+                                            ],
+                                          [],
+                                          [],
+                                          "clone",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "alloc::collections::btree::set::Iter",
+                                              "iter"
+                                            |)
                                           |)
-                                        |)
-                                      ]
+                                        ]
+                                      |)
                                     |)
                                   |)
                                 |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |)
                     |)
@@ -705,35 +729,56 @@ Module collections.
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IntoIter" |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.alloc (|
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "alloc::collections::btree::map::IntoIter")
-                                  []
-                                  [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ]
-                              ],
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "alloc::collections::btree::set::IntoIter",
-                                "iter"
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::map::IntoIter")
+                                []
+                                [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ]
+                            ]
+                        ])
+                      (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::map::IntoIter")
+                                    []
+                                    [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A
+                                    ]
+                                ],
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::btree::set::IntoIter",
+                                  "iter"
+                                |)
                               |)
                             |)
                           |)
                         |)
                       |)
-                    |))
+                    ]
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -799,35 +844,55 @@ Module collections.
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Range" |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.alloc (|
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "alloc::collections::btree::map::Range")
-                                  []
-                                  [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ],
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "alloc::collections::btree::set::Range",
-                                "iter"
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::map::Range")
+                                []
+                                [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                            ]
+                        ])
+                      (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::map::Range")
+                                    []
+                                    [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                                ],
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::btree::set::Range",
+                                  "iter"
+                                |)
                               |)
                             |)
                           |)
                         |)
                       |)
-                    |))
+                    ]
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -1063,12 +1128,33 @@ Module collections.
                                             Pointer.Kind.Ref,
                                             M.deref (| mk_str (| "self_iter" |) |)
                                           |);
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| self_iter |) |)
-                                            |))
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                            M.pointer_coercion
+                                              M.PointerCoercion.Unsize
+                                              (Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::collections::btree::set::Iter")
+                                                    []
+                                                    [ T ]
+                                                ])
+                                              (Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self_iter |) |)
+                                              |)
+                                            ]
+                                          |)
                                         ]
                                       |)
                                     |)
@@ -1077,12 +1163,38 @@ Module collections.
                                     Pointer.Kind.Ref,
                                     M.deref (| mk_str (| "other_iter" |) |)
                                   |);
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| other_iter |) |)
-                                    |))
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::iter::adapters::peekable::Peekable")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::collections::btree::set::Iter")
+                                                []
+                                                [ T ]
+                                            ]
+                                        ])
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| other_iter |) |)
+                                      |)
+                                    ]
+                                  |)
                                 ]
                               |)
                             |)
@@ -1201,12 +1313,33 @@ Module collections.
                                             Pointer.Kind.Ref,
                                             M.deref (| mk_str (| "self_iter" |) |)
                                           |);
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| self_iter |) |)
-                                            |))
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                            M.pointer_coercion
+                                              M.PointerCoercion.Unsize
+                                              (Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::collections::btree::set::Iter")
+                                                    []
+                                                    [ T ]
+                                                ])
+                                              (Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self_iter |) |)
+                                              |)
+                                            ]
+                                          |)
                                         ]
                                       |)
                                     |)
@@ -1215,12 +1348,38 @@ Module collections.
                                     Pointer.Kind.Ref,
                                     M.deref (| mk_str (| "other_iter" |) |)
                                   |);
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| other_set |) |)
-                                    |))
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                                []
+                                                [ T; A ]
+                                            ]
+                                        ])
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| other_set |) |)
+                                      |)
+                                    ]
+                                  |)
                                 ]
                               |)
                             |)
@@ -1296,9 +1455,29 @@ Module collections.
                                       |)
                                     |)
                                   |);
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |))
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::set::Iter")
+                                            []
+                                            [ T ]
+                                        ])
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |)
+                                    ]
+                                  |)
                                 ]
                               |)
                             |)
@@ -1390,21 +1569,42 @@ Module collections.
                               |)
                             |)
                           |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "alloc::collections::btree::set::Difference",
-                                    "inner"
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::set::DifferenceInner")
+                                    []
+                                    [ T; A ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::btree::set::Difference",
+                                      "inner"
+                                    |)
                                   |)
                                 |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |)
                     |)
@@ -1513,21 +1713,48 @@ Module collections.
                               |)
                             |)
                           |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "alloc::collections::btree::set::SymmetricDifference",
-                                    0
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path
+                                      "alloc::collections::btree::merge_iter::MergeIterInner")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::set::Iter")
+                                        []
+                                        [ T ]
+                                    ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::btree::set::SymmetricDifference",
+                                      0
+                                    |)
                                   |)
                                 |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |)
                     |)
@@ -1756,20 +1983,61 @@ Module collections.
                                             Pointer.Kind.Ref,
                                             M.deref (| mk_str (| "a" |) |)
                                           |);
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| a |) |)
-                                            |))
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                            M.pointer_coercion
+                                              M.PointerCoercion.Unsize
+                                              (Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::collections::btree::set::Iter")
+                                                    []
+                                                    [ T ]
+                                                ])
+                                              (Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| a |) |)
+                                              |)
+                                            ]
+                                          |)
                                         ]
                                       |)
                                     |)
                                   |);
                                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "b" |) |) |);
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |))
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::set::Iter")
+                                            []
+                                            [ T ]
+                                        ])
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |)
+                                    ]
+                                  |)
                                 ]
                               |)
                             |)
@@ -1888,12 +2156,33 @@ Module collections.
                                             Pointer.Kind.Ref,
                                             M.deref (| mk_str (| "small_iter" |) |)
                                           |);
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| small_iter |) |)
-                                            |))
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                            M.pointer_coercion
+                                              M.PointerCoercion.Unsize
+                                              (Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::collections::btree::set::Iter")
+                                                    []
+                                                    [ T ]
+                                                ])
+                                              (Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| small_iter |) |)
+                                              |)
+                                            ]
+                                          |)
                                         ]
                                       |)
                                     |)
@@ -1902,12 +2191,38 @@ Module collections.
                                     Pointer.Kind.Ref,
                                     M.deref (| mk_str (| "large_set" |) |)
                                   |);
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| large_set |) |)
-                                    |))
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                                []
+                                                [ T; A ]
+                                            ]
+                                        ])
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| large_set |) |)
+                                      |)
+                                    ]
+                                  |)
                                 ]
                               |)
                             |)
@@ -1988,9 +2303,29 @@ Module collections.
                                       |)
                                     |)
                                   |);
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |))
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                        ])
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |)
+                                    ]
+                                  |)
                                 ]
                               |)
                             |)
@@ -2083,21 +2418,42 @@ Module collections.
                               |)
                             |)
                           |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "alloc::collections::btree::set::Intersection",
-                                    "inner"
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::collections::btree::set::IntersectionInner")
+                                    []
+                                    [ T; A ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::btree::set::Intersection",
+                                      "inner"
+                                    |)
                                   |)
                                 |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |)
                     |)
@@ -2201,21 +2557,48 @@ Module collections.
                               |)
                             |)
                           |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "alloc::collections::btree::set::Union",
-                                    0
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path
+                                      "alloc::collections::btree::merge_iter::MergeIterInner")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::set::Iter")
+                                        []
+                                        [ T ]
+                                    ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::btree::set::Union",
+                                      0
+                                    |)
                                   |)
                                 |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |)
                     |)
@@ -4388,14 +4771,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ T ])
@@ -4444,24 +4824,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ T ]),
+                              Ty.apply (Ty.path "&") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -5654,13 +6017,10 @@ Module collections.
                                                                               "core::cmp::Ordering";
                                                                             Ty.function
                                                                               [
-                                                                                Ty.tuple
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path "&")
-                                                                                      []
-                                                                                      [ T ]
-                                                                                  ]
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [ T ]
                                                                               ]
                                                                               (Ty.path
                                                                                 "core::cmp::Ordering")
@@ -5710,20 +6070,8 @@ Module collections.
                                                                                 | [ α0 ] =>
                                                                                   ltac:(M.monadic
                                                                                     (M.match_operator (|
-                                                                                      Ty.function
-                                                                                        [
-                                                                                          Ty.tuple
-                                                                                            [
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "&")
-                                                                                                []
-                                                                                                [ T
-                                                                                                ]
-                                                                                            ]
-                                                                                        ]
-                                                                                        (Ty.path
-                                                                                          "core::cmp::Ordering"),
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering",
                                                                                       M.alloc (|
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -5993,14 +6341,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ T ])
@@ -6048,24 +6393,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ T ]),
+                              Ty.apply (Ty.path "&") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -6144,14 +6472,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ T ])
@@ -6199,24 +6524,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ T ]),
+                              Ty.apply (Ty.path "&") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -6288,11 +6596,7 @@ Module collections.
                   [
                     T;
                     Ty.function
-                      [
-                        Ty.tuple
-                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                          ]
-                      ]
+                      [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ]
                       T
                   ]
                 |),
@@ -6329,16 +6633,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
-                                        ]
-                                    ]
-                                ]
-                                T,
+                              T,
                               M.alloc (|
                                 Ty.tuple
                                   [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
@@ -6410,11 +6705,7 @@ Module collections.
                   [
                     T;
                     Ty.function
-                      [
-                        Ty.tuple
-                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                          ]
-                      ]
+                      [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ]
                       T
                   ]
                 |),
@@ -6451,16 +6742,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
-                                        ]
-                                    ]
-                                ]
-                                T,
+                              T,
                               M.alloc (|
                                 Ty.tuple
                                   [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
@@ -7049,11 +7331,7 @@ Module collections.
                   [
                     T;
                     Ty.function
-                      [
-                        Ty.tuple
-                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                          ]
-                      ]
+                      [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ]
                       T
                   ]
                 |),
@@ -7091,16 +7369,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
-                                        ]
-                                    ]
-                                ]
-                                T,
+                              T,
                               M.alloc (|
                                 Ty.tuple
                                   [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
@@ -7160,13 +7429,7 @@ Module collections.
                       Ty.apply
                         (Ty.path "alloc::collections::btree::set::ExtractIf")
                         []
-                        [
-                          T;
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                            (Ty.path "bool");
-                          A
-                        ],
+                        [ T; Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] (Ty.path "bool"); A ],
                       [],
                       [],
                       "for_each",
@@ -7178,22 +7441,13 @@ Module collections.
                         Ty.apply
                           (Ty.path "alloc::collections::btree::set::ExtractIf")
                           []
-                          [
-                            T;
-                            Ty.function
-                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                              (Ty.path "bool");
-                            A
+                          [ T; Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] (Ty.path "bool"); A
                           ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                           "extract_if",
                           [],
-                          [
-                            Ty.function
-                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                              (Ty.path "bool")
-                          ]
+                          [ Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] (Ty.path "bool") ]
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
@@ -7204,9 +7458,7 @@ Module collections.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                                        (Ty.path "bool"),
+                                      Ty.path "bool",
                                       M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                                       [
                                         fun γ =>
@@ -8000,7 +8252,7 @@ Module collections.
                       [
                         I;
                         Ty.function
-                          [ Ty.tuple [ T ] ]
+                          [ T ]
                           (Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ])
                       ] :=
                   M.call_closure (|
@@ -8010,7 +8262,7 @@ Module collections.
                       [
                         I;
                         Ty.function
-                          [ Ty.tuple [ T ] ]
+                          [ T ]
                           (Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ])
                       ],
                     M.get_trait_method (|
@@ -8023,7 +8275,7 @@ Module collections.
                       [
                         Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ];
                         Ty.function
-                          [ Ty.tuple [ T ] ]
+                          [ T ]
                           (Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ])
                       ]
                     |),
@@ -8036,11 +8288,8 @@ Module collections.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ T ] ]
-                                    (Ty.tuple
-                                      [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
-                                      ]),
+                                  Ty.tuple
+                                    [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                                   M.alloc (| T, α0 |),
                                   [
                                     fun γ =>
@@ -8095,7 +8344,7 @@ Module collections.
                           [
                             I;
                             Ty.function
-                              [ Ty.tuple [ T ] ]
+                              [ T ]
                               (Ty.tuple
                                 [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ])
                           ]
@@ -8449,7 +8698,21 @@ Module collections.
                           [],
                           []
                         |),
-                        [ (* Unsize *) M.pointer_coercion (M.borrow (| Pointer.Kind.MutRef, arr |))
+                        [
+                          M.call_closure (|
+                            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
+                              (Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                            [ M.borrow (| Pointer.Kind.MutRef, arr |) ]
+                          |)
                         ]
                       |) in
                     let~ iter :
@@ -8459,7 +8722,7 @@ Module collections.
                           [
                             Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ];
                             Ty.function
-                              [ Ty.tuple [ T ] ]
+                              [ T ]
                               (Ty.tuple
                                 [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ])
                           ] :=
@@ -8470,7 +8733,7 @@ Module collections.
                           [
                             Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ];
                             Ty.function
-                              [ Ty.tuple [ T ] ]
+                              [ T ]
                               (Ty.tuple
                                 [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ])
                           ],
@@ -8484,7 +8747,7 @@ Module collections.
                           [
                             Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ];
                             Ty.function
-                              [ Ty.tuple [ T ] ]
+                              [ T ]
                               (Ty.tuple
                                 [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ])
                           ]
@@ -8510,13 +8773,9 @@ Module collections.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [ Ty.tuple [ T ] ]
-                                        (Ty.tuple
-                                          [
-                                            T;
-                                            Ty.path "alloc::collections::btree::set_val::SetValZST"
-                                          ]),
+                                      Ty.tuple
+                                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
+                                        ],
                                       M.alloc (| T, α0 |),
                                       [
                                         fun γ =>
@@ -8583,7 +8842,7 @@ Module collections.
                               [
                                 Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ];
                                 Ty.function
-                                  [ Ty.tuple [ T ] ]
+                                  [ T ]
                                   (Ty.tuple
                                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ])
                               ]
@@ -8853,66 +9112,43 @@ Module collections.
                               |)
                             |)
                           |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.apply (Ty.path "&") [] [ T ] ],
-                                    M.call_closure (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
                                         []
                                         [ Ty.apply (Ty.path "&") [] [ T ] ],
-                                      M.get_associated_function (|
+                                      M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
                                           []
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply (Ty.path "&") [] [ T ];
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "alloc::collections::btree::set_val::SetValZST"
-                                                  ]
-                                              ]
-                                          ],
-                                        "map",
-                                        [],
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ T ];
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.apply (Ty.path "&") [] [ T ];
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "alloc::collections::btree::set_val::SetValZST"
-                                                        ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.apply (Ty.path "&") [] [ T ])
-                                        ]
-                                      |),
-                                      [
-                                        M.call_closure (|
+                                          [ Ty.apply (Ty.path "&") [] [ T ] ],
+                                        M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::option::Option")
                                             []
@@ -8929,99 +9165,123 @@ Module collections.
                                                     ]
                                                 ]
                                             ],
-                                          M.get_associated_function (|
+                                          "map",
+                                          [],
+                                          [
+                                            Ty.apply (Ty.path "&") [] [ T ];
+                                            Ty.function
+                                              [
+                                                Ty.tuple
+                                                  [
+                                                    Ty.apply (Ty.path "&") [] [ T ];
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "alloc::collections::btree::set_val::SetValZST"
+                                                      ]
+                                                  ]
+                                              ]
+                                              (Ty.apply (Ty.path "&") [] [ T ])
+                                          ]
+                                        |),
+                                        [
+                                          M.call_closure (|
                                             Ty.apply
-                                              (Ty.path
-                                                "alloc::collections::btree::map::ExtractIfInner")
+                                              (Ty.path "core::option::Option")
                                               []
                                               [
-                                                T;
-                                                Ty.path
-                                                  "alloc::collections::btree::set_val::SetValZST"
-                                              ],
-                                            "peek",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "alloc::collections::btree::set::ExtractIf",
-                                                "inner"
-                                              |)
-                                            |)
-                                          ]
-                                        |);
-                                        M.closure
-                                          (fun γ =>
-                                            ltac:(M.monadic
-                                              match γ with
-                                              | [ α0 ] =>
-                                                ltac:(M.monadic
-                                                  (M.match_operator (|
-                                                    Ty.function
+                                                Ty.tuple
+                                                  [
+                                                    Ty.apply (Ty.path "&") [] [ T ];
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
                                                       [
+                                                        Ty.path
+                                                          "alloc::collections::btree::set_val::SetValZST"
+                                                      ]
+                                                  ]
+                                              ],
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path
+                                                  "alloc::collections::btree::map::ExtractIfInner")
+                                                []
+                                                [
+                                                  T;
+                                                  Ty.path
+                                                    "alloc::collections::btree::set_val::SetValZST"
+                                                ],
+                                              "peek",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "alloc::collections::btree::set::ExtractIf",
+                                                  "inner"
+                                                |)
+                                              |)
+                                            ]
+                                          |);
+                                          M.closure
+                                            (fun γ =>
+                                              ltac:(M.monadic
+                                                match γ with
+                                                | [ α0 ] =>
+                                                  ltac:(M.monadic
+                                                    (M.match_operator (|
+                                                      Ty.apply (Ty.path "&") [] [ T ],
+                                                      M.alloc (|
                                                         Ty.tuple
                                                           [
-                                                            Ty.tuple
+                                                            Ty.apply (Ty.path "&") [] [ T ];
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
                                                               [
-                                                                Ty.apply (Ty.path "&") [] [ T ];
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "alloc::collections::btree::set_val::SetValZST"
-                                                                  ]
+                                                                Ty.path
+                                                                  "alloc::collections::btree::set_val::SetValZST"
                                                               ]
-                                                          ]
+                                                          ],
+                                                        α0
+                                                      |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                0
+                                                              |) in
+                                                            let γ0_1 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                1
+                                                              |) in
+                                                            let k :=
+                                                              M.copy (|
+                                                                Ty.apply (Ty.path "&") [] [ T ],
+                                                                γ0_0
+                                                              |) in
+                                                            M.read (| k |)))
                                                       ]
-                                                      (Ty.apply (Ty.path "&") [] [ T ]),
-                                                    M.alloc (|
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply (Ty.path "&") [] [ T ];
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [
-                                                              Ty.path
-                                                                "alloc::collections::btree::set_val::SetValZST"
-                                                            ]
-                                                        ],
-                                                      α0
-                                                    |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_tuple_field (|
-                                                              γ,
-                                                              0
-                                                            |) in
-                                                          let γ0_1 :=
-                                                            M.SubPointer.get_tuple_field (|
-                                                              γ,
-                                                              1
-                                                            |) in
-                                                          let k :=
-                                                            M.copy (|
-                                                              Ty.apply (Ty.path "&") [] [ T ],
-                                                              γ0_0
-                                                            |) in
-                                                          M.read (| k |)))
-                                                    ]
-                                                  |)))
-                                              | _ => M.impossible "wrong number of arguments"
-                                              end))
-                                      ]
+                                                    |)))
+                                                | _ => M.impossible "wrong number of arguments"
+                                                end))
+                                        ]
+                                      |)
                                     |)
                                   |)
                                 |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |)
                     |)
@@ -9082,14 +9342,11 @@ Module collections.
                 let~ mapped_pred :
                     Ty.function
                       [
-                        Ty.tuple
-                          [
-                            Ty.apply (Ty.path "&") [] [ T ];
-                            Ty.apply
-                              (Ty.path "&mut")
-                              []
-                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                          ]
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                       ]
                       (Ty.path "bool") :=
                   M.closure
@@ -9099,39 +9356,14 @@ Module collections.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply (Ty.path "&") [] [ T ];
-                                      Ty.apply
-                                        (Ty.path "&mut")
-                                        []
-                                        [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                                    ]
-                                ]
-                                (Ty.path "bool"),
+                              Ty.path "bool",
                               M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let k := M.copy (| Ty.apply (Ty.path "&") [] [ T ], γ |) in
                                     M.match_operator (|
-                                      Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply (Ty.path "&") [] [ T ];
-                                              Ty.apply
-                                                (Ty.path "&mut")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "alloc::collections::btree::set_val::SetValZST"
-                                                ]
-                                            ]
-                                        ]
-                                        (Ty.path "bool"),
+                                      Ty.path "bool",
                                       M.alloc (|
                                         Ty.apply
                                           (Ty.path "&mut")
@@ -9199,12 +9431,7 @@ Module collections.
                       [
                         T;
                         Ty.function
-                          [
-                            Ty.tuple
-                              [
-                                Ty.tuple
-                                  [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                           T
                       ]
@@ -9226,14 +9453,11 @@ Module collections.
                           [
                             Ty.function
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply (Ty.path "&") [] [ T ];
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                                  ]
+                                Ty.apply (Ty.path "&") [] [ T ];
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                               ]
                               (Ty.path "bool");
                             A
@@ -9283,19 +9507,7 @@ Module collections.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.tuple
-                                            [
-                                              T;
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                    T,
+                                  T,
                                   M.alloc (|
                                     Ty.tuple
                                       [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
@@ -9443,7 +9655,7 @@ Module collections.
                       [],
                       "for_each",
                       [],
-                      [ Ty.function [ Ty.tuple [ T ] ] (Ty.tuple []) ]
+                      [ Ty.function [ T ] (Ty.tuple []) ]
                     |),
                     [
                       M.call_closure (|
@@ -9471,7 +9683,7 @@ Module collections.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function [ Ty.tuple [ T ] ] (Ty.tuple []),
+                                  Ty.tuple [],
                                   M.alloc (| T, α0 |),
                                   [
                                     fun γ =>
@@ -10968,11 +11180,7 @@ Module collections.
                   [
                     T;
                     Ty.function
-                      [
-                        Ty.tuple
-                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                          ]
-                      ]
+                      [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ]
                       T
                   ]
                 |),
@@ -11012,16 +11220,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
-                                        ]
-                                    ]
-                                ]
-                                T,
+                              T,
                               M.alloc (|
                                 Ty.tuple
                                   [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
@@ -11205,11 +11404,7 @@ Module collections.
                   [
                     T;
                     Ty.function
-                      [
-                        Ty.tuple
-                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                          ]
-                      ]
+                      [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ]
                       T
                   ]
                 |),
@@ -11249,16 +11444,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
-                                        ]
-                                    ]
-                                ]
-                                T,
+                              T,
                               M.alloc (|
                                 Ty.tuple
                                   [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
@@ -11536,14 +11722,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ T ])
@@ -11594,24 +11777,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ T ]),
+                              Ty.apply (Ty.path "&") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -11801,14 +11967,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ T ])
@@ -11859,24 +12022,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ T ]),
+                              Ty.apply (Ty.path "&") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -12584,13 +12730,10 @@ Module collections.
                                                   Ty.path "core::cmp::Ordering";
                                                   Ty.function
                                                     [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                                        ]
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                     ]
                                                     (Ty.path "core::cmp::Ordering")
                                                 ]
@@ -12641,22 +12784,7 @@ Module collections.
                                                       | [ α0 ] =>
                                                         ltac:(M.monadic
                                                           (M.match_operator (|
-                                                            Ty.function
-                                                              [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&")
-                                                                      []
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [ T ]
-                                                                      ]
-                                                                  ]
-                                                              ]
-                                                              (Ty.path "core::cmp::Ordering"),
+                                                            Ty.path "core::cmp::Ordering",
                                                             M.alloc (|
                                                               Ty.apply
                                                                 (Ty.path "&")
@@ -16439,14 +16567,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ K ];
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ K ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ K ])
@@ -16494,24 +16619,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ K ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ K ]),
+                              Ty.apply (Ty.path "&") [] [ K ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -16587,14 +16695,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ K ];
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ K ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ K ])
@@ -16642,24 +16747,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ K ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ K ]),
+                              Ty.apply (Ty.path "&") [] [ K ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -16735,14 +16823,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ K ];
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ K ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ K ])
@@ -16790,24 +16875,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ K ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ K ]),
+                              Ty.apply (Ty.path "&") [] [ K ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -16883,14 +16951,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ K ];
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ K ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ K ])
@@ -16938,24 +17003,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ K ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ K ]),
+                              Ty.apply (Ty.path "&") [] [ K ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -17036,14 +17084,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ T ])
@@ -17091,24 +17136,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ T ]),
+                              Ty.apply (Ty.path "&") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -17184,14 +17212,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ T ])
@@ -17239,24 +17264,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ T ]),
+                              Ty.apply (Ty.path "&") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -17337,14 +17345,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ T ])
@@ -17392,24 +17397,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ T ]),
+                              Ty.apply (Ty.path "&") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -17490,14 +17478,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ T ])
@@ -17545,24 +17530,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ T ]),
+                              Ty.apply (Ty.path "&") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -17991,11 +17959,7 @@ Module collections.
                   [
                     T;
                     Ty.function
-                      [
-                        Ty.tuple
-                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                          ]
-                      ]
+                      [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ]
                       T
                   ]
                 |),
@@ -18032,16 +17996,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
-                                        ]
-                                    ]
-                                ]
-                                T,
+                              T,
                               M.alloc (|
                                 Ty.tuple
                                   [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
@@ -18104,11 +18059,7 @@ Module collections.
                   [
                     T;
                     Ty.function
-                      [
-                        Ty.tuple
-                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                          ]
-                      ]
+                      [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ]
                       T
                   ]
                 |),
@@ -18145,16 +18096,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
-                                        ]
-                                    ]
-                                ]
-                                T,
+                              T,
                               M.alloc (|
                                 Ty.tuple
                                   [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
@@ -18230,14 +18172,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&mut") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&mut") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&mut") [] [ T ])
@@ -18285,24 +18224,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&mut") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&mut") [] [ T ]),
+                              Ty.apply (Ty.path "&mut") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -18380,14 +18302,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&mut") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&mut") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&mut") [] [ T ])
@@ -18435,24 +18354,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&mut") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&mut") [] [ T ]),
+                              Ty.apply (Ty.path "&mut") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -18535,14 +18437,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&mut") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&mut") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&mut") [] [ T ])
@@ -18590,24 +18489,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&mut") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&mut") [] [ T ]),
+                              Ty.apply (Ty.path "&mut") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -18690,14 +18572,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&mut") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&mut") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&mut") [] [ T ])
@@ -18745,24 +18624,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&mut") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&mut") [] [ T ]),
+                              Ty.apply (Ty.path "&mut") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -19138,11 +19000,7 @@ Module collections.
                   [
                     T;
                     Ty.function
-                      [
-                        Ty.tuple
-                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                          ]
-                      ]
+                      [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ]
                       T
                   ]
                 |),
@@ -19179,16 +19037,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
-                                        ]
-                                    ]
-                                ]
-                                T,
+                              T,
                               M.alloc (|
                                 Ty.tuple
                                   [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
@@ -19252,11 +19101,7 @@ Module collections.
                   [
                     T;
                     Ty.function
-                      [
-                        Ty.tuple
-                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                          ]
-                      ]
+                      [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ]
                       T
                   ]
                 |),
@@ -19293,16 +19138,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
-                                        ]
-                                    ]
-                                ]
-                                T,
+                              T,
                               M.alloc (|
                                 Ty.tuple
                                   [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],

@@ -1601,11 +1601,8 @@ Module collections.
                       [
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ];
-                                Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ];
+                            Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ]
                           ]
                           (Ty.path "core::cmp::Ordering")
                       ]
@@ -1626,15 +1623,7 @@ Module collections.
                             | [ α0; α1 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ];
-                                          Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ]
-                                        ]
-                                    ]
-                                    (Ty.path "core::cmp::Ordering"),
+                                  Ty.path "core::cmp::Ordering",
                                   M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ], α0 |),
                                   [
                                     fun γ =>
@@ -1645,15 +1634,7 @@ Module collections.
                                             γ
                                           |) in
                                         M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ];
-                                                  Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ]
-                                                ]
-                                            ]
-                                            (Ty.path "core::cmp::Ordering"),
+                                          Ty.path "core::cmp::Ordering",
                                           M.alloc (|
                                             Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ],
                                             α1

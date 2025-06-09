@@ -557,11 +557,8 @@ Module slice.
                                                 T;
                                                 Ty.function
                                                   [
-                                                    Ty.tuple
-                                                      [
-                                                        Ty.apply (Ty.path "&") [] [ T ];
-                                                        Ty.apply (Ty.path "&") [] [ T ]
-                                                      ]
+                                                    Ty.apply (Ty.path "&") [] [ T ];
+                                                    Ty.apply (Ty.path "&") [] [ T ]
                                                   ]
                                                   (Ty.path "bool")
                                               ]
@@ -585,11 +582,8 @@ Module slice.
                                                     M.alloc (|
                                                       Ty.function
                                                         [
-                                                          Ty.tuple
-                                                            [
-                                                              Ty.apply (Ty.path "&") [] [ T ];
-                                                              Ty.apply (Ty.path "&") [] [ T ]
-                                                            ]
+                                                          Ty.apply (Ty.path "&") [] [ T ];
+                                                          Ty.apply (Ty.path "&") [] [ T ]
                                                         ]
                                                         (Ty.path "bool"),
                                                       M.closure
@@ -599,21 +593,7 @@ Module slice.
                                                             | [ α0; α1 ] =>
                                                               ltac:(M.monadic
                                                                 (M.match_operator (|
-                                                                  Ty.function
-                                                                    [
-                                                                      Ty.tuple
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path "&")
-                                                                            []
-                                                                            [ T ];
-                                                                          Ty.apply
-                                                                            (Ty.path "&")
-                                                                            []
-                                                                            [ T ]
-                                                                        ]
-                                                                    ]
-                                                                    (Ty.path "bool"),
+                                                                  Ty.path "bool",
                                                                   M.alloc (|
                                                                     Ty.apply (Ty.path "&") [] [ T ],
                                                                     α0
@@ -630,21 +610,7 @@ Module slice.
                                                                             γ
                                                                           |) in
                                                                         M.match_operator (|
-                                                                          Ty.function
-                                                                            [
-                                                                              Ty.tuple
-                                                                                [
-                                                                                  Ty.apply
-                                                                                    (Ty.path "&")
-                                                                                    []
-                                                                                    [ T ];
-                                                                                  Ty.apply
-                                                                                    (Ty.path "&")
-                                                                                    []
-                                                                                    [ T ]
-                                                                                ]
-                                                                            ]
-                                                                            (Ty.path "bool"),
+                                                                          Ty.path "bool",
                                                                           M.alloc (|
                                                                             Ty.apply
                                                                               (Ty.path "&")
@@ -1822,7 +1788,14 @@ Module slice.
                     Ty.tuple [],
                     M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                     [
-                      (* MutToConstPointer *) M.pointer_coercion (M.read (| scratch_base |));
+                      M.call_closure (|
+                        Ty.apply (Ty.path "*const") [] [ T ],
+                        M.pointer_coercion
+                          M.PointerCoercion.MutToConstPointer
+                          (Ty.apply (Ty.path "*mut") [] [ T ])
+                          (Ty.apply (Ty.path "*const") [] [ T ]),
+                        [ M.read (| scratch_base |) ]
+                      |);
                       M.read (| v_base |);
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -1957,37 +1930,44 @@ Module slice.
                                                         [ T ]
                                                       |),
                                                       [
-                                                        (* MutToConstPointer *)
-                                                        M.pointer_coercion
-                                                          (M.call_closure (|
-                                                            Ty.apply (Ty.path "*mut") [] [ T ],
-                                                            M.get_associated_function (|
+                                                        M.call_closure (|
+                                                          Ty.apply (Ty.path "*const") [] [ T ],
+                                                          M.pointer_coercion
+                                                            M.PointerCoercion.MutToConstPointer
+                                                            (Ty.apply (Ty.path "*mut") [] [ T ])
+                                                            (Ty.apply (Ty.path "*const") [] [ T ]),
+                                                          [
+                                                            M.call_closure (|
                                                               Ty.apply (Ty.path "*mut") [] [ T ],
-                                                              "add",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (| scratch_base |);
-                                                              M.call_closure (|
-                                                                Ty.path "usize",
-                                                                BinOp.Wrap.sub,
-                                                                [
-                                                                  M.call_closure (|
-                                                                    Ty.path "usize",
-                                                                    BinOp.Wrap.sub,
-                                                                    [
-                                                                      M.read (| len |);
-                                                                      Value.Integer
-                                                                        IntegerKind.Usize
-                                                                        1
-                                                                    ]
-                                                                  |);
-                                                                  M.read (| i |)
-                                                                ]
-                                                              |)
-                                                            ]
-                                                          |));
+                                                              M.get_associated_function (|
+                                                                Ty.apply (Ty.path "*mut") [] [ T ],
+                                                                "add",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (| scratch_base |);
+                                                                M.call_closure (|
+                                                                  Ty.path "usize",
+                                                                  BinOp.Wrap.sub,
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      Ty.path "usize",
+                                                                      BinOp.Wrap.sub,
+                                                                      [
+                                                                        M.read (| len |);
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1
+                                                                      ]
+                                                                    |);
+                                                                    M.read (| i |)
+                                                                  ]
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          ]
+                                                        |);
                                                         M.call_closure (|
                                                           Ty.apply (Ty.path "*mut") [] [ T ],
                                                           M.get_associated_function (|

@@ -2679,8 +2679,14 @@ Module packed.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ WIDTH ] [ T ] ],
               self
             |) in
-          (* Unsize *)
-          M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))))
+          M.call_closure (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+            M.pointer_coercion
+              M.PointerCoercion.Unsize
+              (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ WIDTH ] [ T ] ])
+              (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -2708,9 +2714,14 @@ Module packed.
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |))
+              M.call_closure (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ WIDTH ] [ T ] ])
+                  (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3338,7 +3349,7 @@ Module packed.
                 M.get_function (|
                   "core::array::from_fn",
                   [ N ],
-                  [ Self; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] Self ]
+                  [ Self; Ty.function [ Ty.path "usize" ] Self ]
                 |),
                 [
                   M.closure
@@ -3348,7 +3359,7 @@ Module packed.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function [ Ty.tuple [ Ty.path "usize" ] ] Self,
+                              Self,
                               M.alloc (| Ty.path "usize", α0 |),
                               [
                                 fun γ =>
@@ -3407,12 +3418,19 @@ Module packed.
                   []
                 |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.borrow (| Pointer.Kind.Ref, combined |) |)
-                    |))
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Self ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ Self ] ])
+                      (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Self ] ]),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, combined |) |)
+                      |)
+                    ]
+                  |)
                 ]
               |)
             |)
@@ -3458,7 +3476,7 @@ Module packed.
                   []
                   [ ExtField; Ty.path "alloc::alloc::Global" ];
                 Ty.function
-                  [ Ty.tuple [ Self ] ]
+                  [ Self ]
                   (Ty.apply
                     (Ty.path "alloc::vec::Vec")
                     []
@@ -3482,7 +3500,7 @@ Module packed.
                   []
                   [ ExtField; Ty.path "alloc::alloc::Global" ];
                 Ty.function
-                  [ Ty.tuple [ Self ] ]
+                  [ Self ]
                   (Ty.apply
                     (Ty.path "alloc::vec::Vec")
                     []
@@ -3515,12 +3533,10 @@ Module packed.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Self ] ]
-                            (Ty.apply
-                              (Ty.path "alloc::vec::Vec")
-                              []
-                              [ ExtField; Ty.path "alloc::alloc::Global" ]),
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [ ExtField; Ty.path "alloc::alloc::Global" ],
                           M.alloc (| Self, α0 |),
                           [
                             fun γ =>
@@ -3599,7 +3615,7 @@ Module packed.
                                               (Ty.path "core::ops::range::Range")
                                               []
                                               [ Ty.path "usize" ];
-                                            Ty.function [ Ty.tuple [ Ty.path "usize" ] ] ExtField
+                                            Ty.function [ Ty.path "usize" ] ExtField
                                           ],
                                         [],
                                         [],
@@ -3622,7 +3638,7 @@ Module packed.
                                                 (Ty.path "core::ops::range::Range")
                                                 []
                                                 [ Ty.path "usize" ];
-                                              Ty.function [ Ty.tuple [ Ty.path "usize" ] ] ExtField
+                                              Ty.function [ Ty.path "usize" ] ExtField
                                             ],
                                           M.get_trait_method (|
                                             "core::iter::traits::iterator::Iterator",
@@ -3634,10 +3650,7 @@ Module packed.
                                             [],
                                             "map",
                                             [],
-                                            [
-                                              ExtField;
-                                              Ty.function [ Ty.tuple [ Ty.path "usize" ] ] ExtField
-                                            ]
+                                            [ ExtField; Ty.function [ Ty.path "usize" ] ExtField ]
                                           |),
                                           [
                                             Value.mkStructRecord
@@ -3661,9 +3674,7 @@ Module packed.
                                                   | [ α0 ] =>
                                                     ltac:(M.monadic
                                                       (M.match_operator (|
-                                                        Ty.function
-                                                          [ Ty.tuple [ Ty.path "usize" ] ]
-                                                          ExtField,
+                                                        ExtField,
                                                         M.alloc (| Ty.path "usize", α0 |),
                                                         [
                                                           fun γ =>
@@ -3681,8 +3692,7 @@ Module packed.
                                                                   [],
                                                                   [
                                                                     Ty.function
-                                                                      [ Ty.tuple [ Ty.path "usize" ]
-                                                                      ]
+                                                                      [ Ty.path "usize" ]
                                                                       BaseField
                                                                   ]
                                                                 |),
@@ -3694,15 +3704,7 @@ Module packed.
                                                                         | [ α0 ] =>
                                                                           ltac:(M.monadic
                                                                             (M.match_operator (|
-                                                                              Ty.function
-                                                                                [
-                                                                                  Ty.tuple
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "usize"
-                                                                                    ]
-                                                                                ]
-                                                                                BaseField,
+                                                                              BaseField,
                                                                               M.alloc (|
                                                                                 Ty.path "usize",
                                                                                 α0

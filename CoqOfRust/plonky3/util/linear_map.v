@@ -50,35 +50,55 @@ Module linear_map.
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LinearMap" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::vec::Vec")
-                              []
-                              [ Ty.tuple [ K; V ]; Ty.path "alloc::alloc::Global" ]
-                          ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "p3_util::linear_map::LinearMap",
-                            0
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [ Ty.tuple [ K; V ]; Ty.path "alloc::alloc::Global" ]
+                        ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [ Ty.tuple [ K; V ]; Ty.path "alloc::alloc::Global" ]
+                            ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "p3_util::linear_map::LinearMap",
+                              0
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -213,7 +233,7 @@ Module linear_map.
               [
                 Ty.apply (Ty.path "&") [] [ V ];
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ] ]
+                  [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ]
                   (Ty.apply (Ty.path "&") [] [ V ])
               ]
             |),
@@ -233,13 +253,10 @@ Module linear_map.
                   [
                     Ty.function
                       [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ]
-                          ]
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ]
                       ]
                       (Ty.path "bool")
                   ]
@@ -302,17 +319,7 @@ Module linear_map.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ]
-                                    ]
-                                ]
-                                (Ty.path "bool"),
+                              Ty.path "bool",
                               M.alloc (|
                                 Ty.apply
                                   (Ty.path "&")
@@ -357,9 +364,7 @@ Module linear_map.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ] ]
-                            (Ty.apply (Ty.path "&") [] [ V ]),
+                          Ty.apply (Ty.path "&") [] [ V ],
                           M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ], α0 |),
                           [
                             fun γ =>
@@ -415,7 +420,7 @@ Module linear_map.
               [
                 Ty.apply (Ty.path "&mut") [] [ V ];
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ K; V ] ] ] ]
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ K; V ] ] ]
                   (Ty.apply (Ty.path "&mut") [] [ V ])
               ]
             |),
@@ -435,13 +440,10 @@ Module linear_map.
                   [
                     Ty.function
                       [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ K; V ] ] ]
-                          ]
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ K; V ] ] ]
                       ]
                       (Ty.path "bool")
                   ]
@@ -504,17 +506,7 @@ Module linear_map.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ K; V ] ] ]
-                                    ]
-                                ]
-                                (Ty.path "bool"),
+                              Ty.path "bool",
                               M.alloc (|
                                 Ty.apply
                                   (Ty.path "&")
@@ -559,9 +551,7 @@ Module linear_map.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ K; V ] ] ] ]
-                            (Ty.apply (Ty.path "&mut") [] [ V ]),
+                          Ty.apply (Ty.path "&mut") [] [ V ],
                           M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ K; V ] ], α0 |),
                           [
                             fun γ =>
@@ -756,7 +746,7 @@ Module linear_map.
                       [],
                       [
                         Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ]
                           (Ty.path "bool")
                       ]
                     |),
@@ -818,9 +808,7 @@ Module linear_map.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ] ]
-                                    (Ty.path "bool"),
+                                  Ty.path "bool",
                                   M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ], α0 |),
                                   [
                                     fun γ =>
@@ -1095,7 +1083,7 @@ Module linear_map.
               [
                 Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.tuple [ K; V ] ];
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ] ]
+                  [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ]
                   (Ty.apply (Ty.path "&") [] [ V ])
               ],
             M.get_trait_method (|
@@ -1108,7 +1096,7 @@ Module linear_map.
               [
                 Ty.apply (Ty.path "&") [] [ V ];
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ] ]
+                  [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ]
                   (Ty.apply (Ty.path "&") [] [ V ])
               ]
             |),
@@ -1164,9 +1152,7 @@ Module linear_map.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ] ]
-                            (Ty.apply (Ty.path "&") [] [ V ]),
+                          Ty.apply (Ty.path "&") [] [ V ],
                           M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ], α0 |),
                           [
                             fun γ =>

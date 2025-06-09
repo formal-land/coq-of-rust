@@ -38,7 +38,7 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
           [
             Ty.path "i32";
             Ty.function
-              [ Ty.tuple [ Ty.path "i32" ] ]
+              [ Ty.path "i32" ]
               (Ty.apply
                 (Ty.path "core::result::Result")
                 []
@@ -61,12 +61,10 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.function
-                        [ Ty.tuple [ Ty.path "i32" ] ]
-                        (Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]),
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                       M.alloc (| Ty.path "i32", α0 |),
                       [
                         fun γ =>
@@ -84,10 +82,7 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                   [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                                 "map",
                                 [],
-                                [
-                                  Ty.path "i32";
-                                  Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32")
-                                ]
+                                [ Ty.path "i32"; Ty.function [ Ty.path "i32" ] (Ty.path "i32") ]
                               |),
                               [
                                 M.call_closure (|
@@ -115,9 +110,7 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                       | [ α0 ] =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
-                                            Ty.function
-                                              [ Ty.tuple [ Ty.path "i32" ] ]
-                                              (Ty.path "i32"),
+                                            Ty.path "i32",
                                             M.alloc (| Ty.path "i32", α0 |),
                                             [
                                               fun γ =>

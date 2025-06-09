@@ -696,50 +696,77 @@ Module ffi.
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NulError" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloc::ffi::c_str::NulError",
-                          0
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply (Ty.path "&") [] [ Ty.path "usize" ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::ffi::c_str::NulError",
+                            0
+                          |)
                         |)
                       |)
                     |)
-                  |));
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                            ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "alloc::ffi::c_str::NulError",
-                              1
+                  ]
+                |);
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                          ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                              ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::ffi::c_str::NulError",
+                                1
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1082,12 +1109,25 @@ Module ffi.
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "InteriorNul" |) |) |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                          |))
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
+                        |)
                       ]
                     |)));
                 fun γ =>
@@ -1426,51 +1466,81 @@ Module ffi.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FromVecWithNulError" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "error_kind" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloc::ffi::c_str::FromVecWithNulError",
-                          "error_kind"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "alloc::ffi::c_str::FromBytesWithNulErrorKind" ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::ffi::c_str::FromVecWithNulError",
+                            "error_kind"
+                          |)
                         |)
                       |)
                     |)
-                  |));
+                  ]
+                |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "bytes" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                            ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "alloc::ffi::c_str::FromVecWithNulError",
-                              "bytes"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                          ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                              ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::ffi::c_str::FromVecWithNulError",
+                                "bytes"
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1849,43 +1919,60 @@ Module ffi.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IntoStringError" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloc::ffi::c_str::IntoStringError",
-                          "inner"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply (Ty.path "&") [] [ Ty.path "alloc::ffi::c_str::CString" ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::ffi::c_str::IntoStringError",
+                            "inner"
+                          |)
                         |)
                       |)
                     |)
-                  |));
+                  ]
+                |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "error" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "core::str::error::Utf8Error" ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "alloc::ffi::c_str::IntoStringError",
-                              "error"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "core::str::error::Utf8Error" ] ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "core::str::error::Utf8Error" ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::ffi::c_str::IntoStringError",
+                                "error"
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2276,7 +2363,16 @@ Module ffi.
                     M.call_closure (|
                       Ty.path "usize",
                       M.get_function (| "alloc::ffi::c_str::from_raw::strlen", [], [] |),
-                      [ (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |)) ]
+                      [
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*const") [] [ Ty.path "i8" ],
+                          M.pointer_coercion
+                            M.PointerCoercion.MutToConstPointer
+                            (Ty.apply (Ty.path "*mut") [] [ Ty.path "i8" ])
+                            (Ty.apply (Ty.path "*const") [] [ Ty.path "i8" ]),
+                          [ M.read (| ptr |) ]
+                        |)
+                      ]
                     |);
                     Value.Integer IntegerKind.Usize 1
                   ]
@@ -2427,7 +2523,7 @@ Module ffi.
                 [
                   Ty.path "alloc::ffi::c_str::IntoStringError";
                   Ty.function
-                    [ Ty.tuple [ Ty.path "alloc::string::FromUtf8Error" ] ]
+                    [ Ty.path "alloc::string::FromUtf8Error" ]
                     (Ty.path "alloc::ffi::c_str::IntoStringError")
                 ]
               |),
@@ -2466,9 +2562,7 @@ Module ffi.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [ Ty.path "alloc::string::FromUtf8Error" ] ]
-                              (Ty.path "alloc::ffi::c_str::IntoStringError"),
+                            Ty.path "alloc::ffi::c_str::IntoStringError",
                             M.alloc (| Ty.path "alloc::string::FromUtf8Error", α0 |),
                             [
                               fun γ =>
@@ -6694,21 +6788,28 @@ Module ffi.
               []
               [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ]
               [
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloc::ffi::c_str::IntoStringError",
-                          "error"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply (Ty.path "&") [] [ Ty.path "core::str::error::Utf8Error" ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::ffi::c_str::IntoStringError",
+                            "error"
+                          |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

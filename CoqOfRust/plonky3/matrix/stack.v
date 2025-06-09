@@ -146,43 +146,57 @@ Module stack.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VerticalPair" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "first" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "p3_matrix::stack::VerticalPair",
-                        "first"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ First ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "p3_matrix::stack::VerticalPair",
+                          "first"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "second" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Second ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "p3_matrix::stack::VerticalPair",
-                            "second"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Second ] ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Second ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "p3_matrix::stack::VerticalPair",
+                              "second"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -342,43 +356,57 @@ Module stack.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "HorizontalPair" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "first" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "p3_matrix::stack::HorizontalPair",
-                        "first"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ First ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "p3_matrix::stack::HorizontalPair",
+                          "first"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "second" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Second ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "p3_matrix::stack::HorizontalPair",
-                            "second"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Second ] ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Second ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "p3_matrix::stack::HorizontalPair",
+                              "second"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1800,12 +1828,22 @@ Module stack.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Left" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ L ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -1832,12 +1870,22 @@ Module stack.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Right" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ R ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)))
             ]

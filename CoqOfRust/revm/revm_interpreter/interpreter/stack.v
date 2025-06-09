@@ -62,44 +62,73 @@ Module interpreter.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Stack" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "data" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "ruint::Uint")
-                                    [
-                                      Value.Integer IntegerKind.Usize 256;
-                                      Value.Integer IntegerKind.Usize 4
-                                    ]
-                                    [];
-                                  Ty.path "alloc::alloc::Global"
-                                ]
-                            ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "revm_interpreter::interpreter::stack::Stack",
-                              "data"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  [];
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
+                                      [];
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "revm_interpreter::interpreter::stack::Stack",
+                                "data"
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2888,9 +2917,62 @@ Module interpreter.
                                       []
                                     |),
                                     [
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.borrow (| Pointer.Kind.MutRef, result |))
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
+                                                  []
+                                              ]
+                                          ],
+                                        M.pointer_coercion
+                                          M.PointerCoercion.Unsize
+                                          (Ty.apply
+                                            (Ty.path "&mut")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ N ]
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 256;
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ]
+                                                    []
+                                                ]
+                                            ])
+                                          (Ty.apply
+                                            (Ty.path "&mut")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 256;
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ]
+                                                    []
+                                                ]
+                                            ]),
+                                        [ M.borrow (| Pointer.Kind.MutRef, result |) ]
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -4122,10 +4204,22 @@ Module interpreter.
                                     ]
                                   |),
                                   [
-                                    (* MutToConstPointer *)
-                                    M.pointer_coercion
-                                      (M.call_closure (|
-                                        Ty.apply
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "*const")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            []
+                                        ],
+                                      M.pointer_coercion
+                                        M.PointerCoercion.MutToConstPointer
+                                        (Ty.apply
                                           (Ty.path "*mut")
                                           []
                                           [
@@ -4136,8 +4230,21 @@ Module interpreter.
                                                 Value.Integer IntegerKind.Usize 4
                                               ]
                                               []
-                                          ],
-                                        M.get_associated_function (|
+                                          ])
+                                        (Ty.apply
+                                          (Ty.path "*const")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ]
+                                              []
+                                          ]),
+                                      [
+                                        M.call_closure (|
                                           Ty.apply
                                             (Ty.path "*mut")
                                             []
@@ -4150,12 +4257,27 @@ Module interpreter.
                                                 ]
                                                 []
                                             ],
-                                          "sub",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| ptr |); M.read (| n |) ]
-                                      |));
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "*mut")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
+                                                  []
+                                              ],
+                                            "sub",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| ptr |); M.read (| n |) ]
+                                        |)
+                                      ]
+                                    |);
                                     M.read (| ptr |);
                                     Value.Integer IntegerKind.Usize 1
                                   ]

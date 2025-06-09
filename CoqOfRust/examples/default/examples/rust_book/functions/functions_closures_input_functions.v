@@ -108,7 +108,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ closure : Ty.function [ Ty.tuple [] ] (Ty.tuple []) :=
+        let~ closure : Ty.function [] (Ty.tuple []) :=
           M.closure
             (fun γ =>
               ltac:(M.monadic
@@ -116,7 +116,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                      Ty.tuple [],
                       M.alloc (| Ty.tuple [], α0 |),
                       [
                         fun γ =>
@@ -168,7 +168,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.get_function (|
               "functions_closures_input_functions::call_me",
               [],
-              [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ]
+              [ Ty.function [] (Ty.tuple []) ]
             |),
             [ M.read (| closure |) ]
           |) in

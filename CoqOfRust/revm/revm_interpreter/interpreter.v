@@ -145,149 +145,369 @@ Module interpreter.
                       []
                       [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
                   ] :=
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 9 ]
-                          [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
-                          ],
-                        Value.Array
-                          [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                  ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 9 ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                    ])
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                    ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 9 ]
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                            ],
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "Bytecode"
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "revm_interpreter::interpreter::Interpreter",
-                                      "bytecode"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "revm_interpreter::interpreter::Interpreter",
+                                          "bytecode"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "Stack"
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "revm_interpreter::interpreter::Interpreter",
-                                      "stack"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "revm_interpreter::interpreter::Interpreter",
+                                          "stack"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "ReturnData"
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "revm_interpreter::interpreter::Interpreter",
-                                      "return_data"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "revm_interpreter::interpreter::Interpreter",
+                                          "return_data"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "Memory"
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "revm_interpreter::interpreter::Interpreter",
-                                      "memory"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "revm_interpreter::interpreter::Interpreter",
+                                          "memory"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "Input"
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "revm_interpreter::interpreter::Interpreter",
-                                      "input"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "revm_interpreter::interpreter::Interpreter",
+                                          "input"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "SubRoutineStack"
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "revm_interpreter::interpreter::Interpreter",
-                                      "sub_routine"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "revm_interpreter::interpreter::Interpreter",
+                                          "sub_routine"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "Control"
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "revm_interpreter::interpreter::Interpreter",
-                                      "control"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "revm_interpreter::interpreter::Interpreter",
+                                          "control"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "RuntimeFlag"
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "revm_interpreter::interpreter::Interpreter",
-                                      "runtime_flag"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "revm_interpreter::interpreter::Interpreter",
+                                          "runtime_flag"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
                                       Ty.apply
                                         (Ty.path "&")
                                         []
@@ -298,24 +518,51 @@ Module interpreter.
                                             []
                                             WIRE
                                             "Extend"
-                                        ],
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "extend"
+                                        M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Extend"
+                                            ],
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "revm_interpreter::interpreter::Interpreter",
+                                              "extend"
+                                            |)
+                                          |)
                                         |)
                                       |)
                                     |)
                                   |)
-                                |)
-                              |))
-                          ]
+                                ]
+                              |)
+                            ]
+                        |)
                       |)
                     |)
                   |)
-                |)) in
+                ]
+              |) in
             M.alloc (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -335,9 +582,38 @@ Module interpreter.
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Interpreter" |) |) |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |));
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 9 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        ])
+                      (Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        ]),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |) ]
+                  |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                 ]
               |)
@@ -2308,59 +2584,86 @@ Module interpreter.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "InterpreterResult" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "result" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "revm_interpreter::interpreter::InterpreterResult",
-                        "result"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::interpreter::InterpreterResult",
+                          "result"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "output" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "revm_interpreter::interpreter::InterpreterResult",
-                        "output"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::interpreter::InterpreterResult",
+                          "output"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "gas" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::Gas" ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_interpreter::interpreter::InterpreterResult",
-                            "gas"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::Gas" ] ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::Gas" ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter::InterpreterResult",
+                              "gas"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

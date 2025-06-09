@@ -88,7 +88,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |),
             [ mk_str (| "green" |) ]
           |) in
-        let~ print : Ty.function [ Ty.tuple [] ] (Ty.tuple []) :=
+        let~ print : Ty.function [] (Ty.tuple []) :=
           M.closure
             (fun γ =>
               ltac:(M.monadic
@@ -96,7 +96,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                      Ty.tuple [],
                       M.alloc (| Ty.tuple [], α0 |),
                       [
                         fun γ =>
@@ -185,7 +185,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             Ty.tuple [],
             M.get_trait_method (|
               "core::ops::function::Fn",
-              Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+              Ty.function [] (Ty.tuple []),
               [],
               [ Ty.tuple [] ],
               "call",
@@ -201,7 +201,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             Ty.tuple [],
             M.get_trait_method (|
               "core::ops::function::Fn",
-              Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+              Ty.function [] (Ty.tuple []),
               [],
               [ Ty.tuple [] ],
               "call",
@@ -212,7 +212,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ _color_moved : Ty.path "alloc::string::String" := M.read (| color |) in
         let~ count : Ty.path "i32" := Value.Integer IntegerKind.I32 0 in
-        let~ inc : Ty.function [ Ty.tuple [] ] (Ty.tuple []) :=
+        let~ inc : Ty.function [] (Ty.tuple []) :=
           M.closure
             (fun γ =>
               ltac:(M.monadic
@@ -220,7 +220,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                      Ty.tuple [],
                       M.alloc (| Ty.tuple [], α0 |),
                       [
                         fun γ =>
@@ -327,7 +327,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             Ty.tuple [],
             M.get_trait_method (|
               "core::ops::function::FnMut",
-              Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+              Ty.function [] (Ty.tuple []),
               [],
               [ Ty.tuple [] ],
               "call_mut",
@@ -341,7 +341,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             Ty.tuple [],
             M.get_trait_method (|
               "core::ops::function::FnMut",
-              Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+              Ty.function [] (Ty.tuple []),
               [],
               [ Ty.tuple [] ],
               "call_mut",
@@ -373,7 +373,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |),
             [ Value.Integer IntegerKind.I32 3 ]
           |) in
-        let~ consume : Ty.function [ Ty.tuple [] ] (Ty.tuple []) :=
+        let~ consume : Ty.function [] (Ty.tuple []) :=
           M.closure
             (fun γ =>
               ltac:(M.monadic
@@ -381,7 +381,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                      Ty.tuple [],
                       M.alloc (| Ty.tuple [], α0 |),
                       [
                         fun γ =>
@@ -502,7 +502,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             Ty.tuple [],
             M.get_trait_method (|
               "core::ops::function::FnOnce",
-              Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+              Ty.function [] (Ty.tuple []),
               [],
               [ Ty.tuple [] ],
               "call_once",

@@ -1121,7 +1121,7 @@ Module control_flow.
                 |) in
               let~ err :
                   Ty.function
-                    [ Ty.tuple [ Ty.path "move_core_types::vm_status::StatusCode"; Ty.path "u16" ] ]
+                    [ Ty.path "move_core_types::vm_status::StatusCode"; Ty.path "u16" ]
                     (Ty.apply
                       (Ty.path "core::result::Result")
                       []
@@ -1133,17 +1133,10 @@ Module control_flow.
                       | [ α0; α1 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [ Ty.path "move_core_types::vm_status::StatusCode"; Ty.path "u16"
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError"
-                                ]),
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.alloc (| Ty.path "move_core_types::vm_status::StatusCode", α0 |),
                             [
                               fun γ =>
@@ -1154,21 +1147,13 @@ Module control_flow.
                                       γ
                                     |) in
                                   M.match_operator (|
-                                    Ty.function
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
                                       [
-                                        Ty.tuple
-                                          [
-                                            Ty.path "move_core_types::vm_status::StatusCode";
-                                            Ty.path "u16"
-                                          ]
-                                      ]
-                                      (Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.tuple [];
-                                          Ty.path "move_binary_format::errors::PartialVMError"
-                                        ]),
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.alloc (| Ty.path "u16", α1 |),
                                     [
                                       fun γ =>
@@ -2325,13 +2310,10 @@ Module control_flow.
                                                                                                                       "core::ops::function::Fn",
                                                                                                                       Ty.function
                                                                                                                         [
-                                                                                                                          Ty.tuple
-                                                                                                                            [
-                                                                                                                              Ty.path
-                                                                                                                                "move_core_types::vm_status::StatusCode";
-                                                                                                                              Ty.path
-                                                                                                                                "u16"
-                                                                                                                            ]
+                                                                                                                          Ty.path
+                                                                                                                            "move_core_types::vm_status::StatusCode";
+                                                                                                                          Ty.path
+                                                                                                                            "u16"
                                                                                                                         ]
                                                                                                                         (Ty.apply
                                                                                                                           (Ty.path
@@ -2665,12 +2647,9 @@ Module control_flow.
                                                                             "core::ops::function::Fn",
                                                                             Ty.function
                                                                               [
-                                                                                Ty.tuple
-                                                                                  [
-                                                                                    Ty.path
-                                                                                      "move_core_types::vm_status::StatusCode";
-                                                                                    Ty.path "u16"
-                                                                                  ]
+                                                                                Ty.path
+                                                                                  "move_core_types::vm_status::StatusCode";
+                                                                                Ty.path "u16"
                                                                               ]
                                                                               (Ty.apply
                                                                                 (Ty.path

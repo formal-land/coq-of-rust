@@ -76,12 +76,25 @@ Module string.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "InvalidDigit" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "char" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -108,12 +121,25 @@ Module string.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "InvalidRadix" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -147,12 +173,30 @@ Module string.
                         Pointer.Kind.Ref,
                         M.deref (| mk_str (| "BaseConvertError" |) |)
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "ruint::base_convert::BaseConvertError" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)))
             ]
@@ -546,9 +590,20 @@ Module string.
                     []
                     [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ]
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| e |) |) |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "ruint::base_convert::BaseConvertError" ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| e |) |) |) ]
+                      |)
                     ]));
               fun γ =>
                 ltac:(M.monadic
@@ -973,7 +1028,7 @@ Module string.
                       [
                         Ty.path "core::str::iter::Chars";
                         Ty.function
-                          [ Ty.tuple [ Ty.path "char" ] ]
+                          [ Ty.path "char" ]
                           (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ])
                       ] :=
                   M.call_closure (|
@@ -983,7 +1038,7 @@ Module string.
                       [
                         Ty.path "core::str::iter::Chars";
                         Ty.function
-                          [ Ty.tuple [ Ty.path "char" ] ]
+                          [ Ty.path "char" ]
                           (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ])
                       ],
                     M.get_trait_method (|
@@ -996,7 +1051,7 @@ Module string.
                       [
                         Ty.path "u64";
                         Ty.function
-                          [ Ty.tuple [ Ty.path "char" ] ]
+                          [ Ty.path "char" ]
                           (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ])
                       ]
                     |),
@@ -1013,12 +1068,7 @@ Module string.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "char" ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.path "u64" ]),
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                                   M.alloc (| Ty.path "char", α0 |),
                                   [
                                     fun γ =>
@@ -1638,7 +1688,7 @@ Module string.
                                   [
                                     Ty.path "core::str::iter::Chars";
                                     Ty.function
-                                      [ Ty.tuple [ Ty.path "char" ] ]
+                                      [ Ty.path "char" ]
                                       (Ty.apply
                                         (Ty.path "core::option::Option")
                                         []

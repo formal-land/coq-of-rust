@@ -158,12 +158,34 @@ Module collections.
                                         |)
                                       |)
                                     |);
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| v |) |)
-                                      |))
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                      M.pointer_coercion
+                                        M.PointerCoercion.Unsize
+                                        (Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path
+                                                "alloc::collections::btree::map::entry::VacantEntry")
+                                              []
+                                              [ K; V; A ]
+                                          ])
+                                        (Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| v |) |)
+                                        |)
+                                      ]
+                                    |)
                                   ]
                                 |)
                               |)
@@ -243,12 +265,34 @@ Module collections.
                                         |)
                                       |)
                                     |);
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| o |) |)
-                                      |))
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                      M.pointer_coercion
+                                        M.PointerCoercion.Unsize
+                                        (Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path
+                                                "alloc::collections::btree::map::entry::OccupiedEntry")
+                                              []
+                                              [ K; V; A ]
+                                          ])
+                                        (Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| o |) |)
+                                        |)
+                                      ]
+                                    |)
                                   ]
                                 |)
                               |)
@@ -398,32 +442,45 @@ Module collections.
                                 |)
                               |)
                             |);
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "&") [] [ K ],
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path
-                                          "alloc::collections::btree::map::entry::VacantEntry")
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                              M.pointer_coercion
+                                M.PointerCoercion.Unsize
+                                (Ty.apply (Ty.path "&") [] [ K ])
+                                (Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      Ty.apply (Ty.path "&") [] [ K ],
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path
+                                            "alloc::collections::btree::map::entry::VacantEntry")
+                                          []
+                                          [ K; V; A ],
+                                        "key",
+                                        [],
                                         []
-                                        [ K; V; A ],
-                                      "key",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| self |) |)
-                                      |)
-                                    ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
+                                    |)
                                   |)
                                 |)
-                              |))
+                              ]
+                            |)
                           ]
                         |)
                       |)
@@ -587,63 +644,89 @@ Module collections.
                                       Pointer.Kind.Ref,
                                       M.deref (| mk_str (| "key" |) |)
                                     |);
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.call_closure (|
-                                            Ty.apply (Ty.path "&") [] [ K ],
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path
-                                                  "alloc::collections::btree::map::entry::OccupiedEntry")
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                      M.pointer_coercion
+                                        M.PointerCoercion.Unsize
+                                        (Ty.apply (Ty.path "&") [] [ K ])
+                                        (Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              Ty.apply (Ty.path "&") [] [ K ],
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "alloc::collections::btree::map::entry::OccupiedEntry")
+                                                  []
+                                                  [ K; V; A ],
+                                                "key",
+                                                [],
                                                 []
-                                                [ K; V; A ],
-                                              "key",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| self |) |)
-                                              |)
-                                            ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| self |) |)
+                                                |)
+                                              ]
+                                            |)
                                           |)
                                         |)
-                                      |))
+                                      ]
+                                    |)
                                   ]
                                 |)
                               |)
                             |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "value" |) |) |);
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "&") [] [ V ],
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path
-                                          "alloc::collections::btree::map::entry::OccupiedEntry")
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                              M.pointer_coercion
+                                M.PointerCoercion.Unsize
+                                (Ty.apply (Ty.path "&") [] [ V ])
+                                (Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      Ty.apply (Ty.path "&") [] [ V ],
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path
+                                            "alloc::collections::btree::map::entry::OccupiedEntry")
+                                          []
+                                          [ K; V; A ],
+                                        "get",
+                                        [],
                                         []
-                                        [ K; V; A ],
-                                      "get",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| self |) |)
-                                      |)
-                                    ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
+                                    |)
                                   |)
                                 |)
-                              |))
+                              ]
+                            |)
                           ]
                         |)
                       |)
@@ -804,36 +887,49 @@ Module collections.
                                               Pointer.Kind.Ref,
                                               M.deref (| mk_str (| "key" |) |)
                                             |);
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.call_closure (|
-                                                    Ty.apply (Ty.path "&") [] [ K ],
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "alloc::collections::btree::map::entry::OccupiedEntry")
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply (Ty.path "&") [] [ K ])
+                                                (Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.call_closure (|
+                                                      Ty.apply (Ty.path "&") [] [ K ],
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "alloc::collections::btree::map::entry::OccupiedEntry")
+                                                          []
+                                                          [ K; V; A ],
+                                                        "key",
+                                                        [],
                                                         []
-                                                        [ K; V; A ],
-                                                      "key",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.deref (| M.read (| self |) |),
-                                                          "alloc::collections::btree::map::entry::OccupiedError",
-                                                          "entry"
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| self |) |),
+                                                            "alloc::collections::btree::map::entry::OccupiedError",
+                                                            "entry"
+                                                          |)
                                                         |)
-                                                      |)
-                                                    ]
+                                                      ]
+                                                    |)
                                                   |)
                                                 |)
-                                              |))
+                                              ]
+                                            |)
                                           ]
                                         |)
                                       |)
@@ -842,56 +938,82 @@ Module collections.
                                       Pointer.Kind.Ref,
                                       M.deref (| mk_str (| "old_value" |) |)
                                     |);
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.call_closure (|
-                                            Ty.apply (Ty.path "&") [] [ V ],
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path
-                                                  "alloc::collections::btree::map::entry::OccupiedEntry")
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                      M.pointer_coercion
+                                        M.PointerCoercion.Unsize
+                                        (Ty.apply (Ty.path "&") [] [ V ])
+                                        (Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              Ty.apply (Ty.path "&") [] [ V ],
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "alloc::collections::btree::map::entry::OccupiedEntry")
+                                                  []
+                                                  [ K; V; A ],
+                                                "get",
+                                                [],
                                                 []
-                                                [ K; V; A ],
-                                              "get",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| self |) |),
-                                                  "alloc::collections::btree::map::entry::OccupiedError",
-                                                  "entry"
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "alloc::collections::btree::map::entry::OccupiedError",
+                                                    "entry"
+                                                  |)
                                                 |)
-                                              |)
-                                            ]
+                                              ]
+                                            |)
                                           |)
                                         |)
-                                      |))
+                                      ]
+                                    |)
                                   ]
                                 |)
                               |)
                             |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "new_value" |) |) |);
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "alloc::collections::btree::map::entry::OccupiedError",
-                                      "value"
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                              M.pointer_coercion
+                                M.PointerCoercion.Unsize
+                                (Ty.apply (Ty.path "&") [] [ V ])
+                                (Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::btree::map::entry::OccupiedError",
+                                        "value"
+                                      |)
                                     |)
                                   |)
                                 |)
-                              |))
+                              ]
+                            |)
                           ]
                         |)
                       |)
@@ -2800,17 +2922,14 @@ Module collections.
                                   A;
                                   Ty.function
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::node::SplitResult")
+                                        []
                                         [
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::btree::node::SplitResult")
-                                            []
-                                            [
-                                              K;
-                                              V;
-                                              Ty.path
-                                                "alloc::collections::btree::node::marker::LeafOrInternal"
-                                            ]
+                                          K;
+                                          V;
+                                          Ty.path
+                                            "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ]
                                     ]
                                     (Ty.tuple [])
@@ -2855,23 +2974,7 @@ Module collections.
                                       | [ α0 ] =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
-                                            Ty.function
-                                              [
-                                                Ty.tuple
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path
-                                                        "alloc::collections::btree::node::SplitResult")
-                                                      []
-                                                      [
-                                                        K;
-                                                        V;
-                                                        Ty.path
-                                                          "alloc::collections::btree::node::marker::LeafOrInternal"
-                                                      ]
-                                                  ]
-                                              ]
-                                              (Ty.tuple []),
+                                            Ty.tuple [],
                                             M.alloc (|
                                               Ty.apply
                                                 (Ty.path
@@ -4149,7 +4252,7 @@ Module collections.
                               ],
                             "remove_kv_tracking",
                             [],
-                            [ Ty.function [ Ty.tuple [] ] (Ty.tuple []); A ]
+                            [ Ty.function [] (Ty.tuple []); A ]
                           |),
                           [
                             M.read (|
@@ -4166,7 +4269,7 @@ Module collections.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                                        Ty.tuple [],
                                         M.alloc (| Ty.tuple [], α0 |),
                                         [
                                           fun γ =>

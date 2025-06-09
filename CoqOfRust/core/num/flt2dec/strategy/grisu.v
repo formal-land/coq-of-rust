@@ -604,30 +604,61 @@ Module num.
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.read (|
-                                    get_constant (|
-                                      "core::num::flt2dec::strategy::grisu::CACHED_POW10",
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "array")
-                                            [ Value.Integer IntegerKind.Usize 81 ]
-                                            [
-                                              Ty.tuple
-                                                [ Ty.path "u64"; Ty.path "i16"; Ty.path "i16" ]
-                                            ]
-                                        ]
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i16" ] ]
+                                ],
+                              M.pointer_coercion
+                                M.PointerCoercion.Unsize
+                                (Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 81 ]
+                                      [ Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i16" ] ]
+                                  ])
+                                (Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [ Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i16" ] ]
+                                  ]),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (|
+                                      get_constant (|
+                                        "core::num::flt2dec::strategy::grisu::CACHED_POW10",
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 81 ]
+                                              [
+                                                Ty.tuple
+                                                  [ Ty.path "u64"; Ty.path "i16"; Ty.path "i16" ]
+                                              ]
+                                          ]
+                                      |)
                                     |)
                                   |)
                                 |)
-                              |))
+                              ]
+                            |)
                           ]
                         |));
                       Value.Integer IntegerKind.I32 1

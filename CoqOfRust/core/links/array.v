@@ -182,3 +182,15 @@ Module SubPointer.
   Qed.
   Smpl Add eapply get_index_is_valid : run_sub_pointer.
 End SubPointer.
+
+(** The pointer coercions are intrinsic functions, so we need to admit them here. *)
+Instance run_pointer_coercion_unsize_mut_ref_array_to_slice {T : Set} `{Link T} {N : Usize.t} :
+  let Source : Set := Ref.t Pointer.Kind.MutRef (array.t T N) in
+  let Target : Set := Ref.t Pointer.Kind.MutRef (list T) in
+  forall (source : Source),
+  Run.Trait (M.pointer_coercion_intrinsic PointerCoercion.Unsize)
+    []
+    [ Φ Source; Φ Target ]
+    [ φ source ]
+    Target.
+Admitted.

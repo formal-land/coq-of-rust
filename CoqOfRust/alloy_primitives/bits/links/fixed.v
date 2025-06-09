@@ -67,6 +67,16 @@ Module Impl_From_U256_for_FixedBytes_32.
 End Impl_From_U256_for_FixedBytes_32.
 Export Impl_From_U256_for_FixedBytes_32.
 
+(* impl<'a, const N: usize> From<&'a [u8; N]> for &'a FixedBytes<N> *)
+Module Impl_From_Array_u8_N_for_FixedBytes_N.
+  Definition Self (N : Usize.t) : Set :=
+    FixedBytes.t N.
+
+  Instance run (N : Usize.t) : From.Run (Self N) (array.t U8.t N).
+  Admitted.
+End Impl_From_Array_u8_N_for_FixedBytes_N.
+Export Impl_From_Array_u8_N_for_FixedBytes_N.
+
 (* impl<const N: usize> Borrow<[u8; N]> for FixedBytes<N> *)
 Module Impl_Borrow_Array_u8_N_for_FixedBytes_N.
   Definition Self (N : Usize.t) : Set :=

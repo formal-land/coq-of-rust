@@ -632,23 +632,38 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ chars_to_trim :
             Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ] :=
-          (* Unsize *)
-          M.pointer_coercion
-            (M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "array")
-                      [ Value.Integer IntegerKind.Usize 2 ]
-                      [ Ty.path "char" ],
-                    Value.Array [ Value.UnicodeChar 32; Value.UnicodeChar 44 ]
+          M.call_closure (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ],
+            M.pointer_coercion
+              M.PointerCoercion.Unsize
+              (Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer IntegerKind.Usize 2 ]
+                    [ Ty.path "char" ]
+                ])
+              (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ]),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 2 ]
+                        [ Ty.path "char" ],
+                      Value.Array [ Value.UnicodeChar 32; Value.UnicodeChar 44 ]
+                    |)
                   |)
                 |)
               |)
-            |)) in
+            ]
+          |) in
         let~ trimmed_str : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
           M.borrow (|
             Pointer.Kind.Ref,

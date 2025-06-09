@@ -772,24 +772,83 @@ Module normalized.
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Struct" |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "address" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |));
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_core_types::account_address::AccountAddress" ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                      |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "module" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |));
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_core_types::identifier::Identifier" ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |) ]
+                      |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "name" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_2 |) |) |));
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_core_types::identifier::Identifier" ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_2 |) |) |) ]
+                      |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "type_arguments" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_3 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::normalized::Type";
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
+                                ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_3 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -831,12 +890,38 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Vector" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::normalized::Type";
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
+                                ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -863,12 +948,25 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TypeParameter" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -910,12 +1008,38 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Reference" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::normalized::Type";
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
+                                ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -960,12 +1084,38 @@ Module normalized.
                         Pointer.Kind.Ref,
                         M.deref (| mk_str (| "MutableReference" |) |)
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::normalized::Type";
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
+                                ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -13123,46 +13273,64 @@ Module normalized.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Field" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "name" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "move_binary_format::normalized::Field",
-                        "name"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::identifier::Identifier" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::normalized::Field",
+                          "name"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "type_" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "move_binary_format::normalized::Type" ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_binary_format::normalized::Field",
-                            "type_"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::normalized::Type" ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::normalized::Type" ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_binary_format::normalized::Field",
+                              "type_"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -13725,51 +13893,78 @@ Module normalized.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Constant" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "type_" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "move_binary_format::normalized::Constant",
-                        "type_"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::normalized::Type" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::normalized::Constant",
+                          "type_"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "data" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::vec::Vec")
-                              []
-                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                          ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_binary_format::normalized::Constant",
-                            "data"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                        ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                            ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_binary_format::normalized::Constant",
+                              "data"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -14405,70 +14600,121 @@ Module normalized.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Struct" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "abilities" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "move_binary_format::normalized::Struct",
-                        "abilities"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_binary_format::file_format::AbilitySet" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::normalized::Struct",
+                          "abilities"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "type_parameters" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "move_binary_format::normalized::Struct",
-                        "type_parameters"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format::StructTypeParameter";
+                          Ty.path "alloc::alloc::Global"
+                        ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::normalized::Struct",
+                          "type_parameters"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "fields" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::vec::Vec")
-                              []
-                              [
-                                Ty.path "move_binary_format::normalized::Field";
-                                Ty.path "alloc::alloc::Global"
-                              ]
-                          ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_binary_format::normalized::Struct",
-                            "fields"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.path "move_binary_format::normalized::Field";
+                              Ty.path "alloc::alloc::Global"
+                            ]
+                        ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [
+                                  Ty.path "move_binary_format::normalized::Field";
+                                  Ty.path "alloc::alloc::Global"
+                                ]
+                            ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_binary_format::normalized::Struct",
+                              "fields"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -15474,104 +15720,241 @@ Module normalized.
                       []
                       [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
                   ] :=
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 6 ]
-                          [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
-                          ],
-                        Value.Array
-                          [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                  ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 6 ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                    ])
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                    ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 6 ]
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                            ],
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::Visibility" ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_binary_format::normalized::Function",
-                                      "visibility"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_binary_format::normalized::Function",
+                                          "visibility"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply (Ty.path "&") [] [ Ty.path "bool" ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_binary_format::normalized::Function",
-                                      "is_entry"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_binary_format::normalized::Function",
+                                          "is_entry"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "move_binary_format::file_format::AbilitySet";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_binary_format::normalized::Function",
-                                      "type_parameters"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_binary_format::normalized::Function",
+                                          "type_parameters"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "move_binary_format::normalized::Type";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_binary_format::normalized::Function",
-                                      "parameters"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_binary_format::normalized::Function",
+                                          "parameters"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "move_binary_format::normalized::Type";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_binary_format::normalized::Function",
-                                      "return_"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_binary_format::normalized::Function",
+                                          "return_"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
                                       Ty.apply
                                         (Ty.path "&")
                                         []
@@ -15583,24 +15966,53 @@ Module normalized.
                                               Ty.path "move_binary_format::normalized::Bytecode";
                                               Ty.path "alloc::alloc::Global"
                                             ]
-                                        ],
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "move_binary_format::normalized::Function",
-                                          "code"
+                                        M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::Vec")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::normalized::Bytecode";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ]
+                                            ],
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "move_binary_format::normalized::Function",
+                                              "code"
+                                            |)
+                                          |)
                                         |)
                                       |)
                                     |)
                                   |)
-                                |)
-                              |))
-                          ]
+                                ]
+                              |)
+                            ]
+                        |)
                       |)
                     |)
                   |)
-                |)) in
+                ]
+              |) in
             M.alloc (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -15620,9 +16032,38 @@ Module normalized.
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Function" |) |) |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |));
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 6 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        ])
+                      (Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        ]),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |) ]
+                  |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                 ]
               |)
@@ -17022,43 +17463,57 @@ Module normalized.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FieldRef" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "struct_name" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "move_binary_format::normalized::FieldRef",
-                        "struct_name"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::identifier::Identifier" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::normalized::FieldRef",
+                          "struct_name"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "field_index" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_binary_format::normalized::FieldRef",
-                            "field_index"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_binary_format::normalized::FieldRef",
+                              "field_index"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -17593,46 +18048,71 @@ Module normalized.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FunctionRef" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "module_id" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "move_binary_format::normalized::FunctionRef",
-                        "module_id"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_core_types::language_storage::ModuleId" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::normalized::FunctionRef",
+                          "module_id"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "function_ident" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "move_core_types::identifier::Identifier" ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_binary_format::normalized::FunctionRef",
-                            "function_ident"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_core_types::identifier::Identifier" ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_core_types::identifier::Identifier" ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_binary_format::normalized::FunctionRef",
+                              "function_ident"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -20819,12 +21299,25 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BrTrue" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -20851,12 +21344,25 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BrFalse" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -20883,12 +21389,25 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Branch" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -20915,12 +21434,22 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LdU8" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -20947,12 +21476,25 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LdU64" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -20980,12 +21522,25 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LdU128" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -21088,12 +21643,30 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LdConst" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::normalized::Constant" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -21165,12 +21738,22 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CopyLoc" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -21197,12 +21780,22 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MoveLoc" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -21229,12 +21822,22 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "StLoc" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -21268,12 +21871,30 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Call" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::normalized::FunctionRef" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -21319,12 +21940,42 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CallGeneric" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.path "move_binary_format::normalized::FunctionRef";
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "move_binary_format::normalized::Type";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ]
+                                ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -21358,12 +22009,30 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Pack" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_core_types::identifier::Identifier" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -21409,12 +22078,42 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PackGeneric" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.path "move_core_types::identifier::Identifier";
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "move_binary_format::normalized::Type";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ]
+                                ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -21448,12 +22147,30 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Unpack" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_core_types::identifier::Identifier" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -21499,12 +22216,42 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "UnpackGeneric" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.path "move_core_types::identifier::Identifier";
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "move_binary_format::normalized::Type";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ]
+                                ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -21603,12 +22350,22 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MutBorrowLoc" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -21635,12 +22392,22 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ImmBorrowLoc" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -21674,12 +22441,30 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MutBorrowField" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::normalized::FieldRef" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -21728,12 +22513,42 @@ Module normalized.
                         Pointer.Kind.Ref,
                         M.deref (| mk_str (| "MutBorrowFieldGeneric" |) |)
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.path "move_binary_format::normalized::FieldRef";
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "move_binary_format::normalized::Type";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ]
+                                ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -21767,12 +22582,30 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ImmBorrowField" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::normalized::FieldRef" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -21821,12 +22654,42 @@ Module normalized.
                         Pointer.Kind.Ref,
                         M.deref (| mk_str (| "ImmBorrowFieldGeneric" |) |)
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.path "move_binary_format::normalized::FieldRef";
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "move_binary_format::normalized::Type";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ]
+                                ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -22305,15 +23168,39 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VecPack" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::normalized::Type" ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                      |);
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -22344,12 +23231,30 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VecLen" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::normalized::Type" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -22380,12 +23285,30 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VecImmBorrow" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::normalized::Type" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -22416,12 +23339,30 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VecMutBorrow" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::normalized::Type" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -22452,12 +23393,30 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VecPushBack" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::normalized::Type" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -22488,12 +23447,30 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VecPopBack" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::normalized::Type" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -22531,15 +23508,39 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VecUnpack" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::normalized::Type" ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                      |);
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -22570,12 +23571,30 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VecSwap" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::normalized::Type" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -22602,12 +23621,25 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LdU16" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -22634,12 +23666,25 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LdU32" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -22670,12 +23715,25 @@ Module normalized.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LdU256" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -22784,12 +23842,30 @@ Module normalized.
                         Pointer.Kind.Ref,
                         M.deref (| mk_str (| "MutBorrowGlobalDeprecated" |) |)
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_core_types::identifier::Identifier" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -22838,12 +23914,42 @@ Module normalized.
                         Pointer.Kind.Ref,
                         M.deref (| mk_str (| "MutBorrowGlobalGenericDeprecated" |) |)
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.path "move_core_types::identifier::Identifier";
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "move_binary_format::normalized::Type";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ]
+                                ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -22880,12 +23986,30 @@ Module normalized.
                         Pointer.Kind.Ref,
                         M.deref (| mk_str (| "ImmBorrowGlobalDeprecated" |) |)
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_core_types::identifier::Identifier" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -22934,12 +24058,42 @@ Module normalized.
                         Pointer.Kind.Ref,
                         M.deref (| mk_str (| "ImmBorrowGlobalGenericDeprecated" |) |)
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.path "move_core_types::identifier::Identifier";
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "move_binary_format::normalized::Type";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ]
+                                ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -22976,12 +24130,30 @@ Module normalized.
                         Pointer.Kind.Ref,
                         M.deref (| mk_str (| "ExistsDeprecated" |) |)
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_core_types::identifier::Identifier" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -23030,12 +24202,42 @@ Module normalized.
                         Pointer.Kind.Ref,
                         M.deref (| mk_str (| "ExistsGenericDeprecated" |) |)
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.path "move_core_types::identifier::Identifier";
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "move_binary_format::normalized::Type";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ]
+                                ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -23072,12 +24274,30 @@ Module normalized.
                         Pointer.Kind.Ref,
                         M.deref (| mk_str (| "MoveFromDeprecated" |) |)
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_core_types::identifier::Identifier" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -23126,12 +24346,42 @@ Module normalized.
                         Pointer.Kind.Ref,
                         M.deref (| mk_str (| "MoveFromGenericDeprecated" |) |)
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.path "move_core_types::identifier::Identifier";
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "move_binary_format::normalized::Type";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ]
+                                ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -23168,12 +24418,30 @@ Module normalized.
                         Pointer.Kind.Ref,
                         M.deref (| mk_str (| "MoveToDeprecated" |) |)
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_core_types::identifier::Identifier" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -23222,12 +24490,42 @@ Module normalized.
                         Pointer.Kind.Ref,
                         M.deref (| mk_str (| "MoveToGenericDeprecated" |) |)
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.path "move_core_types::identifier::Identifier";
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "move_binary_format::normalized::Type";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ]
+                                ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)))
             ]
@@ -32834,134 +34132,313 @@ Module normalized.
                       []
                       [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
                   ] :=
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 8 ]
-                          [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
-                          ],
-                        Value.Array
-                          [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                  ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 8 ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                    ])
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                    ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 8 ]
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                            ],
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply (Ty.path "&") [] [ Ty.path "u32" ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_binary_format::normalized::Module",
-                                      "file_format_version"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_binary_format::normalized::Module",
+                                          "file_format_version"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_core_types::account_address::AccountAddress" ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_binary_format::normalized::Module",
-                                      "address"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_binary_format::normalized::Module",
+                                          "address"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_core_types::identifier::Identifier" ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_binary_format::normalized::Module",
-                                      "name"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_binary_format::normalized::Module",
+                                          "name"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "move_core_types::language_storage::ModuleId";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_binary_format::normalized::Module",
-                                      "dependencies"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_binary_format::normalized::Module",
+                                          "dependencies"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "move_core_types::language_storage::ModuleId";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_binary_format::normalized::Module",
-                                      "friends"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_binary_format::normalized::Module",
+                                          "friends"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                        []
+                                        [
+                                          Ty.path "move_core_types::identifier::Identifier";
+                                          Ty.path "move_binary_format::normalized::Struct";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_binary_format::normalized::Module",
-                                      "structs"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_binary_format::normalized::Module",
+                                          "structs"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                        []
+                                        [
+                                          Ty.path "move_core_types::identifier::Identifier";
+                                          Ty.path "move_binary_format::normalized::Function";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_binary_format::normalized::Module",
-                                      "functions"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_binary_format::normalized::Module",
+                                          "functions"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
                                       Ty.apply
                                         (Ty.path "&")
                                         []
@@ -32973,24 +34450,53 @@ Module normalized.
                                               Ty.path "move_binary_format::normalized::Constant";
                                               Ty.path "alloc::alloc::Global"
                                             ]
-                                        ],
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "move_binary_format::normalized::Module",
-                                          "constants"
+                                        M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::Vec")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::normalized::Constant";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ]
+                                            ],
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "move_binary_format::normalized::Module",
+                                              "constants"
+                                            |)
+                                          |)
                                         |)
                                       |)
                                     |)
                                   |)
-                                |)
-                              |))
-                          ]
+                                ]
+                              |)
+                            ]
+                        |)
                       |)
                     |)
                   |)
-                |)) in
+                ]
+              |) in
             M.alloc (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -33010,9 +34516,38 @@ Module normalized.
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Module" |) |) |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |));
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 8 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        ])
+                      (Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        ]),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |) ]
+                  |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                 ]
               |)
@@ -33591,13 +35126,10 @@ Module normalized.
                         [ Ty.path "move_binary_format::file_format::StructDefinition" ];
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.path "move_binary_format::file_format::StructDefinition" ]
-                            ]
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::file_format::StructDefinition" ]
                         ]
                         (Ty.tuple
                           [
@@ -33632,13 +35164,10 @@ Module normalized.
                           [ Ty.path "move_binary_format::file_format::StructDefinition" ];
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefinition" ]
                           ]
                           (Ty.tuple
                             [
@@ -33664,13 +35193,10 @@ Module normalized.
                           ];
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefinition" ]
                           ]
                           (Ty.tuple
                             [
@@ -33728,24 +35254,11 @@ Module normalized.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_binary_format::file_format::StructDefinition"
-                                            ]
-                                        ]
-                                    ]
-                                    (Ty.tuple
-                                      [
-                                        Ty.path "move_core_types::identifier::Identifier";
-                                        Ty.path "move_binary_format::normalized::Struct"
-                                      ]),
+                                      Ty.path "move_core_types::identifier::Identifier";
+                                      Ty.path "move_binary_format::normalized::Struct"
+                                    ],
                                   M.alloc (|
                                     Ty.apply
                                       (Ty.path "&")
@@ -33851,13 +35364,10 @@ Module normalized.
                         [ Ty.path "move_binary_format::file_format::Constant" ];
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.path "move_binary_format::file_format::Constant" ]
-                            ]
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::file_format::Constant" ]
                         ]
                         (Ty.path "move_binary_format::normalized::Constant")
                     ],
@@ -33887,13 +35397,10 @@ Module normalized.
                           [ Ty.path "move_binary_format::file_format::Constant" ];
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::Constant" ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::Constant" ]
                           ]
                           (Ty.path "move_binary_format::normalized::Constant")
                       ],
@@ -33911,13 +35418,10 @@ Module normalized.
                         Ty.path "move_binary_format::normalized::Constant";
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::Constant" ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::Constant" ]
                           ]
                           (Ty.path "move_binary_format::normalized::Constant")
                       ]
@@ -33970,17 +35474,7 @@ Module normalized.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.path "move_binary_format::file_format::Constant" ]
-                                        ]
-                                    ]
-                                    (Ty.path "move_binary_format::normalized::Constant"),
+                                  Ty.path "move_binary_format::normalized::Constant",
                                   M.alloc (|
                                     Ty.apply
                                       (Ty.path "&")
@@ -34057,13 +35551,10 @@ Module normalized.
                         [ Ty.path "move_binary_format::file_format::FunctionDefinition" ];
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
-                            ]
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
                         ]
                         (Ty.tuple
                           [
@@ -34098,13 +35589,10 @@ Module normalized.
                           [ Ty.path "move_binary_format::file_format::FunctionDefinition" ];
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
                           ]
                           (Ty.tuple
                             [
@@ -34130,13 +35618,10 @@ Module normalized.
                           ];
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
                           ]
                           (Ty.tuple
                             [
@@ -34196,24 +35681,11 @@ Module normalized.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_binary_format::file_format::FunctionDefinition"
-                                            ]
-                                        ]
-                                    ]
-                                    (Ty.tuple
-                                      [
-                                        Ty.path "move_core_types::identifier::Identifier";
-                                        Ty.path "move_binary_format::normalized::Function"
-                                      ]),
+                                      Ty.path "move_core_types::identifier::Identifier";
+                                      Ty.path "move_binary_format::normalized::Function"
+                                    ],
                                   M.alloc (|
                                     Ty.apply
                                       (Ty.path "&")
@@ -35080,15 +36552,12 @@ Module normalized.
                                               ];
                                             Ty.function
                                               [
-                                                Ty.tuple
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
                                                   [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_binary_format::file_format::SignatureToken"
-                                                      ]
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
                                                   ]
                                               ]
                                               (Ty.path "move_binary_format::normalized::Type")
@@ -35122,15 +36591,12 @@ Module normalized.
                                                 ];
                                               Ty.function
                                                 [
-                                                  Ty.tuple
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
                                                     [
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "move_binary_format::file_format::SignatureToken"
-                                                        ]
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
                                                     ]
                                                 ]
                                                 (Ty.path "move_binary_format::normalized::Type")
@@ -35152,15 +36618,12 @@ Module normalized.
                                               Ty.path "move_binary_format::normalized::Type";
                                               Ty.function
                                                 [
-                                                  Ty.tuple
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
                                                     [
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "move_binary_format::file_format::SignatureToken"
-                                                        ]
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
                                                     ]
                                                 ]
                                                 (Ty.path "move_binary_format::normalized::Type")
@@ -35238,21 +36701,8 @@ Module normalized.
                                                   | [ α0 ] =>
                                                     ltac:(M.monadic
                                                       (M.match_operator (|
-                                                        Ty.function
-                                                          [
-                                                            Ty.tuple
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "move_binary_format::file_format::SignatureToken"
-                                                                  ]
-                                                              ]
-                                                          ]
-                                                          (Ty.path
-                                                            "move_binary_format::normalized::Type"),
+                                                        Ty.path
+                                                          "move_binary_format::normalized::Type",
                                                         M.alloc (|
                                                           Ty.apply
                                                             (Ty.path "&")
@@ -35758,13 +37208,10 @@ Module normalized.
                       [
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_binary_format::normalized::Type" ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::normalized::Type" ]
                           ]
                           (Ty.path "bool")
                       ]
@@ -35840,17 +37287,7 @@ Module normalized.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.path "move_binary_format::normalized::Type" ]
-                                        ]
-                                    ]
-                                    (Ty.path "bool"),
+                                  Ty.path "bool",
                                   M.alloc (|
                                     Ty.apply
                                       (Ty.path "&")
@@ -36466,11 +37903,8 @@ Module normalized.
                                                           ];
                                                         Ty.function
                                                           [
-                                                            Ty.tuple
-                                                              [
-                                                                Ty.path
-                                                                  "move_binary_format::normalized::Type"
-                                                              ]
+                                                            Ty.path
+                                                              "move_binary_format::normalized::Type"
                                                           ]
                                                           (Ty.path
                                                             "move_core_types::language_storage::TypeTag")
@@ -36507,11 +37941,8 @@ Module normalized.
                                                             ];
                                                           Ty.function
                                                             [
-                                                              Ty.tuple
-                                                                [
-                                                                  Ty.path
-                                                                    "move_binary_format::normalized::Type"
-                                                                ]
+                                                              Ty.path
+                                                                "move_binary_format::normalized::Type"
                                                             ]
                                                             (Ty.path
                                                               "move_core_types::language_storage::TypeTag")
@@ -36536,11 +37967,8 @@ Module normalized.
                                                             "move_core_types::language_storage::TypeTag";
                                                           Ty.function
                                                             [
-                                                              Ty.tuple
-                                                                [
-                                                                  Ty.path
-                                                                    "move_binary_format::normalized::Type"
-                                                                ]
+                                                              Ty.path
+                                                                "move_binary_format::normalized::Type"
                                                             ]
                                                             (Ty.path
                                                               "move_core_types::language_storage::TypeTag")
@@ -36582,16 +38010,8 @@ Module normalized.
                                                               | [ α0 ] =>
                                                                 ltac:(M.monadic
                                                                   (M.match_operator (|
-                                                                    Ty.function
-                                                                      [
-                                                                        Ty.tuple
-                                                                          [
-                                                                            Ty.path
-                                                                              "move_binary_format::normalized::Type"
-                                                                          ]
-                                                                      ]
-                                                                      (Ty.path
-                                                                        "move_core_types::language_storage::TypeTag"),
+                                                                    Ty.path
+                                                                      "move_core_types::language_storage::TypeTag",
                                                                     M.alloc (|
                                                                       Ty.path
                                                                         "move_binary_format::normalized::Type",
@@ -37381,13 +38801,10 @@ Module normalized.
                                   [ Ty.path "move_binary_format::normalized::Type" ];
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "move_binary_format::normalized::Type" ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::normalized::Type" ]
                                   ]
                                   (Ty.path "move_binary_format::normalized::Type")
                               ],
@@ -37417,13 +38834,10 @@ Module normalized.
                                     [ Ty.path "move_binary_format::normalized::Type" ];
                                   Ty.function
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.path "move_binary_format::normalized::Type" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "move_binary_format::normalized::Type" ]
                                     ]
                                     (Ty.path "move_binary_format::normalized::Type")
                                 ],
@@ -37441,13 +38855,10 @@ Module normalized.
                                   Ty.path "move_binary_format::normalized::Type";
                                   Ty.function
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.path "move_binary_format::normalized::Type" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "move_binary_format::normalized::Type" ]
                                     ]
                                     (Ty.path "move_binary_format::normalized::Type")
                                 ]
@@ -37514,20 +38925,7 @@ Module normalized.
                                       | [ α0 ] =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
-                                            Ty.function
-                                              [
-                                                Ty.tuple
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_binary_format::normalized::Type"
-                                                      ]
-                                                  ]
-                                              ]
-                                              (Ty.path "move_binary_format::normalized::Type"),
+                                            Ty.path "move_binary_format::normalized::Type",
                                             M.alloc (|
                                               Ty.apply
                                                 (Ty.path "&")
@@ -37963,14 +39361,10 @@ Module normalized.
                                 [ Ty.path "move_binary_format::file_format::FieldDefinition" ];
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_binary_format::file_format::FieldDefinition"
-                                        ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FieldDefinition" ]
                                 ]
                                 (Ty.path "move_binary_format::normalized::Field")
                             ],
@@ -38000,16 +39394,10 @@ Module normalized.
                                   [ Ty.path "move_binary_format::file_format::FieldDefinition" ];
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::FieldDefinition"
-                                          ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::FieldDefinition" ]
                                   ]
                                   (Ty.path "move_binary_format::normalized::Field")
                               ],
@@ -38027,16 +39415,10 @@ Module normalized.
                                 Ty.path "move_binary_format::normalized::Field";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::FieldDefinition"
-                                          ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::FieldDefinition" ]
                                   ]
                                   (Ty.path "move_binary_format::normalized::Field")
                               ]
@@ -38107,20 +39489,7 @@ Module normalized.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::FieldDefinition"
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "move_binary_format::normalized::Field"),
+                                          Ty.path "move_binary_format::normalized::Field",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -38377,13 +39746,10 @@ Module normalized.
                   [ Ty.path "move_binary_format::file_format::StructTypeParameter" ];
                 Ty.function
                   [
-                    Ty.tuple
-                      [
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "move_binary_format::file_format::StructTypeParameter" ]
-                      ]
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::StructTypeParameter" ]
                   ]
                   (Ty.apply
                     (Ty.path "&")
@@ -38404,13 +39770,10 @@ Module normalized.
                 Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::AbilitySet" ];
                 Ty.function
                   [
-                    Ty.tuple
-                      [
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "move_binary_format::file_format::StructTypeParameter" ]
-                      ]
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::StructTypeParameter" ]
                   ]
                   (Ty.apply
                     (Ty.path "&")
@@ -38484,21 +39847,10 @@ Module normalized.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "move_binary_format::file_format::StructTypeParameter"
-                                    ]
-                                ]
-                            ]
-                            (Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.path "move_binary_format::file_format::AbilitySet" ]),
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                           M.alloc (|
                             Ty.apply
                               (Ty.path "&")
@@ -38741,13 +40093,10 @@ Module normalized.
                           ];
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::CodeUnit" ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::CodeUnit" ]
                           ]
                           (Ty.apply
                             (Ty.path "alloc::vec::Vec")
@@ -38796,23 +40145,13 @@ Module normalized.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.path "move_binary_format::file_format::CodeUnit" ]
-                                        ]
-                                    ]
-                                    (Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
-                                      []
-                                      [
-                                        Ty.path "move_binary_format::normalized::Bytecode";
-                                        Ty.path "alloc::alloc::Global"
-                                      ]),
+                                      Ty.path "move_binary_format::normalized::Bytecode";
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
                                   M.alloc (|
                                     Ty.apply
                                       (Ty.path "&")
@@ -38855,15 +40194,12 @@ Module normalized.
                                                   ];
                                                 Ty.function
                                                   [
-                                                    Ty.tuple
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
                                                       [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_binary_format::file_format::Bytecode"
-                                                          ]
+                                                        Ty.path
+                                                          "move_binary_format::file_format::Bytecode"
                                                       ]
                                                   ]
                                                   (Ty.path
@@ -38899,15 +40235,12 @@ Module normalized.
                                                     ];
                                                   Ty.function
                                                     [
-                                                      Ty.tuple
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
                                                         [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [
-                                                              Ty.path
-                                                                "move_binary_format::file_format::Bytecode"
-                                                            ]
+                                                          Ty.path
+                                                            "move_binary_format::file_format::Bytecode"
                                                         ]
                                                     ]
                                                     (Ty.path
@@ -38931,15 +40264,12 @@ Module normalized.
                                                     "move_binary_format::normalized::Bytecode";
                                                   Ty.function
                                                     [
-                                                      Ty.tuple
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
                                                         [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [
-                                                              Ty.path
-                                                                "move_binary_format::file_format::Bytecode"
-                                                            ]
+                                                          Ty.path
+                                                            "move_binary_format::file_format::Bytecode"
                                                         ]
                                                     ]
                                                     (Ty.path
@@ -39022,21 +40352,8 @@ Module normalized.
                                                       | [ α0 ] =>
                                                         ltac:(M.monadic
                                                           (M.match_operator (|
-                                                            Ty.function
-                                                              [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "move_binary_format::file_format::Bytecode"
-                                                                      ]
-                                                                  ]
-                                                              ]
-                                                              (Ty.path
-                                                                "move_binary_format::normalized::Bytecode"),
+                                                            Ty.path
+                                                              "move_binary_format::normalized::Bytecode",
                                                             M.alloc (|
                                                               Ty.apply
                                                                 (Ty.path "&")
@@ -39179,13 +40496,10 @@ Module normalized.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ];
                             Ty.function
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "move_binary_format::file_format::SignatureToken" ]
-                                  ]
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                               ]
                               (Ty.path "move_binary_format::normalized::Type")
                           ],
@@ -39215,14 +40529,10 @@ Module normalized.
                                 [ Ty.path "move_binary_format::file_format::SignatureToken" ];
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
-                                        ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                                 ]
                                 (Ty.path "move_binary_format::normalized::Type")
                             ],
@@ -39240,14 +40550,10 @@ Module normalized.
                               Ty.path "move_binary_format::normalized::Type";
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
-                                        ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                                 ]
                                 (Ty.path "move_binary_format::normalized::Type")
                             ]
@@ -39352,20 +40658,7 @@ Module normalized.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::SignatureToken"
-                                                  ]
-                                              ]
-                                          ]
-                                          (Ty.path "move_binary_format::normalized::Type"),
+                                        Ty.path "move_binary_format::normalized::Type",
                                         M.alloc (|
                                           Ty.apply
                                             (Ty.path "&")
@@ -39438,13 +40731,10 @@ Module normalized.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ];
                             Ty.function
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "move_binary_format::file_format::SignatureToken" ]
-                                  ]
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                               ]
                               (Ty.path "move_binary_format::normalized::Type")
                           ],
@@ -39474,14 +40764,10 @@ Module normalized.
                                 [ Ty.path "move_binary_format::file_format::SignatureToken" ];
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
-                                        ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                                 ]
                                 (Ty.path "move_binary_format::normalized::Type")
                             ],
@@ -39499,14 +40785,10 @@ Module normalized.
                               Ty.path "move_binary_format::normalized::Type";
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
-                                        ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                                 ]
                                 (Ty.path "move_binary_format::normalized::Type")
                             ]
@@ -39611,20 +40893,7 @@ Module normalized.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::SignatureToken"
-                                                  ]
-                                              ]
-                                          ]
-                                          (Ty.path "move_binary_format::normalized::Type"),
+                                        Ty.path "move_binary_format::normalized::Type",
                                         M.alloc (|
                                           Ty.apply
                                             (Ty.path "&")
@@ -40320,10 +41589,7 @@ Module normalized.
                                     Ty.path "alloc::alloc::Global"
                                   ];
                                 Ty.function
-                                  [
-                                    Ty.tuple
-                                      [ Ty.path "move_core_types::language_storage::TypeTag" ]
-                                  ]
+                                  [ Ty.path "move_core_types::language_storage::TypeTag" ]
                                   (Ty.path "move_binary_format::normalized::Type")
                               ],
                             [],
@@ -40354,10 +41620,7 @@ Module normalized.
                                       Ty.path "alloc::alloc::Global"
                                     ];
                                   Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "move_core_types::language_storage::TypeTag" ]
-                                    ]
+                                    [ Ty.path "move_core_types::language_storage::TypeTag" ]
                                     (Ty.path "move_binary_format::normalized::Type")
                                 ],
                               M.get_trait_method (|
@@ -40376,10 +41639,7 @@ Module normalized.
                                 [
                                   Ty.path "move_binary_format::normalized::Type";
                                   Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "move_core_types::language_storage::TypeTag" ]
-                                    ]
+                                    [ Ty.path "move_core_types::language_storage::TypeTag" ]
                                     (Ty.path "move_binary_format::normalized::Type")
                                 ]
                               |),
@@ -40424,15 +41684,7 @@ Module normalized.
                                       | [ α0 ] =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
-                                            Ty.function
-                                              [
-                                                Ty.tuple
-                                                  [
-                                                    Ty.path
-                                                      "move_core_types::language_storage::TypeTag"
-                                                  ]
-                                              ]
-                                              (Ty.path "move_binary_format::normalized::Type"),
+                                            Ty.path "move_binary_format::normalized::Type",
                                             M.alloc (|
                                               Ty.path "move_core_types::language_storage::TypeTag",
                                               α0
@@ -41661,15 +42913,12 @@ Module normalized.
                                                 ];
                                               Ty.function
                                                 [
-                                                  Ty.tuple
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
                                                     [
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "move_binary_format::file_format::SignatureToken"
-                                                        ]
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
                                                     ]
                                                 ]
                                                 (Ty.path "move_binary_format::normalized::Type")
@@ -41703,15 +42952,12 @@ Module normalized.
                                                   ];
                                                 Ty.function
                                                   [
-                                                    Ty.tuple
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
                                                       [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_binary_format::file_format::SignatureToken"
-                                                          ]
+                                                        Ty.path
+                                                          "move_binary_format::file_format::SignatureToken"
                                                       ]
                                                   ]
                                                   (Ty.path "move_binary_format::normalized::Type")
@@ -41733,15 +42979,12 @@ Module normalized.
                                                 Ty.path "move_binary_format::normalized::Type";
                                                 Ty.function
                                                   [
-                                                    Ty.tuple
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
                                                       [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_binary_format::file_format::SignatureToken"
-                                                          ]
+                                                        Ty.path
+                                                          "move_binary_format::file_format::SignatureToken"
                                                       ]
                                                   ]
                                                   (Ty.path "move_binary_format::normalized::Type")
@@ -41825,21 +43068,8 @@ Module normalized.
                                                     | [ α0 ] =>
                                                       ltac:(M.monadic
                                                         (M.match_operator (|
-                                                          Ty.function
-                                                            [
-                                                              Ty.tuple
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
-                                                                    [
-                                                                      Ty.path
-                                                                        "move_binary_format::file_format::SignatureToken"
-                                                                    ]
-                                                                ]
-                                                            ]
-                                                            (Ty.path
-                                                              "move_binary_format::normalized::Type"),
+                                                          Ty.path
+                                                            "move_binary_format::normalized::Type",
                                                           M.alloc (|
                                                             Ty.apply
                                                               (Ty.path "&")
@@ -45811,15 +47041,12 @@ Module normalized.
                                       [ Ty.path "move_binary_format::file_format::SignatureToken" ];
                                     Ty.function
                                       [
-                                        Ty.tuple
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
                                           [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "move_binary_format::file_format::SignatureToken"
-                                              ]
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
                                           ]
                                       ]
                                       (Ty.path "move_binary_format::normalized::Type")
@@ -45851,15 +47078,12 @@ Module normalized.
                                         ];
                                       Ty.function
                                         [
-                                          Ty.tuple
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
                                             [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::SignatureToken"
-                                                ]
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken"
                                             ]
                                         ]
                                         (Ty.path "move_binary_format::normalized::Type")
@@ -45878,15 +47102,12 @@ Module normalized.
                                       Ty.path "move_binary_format::normalized::Type";
                                       Ty.function
                                         [
-                                          Ty.tuple
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
                                             [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::SignatureToken"
-                                                ]
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken"
                                             ]
                                         ]
                                         (Ty.path "move_binary_format::normalized::Type")
@@ -45994,20 +47215,7 @@ Module normalized.
                                           | [ α0 ] =>
                                             ltac:(M.monadic
                                               (M.match_operator (|
-                                                Ty.function
-                                                  [
-                                                    Ty.tuple
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_binary_format::file_format::SignatureToken"
-                                                          ]
-                                                      ]
-                                                  ]
-                                                  (Ty.path "move_binary_format::normalized::Type"),
+                                                Ty.path "move_binary_format::normalized::Type",
                                                 M.alloc (|
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -46247,13 +47455,10 @@ Module normalized.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ];
                             Ty.function
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "move_binary_format::file_format::SignatureToken" ]
-                                  ]
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                               ]
                               (Ty.path "move_binary_format::normalized::Type")
                           ],
@@ -46283,14 +47488,10 @@ Module normalized.
                                 [ Ty.path "move_binary_format::file_format::SignatureToken" ];
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
-                                        ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                                 ]
                                 (Ty.path "move_binary_format::normalized::Type")
                             ],
@@ -46308,14 +47509,10 @@ Module normalized.
                               Ty.path "move_binary_format::normalized::Type";
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
-                                        ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                                 ]
                                 (Ty.path "move_binary_format::normalized::Type")
                             ]
@@ -46416,20 +47613,7 @@ Module normalized.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::SignatureToken"
-                                                  ]
-                                              ]
-                                          ]
-                                          (Ty.path "move_binary_format::normalized::Type"),
+                                        Ty.path "move_binary_format::normalized::Type",
                                         M.alloc (|
                                           Ty.apply
                                             (Ty.path "&")

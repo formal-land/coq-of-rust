@@ -65,6 +65,23 @@ pub(crate) enum LambdaForm {
     ListFunction,
 }
 
+#[derive(Debug, Eq, PartialEq, Serialize)]
+pub(crate) enum PointerCoercionSafety {
+    Unsafe,
+    Safe,
+}
+
+#[derive(Debug, Eq, PartialEq, Serialize)]
+pub(crate) enum PointerCoercion {
+    ReifyFnPointer,
+    UnsafeFnPointer,
+    ClosureFnPointer(PointerCoercionSafety),
+    MutToConstPointer,
+    ArrayToPointer,
+    Unsize,
+    DynStar,
+}
+
 /// Enum [Expr] represents the AST of rust terms.
 #[derive(Debug, Eq, PartialEq, Serialize)]
 pub(crate) enum Expr {
@@ -151,6 +168,11 @@ pub(crate) enum Expr {
         ty: Rc<CoqType>,
         scrutinee: Rc<Expr>,
         arms: Vec<Rc<Expr>>,
+    },
+    PointerCoercion {
+        coercion: PointerCoercion,
+        source_ty: Rc<CoqType>,
+        target_ty: Rc<CoqType>,
     },
     Loop {
         ty: Rc<CoqType>,
@@ -289,6 +311,11 @@ impl Expr {
                 init,
                 body,
             } => init.has_return() || body.has_return(),
+            Expr::PointerCoercion {
+                coercion: _,
+                source_ty: _,
+                target_ty: _,
+            } => false,
             Expr::Loop { ty: _, body } => body.has_return(),
             Expr::Match {
                 ty: _,
@@ -473,6 +500,44 @@ impl Literal {
             Literal::Char(c) => format!("char_{}", c),
             Literal::String(s) => format!("string_{}", s),
             Literal::Error => "error".to_string(),
+        }
+    }
+}
+
+impl PointerCoercionSafety {
+    pub(crate) fn to_coq(&self) -> Rc<coq::Expression> {
+        match self {
+            PointerCoercionSafety::Unsafe => {
+                coq::Expression::just_name("M.PointerCoercion.Safety.Unsafe")
+            }
+            PointerCoercionSafety::Safe => {
+                coq::Expression::just_name("M.PointerCoercion.Safety.Safe")
+            }
+        }
+    }
+}
+
+impl PointerCoercion {
+    pub(crate) fn to_coq(&self) -> Rc<coq::Expression> {
+        match self {
+            PointerCoercion::ReifyFnPointer => {
+                coq::Expression::just_name("M.PointerCoercion.ReifyFnPointer")
+            }
+            PointerCoercion::UnsafeFnPointer => {
+                coq::Expression::just_name("M.PointerCoercion.UnsafeFnPointer")
+            }
+            PointerCoercion::ClosureFnPointer(safety) => {
+                coq::Expression::just_name("M.PointerCoercion.ClosureFnPointer")
+                    .apply(safety.to_coq())
+            }
+            PointerCoercion::MutToConstPointer => {
+                coq::Expression::just_name("M.PointerCoercion.MutToConstPointer")
+            }
+            PointerCoercion::ArrayToPointer => {
+                coq::Expression::just_name("M.PointerCoercion.ArrayToPointer")
+            }
+            PointerCoercion::Unsize => coq::Expression::just_name("M.PointerCoercion.Unsize"),
+            PointerCoercion::DynStar => coq::Expression::just_name("M.PointerCoercion.DynStar"),
         }
     }
 }
@@ -708,6 +773,15 @@ impl Expr {
                 Rc::new(coq::Expression::List {
                     exprs: arms.iter().map(|arm| arm.to_coq()).collect(),
                 }),
+            ]),
+            Expr::PointerCoercion {
+                coercion,
+                source_ty,
+                target_ty,
+            } => coq::Expression::just_name("M.pointer_coercion").apply_many(&[
+                coercion.to_coq(),
+                source_ty.to_coq(),
+                target_ty.to_coq(),
             ]),
             Expr::Loop { ty, body } => coq::Expression::just_name("M.loop")
                 .monadic_apply_many(&[ty.to_coq(), coq::Expression::monadic(body.to_coq())]),

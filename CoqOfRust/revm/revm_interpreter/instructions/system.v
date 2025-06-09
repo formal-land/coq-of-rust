@@ -3493,40 +3493,79 @@ Module instructions.
                                                   []
                                                 |),
                                                 [
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.borrow (|
-                                                      Pointer.Kind.MutRef,
-                                                      M.deref (|
-                                                        M.call_closure (|
+                                                  M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&mut")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ],
+                                                    M.pointer_coercion
+                                                      M.PointerCoercion.Unsize
+                                                      (Ty.apply
+                                                        (Ty.path "&mut")
+                                                        []
+                                                        [
                                                           Ty.apply
-                                                            (Ty.path "&mut")
+                                                            (Ty.path "array")
+                                                            [ Value.Integer IntegerKind.Usize 32 ]
+                                                            [ Ty.path "u8" ]
+                                                        ])
+                                                      (Ty.apply
+                                                        (Ty.path "&mut")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "slice")
                                                             []
-                                                            [
+                                                            [ Ty.path "u8" ]
+                                                        ]),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (|
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&mut")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "array")
+                                                                  [
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      32
+                                                                  ]
+                                                                  [ Ty.path "u8" ]
+                                                              ],
+                                                            M.get_trait_method (|
+                                                              "core::ops::deref::DerefMut",
                                                               Ty.apply
-                                                                (Ty.path "array")
+                                                                (Ty.path
+                                                                  "alloy_primitives::bits::fixed::FixedBytes")
                                                                 [ Value.Integer IntegerKind.Usize 32
                                                                 ]
-                                                                [ Ty.path "u8" ]
-                                                            ],
-                                                          M.get_trait_method (|
-                                                            "core::ops::deref::DerefMut",
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "alloy_primitives::bits::fixed::FixedBytes")
-                                                              [ Value.Integer IntegerKind.Usize 32 ]
+                                                                [],
                                                               [],
-                                                            [],
-                                                            [],
-                                                            "deref_mut",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [ M.borrow (| Pointer.Kind.MutRef, word |)
-                                                          ]
+                                                              [],
+                                                              "deref_mut",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                word
+                                                              |)
+                                                            ]
+                                                          |)
                                                         |)
                                                       |)
-                                                    |))
+                                                    ]
+                                                  |)
                                                 ]
                                               |);
                                               M.read (| count |)

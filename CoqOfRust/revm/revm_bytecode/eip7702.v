@@ -207,59 +207,83 @@ Module eip7702.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip7702Bytecode" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "delegated_address" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "revm_bytecode::eip7702::Eip7702Bytecode",
-                        "delegated_address"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bits::address::Address" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_bytecode::eip7702::Eip7702Bytecode",
+                          "delegated_address"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "version" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "revm_bytecode::eip7702::Eip7702Bytecode",
-                        "version"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.path "u8" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_bytecode::eip7702::Eip7702Bytecode",
+                          "version"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "raw" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_bytecode::eip7702::Eip7702Bytecode",
-                            "raw"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_bytecode::eip7702::Eip7702Bytecode",
+                              "raw"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

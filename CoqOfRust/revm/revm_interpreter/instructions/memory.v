@@ -1523,41 +1523,62 @@ Module instructions.
                                     |)
                                   |);
                                   M.read (| offset |);
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.alloc (|
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer IntegerKind.Usize 32 ]
-                                              [ Ty.path "u8" ],
-                                            M.call_closure (|
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 32 ]
+                                            [ Ty.path "u8" ]
+                                        ])
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
                                               Ty.apply
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 32 ]
                                                 [ Ty.path "u8" ],
-                                              M.get_associated_function (|
+                                              M.call_closure (|
                                                 Ty.apply
-                                                  (Ty.path "ruint::Uint")
-                                                  [
-                                                    Value.Integer IntegerKind.Usize 256;
-                                                    Value.Integer IntegerKind.Usize 4
-                                                  ]
-                                                  [],
-                                                "to_be_bytes",
-                                                [ Value.Integer IntegerKind.Usize 32 ],
-                                                []
-                                              |),
-                                              [ M.borrow (| Pointer.Kind.Ref, value |) ]
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 32 ]
+                                                  [ Ty.path "u8" ],
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 256;
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ]
+                                                    [],
+                                                  "to_be_bytes",
+                                                  [ Value.Integer IntegerKind.Usize 32 ],
+                                                  []
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.Ref, value |) ]
+                                              |)
                                             |)
                                           |)
                                         |)
                                       |)
-                                    |))
+                                    ]
+                                  |)
                                 ]
                               |) in
                             M.alloc (| Ty.tuple [], Value.Tuple [] |)
@@ -2238,44 +2259,65 @@ Module instructions.
                                     |)
                                   |);
                                   M.read (| offset |);
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.alloc (|
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer IntegerKind.Usize 1 ]
-                                              [ Ty.path "u8" ],
-                                            Value.Array
-                                              [
-                                                M.call_closure (|
-                                                  Ty.path "u8",
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path "ruint::Uint")
-                                                      [
-                                                        Value.Integer IntegerKind.Usize 256;
-                                                        Value.Integer IntegerKind.Usize 4
-                                                      ]
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 1 ]
+                                            [ Ty.path "u8" ]
+                                        ])
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 1 ]
+                                                [ Ty.path "u8" ],
+                                              Value.Array
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "u8",
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 256;
+                                                          Value.Integer IntegerKind.Usize 4
+                                                        ]
+                                                        [],
+                                                      "byte",
                                                       [],
-                                                    "byte",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (| Pointer.Kind.Ref, value |);
-                                                    Value.Integer IntegerKind.Usize 0
-                                                  ]
-                                                |)
-                                              ]
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (| Pointer.Kind.Ref, value |);
+                                                      Value.Integer IntegerKind.Usize 0
+                                                    ]
+                                                  |)
+                                                ]
+                                            |)
                                           |)
                                         |)
                                       |)
-                                    |))
+                                    ]
+                                  |)
                                 ]
                               |) in
                             M.alloc (| Ty.tuple [], Value.Tuple [] |)

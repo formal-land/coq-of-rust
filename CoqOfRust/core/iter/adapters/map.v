@@ -224,21 +224,34 @@ Module iter.
                             |)
                           |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::iter::adapters::map::Map",
-                                    "iter"
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply (Ty.path "&") [] [ I ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::map::Map",
+                                      "iter"
+                                    |)
                                   |)
                                 |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |)
                     |)
@@ -279,14 +292,14 @@ Module iter.
                   | [ α0; α1 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function [ Ty.tuple [ Acc; T ] ] Acc,
+                        Acc,
                         M.alloc (| Acc, α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let acc := M.copy (| Acc, γ |) in
                               M.match_operator (|
-                                Ty.function [ Ty.tuple [ Acc; T ] ] Acc,
+                                Acc,
                                 M.alloc (| T, α1 |),
                                 [
                                   fun γ =>
@@ -364,14 +377,14 @@ Module iter.
                   | [ α0; α1 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function [ Ty.tuple [ Acc; T ] ] R,
+                        R,
                         M.alloc (| Acc, α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let acc := M.copy (| Acc, γ |) in
                               M.match_operator (|
-                                Ty.function [ Ty.tuple [ Acc; T ] ] R,
+                                R,
                                 M.alloc (| T, α1 |),
                                 [
                                   fun γ =>

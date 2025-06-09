@@ -2074,27 +2074,34 @@ Module vec.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
               self
             |) in
-          (* MutToConstPointer *)
-          M.pointer_coercion
-            (M.call_closure (|
-              Ty.apply (Ty.path "*mut") [] [ T ],
-              M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
-                "ptr",
-                [],
-                []
-              |),
-              [
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "alloc::vec::Vec",
-                    "buf"
+          M.call_closure (|
+            Ty.apply (Ty.path "*const") [] [ T ],
+            M.pointer_coercion
+              M.PointerCoercion.MutToConstPointer
+              (Ty.apply (Ty.path "*mut") [] [ T ])
+              (Ty.apply (Ty.path "*const") [] [ T ]),
+            [
+              M.call_closure (|
+                Ty.apply (Ty.path "*mut") [] [ T ],
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
+                  "ptr",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::vec::Vec",
+                      "buf"
+                    |)
                   |)
-                |)
-              ]
-            |))))
+                ]
+              |)
+            ]
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -2471,25 +2478,32 @@ Module vec.
                 Ty.tuple [],
                 M.get_function (| "core::intrinsics::copy", [], [ T ] |),
                 [
-                  (* MutToConstPointer *)
-                  M.pointer_coercion
-                    (M.call_closure (|
-                      Ty.apply (Ty.path "*mut") [] [ T ],
-                      M.get_associated_function (|
+                  M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ T ],
+                    M.pointer_coercion
+                      M.PointerCoercion.MutToConstPointer
+                      (Ty.apply (Ty.path "*mut") [] [ T ])
+                      (Ty.apply (Ty.path "*const") [] [ T ]),
+                    [
+                      M.call_closure (|
                         Ty.apply (Ty.path "*mut") [] [ T ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| base_ptr |);
-                        M.call_closure (|
-                          Ty.path "usize",
-                          BinOp.Wrap.sub,
-                          [ M.read (| len |); Value.Integer IntegerKind.Usize 1 ]
-                        |)
-                      ]
-                    |));
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "*mut") [] [ T ],
+                          "add",
+                          [],
+                          []
+                        |),
+                        [
+                          M.read (| base_ptr |);
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.sub,
+                            [ M.read (| len |); Value.Integer IntegerKind.Usize 1 ]
+                          |)
+                        ]
+                      |)
+                    ]
+                  |);
                   M.call_closure (|
                     Ty.apply (Ty.path "*mut") [] [ T ],
                     M.get_associated_function (|
@@ -2737,7 +2751,14 @@ Module vec.
                                 Ty.tuple [],
                                 M.get_function (| "core::intrinsics::copy", [], [ T ] |),
                                 [
-                                  (* MutToConstPointer *) M.pointer_coercion (M.read (| p |));
+                                  M.call_closure (|
+                                    Ty.apply (Ty.path "*const") [] [ T ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.MutToConstPointer
+                                      (Ty.apply (Ty.path "*mut") [] [ T ])
+                                      (Ty.apply (Ty.path "*const") [] [ T ]),
+                                    [ M.read (| p |) ]
+                                  |);
                                   M.call_closure (|
                                     Ty.apply (Ty.path "*mut") [] [ T ],
                                     M.get_associated_function (|
@@ -2912,7 +2933,16 @@ Module vec.
                     M.call_closure (|
                       T,
                       M.get_function (| "core::ptr::read", [], [ T ] |),
-                      [ (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |)) ]
+                      [
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*const") [] [ T ],
+                          M.pointer_coercion
+                            M.PointerCoercion.MutToConstPointer
+                            (Ty.apply (Ty.path "*mut") [] [ T ])
+                            (Ty.apply (Ty.path "*const") [] [ T ]),
+                          [ M.read (| ptr |) ]
+                        |)
+                      ]
                     |)
                   |) in
                 let~ _ : Ty.tuple [] :=
@@ -2920,18 +2950,25 @@ Module vec.
                     Ty.tuple [],
                     M.get_function (| "core::intrinsics::copy", [], [ T ] |),
                     [
-                      (* MutToConstPointer *)
-                      M.pointer_coercion
-                        (M.call_closure (|
-                          Ty.apply (Ty.path "*mut") [] [ T ],
-                          M.get_associated_function (|
+                      M.call_closure (|
+                        Ty.apply (Ty.path "*const") [] [ T ],
+                        M.pointer_coercion
+                          M.PointerCoercion.MutToConstPointer
+                          (Ty.apply (Ty.path "*mut") [] [ T ])
+                          (Ty.apply (Ty.path "*const") [] [ T ]),
+                        [
+                          M.call_closure (|
                             Ty.apply (Ty.path "*mut") [] [ T ],
-                            "add",
-                            [],
-                            []
-                          |),
-                          [ M.read (| ptr |); Value.Integer IntegerKind.Usize 1 ]
-                        |));
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "*mut") [] [ T ],
+                              "add",
+                              [],
+                              []
+                            |),
+                            [ M.read (| ptr |); Value.Integer IntegerKind.Usize 1 ]
+                          |)
+                        ]
+                      |);
                       M.read (| ptr |);
                       M.call_closure (|
                         Ty.path "usize",
@@ -3005,8 +3042,7 @@ Module vec.
                   Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                   "retain_mut",
                   [],
-                  [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ] (Ty.path "bool")
-                  ]
+                  [ Ty.function [ Ty.apply (Ty.path "&mut") [] [ T ] ] (Ty.path "bool") ]
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
@@ -3017,9 +3053,7 @@ Module vec.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
-                                (Ty.path "bool"),
+                              Ty.path "bool",
                               M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], α0 |),
                               [
                                 fun γ =>
@@ -3325,10 +3359,7 @@ Module vec.
               [],
               [
                 Ty.function
-                  [
-                    Ty.tuple
-                      [ Ty.apply (Ty.path "&mut") [] [ T ]; Ty.apply (Ty.path "&mut") [] [ T ] ]
-                  ]
+                  [ Ty.apply (Ty.path "&mut") [] [ T ]; Ty.apply (Ty.path "&mut") [] [ T ] ]
                   (Ty.path "bool")
               ]
             |),
@@ -3341,30 +3372,14 @@ Module vec.
                     | [ α0; α1 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply (Ty.path "&mut") [] [ T ];
-                                  Ty.apply (Ty.path "&mut") [] [ T ]
-                                ]
-                            ]
-                            (Ty.path "bool"),
+                          Ty.path "bool",
                           M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let a := M.copy (| Ty.apply (Ty.path "&mut") [] [ T ], γ |) in
                                 M.match_operator (|
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&mut") [] [ T ];
-                                          Ty.apply (Ty.path "&mut") [] [ T ]
-                                        ]
-                                    ]
-                                    (Ty.path "bool"),
+                                  Ty.path "bool",
                                   M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], α1 |),
                                   [
                                     fun γ =>
@@ -4080,8 +4095,14 @@ Module vec.
                                                       [ T ]
                                                     |),
                                                     [
-                                                      (* MutToConstPointer *)
-                                                      M.pointer_coercion (M.read (| read_ptr |));
+                                                      M.call_closure (|
+                                                        Ty.apply (Ty.path "*const") [] [ T ],
+                                                        M.pointer_coercion
+                                                          M.PointerCoercion.MutToConstPointer
+                                                          (Ty.apply (Ty.path "*mut") [] [ T ])
+                                                          (Ty.apply (Ty.path "*const") [] [ T ]),
+                                                        [ M.read (| read_ptr |) ]
+                                                      |);
                                                       M.read (| write_ptr |);
                                                       Value.Integer IntegerKind.Usize 1
                                                     ]
@@ -7063,10 +7084,7 @@ Module vec.
               [],
               [
                 Ty.function
-                  [
-                    Ty.tuple
-                      [ Ty.apply (Ty.path "&mut") [] [ T ]; Ty.apply (Ty.path "&mut") [] [ T ] ]
-                  ]
+                  [ Ty.apply (Ty.path "&mut") [] [ T ]; Ty.apply (Ty.path "&mut") [] [ T ] ]
                   (Ty.path "bool")
               ]
             |),
@@ -7079,30 +7097,14 @@ Module vec.
                     | [ α0; α1 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply (Ty.path "&mut") [] [ T ];
-                                  Ty.apply (Ty.path "&mut") [] [ T ]
-                                ]
-                            ]
-                            (Ty.path "bool"),
+                          Ty.path "bool",
                           M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let a := M.copy (| Ty.apply (Ty.path "&mut") [] [ T ], γ |) in
                                 M.match_operator (|
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&mut") [] [ T ];
-                                          Ty.apply (Ty.path "&mut") [] [ T ]
-                                        ]
-                                    ]
-                                    (Ty.path "bool"),
+                                  Ty.path "bool",
                                   M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], α1 |),
                                   [
                                     fun γ =>
@@ -7887,7 +7889,7 @@ Module vec.
                                   [],
                                   "for_each",
                                   [],
-                                  [ Ty.function [ Ty.tuple [ T ] ] (Ty.tuple []) ]
+                                  [ Ty.function [ T ] (Ty.tuple []) ]
                                 |),
                                 [
                                   M.read (| iterator |);
@@ -7898,7 +7900,7 @@ Module vec.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function [ Ty.tuple [ T ] ] (Ty.tuple []),
+                                              Ty.tuple [],
                                               M.alloc (| T, α0 |),
                                               [
                                                 fun γ =>
@@ -8618,18 +8620,15 @@ Module vec.
                                 [
                                   Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply (Ty.path "&") [] [ T ];
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
                                         [
-                                          Ty.apply (Ty.path "&") [] [ T ];
                                           Ty.apply
-                                            (Ty.path "&mut")
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                             []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                                []
-                                                [ T ]
-                                            ]
+                                            [ T ]
                                         ]
                                     ]
                                 ]
@@ -8639,11 +8638,7 @@ Module vec.
                           [],
                           "for_each",
                           [],
-                          [
-                            Ty.function
-                              [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
-                              (Ty.tuple [])
-                          ]
+                          [ Ty.function [ Ty.apply (Ty.path "&mut") [] [ T ] ] (Ty.tuple []) ]
                         |),
                         [
                           M.call_closure (|
@@ -8670,18 +8665,15 @@ Module vec.
                                   [
                                     Ty.tuple
                                       [
-                                        Ty.tuple
+                                        Ty.apply (Ty.path "&") [] [ T ];
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
                                           [
-                                            Ty.apply (Ty.path "&") [] [ T ];
                                             Ty.apply
-                                              (Ty.path "&mut")
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                               []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                                  []
-                                                  [ T ]
-                                              ]
+                                              [ T ]
                                           ]
                                       ]
                                   ]
@@ -8714,18 +8706,15 @@ Module vec.
                                   [
                                     Ty.tuple
                                       [
-                                        Ty.tuple
+                                        Ty.apply (Ty.path "&") [] [ T ];
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
                                           [
-                                            Ty.apply (Ty.path "&") [] [ T ];
                                             Ty.apply
-                                              (Ty.path "&mut")
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                               []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                                  []
-                                                  [ T ]
-                                              ]
+                                              [ T ]
                                           ]
                                       ]
                                   ]
@@ -8782,27 +8771,7 @@ Module vec.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.apply (Ty.path "&") [] [ T ];
-                                                      Ty.apply
-                                                        (Ty.path "&mut")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "core::mem::maybe_uninit::MaybeUninit")
-                                                            []
-                                                            [ T ]
-                                                        ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.apply (Ty.path "&mut") [] [ T ]),
+                                          Ty.apply (Ty.path "&mut") [] [ T ],
                                           M.alloc (|
                                             Ty.tuple
                                               [
@@ -8896,9 +8865,7 @@ Module vec.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
-                                        (Ty.tuple []),
+                                      Ty.tuple [],
                                       M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], α0 |),
                                       [
                                         fun γ =>
@@ -9951,66 +9918,18 @@ Module vec.
                             Ty.path "bool"
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      (* MutToConstPointer *)
-                      M.pointer_coercion
-                        (M.call_closure (|
-                          Ty.apply (Ty.path "*mut") [] [ T ],
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "*mut") [] [ T ],
-                            "wrapping_byte_add",
-                            [],
-                            []
-                          |),
-                          [
-                            M.read (| begin |);
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
-                                      M.get_trait_method (|
-                                        "core::ops::deref::Deref",
-                                        Ty.apply
-                                          (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                          []
-                                          [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
-                                        [],
-                                        [],
-                                        "deref",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, me |) ]
-                                    |)
-                                  |)
-                                |)
-                              ]
-                            |)
-                          ]
-                        |))));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.cast
-                        (Ty.apply (Ty.path "*const") [] [ T ])
-                        (* MutToConstPointer *)
-                        (M.pointer_coercion
-                          (M.call_closure (|
+                      M.call_closure (|
+                        Ty.apply (Ty.path "*const") [] [ T ],
+                        M.pointer_coercion
+                          M.PointerCoercion.MutToConstPointer
+                          (Ty.apply (Ty.path "*mut") [] [ T ])
+                          (Ty.apply (Ty.path "*const") [] [ T ]),
+                        [
+                          M.call_closure (|
                             Ty.apply (Ty.path "*mut") [] [ T ],
                             M.get_associated_function (|
                               Ty.apply (Ty.path "*mut") [] [ T ],
-                              "add",
+                              "wrapping_byte_add",
                               [],
                               []
                             |),
@@ -10052,7 +9971,69 @@ Module vec.
                                 ]
                               |)
                             ]
-                          |)))))
+                          |)
+                        ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.cast
+                        (Ty.apply (Ty.path "*const") [] [ T ])
+                        (M.call_closure (|
+                          Ty.apply (Ty.path "*const") [] [ T ],
+                          M.pointer_coercion
+                            M.PointerCoercion.MutToConstPointer
+                            (Ty.apply (Ty.path "*mut") [] [ T ])
+                            (Ty.apply (Ty.path "*const") [] [ T ]),
+                          [
+                            M.call_closure (|
+                              Ty.apply (Ty.path "*mut") [] [ T ],
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "*mut") [] [ T ],
+                                "add",
+                                [],
+                                []
+                              |),
+                              [
+                                M.read (| begin |);
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                                          M.get_trait_method (|
+                                            "core::ops::deref::Deref",
+                                            Ty.apply
+                                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                              []
+                                              [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                                            [],
+                                            [],
+                                            "deref",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.borrow (| Pointer.Kind.Ref, me |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |)
+                              ]
+                            |)
+                          ]
+                        |))))
                 ]
               |) in
             let~ cap : Ty.path "usize" :=
@@ -11579,24 +11560,40 @@ Module vec.
               [ Ty.path "alloc::alloc::Global" ]
             |),
             [
-              (* Unsize *)
-              M.pointer_coercion
-                (M.call_closure (|
-                  Ty.apply
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
                     (Ty.path "alloc::boxed::Box")
                     []
-                    [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
-                  M.get_associated_function (|
+                    [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ])
+                  (Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ]),
+                [
+                  M.call_closure (|
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
                       []
                       [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
-                    "new",
-                    [],
-                    []
-                  |),
-                  [ M.read (| s |) ]
-                |))
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
+                      "new",
+                      [],
+                      []
+                    |),
+                    [ M.read (| s |) ]
+                  |)
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

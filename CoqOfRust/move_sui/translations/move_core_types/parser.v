@@ -975,12 +975,25 @@ Module parser.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Whitespace" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -1011,12 +1024,25 @@ Module parser.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Name" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -1047,12 +1073,25 @@ Module parser.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Address" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -1083,12 +1122,25 @@ Module parser.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U8" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -1119,12 +1171,25 @@ Module parser.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U16" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -1155,12 +1220,25 @@ Module parser.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U32" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -1191,12 +1269,25 @@ Module parser.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U64" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -1227,12 +1318,25 @@ Module parser.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U128" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -1263,12 +1367,25 @@ Module parser.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U256" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -1299,12 +1416,25 @@ Module parser.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Bytes" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -9651,18 +9781,15 @@ Module parser.
                                                       [
                                                         Ty.function
                                                           [
-                                                            Ty.tuple
+                                                            Ty.apply
+                                                              (Ty.path "&mut")
+                                                              []
                                                               [
                                                                 Ty.apply
-                                                                  (Ty.path "&mut")
+                                                                  (Ty.path
+                                                                    "move_core_types::parser::Parser")
                                                                   []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "move_core_types::parser::Parser")
-                                                                      []
-                                                                      [ I ]
-                                                                  ]
+                                                                  [ I ]
                                                               ]
                                                           ]
                                                           (Ty.apply
@@ -9689,31 +9816,14 @@ Module parser.
                                                             | [ α0 ] =>
                                                               ltac:(M.monadic
                                                                 (M.match_operator (|
-                                                                  Ty.function
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
                                                                     [
-                                                                      Ty.tuple
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path "&mut")
-                                                                            []
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "move_core_types::parser::Parser")
-                                                                                []
-                                                                                [ I ]
-                                                                            ]
-                                                                        ]
-                                                                    ]
-                                                                    (Ty.apply
-                                                                      (Ty.path
-                                                                        "core::result::Result")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "move_core_types::language_storage::TypeTag";
-                                                                        Ty.path "anyhow::Error"
-                                                                      ]),
+                                                                      Ty.path
+                                                                        "move_core_types::language_storage::TypeTag";
+                                                                      Ty.path "anyhow::Error"
+                                                                    ],
                                                                   M.alloc (|
                                                                     Ty.apply
                                                                       (Ty.path "&mut")
@@ -12808,15 +12918,7 @@ Module parser.
                           [ Ty.path "move_core_types::parser::Token"; Ty.path "alloc::alloc::Global"
                           ];
                         Ty.function
-                          [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_core_types::parser::Token" ]
-                              ]
-                          ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::parser::Token" ] ]
                           (Ty.path "bool")
                       ],
                     [],
@@ -12844,14 +12946,7 @@ Module parser.
                               Ty.path "alloc::alloc::Global"
                             ];
                           Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "move_core_types::parser::Token" ]
-                                ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::parser::Token" ]
                             ]
                             (Ty.path "bool")
                         ],
@@ -12868,14 +12963,7 @@ Module parser.
                         [],
                         [
                           Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "move_core_types::parser::Token" ]
-                                ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::parser::Token" ]
                             ]
                             (Ty.path "bool")
                         ]
@@ -13086,17 +13174,7 @@ Module parser.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.path "move_core_types::parser::Token" ]
-                                          ]
-                                      ]
-                                      (Ty.path "bool"),
+                                    Ty.path "bool",
                                     M.alloc (|
                                       Ty.apply
                                         (Ty.path "&")
@@ -13517,23 +13595,20 @@ Module parser.
             [
               Ty.function
                 [
-                  Ty.tuple
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
                     [
                       Ty.apply
-                        (Ty.path "&mut")
+                        (Ty.path "move_core_types::parser::Parser")
                         []
                         [
                           Ty.apply
-                            (Ty.path "move_core_types::parser::Parser")
+                            (Ty.path "alloc::vec::into_iter::IntoIter")
                             []
                             [
-                              Ty.apply
-                                (Ty.path "alloc::vec::into_iter::IntoIter")
-                                []
-                                [
-                                  Ty.path "move_core_types::parser::Token";
-                                  Ty.path "alloc::alloc::Global"
-                                ]
+                              Ty.path "move_core_types::parser::Token";
+                              Ty.path "alloc::alloc::Global"
                             ]
                         ]
                     ]
@@ -13563,39 +13638,16 @@ Module parser.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "move_core_types::parser::Parser")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::into_iter::IntoIter")
-                                          []
-                                          [
-                                            Ty.path "move_core_types::parser::Token";
-                                            Ty.path "alloc::alloc::Global"
-                                          ]
-                                      ]
-                                  ]
-                              ]
-                          ]
-                          (Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ];
-                              Ty.path "anyhow::Error"
-                            ]),
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ];
+                            Ty.path "anyhow::Error"
+                          ],
                         M.alloc (|
                           Ty.apply
                             (Ty.path "&mut")
@@ -13672,23 +13724,20 @@ Module parser.
                                   [
                                     Ty.function
                                       [
-                                        Ty.tuple
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
                                           [
                                             Ty.apply
-                                              (Ty.path "&mut")
+                                              (Ty.path "move_core_types::parser::Parser")
                                               []
                                               [
                                                 Ty.apply
-                                                  (Ty.path "move_core_types::parser::Parser")
+                                                  (Ty.path "alloc::vec::into_iter::IntoIter")
                                                   []
                                                   [
-                                                    Ty.apply
-                                                      (Ty.path "alloc::vec::into_iter::IntoIter")
-                                                      []
-                                                      [
-                                                        Ty.path "move_core_types::parser::Token";
-                                                        Ty.path "alloc::alloc::Global"
-                                                      ]
+                                                    Ty.path "move_core_types::parser::Token";
+                                                    Ty.path "alloc::alloc::Global"
                                                   ]
                                               ]
                                           ]
@@ -13713,39 +13762,13 @@ Module parser.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
                                                 [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "&mut")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "move_core_types::parser::Parser")
-                                                            []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "alloc::vec::into_iter::IntoIter")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "move_core_types::parser::Token";
-                                                                  Ty.path "alloc::alloc::Global"
-                                                                ]
-                                                            ]
-                                                        ]
-                                                    ]
-                                                ]
-                                                (Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.path "alloc::string::String";
-                                                    Ty.path "anyhow::Error"
-                                                  ]),
+                                                  Ty.path "alloc::string::String";
+                                                  Ty.path "anyhow::Error"
+                                                ],
                                               M.alloc (|
                                                 Ty.apply
                                                   (Ty.path "&mut")
@@ -13884,23 +13907,20 @@ Module parser.
             [
               Ty.function
                 [
-                  Ty.tuple
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
                     [
                       Ty.apply
-                        (Ty.path "&mut")
+                        (Ty.path "move_core_types::parser::Parser")
                         []
                         [
                           Ty.apply
-                            (Ty.path "move_core_types::parser::Parser")
+                            (Ty.path "alloc::vec::into_iter::IntoIter")
                             []
                             [
-                              Ty.apply
-                                (Ty.path "alloc::vec::into_iter::IntoIter")
-                                []
-                                [
-                                  Ty.path "move_core_types::parser::Token";
-                                  Ty.path "alloc::alloc::Global"
-                                ]
+                              Ty.path "move_core_types::parser::Token";
+                              Ty.path "alloc::alloc::Global"
                             ]
                         ]
                     ]
@@ -13936,42 +13956,19 @@ Module parser.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
                           [
-                            Ty.tuple
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
                               [
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "move_core_types::parser::Parser")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::into_iter::IntoIter")
-                                          []
-                                          [
-                                            Ty.path "move_core_types::parser::Token";
-                                            Ty.path "alloc::alloc::Global"
-                                          ]
-                                      ]
-                                  ]
-                              ]
-                          ]
-                          (Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [
-                                  Ty.path "move_core_types::language_storage::TypeTag";
-                                  Ty.path "alloc::alloc::Global"
-                                ];
-                              Ty.path "anyhow::Error"
-                            ]),
+                                Ty.path "move_core_types::language_storage::TypeTag";
+                                Ty.path "alloc::alloc::Global"
+                              ];
+                            Ty.path "anyhow::Error"
+                          ],
                         M.alloc (|
                           Ty.apply
                             (Ty.path "&mut")
@@ -14048,23 +14045,20 @@ Module parser.
                                   [
                                     Ty.function
                                       [
-                                        Ty.tuple
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
                                           [
                                             Ty.apply
-                                              (Ty.path "&mut")
+                                              (Ty.path "move_core_types::parser::Parser")
                                               []
                                               [
                                                 Ty.apply
-                                                  (Ty.path "move_core_types::parser::Parser")
+                                                  (Ty.path "alloc::vec::into_iter::IntoIter")
                                                   []
                                                   [
-                                                    Ty.apply
-                                                      (Ty.path "alloc::vec::into_iter::IntoIter")
-                                                      []
-                                                      [
-                                                        Ty.path "move_core_types::parser::Token";
-                                                        Ty.path "alloc::alloc::Global"
-                                                      ]
+                                                    Ty.path "move_core_types::parser::Token";
+                                                    Ty.path "alloc::alloc::Global"
                                                   ]
                                               ]
                                           ]
@@ -14091,40 +14085,14 @@ Module parser.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
                                                 [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "&mut")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "move_core_types::parser::Parser")
-                                                            []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "alloc::vec::into_iter::IntoIter")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "move_core_types::parser::Token";
-                                                                  Ty.path "alloc::alloc::Global"
-                                                                ]
-                                                            ]
-                                                        ]
-                                                    ]
-                                                ]
-                                                (Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_core_types::language_storage::TypeTag";
-                                                    Ty.path "anyhow::Error"
-                                                  ]),
+                                                  Ty.path
+                                                    "move_core_types::language_storage::TypeTag";
+                                                  Ty.path "anyhow::Error"
+                                                ],
                                               M.alloc (|
                                                 Ty.apply
                                                   (Ty.path "&mut")
@@ -14253,23 +14221,20 @@ Module parser.
             [
               Ty.function
                 [
-                  Ty.tuple
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
                     [
                       Ty.apply
-                        (Ty.path "&mut")
+                        (Ty.path "move_core_types::parser::Parser")
                         []
                         [
                           Ty.apply
-                            (Ty.path "move_core_types::parser::Parser")
+                            (Ty.path "alloc::vec::into_iter::IntoIter")
                             []
                             [
-                              Ty.apply
-                                (Ty.path "alloc::vec::into_iter::IntoIter")
-                                []
-                                [
-                                  Ty.path "move_core_types::parser::Token";
-                                  Ty.path "alloc::alloc::Global"
-                                ]
+                              Ty.path "move_core_types::parser::Token";
+                              Ty.path "alloc::alloc::Global"
                             ]
                         ]
                     ]
@@ -14291,36 +14256,13 @@ Module parser.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "move_core_types::parser::Parser")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::into_iter::IntoIter")
-                                          []
-                                          [
-                                            Ty.path "move_core_types::parser::Token";
-                                            Ty.path "alloc::alloc::Global"
-                                          ]
-                                      ]
-                                  ]
-                              ]
-                          ]
-                          (Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.path "move_core_types::language_storage::TypeTag";
-                              Ty.path "anyhow::Error"
-                            ]),
+                            Ty.path "move_core_types::language_storage::TypeTag";
+                            Ty.path "anyhow::Error"
+                          ],
                         M.alloc (|
                           Ty.apply
                             (Ty.path "&mut")
@@ -14451,23 +14393,20 @@ Module parser.
             [
               Ty.function
                 [
-                  Ty.tuple
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
                     [
                       Ty.apply
-                        (Ty.path "&mut")
+                        (Ty.path "move_core_types::parser::Parser")
                         []
                         [
                           Ty.apply
-                            (Ty.path "move_core_types::parser::Parser")
+                            (Ty.path "alloc::vec::into_iter::IntoIter")
                             []
                             [
-                              Ty.apply
-                                (Ty.path "alloc::vec::into_iter::IntoIter")
-                                []
-                                [
-                                  Ty.path "move_core_types::parser::Token";
-                                  Ty.path "alloc::alloc::Global"
-                                ]
+                              Ty.path "move_core_types::parser::Token";
+                              Ty.path "alloc::alloc::Global"
                             ]
                         ]
                     ]
@@ -14503,43 +14442,20 @@ Module parser.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
                           [
-                            Ty.tuple
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
                               [
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "move_core_types::parser::Parser")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::into_iter::IntoIter")
-                                          []
-                                          [
-                                            Ty.path "move_core_types::parser::Token";
-                                            Ty.path "alloc::alloc::Global"
-                                          ]
-                                      ]
-                                  ]
-                              ]
-                          ]
-                          (Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [
-                                  Ty.path
-                                    "move_core_types::transaction_argument::TransactionArgument";
-                                  Ty.path "alloc::alloc::Global"
-                                ];
-                              Ty.path "anyhow::Error"
-                            ]),
+                                Ty.path
+                                  "move_core_types::transaction_argument::TransactionArgument";
+                                Ty.path "alloc::alloc::Global"
+                              ];
+                            Ty.path "anyhow::Error"
+                          ],
                         M.alloc (|
                           Ty.apply
                             (Ty.path "&mut")
@@ -14617,23 +14533,20 @@ Module parser.
                                   [
                                     Ty.function
                                       [
-                                        Ty.tuple
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
                                           [
                                             Ty.apply
-                                              (Ty.path "&mut")
+                                              (Ty.path "move_core_types::parser::Parser")
                                               []
                                               [
                                                 Ty.apply
-                                                  (Ty.path "move_core_types::parser::Parser")
+                                                  (Ty.path "alloc::vec::into_iter::IntoIter")
                                                   []
                                                   [
-                                                    Ty.apply
-                                                      (Ty.path "alloc::vec::into_iter::IntoIter")
-                                                      []
-                                                      [
-                                                        Ty.path "move_core_types::parser::Token";
-                                                        Ty.path "alloc::alloc::Global"
-                                                      ]
+                                                    Ty.path "move_core_types::parser::Token";
+                                                    Ty.path "alloc::alloc::Global"
                                                   ]
                                               ]
                                           ]
@@ -14662,40 +14575,14 @@ Module parser.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
                                                 [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "&mut")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "move_core_types::parser::Parser")
-                                                            []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "alloc::vec::into_iter::IntoIter")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "move_core_types::parser::Token";
-                                                                  Ty.path "alloc::alloc::Global"
-                                                                ]
-                                                            ]
-                                                        ]
-                                                    ]
-                                                ]
-                                                (Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_core_types::transaction_argument::TransactionArgument";
-                                                    Ty.path "anyhow::Error"
-                                                  ]),
+                                                  Ty.path
+                                                    "move_core_types::transaction_argument::TransactionArgument";
+                                                  Ty.path "anyhow::Error"
+                                                ],
                                               M.alloc (|
                                                 Ty.apply
                                                   (Ty.path "&mut")
@@ -14829,23 +14716,20 @@ Module parser.
             [
               Ty.function
                 [
-                  Ty.tuple
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
                     [
                       Ty.apply
-                        (Ty.path "&mut")
+                        (Ty.path "move_core_types::parser::Parser")
                         []
                         [
                           Ty.apply
-                            (Ty.path "move_core_types::parser::Parser")
+                            (Ty.path "alloc::vec::into_iter::IntoIter")
                             []
                             [
-                              Ty.apply
-                                (Ty.path "alloc::vec::into_iter::IntoIter")
-                                []
-                                [
-                                  Ty.path "move_core_types::parser::Token";
-                                  Ty.path "alloc::alloc::Global"
-                                ]
+                              Ty.path "move_core_types::parser::Token";
+                              Ty.path "alloc::alloc::Global"
                             ]
                         ]
                     ]
@@ -14869,36 +14753,13 @@ Module parser.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "move_core_types::parser::Parser")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::into_iter::IntoIter")
-                                          []
-                                          [
-                                            Ty.path "move_core_types::parser::Token";
-                                            Ty.path "alloc::alloc::Global"
-                                          ]
-                                      ]
-                                  ]
-                              ]
-                          ]
-                          (Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.path "move_core_types::transaction_argument::TransactionArgument";
-                              Ty.path "anyhow::Error"
-                            ]),
+                            Ty.path "move_core_types::transaction_argument::TransactionArgument";
+                            Ty.path "anyhow::Error"
+                          ],
                         M.alloc (|
                           Ty.apply
                             (Ty.path "&mut")
@@ -15074,9 +14935,7 @@ Module parser.
                             [],
                             [
                               Ty.path "anyhow::Error";
-                              Ty.function
-                                [ Ty.tuple [ Ty.path "anyhow::Error" ] ]
-                                (Ty.path "anyhow::Error")
+                              Ty.function [ Ty.path "anyhow::Error" ] (Ty.path "anyhow::Error")
                             ]
                           |),
                           [
@@ -15094,23 +14953,20 @@ Module parser.
                                 [
                                   Ty.function
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
                                         [
                                           Ty.apply
-                                            (Ty.path "&mut")
+                                            (Ty.path "move_core_types::parser::Parser")
                                             []
                                             [
                                               Ty.apply
-                                                (Ty.path "move_core_types::parser::Parser")
+                                                (Ty.path "alloc::vec::into_iter::IntoIter")
                                                 []
                                                 [
-                                                  Ty.apply
-                                                    (Ty.path "alloc::vec::into_iter::IntoIter")
-                                                    []
-                                                    [
-                                                      Ty.path "move_core_types::parser::Token";
-                                                      Ty.path "alloc::alloc::Global"
-                                                    ]
+                                                  Ty.path "move_core_types::parser::Token";
+                                                  Ty.path "alloc::alloc::Global"
                                                 ]
                                             ]
                                         ]
@@ -15134,40 +14990,14 @@ Module parser.
                                       | [ α0 ] =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
-                                            Ty.function
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
                                               [
-                                                Ty.tuple
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "&mut")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "move_core_types::parser::Parser")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "alloc::vec::into_iter::IntoIter")
-                                                              []
-                                                              [
-                                                                Ty.path
-                                                                  "move_core_types::parser::Token";
-                                                                Ty.path "alloc::alloc::Global"
-                                                              ]
-                                                          ]
-                                                      ]
-                                                  ]
-                                              ]
-                                              (Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_core_types::language_storage::TypeTag";
-                                                  Ty.path "anyhow::Error"
-                                                ]),
+                                                Ty.path
+                                                  "move_core_types::language_storage::TypeTag";
+                                                Ty.path "anyhow::Error"
+                                              ],
                                             M.alloc (|
                                               Ty.apply
                                                 (Ty.path "&mut")
@@ -15263,9 +15093,7 @@ Module parser.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "anyhow::Error" ] ]
-                                          (Ty.path "anyhow::Error"),
+                                        Ty.path "anyhow::Error",
                                         M.alloc (| Ty.path "anyhow::Error", α0 |),
                                         [
                                           fun γ =>

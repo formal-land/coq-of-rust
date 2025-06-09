@@ -46,43 +46,57 @@ Module interpreter.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SubRoutineReturnFrame" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "idx" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame",
-                          "idx"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply (Ty.path "&") [] [ Ty.path "usize" ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame",
+                            "idx"
+                          |)
                         |)
                       |)
                     |)
-                  |));
+                  ]
+                |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "pc" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame",
-                              "pc"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame",
+                                "pc"
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -615,43 +629,69 @@ Module interpreter.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SubRoutineImpl" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "return_stack" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
-                          "return_stack"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.path
+                              "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame";
+                            Ty.path "alloc::alloc::Global"
+                          ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
+                            "return_stack"
+                          |)
                         |)
                       |)
                     |)
-                  |));
+                  ]
+                |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "current_code_idx" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
-                              "current_code_idx"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
+                                "current_code_idx"
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1397,11 +1437,8 @@ Module interpreter.
                   Ty.path "usize";
                   Ty.function
                     [
-                      Ty.tuple
-                        [
-                          Ty.path
-                            "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame"
-                        ]
+                      Ty.path
+                        "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame"
                     ]
                     (Ty.path "usize")
                 ]
@@ -1446,15 +1483,7 @@ Module interpreter.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.path
-                                      "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame"
-                                  ]
-                              ]
-                              (Ty.path "usize"),
+                            Ty.path "usize",
                             M.alloc (|
                               Ty.path
                                 "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame",

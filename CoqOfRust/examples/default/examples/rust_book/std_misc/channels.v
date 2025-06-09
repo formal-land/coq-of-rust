@@ -269,9 +269,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       M.get_function (|
                                                         "std::thread::spawn",
                                                         [],
-                                                        [
-                                                          Ty.function [ Ty.tuple [] ] (Ty.tuple []);
-                                                          Ty.tuple []
+                                                        [ Ty.function [] (Ty.tuple []); Ty.tuple []
                                                         ]
                                                       |),
                                                       [
@@ -282,9 +280,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                               | [ α0 ] =>
                                                                 ltac:(M.monadic
                                                                   (M.match_operator (|
-                                                                    Ty.function
-                                                                      [ Ty.tuple [] ]
-                                                                      (Ty.tuple []),
+                                                                    Ty.tuple [],
                                                                     M.alloc (| Ty.tuple [], α0 |),
                                                                     [
                                                                       fun γ =>

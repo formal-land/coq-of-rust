@@ -126,7 +126,14 @@ Module ptr.
             (let self := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], self |) in
             M.cast
               (Ty.apply (Ty.path "*const") [] [ T ])
-              (* MutToConstPointer *) (M.pointer_coercion (M.read (| self |)))))
+              (M.call_closure (|
+                Ty.apply (Ty.path "*const") [] [ T ],
+                M.pointer_coercion
+                  M.PointerCoercion.MutToConstPointer
+                  (Ty.apply (Ty.path "*mut") [] [ T ])
+                  (Ty.apply (Ty.path "*const") [] [ T ]),
+                [ M.read (| self |) ]
+              |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -372,7 +379,16 @@ Module ptr.
                 M.call_closure (|
                   Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] T "Metadata",
                   M.get_function (| "core::ptr::metadata::metadata", [], [ T ] |),
-                  [ (* MutToConstPointer *) M.pointer_coercion (M.read (| self |)) ]
+                  [
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ T ],
+                      M.pointer_coercion
+                        M.PointerCoercion.MutToConstPointer
+                        (Ty.apply (Ty.path "*mut") [] [ T ])
+                        (Ty.apply (Ty.path "*const") [] [ T ]),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -745,7 +761,14 @@ Module ptr.
                     M.read (| count |)
                   ]
                 |);
-                (* MutToConstPointer *) M.pointer_coercion (M.read (| self |))
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ T ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ T ])
+                    (Ty.apply (Ty.path "*const") [] [ T ]),
+                  [ M.read (| self |) ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -783,7 +806,16 @@ Module ptr.
               (M.call_closure (|
                 Ty.apply (Ty.path "*const") [] [ T ],
                 M.get_function (| "core::intrinsics::arith_offset", [], [ T ] |),
-                [ (* MutToConstPointer *) M.pointer_coercion (M.read (| self |)); M.read (| count |)
+                [
+                  M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ T ],
+                    M.pointer_coercion
+                      M.PointerCoercion.MutToConstPointer
+                      (Ty.apply (Ty.path "*mut") [] [ T ])
+                      (Ty.apply (Ty.path "*const") [] [ T ]),
+                    [ M.read (| self |) ]
+                  |);
+                  M.read (| count |)
                 ]
               |))))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -843,7 +875,14 @@ Module ptr.
                     M.read (| count |)
                   ]
                 |);
-                (* MutToConstPointer *) M.pointer_coercion (M.read (| self |))
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ T ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ T ])
+                    (Ty.apply (Ty.path "*const") [] [ T ]),
+                  [ M.read (| self |) ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -889,24 +928,38 @@ Module ptr.
                       Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
                       M.get_function (| "core::intrinsics::ptr_mask", [], [ Ty.tuple [] ] |),
                       [
-                        (* MutToConstPointer *)
-                        M.pointer_coercion
-                          (M.call_closure (|
-                            Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "*mut") [] [ T ],
-                              "cast",
-                              [],
-                              [ Ty.tuple [] ]
-                            |),
-                            [ M.read (| self |) ]
-                          |));
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.MutToConstPointer
+                            (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                            (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
+                          [
+                            M.call_closure (|
+                              Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "*mut") [] [ T ],
+                                "cast",
+                                [],
+                                [ Ty.tuple [] ]
+                              |),
+                              [ M.read (| self |) ]
+                            |)
+                          ]
+                        |);
                         M.read (| mask |)
                       ]
                     |)
                   ]
                 |);
-                (* MutToConstPointer *) M.pointer_coercion (M.read (| self |))
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ T ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ T ])
+                    (Ty.apply (Ty.path "*const") [] [ T ]),
+                  [ M.read (| self |) ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1167,10 +1220,24 @@ Module ptr.
               [
                 M.cast
                   (Ty.apply (Ty.path "*const") [] [ T ])
-                  (* MutToConstPointer *) (M.pointer_coercion (M.read (| self |)));
+                  (M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ T ],
+                    M.pointer_coercion
+                      M.PointerCoercion.MutToConstPointer
+                      (Ty.apply (Ty.path "*mut") [] [ T ])
+                      (Ty.apply (Ty.path "*const") [] [ T ]),
+                    [ M.read (| self |) ]
+                  |));
                 M.cast
                   (Ty.apply (Ty.path "*const") [] [ T ])
-                  (* MutToConstPointer *) (M.pointer_coercion (M.read (| other |)))
+                  (M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ T ],
+                    M.pointer_coercion
+                      M.PointerCoercion.MutToConstPointer
+                      (Ty.apply (Ty.path "*mut") [] [ T ])
+                      (Ty.apply (Ty.path "*const") [] [ T ]),
+                    [ M.read (| other |) ]
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1213,10 +1280,24 @@ Module ptr.
               [
                 M.cast
                   (Ty.apply (Ty.path "*const") [] [ T ])
-                  (* MutToConstPointer *) (M.pointer_coercion (M.read (| self |)));
+                  (M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ T ],
+                    M.pointer_coercion
+                      M.PointerCoercion.MutToConstPointer
+                      (Ty.apply (Ty.path "*mut") [] [ T ])
+                      (Ty.apply (Ty.path "*const") [] [ T ]),
+                    [ M.read (| self |) ]
+                  |));
                 M.cast
                   (Ty.apply (Ty.path "*const") [] [ T ])
-                  (* MutToConstPointer *) (M.pointer_coercion (M.read (| other |)))
+                  (M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ T ],
+                    M.pointer_coercion
+                      M.PointerCoercion.MutToConstPointer
+                      (Ty.apply (Ty.path "*mut") [] [ T ])
+                      (Ty.apply (Ty.path "*const") [] [ T ]),
+                    [ M.read (| other |) ]
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1255,7 +1336,14 @@ Module ptr.
               [
                 M.cast
                   (Ty.apply (Ty.path "*const") [] [ T ])
-                  (* MutToConstPointer *) (M.pointer_coercion (M.read (| self |)));
+                  (M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ T ],
+                    M.pointer_coercion
+                      M.PointerCoercion.MutToConstPointer
+                      (Ty.apply (Ty.path "*mut") [] [ T ])
+                      (Ty.apply (Ty.path "*const") [] [ T ]),
+                    [ M.read (| self |) ]
+                  |));
                 M.read (| origin |)
               ]
             |)))
@@ -1353,7 +1441,14 @@ Module ptr.
               [
                 M.cast
                   (Ty.apply (Ty.path "*const") [] [ T ])
-                  (* MutToConstPointer *) (M.pointer_coercion (M.read (| self |)));
+                  (M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ T ],
+                    M.pointer_coercion
+                      M.PointerCoercion.MutToConstPointer
+                      (Ty.apply (Ty.path "*mut") [] [ T ])
+                      (Ty.apply (Ty.path "*const") [] [ T ]),
+                    [ M.read (| self |) ]
+                  |));
                 M.read (| origin |)
               ]
             |)))
@@ -1395,8 +1490,22 @@ Module ptr.
               [
                 M.cast
                   (Ty.apply (Ty.path "*const") [] [ T ])
-                  (* MutToConstPointer *) (M.pointer_coercion (M.read (| self |)));
-                (* MutToConstPointer *) M.pointer_coercion (M.read (| origin |))
+                  (M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ T ],
+                    M.pointer_coercion
+                      M.PointerCoercion.MutToConstPointer
+                      (Ty.apply (Ty.path "*mut") [] [ T ])
+                      (Ty.apply (Ty.path "*const") [] [ T ]),
+                    [ M.read (| self |) ]
+                  |));
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ U ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ U ])
+                    (Ty.apply (Ty.path "*const") [] [ U ]),
+                  [ M.read (| origin |) ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1565,7 +1674,14 @@ Module ptr.
                     M.read (| count |)
                   ]
                 |);
-                (* MutToConstPointer *) M.pointer_coercion (M.read (| self |))
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ T ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ T ])
+                    (Ty.apply (Ty.path "*const") [] [ T ]),
+                  [ M.read (| self |) ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1772,7 +1888,14 @@ Module ptr.
                     M.read (| count |)
                   ]
                 |);
-                (* MutToConstPointer *) M.pointer_coercion (M.read (| self |))
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ T ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ T ])
+                    (Ty.apply (Ty.path "*const") [] [ T ]),
+                  [ M.read (| self |) ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1871,7 +1994,14 @@ Module ptr.
                     M.read (| count |)
                   ]
                 |);
-                (* MutToConstPointer *) M.pointer_coercion (M.read (| self |))
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ T ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ T ])
+                    (Ty.apply (Ty.path "*const") [] [ T ]),
+                  [ M.read (| self |) ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1977,7 +2107,14 @@ Module ptr.
                     M.read (| count |)
                   ]
                 |);
-                (* MutToConstPointer *) M.pointer_coercion (M.read (| self |))
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ T ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ T ])
+                    (Ty.apply (Ty.path "*const") [] [ T ]),
+                  [ M.read (| self |) ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2007,7 +2144,16 @@ Module ptr.
             M.call_closure (|
               T,
               M.get_function (| "core::ptr::read", [], [ T ] |),
-              [ (* MutToConstPointer *) M.pointer_coercion (M.read (| self |)) ]
+              [
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ T ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ T ])
+                    (Ty.apply (Ty.path "*const") [] [ T ]),
+                  [ M.read (| self |) ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2041,7 +2187,16 @@ Module ptr.
             M.call_closure (|
               T,
               M.get_function (| "core::ptr::read_volatile", [], [ T ] |),
-              [ (* MutToConstPointer *) M.pointer_coercion (M.read (| self |)) ]
+              [
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ T ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ T ])
+                    (Ty.apply (Ty.path "*const") [] [ T ]),
+                  [ M.read (| self |) ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2075,7 +2230,16 @@ Module ptr.
             M.call_closure (|
               T,
               M.get_function (| "core::ptr::read_unaligned", [], [ T ] |),
-              [ (* MutToConstPointer *) M.pointer_coercion (M.read (| self |)) ]
+              [
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ T ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ T ])
+                    (Ty.apply (Ty.path "*const") [] [ T ]),
+                  [ M.read (| self |) ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2107,7 +2271,14 @@ Module ptr.
               Ty.tuple [],
               M.get_function (| "core::intrinsics::copy", [], [ T ] |),
               [
-                (* MutToConstPointer *) M.pointer_coercion (M.read (| self |));
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ T ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ T ])
+                    (Ty.apply (Ty.path "*const") [] [ T ]),
+                  [ M.read (| self |) ]
+                |);
                 M.read (| dest |);
                 M.read (| count |)
               ]
@@ -2147,7 +2318,14 @@ Module ptr.
               Ty.tuple [],
               M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
               [
-                (* MutToConstPointer *) M.pointer_coercion (M.read (| self |));
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ T ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ T ])
+                    (Ty.apply (Ty.path "*const") [] [ T ]),
+                  [ M.read (| self |) ]
+                |);
                 M.read (| dest |);
                 M.read (| count |)
               ]
@@ -2559,7 +2737,14 @@ Module ptr.
                   Ty.path "usize",
                   M.get_function (| "core::ptr::align_offset", [], [ T ] |),
                   [
-                    (* MutToConstPointer *) M.pointer_coercion (M.read (| self |));
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ T ],
+                      M.pointer_coercion
+                        M.PointerCoercion.MutToConstPointer
+                        (Ty.apply (Ty.path "*mut") [] [ T ])
+                        (Ty.apply (Ty.path "*const") [] [ T ]),
+                      [ M.read (| self |) ]
+                    |);
                     M.read (| align |)
                   ]
                 |) in
@@ -2771,7 +2956,16 @@ Module ptr.
                 [],
                 [ Ty.apply (Ty.path "slice") [] [ T ] ]
               |),
-              [ (* MutToConstPointer *) M.pointer_coercion (M.read (| self |)) ]
+              [
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ])
+                    (Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                  [ M.read (| self |) ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3588,7 +3782,14 @@ Module ptr.
                 Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                 self
               |) in
-            (* Unsize *) M.pointer_coercion (M.read (| self |))))
+            M.call_closure (|
+              Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+              M.pointer_coercion
+                M.PointerCoercion.Unsize
+                (Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
+                (Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+              [ M.read (| self |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

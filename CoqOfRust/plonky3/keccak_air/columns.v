@@ -186,164 +186,431 @@ Module columns.
                       []
                       [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
                   ] :=
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 10 ]
-                          [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
-                          ],
-                        Value.Array
-                          [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                  ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 10 ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                    ])
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                    ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 10 ]
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                            ],
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 24 ]
+                                        [ T ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "p3_keccak_air::columns::KeccakCols",
-                                      "step_flags"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "p3_keccak_air::columns::KeccakCols",
+                                          "step_flags"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply (Ty.path "&") [] [ T ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "p3_keccak_air::columns::KeccakCols",
-                                      "export"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "p3_keccak_air::columns::KeccakCols",
+                                          "export"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 5 ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 5 ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 4 ]
+                                                [ T ]
+                                            ]
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "p3_keccak_air::columns::KeccakCols",
-                                      "preimage"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "p3_keccak_air::columns::KeccakCols",
+                                          "preimage"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 5 ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 5 ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 4 ]
+                                                [ T ]
+                                            ]
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "p3_keccak_air::columns::KeccakCols",
-                                      "a"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "p3_keccak_air::columns::KeccakCols",
+                                          "a"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 5 ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 64 ]
+                                            [ T ]
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "p3_keccak_air::columns::KeccakCols",
-                                      "c"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "p3_keccak_air::columns::KeccakCols",
+                                          "c"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 5 ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 64 ]
+                                            [ T ]
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "p3_keccak_air::columns::KeccakCols",
-                                      "c_prime"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "p3_keccak_air::columns::KeccakCols",
+                                          "c_prime"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 5 ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 5 ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 64 ]
+                                                [ T ]
+                                            ]
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "p3_keccak_air::columns::KeccakCols",
-                                      "a_prime"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "p3_keccak_air::columns::KeccakCols",
+                                          "a_prime"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 5 ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 5 ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 4 ]
+                                                [ T ]
+                                            ]
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "p3_keccak_air::columns::KeccakCols",
-                                      "a_prime_prime"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "p3_keccak_air::columns::KeccakCols",
+                                          "a_prime_prime"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 64 ]
+                                        [ T ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "p3_keccak_air::columns::KeccakCols",
-                                      "a_prime_prime_0_0_bits"
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "p3_keccak_air::columns::KeccakCols",
+                                          "a_prime_prime_0_0_bits"
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
                                       Ty.apply
                                         (Ty.path "&")
                                         []
@@ -352,24 +619,49 @@ Module columns.
                                             (Ty.path "array")
                                             [ Value.Integer IntegerKind.Usize 4 ]
                                             [ T ]
-                                        ],
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "p3_keccak_air::columns::KeccakCols",
-                                          "a_prime_prime_prime_0_0_limbs"
+                                        M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 4 ]
+                                                [ T ]
+                                            ],
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "p3_keccak_air::columns::KeccakCols",
+                                              "a_prime_prime_prime_0_0_limbs"
+                                            |)
+                                          |)
                                         |)
                                       |)
                                     |)
                                   |)
-                                |)
-                              |))
-                          ]
+                                ]
+                              |)
+                            ]
+                        |)
                       |)
                     |)
                   |)
-                |)) in
+                ]
+              |) in
             M.alloc (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -389,9 +681,38 @@ Module columns.
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "KeccakCols" |) |) |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |));
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 10 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        ])
+                      (Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        ]),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |) ]
+                  |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                 ]
               |)

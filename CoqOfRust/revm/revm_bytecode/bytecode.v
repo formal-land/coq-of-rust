@@ -241,12 +241,31 @@ Module bytecode.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LegacyAnalyzed" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode"
+                                ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -285,12 +304,38 @@ Module bytecode.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eof" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::sync::Arc")
+                                    []
+                                    [
+                                      Ty.path "revm_bytecode::eof::Eof";
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
+                                ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -324,12 +369,30 @@ Module bytecode.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip7702" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "revm_bytecode::eip7702::Eip7702Bytecode" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)))
             ]

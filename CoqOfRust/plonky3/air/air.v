@@ -517,7 +517,7 @@ Module air.
                   [],
                   [
                     Ty.function
-                      [ Ty.tuple [ I ] ]
+                      [ I ]
                       (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] Self "Expr");
                     Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] Self "Expr"
                   ]
@@ -531,14 +531,7 @@ Module air.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ I ] ]
-                                (Ty.associated_in_trait
-                                  "p3_air::air::AirBuilder"
-                                  []
-                                  []
-                                  Self
-                                  "Expr"),
+                              Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] Self "Expr",
                               M.alloc (| I, α0 |),
                               [
                                 fun γ =>
@@ -1028,46 +1021,68 @@ Module air.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FilteredAirBuilder" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "p3_air::air::FilteredAirBuilder",
-                        "inner"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ AB ] ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "p3_air::air::FilteredAirBuilder",
+                          "inner"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "condition" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "p3_air::air::FilteredAirBuilder",
-                            "condition"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "p3_air::air::FilteredAirBuilder",
+                              "condition"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

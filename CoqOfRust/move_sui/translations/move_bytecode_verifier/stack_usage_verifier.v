@@ -383,39 +383,70 @@ Module stack_usage_verifier.
                                                               M.deref (| M.read (| config |) |)
                                                             |);
                                                             M.read (| block_id |);
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.deref (|
-                                                                  M.call_closure (|
-                                                                    Ty.apply
-                                                                      (Ty.path "&")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "move_binary_format::control_flow_graph::VMControlFlowGraph"
-                                                                      ],
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "move_bytecode_verifier::absint::FunctionContext",
-                                                                      "cfg",
-                                                                      [],
-                                                                      []
-                                                                    |),
+                                                            M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.dyn
                                                                     [
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        M.deref (|
-                                                                          M.read (|
-                                                                            function_context
+                                                                      ("move_binary_format::control_flow_graph::ControlFlowGraph::Trait",
+                                                                        [])
+                                                                    ]
+                                                                ],
+                                                              M.pointer_coercion
+                                                                M.PointerCoercion.Unsize
+                                                                (Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::control_flow_graph::VMControlFlowGraph"
+                                                                  ])
+                                                                (Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.dyn
+                                                                      [
+                                                                        ("move_binary_format::control_flow_graph::ControlFlowGraph::Trait",
+                                                                          [])
+                                                                      ]
+                                                                  ]),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::control_flow_graph::VMControlFlowGraph"
+                                                                        ],
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "move_bytecode_verifier::absint::FunctionContext",
+                                                                        "cfg",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (|
+                                                                              function_context
+                                                                            |)
                                                                           |)
                                                                         |)
-                                                                      |)
-                                                                    ]
+                                                                      ]
+                                                                    |)
                                                                   |)
                                                                 |)
-                                                              |))
+                                                              ]
+                                                            |)
                                                           ]
                                                         |)
                                                       ]

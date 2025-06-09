@@ -34,11 +34,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.path "std::process::Output"; Ty.path "std::io::error::Error" ],
               "unwrap_or_else",
               [],
-              [
-                Ty.function
-                  [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                  (Ty.path "std::process::Output")
-              ]
+              [ Ty.function [ Ty.path "std::io::error::Error" ] (Ty.path "std::process::Output") ]
             |),
             [
               M.call_closure (|
@@ -90,9 +86,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                            (Ty.path "std::process::Output"),
+                          Ty.path "std::process::Output",
                           M.alloc (| Ty.path "std::io::error::Error", α0 |),
                           [
                             fun γ =>

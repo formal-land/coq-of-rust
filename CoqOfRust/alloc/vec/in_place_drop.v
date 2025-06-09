@@ -48,15 +48,22 @@ Module vec.
                     "dst"
                   |)
                 |);
-                (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloc::vec::in_place_drop::InPlaceDrop",
-                      "inner"
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ T ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ T ])
+                    (Ty.apply (Ty.path "*const") [] [ T ]),
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "alloc::vec::in_place_drop::InPlaceDrop",
+                        "inner"
+                      |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

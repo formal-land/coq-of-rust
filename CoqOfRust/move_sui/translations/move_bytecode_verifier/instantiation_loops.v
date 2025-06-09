@@ -495,17 +495,11 @@ Module instantiation_loops.
                           [
                             Ty.tuple
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.path "usize";
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.path
-                                          "move_binary_format::file_format::FunctionDefinition"
-                                      ]
-                                  ]
+                                Ty.path "usize";
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
                               ]
                           ]
                           (Ty.tuple
@@ -548,16 +542,11 @@ Module instantiation_loops.
                             [
                               Ty.tuple
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.path "usize";
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
-                                          Ty.path
-                                            "move_binary_format::file_format::FunctionDefinition"
-                                        ]
+                                  Ty.path "usize";
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionDefinition"
                                     ]
                                 ]
                             ]
@@ -592,16 +581,11 @@ Module instantiation_loops.
                             [
                               Ty.tuple
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.path "usize";
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
-                                          Ty.path
-                                            "move_binary_format::file_format::FunctionDefinition"
-                                        ]
+                                  Ty.path "usize";
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionDefinition"
                                     ]
                                 ]
                             ]
@@ -693,30 +677,13 @@ Module instantiation_loops.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
+                                    Ty.tuple
                                       [
-                                        Ty.tuple
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.path "usize";
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::FunctionDefinition"
-                                                  ]
-                                              ]
-                                          ]
-                                      ]
-                                      (Ty.tuple
-                                        [
-                                          Ty.path
-                                            "move_binary_format::file_format::FunctionHandleIndex";
-                                          Ty.path
-                                            "move_binary_format::file_format::FunctionDefinitionIndex"
-                                        ]),
+                                        Ty.path
+                                          "move_binary_format::file_format::FunctionHandleIndex";
+                                        Ty.path
+                                          "move_binary_format::file_format::FunctionDefinitionIndex"
+                                      ],
                                     M.alloc (|
                                       Ty.tuple
                                         [
@@ -818,7 +785,7 @@ Module instantiation_loops.
               [
                 Ty.path "move_binary_format::errors::VMError";
                 Ty.function
-                  [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
+                  [ Ty.path "move_binary_format::errors::PartialVMError" ]
                   (Ty.path "move_binary_format::errors::VMError")
               ]
             |),
@@ -843,9 +810,7 @@ Module instantiation_loops.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
-                            (Ty.path "move_binary_format::errors::VMError"),
+                          Ty.path "move_binary_format::errors::VMError",
                           M.alloc (| Ty.path "move_binary_format::errors::PartialVMError", α0 |),
                           [
                             fun γ =>
@@ -1269,14 +1234,10 @@ Module instantiation_loops.
                                                     ];
                                                   Ty.function
                                                     [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "petgraph::graph_impl::EdgeIndex")
-                                                            []
-                                                            [ Ty.path "u32" ]
-                                                        ]
+                                                      Ty.apply
+                                                        (Ty.path "petgraph::graph_impl::EdgeIndex")
+                                                        []
+                                                        [ Ty.path "u32" ]
                                                     ]
                                                     (Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -1317,14 +1278,11 @@ Module instantiation_loops.
                                                       ];
                                                     Ty.function
                                                       [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "petgraph::graph_impl::EdgeIndex")
-                                                              []
-                                                              [ Ty.path "u32" ]
-                                                          ]
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "petgraph::graph_impl::EdgeIndex")
+                                                          []
+                                                          [ Ty.path "u32" ]
                                                       ]
                                                       (Ty.apply
                                                         (Ty.path "core::option::Option")
@@ -1351,14 +1309,11 @@ Module instantiation_loops.
                                                     Ty.path "alloc::string::String";
                                                     Ty.function
                                                       [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "petgraph::graph_impl::EdgeIndex")
-                                                              []
-                                                              [ Ty.path "u32" ]
-                                                          ]
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "petgraph::graph_impl::EdgeIndex")
+                                                          []
+                                                          [ Ty.path "u32" ]
                                                       ]
                                                       (Ty.apply
                                                         (Ty.path "core::option::Option")
@@ -1407,22 +1362,10 @@ Module instantiation_loops.
                                                         | [ α0 ] =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
-                                                              Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "petgraph::graph_impl::EdgeIndex")
-                                                                        []
-                                                                        [ Ty.path "u32" ]
-                                                                    ]
-                                                                ]
-                                                                (Ty.apply
-                                                                  (Ty.path "core::option::Option")
-                                                                  []
-                                                                  [ Ty.path "alloc::string::String"
-                                                                  ]),
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [ Ty.path "alloc::string::String" ],
                                                               M.alloc (|
                                                                 Ty.apply
                                                                   (Ty.path
@@ -1681,14 +1624,10 @@ Module instantiation_loops.
                                                     ];
                                                   Ty.function
                                                     [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "petgraph::graph_impl::NodeIndex")
-                                                            []
-                                                            [ Ty.path "u32" ]
-                                                        ]
+                                                      Ty.apply
+                                                        (Ty.path "petgraph::graph_impl::NodeIndex")
+                                                        []
+                                                        [ Ty.path "u32" ]
                                                     ]
                                                     (Ty.path "alloc::string::String")
                                                 ],
@@ -1725,14 +1664,11 @@ Module instantiation_loops.
                                                       ];
                                                     Ty.function
                                                       [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "petgraph::graph_impl::NodeIndex")
-                                                              []
-                                                              [ Ty.path "u32" ]
-                                                          ]
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "petgraph::graph_impl::NodeIndex")
+                                                          []
+                                                          [ Ty.path "u32" ]
                                                       ]
                                                       (Ty.path "alloc::string::String")
                                                   ],
@@ -1756,14 +1692,11 @@ Module instantiation_loops.
                                                     Ty.path "alloc::string::String";
                                                     Ty.function
                                                       [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "petgraph::graph_impl::NodeIndex")
-                                                              []
-                                                              [ Ty.path "u32" ]
-                                                          ]
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "petgraph::graph_impl::NodeIndex")
+                                                          []
+                                                          [ Ty.path "u32" ]
                                                       ]
                                                       (Ty.path "alloc::string::String")
                                                   ]
@@ -1809,18 +1742,7 @@ Module instantiation_loops.
                                                         | [ α0 ] =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
-                                                              Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "petgraph::graph_impl::NodeIndex")
-                                                                        []
-                                                                        [ Ty.path "u32" ]
-                                                                    ]
-                                                                ]
-                                                                (Ty.path "alloc::string::String"),
+                                                              Ty.path "alloc::string::String",
                                                               M.alloc (|
                                                                 Ty.apply
                                                                   (Ty.path
@@ -3645,22 +3567,19 @@ Module instantiation_loops.
                           ];
                         Ty.function
                           [
-                            Ty.tuple
+                            Ty.apply
+                              (Ty.path "&")
+                              []
                               [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
+                                Ty.tuple
                                   [
-                                    Ty.tuple
+                                    Ty.path "usize";
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
                                       [
-                                        Ty.path "usize";
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::FunctionDefinition"
-                                          ]
+                                        Ty.path
+                                          "move_binary_format::file_format::FunctionDefinition"
                                       ]
                                   ]
                               ]
@@ -3683,22 +3602,19 @@ Module instantiation_loops.
                             ];
                           Ty.function
                             [
-                              Ty.tuple
+                              Ty.apply
+                                (Ty.path "&")
+                                []
                                 [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.path "usize";
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
-                                          Ty.path "usize";
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_binary_format::file_format::FunctionDefinition"
-                                            ]
+                                          Ty.path
+                                            "move_binary_format::file_format::FunctionDefinition"
                                         ]
                                     ]
                                 ]
@@ -3722,22 +3638,19 @@ Module instantiation_loops.
                               ];
                             Ty.function
                               [
-                                Ty.tuple
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
                                   [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
+                                    Ty.tuple
                                       [
-                                        Ty.tuple
+                                        Ty.path "usize";
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
                                           [
-                                            Ty.path "usize";
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "move_binary_format::file_format::FunctionDefinition"
-                                              ]
+                                            Ty.path
+                                              "move_binary_format::file_format::FunctionDefinition"
                                           ]
                                       ]
                                   ]
@@ -3768,22 +3681,19 @@ Module instantiation_loops.
                                 ];
                               Ty.function
                                 [
-                                  Ty.tuple
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
                                     [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
+                                      Ty.tuple
                                         [
-                                          Ty.tuple
+                                          Ty.path "usize";
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
                                             [
-                                              Ty.path "usize";
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::FunctionDefinition"
-                                                ]
+                                              Ty.path
+                                                "move_binary_format::file_format::FunctionDefinition"
                                             ]
                                         ]
                                     ]
@@ -3808,22 +3718,19 @@ Module instantiation_loops.
                             [
                               Ty.function
                                 [
-                                  Ty.tuple
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
                                     [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
+                                      Ty.tuple
                                         [
-                                          Ty.tuple
+                                          Ty.path "usize";
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
                                             [
-                                              Ty.path "usize";
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::FunctionDefinition"
-                                                ]
+                                              Ty.path
+                                                "move_binary_format::file_format::FunctionDefinition"
                                             ]
                                         ]
                                     ]
@@ -3926,29 +3833,7 @@ Module instantiation_loops.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.tuple
-                                                      [
-                                                        Ty.path "usize";
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_binary_format::file_format::FunctionDefinition"
-                                                          ]
-                                                      ]
-                                                  ]
-                                              ]
-                                          ]
-                                          (Ty.path "bool"),
+                                        Ty.path "bool",
                                         M.alloc (|
                                           Ty.apply
                                             (Ty.path "&")
@@ -4042,22 +3927,19 @@ Module instantiation_loops.
                                   ];
                                 Ty.function
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
                                       [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
+                                        Ty.tuple
                                           [
-                                            Ty.tuple
+                                            Ty.path "usize";
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
                                               [
-                                                Ty.path "usize";
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::FunctionDefinition"
-                                                  ]
+                                                Ty.path
+                                                  "move_binary_format::file_format::FunctionDefinition"
                                               ]
                                           ]
                                       ]
@@ -4127,22 +4009,19 @@ Module instantiation_loops.
                                               ];
                                             Ty.function
                                               [
-                                                Ty.tuple
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
                                                   [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
+                                                    Ty.tuple
                                                       [
-                                                        Ty.tuple
+                                                        Ty.path "usize";
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
                                                           [
-                                                            Ty.path "usize";
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [
-                                                                Ty.path
-                                                                  "move_binary_format::file_format::FunctionDefinition"
-                                                              ]
+                                                            Ty.path
+                                                              "move_binary_format::file_format::FunctionDefinition"
                                                           ]
                                                       ]
                                                   ]
@@ -4335,18 +4214,12 @@ Module instantiation_loops.
                     ];
                   Ty.function
                     [
-                      Ty.tuple
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
                         [
-                          Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "petgraph::graph_impl::NodeIndex")
-                                []
-                                [ Ty.path "u32" ];
-                              Ty.path "alloc::alloc::Global"
-                            ]
+                          Ty.apply (Ty.path "petgraph::graph_impl::NodeIndex") [] [ Ty.path "u32" ];
+                          Ty.path "alloc::alloc::Global"
                         ]
                     ]
                     (Ty.apply
@@ -4438,18 +4311,15 @@ Module instantiation_loops.
                       ];
                     Ty.function
                       [
-                        Ty.tuple
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.apply
-                              (Ty.path "alloc::vec::Vec")
+                              (Ty.path "petgraph::graph_impl::NodeIndex")
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "petgraph::graph_impl::NodeIndex")
-                                  []
-                                  [ Ty.path "u32" ];
-                                Ty.path "alloc::alloc::Global"
-                              ]
+                              [ Ty.path "u32" ];
+                            Ty.path "alloc::alloc::Global"
                           ]
                       ]
                       (Ty.apply
@@ -4526,18 +4396,15 @@ Module instantiation_loops.
                       ];
                     Ty.function
                       [
-                        Ty.tuple
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
                           [
                             Ty.apply
-                              (Ty.path "alloc::vec::Vec")
+                              (Ty.path "petgraph::graph_impl::NodeIndex")
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "petgraph::graph_impl::NodeIndex")
-                                  []
-                                  [ Ty.path "u32" ];
-                                Ty.path "alloc::alloc::Global"
-                              ]
+                              [ Ty.path "u32" ];
+                            Ty.path "alloc::alloc::Global"
                           ]
                       ]
                       (Ty.apply
@@ -4670,7 +4537,9 @@ Module instantiation_loops.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
                                 [
                                   Ty.tuple
                                     [
@@ -4683,37 +4552,19 @@ Module instantiation_loops.
                                             []
                                             [ Ty.path "u32" ];
                                           Ty.path "alloc::alloc::Global"
+                                        ];
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "petgraph::graph_impl::EdgeIndex")
+                                            []
+                                            [ Ty.path "u32" ];
+                                          Ty.path "alloc::alloc::Global"
                                         ]
                                     ]
-                                ]
-                                (Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "petgraph::graph_impl::NodeIndex")
-                                              []
-                                              [ Ty.path "u32" ];
-                                            Ty.path "alloc::alloc::Global"
-                                          ];
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "petgraph::graph_impl::EdgeIndex")
-                                              []
-                                              [ Ty.path "u32" ];
-                                            Ty.path "alloc::alloc::Global"
-                                          ]
-                                      ]
-                                  ]),
+                                ],
                               M.alloc (|
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
@@ -4966,17 +4817,14 @@ Module instantiation_loops.
                                                       ];
                                                     Ty.function
                                                       [
-                                                        Ty.tuple
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "petgraph::graph_impl::EdgeReference")
+                                                          []
                                                           [
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "petgraph::graph_impl::EdgeReference")
-                                                              []
-                                                              [
-                                                                Ty.path
-                                                                  "move_bytecode_verifier::instantiation_loops::Edge";
-                                                                Ty.path "u32"
-                                                              ]
+                                                            Ty.path
+                                                              "move_bytecode_verifier::instantiation_loops::Edge";
+                                                            Ty.path "u32"
                                                           ]
                                                       ]
                                                       (Ty.apply
@@ -4992,18 +4840,15 @@ Module instantiation_loops.
                                                   ];
                                                 Ty.function
                                                   [
-                                                    Ty.tuple
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
                                                       [
                                                         Ty.apply
-                                                          (Ty.path "&")
+                                                          (Ty.path
+                                                            "petgraph::graph_impl::NodeIndex")
                                                           []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "petgraph::graph_impl::NodeIndex")
-                                                              []
-                                                              [ Ty.path "u32" ]
-                                                          ]
+                                                          [ Ty.path "u32" ]
                                                       ]
                                                   ]
                                                   (Ty.apply
@@ -5022,17 +4867,14 @@ Module instantiation_loops.
                                                         ];
                                                       Ty.function
                                                         [
-                                                          Ty.tuple
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "petgraph::graph_impl::EdgeReference")
+                                                            []
                                                             [
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "petgraph::graph_impl::EdgeReference")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "move_bytecode_verifier::instantiation_loops::Edge";
-                                                                  Ty.path "u32"
-                                                                ]
+                                                              Ty.path
+                                                                "move_bytecode_verifier::instantiation_loops::Edge";
+                                                              Ty.path "u32"
                                                             ]
                                                         ]
                                                         (Ty.apply
@@ -5095,17 +4937,14 @@ Module instantiation_loops.
                                                         ];
                                                       Ty.function
                                                         [
-                                                          Ty.tuple
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "petgraph::graph_impl::EdgeReference")
+                                                            []
                                                             [
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "petgraph::graph_impl::EdgeReference")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "move_bytecode_verifier::instantiation_loops::Edge";
-                                                                  Ty.path "u32"
-                                                                ]
+                                                              Ty.path
+                                                                "move_bytecode_verifier::instantiation_loops::Edge";
+                                                              Ty.path "u32"
                                                             ]
                                                         ]
                                                         (Ty.apply
@@ -5121,18 +4960,15 @@ Module instantiation_loops.
                                                     ];
                                                   Ty.function
                                                     [
-                                                      Ty.tuple
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
                                                         [
                                                           Ty.apply
-                                                            (Ty.path "&")
+                                                            (Ty.path
+                                                              "petgraph::graph_impl::NodeIndex")
                                                             []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "petgraph::graph_impl::NodeIndex")
-                                                                []
-                                                                [ Ty.path "u32" ]
-                                                            ]
+                                                            [ Ty.path "u32" ]
                                                         ]
                                                     ]
                                                     (Ty.apply
@@ -5151,17 +4987,14 @@ Module instantiation_loops.
                                                           ];
                                                         Ty.function
                                                           [
-                                                            Ty.tuple
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "petgraph::graph_impl::EdgeReference")
+                                                              []
                                                               [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "petgraph::graph_impl::EdgeReference")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "move_bytecode_verifier::instantiation_loops::Edge";
-                                                                    Ty.path "u32"
-                                                                  ]
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::instantiation_loops::Edge";
+                                                                Ty.path "u32"
                                                               ]
                                                           ]
                                                           (Ty.apply
@@ -5208,17 +5041,14 @@ Module instantiation_loops.
                                                         ];
                                                       Ty.function
                                                         [
-                                                          Ty.tuple
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "petgraph::graph_impl::EdgeReference")
+                                                            []
                                                             [
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "petgraph::graph_impl::EdgeReference")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "move_bytecode_verifier::instantiation_loops::Edge";
-                                                                  Ty.path "u32"
-                                                                ]
+                                                              Ty.path
+                                                                "move_bytecode_verifier::instantiation_loops::Edge";
+                                                              Ty.path "u32"
                                                             ]
                                                         ]
                                                         (Ty.apply
@@ -5234,18 +5064,15 @@ Module instantiation_loops.
                                                     ];
                                                   Ty.function
                                                     [
-                                                      Ty.tuple
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
                                                         [
                                                           Ty.apply
-                                                            (Ty.path "&")
+                                                            (Ty.path
+                                                              "petgraph::graph_impl::NodeIndex")
                                                             []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "petgraph::graph_impl::NodeIndex")
-                                                                []
-                                                                [ Ty.path "u32" ]
-                                                            ]
+                                                            [ Ty.path "u32" ]
                                                         ]
                                                     ]
                                                     (Ty.apply
@@ -5264,17 +5091,14 @@ Module instantiation_loops.
                                                           ];
                                                         Ty.function
                                                           [
-                                                            Ty.tuple
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "petgraph::graph_impl::EdgeReference")
+                                                              []
                                                               [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "petgraph::graph_impl::EdgeReference")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "move_bytecode_verifier::instantiation_loops::Edge";
-                                                                    Ty.path "u32"
-                                                                  ]
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::instantiation_loops::Edge";
+                                                                Ty.path "u32"
                                                               ]
                                                           ]
                                                           (Ty.apply
@@ -5368,64 +5192,44 @@ Module instantiation_loops.
                                                       | [ α0 ] =>
                                                         ltac:(M.monadic
                                                           (M.match_operator (|
-                                                            Ty.function
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "core::iter::adapters::filter_map::FilterMap")
+                                                              []
                                                               [
-                                                                Ty.tuple
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "petgraph::graph_impl::Edges")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_bytecode_verifier::instantiation_loops::Edge";
+                                                                    Ty.path "petgraph::Directed";
+                                                                    Ty.path "u32"
+                                                                  ];
+                                                                Ty.function
                                                                   [
                                                                     Ty.apply
-                                                                      (Ty.path "&")
+                                                                      (Ty.path
+                                                                        "petgraph::graph_impl::EdgeReference")
                                                                       []
                                                                       [
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "petgraph::graph_impl::NodeIndex")
-                                                                          []
-                                                                          [ Ty.path "u32" ]
+                                                                        Ty.path
+                                                                          "move_bytecode_verifier::instantiation_loops::Edge";
+                                                                        Ty.path "u32"
                                                                       ]
                                                                   ]
-                                                              ]
-                                                              (Ty.apply
-                                                                (Ty.path
-                                                                  "core::iter::adapters::filter_map::FilterMap")
-                                                                []
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path
-                                                                      "petgraph::graph_impl::Edges")
+                                                                  (Ty.apply
+                                                                    (Ty.path "core::option::Option")
                                                                     []
                                                                     [
-                                                                      Ty.path
-                                                                        "move_bytecode_verifier::instantiation_loops::Edge";
-                                                                      Ty.path "petgraph::Directed";
-                                                                      Ty.path "u32"
-                                                                    ];
-                                                                  Ty.function
-                                                                    [
-                                                                      Ty.tuple
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "petgraph::graph_impl::EdgeReference")
-                                                                            []
-                                                                            [
-                                                                              Ty.path
-                                                                                "move_bytecode_verifier::instantiation_loops::Edge";
-                                                                              Ty.path "u32"
-                                                                            ]
-                                                                        ]
-                                                                    ]
-                                                                    (Ty.apply
-                                                                      (Ty.path
-                                                                        "core::option::Option")
-                                                                      []
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "petgraph::graph_impl::EdgeIndex")
-                                                                          []
-                                                                          [ Ty.path "u32" ]
-                                                                      ])
-                                                                ]),
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "petgraph::graph_impl::EdgeIndex")
+                                                                        []
+                                                                        [ Ty.path "u32" ]
+                                                                    ])
+                                                              ],
                                                             M.alloc (|
                                                               Ty.apply
                                                                 (Ty.path "&")
@@ -5475,17 +5279,14 @@ Module instantiation_loops.
                                                                           ];
                                                                         Ty.function
                                                                           [
-                                                                            Ty.tuple
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "petgraph::graph_impl::EdgeReference")
+                                                                              []
                                                                               [
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "petgraph::graph_impl::EdgeReference")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.path
-                                                                                      "move_bytecode_verifier::instantiation_loops::Edge";
-                                                                                    Ty.path "u32"
-                                                                                  ]
+                                                                                Ty.path
+                                                                                  "move_bytecode_verifier::instantiation_loops::Edge";
+                                                                                Ty.path "u32"
                                                                               ]
                                                                           ]
                                                                           (Ty.apply
@@ -5525,17 +5326,14 @@ Module instantiation_loops.
                                                                           [ Ty.path "u32" ];
                                                                         Ty.function
                                                                           [
-                                                                            Ty.tuple
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "petgraph::graph_impl::EdgeReference")
+                                                                              []
                                                                               [
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "petgraph::graph_impl::EdgeReference")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.path
-                                                                                      "move_bytecode_verifier::instantiation_loops::Edge";
-                                                                                    Ty.path "u32"
-                                                                                  ]
+                                                                                Ty.path
+                                                                                  "move_bytecode_verifier::instantiation_loops::Edge";
+                                                                                Ty.path "u32"
                                                                               ]
                                                                           ]
                                                                           (Ty.apply
@@ -5607,36 +5405,20 @@ Module instantiation_loops.
                                                                             | [ α0 ] =>
                                                                               ltac:(M.monadic
                                                                                 (M.match_operator (|
-                                                                                  Ty.function
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
                                                                                     [
-                                                                                      Ty.tuple
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "petgraph::graph_impl::EdgeIndex")
+                                                                                        []
                                                                                         [
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "petgraph::graph_impl::EdgeReference")
-                                                                                            []
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "move_bytecode_verifier::instantiation_loops::Edge";
-                                                                                              Ty.path
-                                                                                                "u32"
-                                                                                            ]
+                                                                                          Ty.path
+                                                                                            "u32"
                                                                                         ]
-                                                                                    ]
-                                                                                    (Ty.apply
-                                                                                      (Ty.path
-                                                                                        "core::option::Option")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.apply
-                                                                                          (Ty.path
-                                                                                            "petgraph::graph_impl::EdgeIndex")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "u32"
-                                                                                          ]
-                                                                                      ]),
+                                                                                    ],
                                                                                   M.alloc (|
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -5970,18 +5752,15 @@ Module instantiation_loops.
                                                           [
                                                             Ty.function
                                                               [
-                                                                Ty.tuple
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
                                                                   [
                                                                     Ty.apply
-                                                                      (Ty.path "&")
+                                                                      (Ty.path
+                                                                        "petgraph::graph_impl::EdgeIndex")
                                                                       []
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "petgraph::graph_impl::EdgeIndex")
-                                                                          []
-                                                                          [ Ty.path "u32" ]
-                                                                      ]
+                                                                      [ Ty.path "u32" ]
                                                                   ]
                                                               ]
                                                               (Ty.path "bool")
@@ -6089,24 +5868,7 @@ Module instantiation_loops.
                                                                 | [ α0 ] =>
                                                                   ltac:(M.monadic
                                                                     (M.match_operator (|
-                                                                      Ty.function
-                                                                        [
-                                                                          Ty.tuple
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path "&")
-                                                                                []
-                                                                                [
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "petgraph::graph_impl::EdgeIndex")
-                                                                                    []
-                                                                                    [ Ty.path "u32"
-                                                                                    ]
-                                                                                ]
-                                                                            ]
-                                                                        ]
-                                                                        (Ty.path "bool"),
+                                                                      Ty.path "bool",
                                                                       M.alloc (|
                                                                         Ty.apply
                                                                           (Ty.path "&")

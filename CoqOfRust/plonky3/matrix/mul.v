@@ -223,7 +223,7 @@ Module mul.
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ F; Ty.path "alloc::alloc::Global" ];
                     Ty.function
-                      [ Ty.tuple [ Ty.path "usize" ] ]
+                      [ Ty.path "usize" ]
                       (Ty.apply
                         (Ty.path "alloc::vec::Vec")
                         []
@@ -244,7 +244,7 @@ Module mul.
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ F; Ty.path "alloc::alloc::Global" ];
                       Ty.function
-                        [ Ty.tuple [ Ty.path "usize" ] ]
+                        [ Ty.path "usize" ]
                         (Ty.apply
                           (Ty.path "alloc::vec::Vec")
                           []
@@ -260,7 +260,7 @@ Module mul.
                     [
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ F; Ty.path "alloc::alloc::Global" ];
                       Ty.function
-                        [ Ty.tuple [ Ty.path "usize" ] ]
+                        [ Ty.path "usize" ]
                         (Ty.apply
                           (Ty.path "alloc::vec::Vec")
                           []
@@ -310,12 +310,10 @@ Module mul.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [ Ty.tuple [ Ty.path "usize" ] ]
-                                  (Ty.apply
-                                    (Ty.path "alloc::vec::Vec")
-                                    []
-                                    [ F; Ty.path "alloc::alloc::Global" ]),
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [ F; Ty.path "alloc::alloc::Global" ],
                                 M.alloc (| Ty.path "usize", α0 |),
                                 [
                                   fun γ =>

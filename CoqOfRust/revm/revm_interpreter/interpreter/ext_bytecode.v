@@ -48,46 +48,68 @@ Module interpreter.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ExtBytecode" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "base" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "revm_interpreter::interpreter::ext_bytecode::ExtBytecode",
-                          "base"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::bytecode::Bytecode" ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter::ext_bytecode::ExtBytecode",
+                            "base"
+                          |)
                         |)
                       |)
                     |)
-                  |));
+                  ]
+                |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "instruction_pointer" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [ Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "revm_interpreter::interpreter::ext_bytecode::ExtBytecode",
-                              "instruction_pointer"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "revm_interpreter::interpreter::ext_bytecode::ExtBytecode",
+                                "instruction_pointer"
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1059,18 +1081,14 @@ Module interpreter.
                     [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ];
                   Ty.function
                     [
-                      Ty.tuple
+                      Ty.apply
+                        (Ty.path "&")
+                        []
                         [
                           Ty.apply
-                            (Ty.path "&")
+                            (Ty.path "alloc::sync::Arc")
                             []
-                            [
-                              Ty.apply
-                                (Ty.path "alloc::sync::Arc")
-                                []
-                                [ Ty.path "revm_bytecode::eof::Eof"; Ty.path "alloc::alloc::Global"
-                                ]
-                            ]
+                            [ Ty.path "revm_bytecode::eof::Eof"; Ty.path "alloc::alloc::Global" ]
                         ]
                     ]
                     (Ty.apply
@@ -1124,33 +1142,15 @@ Module interpreter.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::sync::Arc")
-                                          []
-                                          [
-                                            Ty.path "revm_bytecode::eof::Eof";
-                                            Ty.path "alloc::alloc::Global"
-                                          ]
-                                      ]
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ]
-                                ]),
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ]
+                              ],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&")
@@ -1341,18 +1341,14 @@ Module interpreter.
                   Ty.path "usize";
                   Ty.function
                     [
-                      Ty.tuple
+                      Ty.apply
+                        (Ty.path "&")
+                        []
                         [
                           Ty.apply
-                            (Ty.path "&")
+                            (Ty.path "alloc::sync::Arc")
                             []
-                            [
-                              Ty.apply
-                                (Ty.path "alloc::sync::Arc")
-                                []
-                                [ Ty.path "revm_bytecode::eof::Eof"; Ty.path "alloc::alloc::Global"
-                                ]
-                            ]
+                            [ Ty.path "revm_bytecode::eof::Eof"; Ty.path "alloc::alloc::Global" ]
                         ]
                     ]
                     (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ])
@@ -1398,25 +1394,7 @@ Module interpreter.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::sync::Arc")
-                                          []
-                                          [
-                                            Ty.path "revm_bytecode::eof::Eof";
-                                            Ty.path "alloc::alloc::Global"
-                                          ]
-                                      ]
-                                  ]
-                              ]
-                              (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]),
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&")
@@ -1999,18 +1977,14 @@ Module interpreter.
                   Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
                   Ty.function
                     [
-                      Ty.tuple
+                      Ty.apply
+                        (Ty.path "&")
+                        []
                         [
                           Ty.apply
-                            (Ty.path "&")
+                            (Ty.path "alloc::sync::Arc")
                             []
-                            [
-                              Ty.apply
-                                (Ty.path "alloc::sync::Arc")
-                                []
-                                [ Ty.path "revm_bytecode::eof::Eof"; Ty.path "alloc::alloc::Global"
-                                ]
-                            ]
+                            [ Ty.path "revm_bytecode::eof::Eof"; Ty.path "alloc::alloc::Global" ]
                         ]
                     ]
                     (Ty.apply
@@ -2059,33 +2033,15 @@ Module interpreter.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::sync::Arc")
-                                          []
-                                          [
-                                            Ty.path "revm_bytecode::eof::Eof";
-                                            Ty.path "alloc::alloc::Global"
-                                          ]
-                                      ]
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                                ]),
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                              ],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&")

@@ -1163,7 +1163,7 @@ Module str.
                           [],
                           [
                             Ty.function
-                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
                               (Ty.path "bool")
                           ]
                         |),
@@ -1259,9 +1259,7 @@ Module str.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
-                                        (Ty.path "bool"),
+                                      Ty.path "bool",
                                       M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], α0 |),
                                       [
                                         fun γ =>
@@ -1402,10 +1400,7 @@ Module str.
                           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                           "map_or",
                           [],
-                          [
-                            Ty.path "usize";
-                            Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize")
-                          ]
+                          [ Ty.path "usize"; Ty.function [ Ty.path "usize" ] (Ty.path "usize") ]
                         |),
                         [
                           M.call_closure (|
@@ -1419,7 +1414,7 @@ Module str.
                               [],
                               [
                                 Ty.function
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
                                   (Ty.path "bool")
                               ]
                             |),
@@ -1514,12 +1509,7 @@ Module str.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
-                                            ]
-                                            (Ty.path "bool"),
+                                          Ty.path "bool",
                                           M.alloc (|
                                             Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                                             α0
@@ -1556,9 +1546,7 @@ Module str.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.path "usize" ] ]
-                                        (Ty.path "usize"),
+                                      Ty.path "usize",
                                       M.alloc (| Ty.path "usize", α0 |),
                                       [
                                         fun γ =>
@@ -3257,9 +3245,7 @@ Module str.
               [],
               [
                 Ty.path "usize";
-                Ty.function
-                  [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ] ]
-                  (Ty.path "usize")
+                Ty.function [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ] (Ty.path "usize")
               ]
             |),
             [
@@ -3309,9 +3295,7 @@ Module str.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ] ]
-                            (Ty.path "usize"),
+                          Ty.path "usize",
                           M.alloc (| Ty.tuple [ Ty.path "usize"; Ty.path "usize" ], α0 |),
                           [
                             fun γ =>
@@ -3358,9 +3342,7 @@ Module str.
               [],
               [
                 Ty.path "usize";
-                Ty.function
-                  [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ] ]
-                  (Ty.path "usize")
+                Ty.function [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ] (Ty.path "usize")
               ]
             |),
             [
@@ -3410,9 +3392,7 @@ Module str.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ] ]
-                            (Ty.path "usize"),
+                          Ty.path "usize",
                           M.alloc (| Ty.tuple [ Ty.path "usize"; Ty.path "usize" ], α0 |),
                           [
                             fun γ =>
@@ -4594,7 +4574,7 @@ Module str.
                   Ty.path "str",
                   "trim_matches",
                   [],
-                  [ Ty.function [ Ty.tuple [ Ty.path "char" ] ] (Ty.path "bool") ]
+                  [ Ty.function [ Ty.path "char" ] (Ty.path "bool") ]
                 |),
                 [
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
@@ -4605,7 +4585,7 @@ Module str.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function [ Ty.tuple [ Ty.path "char" ] ] (Ty.path "bool"),
+                              Ty.path "bool",
                               M.alloc (| Ty.path "char", α0 |),
                               [
                                 fun γ =>
@@ -4655,7 +4635,7 @@ Module str.
                   Ty.path "str",
                   "trim_start_matches",
                   [],
-                  [ Ty.function [ Ty.tuple [ Ty.path "char" ] ] (Ty.path "bool") ]
+                  [ Ty.function [ Ty.path "char" ] (Ty.path "bool") ]
                 |),
                 [
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
@@ -4666,7 +4646,7 @@ Module str.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function [ Ty.tuple [ Ty.path "char" ] ] (Ty.path "bool"),
+                              Ty.path "bool",
                               M.alloc (| Ty.path "char", α0 |),
                               [
                                 fun γ =>
@@ -4717,7 +4697,7 @@ Module str.
                   Ty.path "str",
                   "trim_end_matches",
                   [],
-                  [ Ty.function [ Ty.tuple [ Ty.path "char" ] ] (Ty.path "bool") ]
+                  [ Ty.function [ Ty.path "char" ] (Ty.path "bool") ]
                 |),
                 [
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
@@ -4728,7 +4708,7 @@ Module str.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function [ Ty.tuple [ Ty.path "char" ] ] (Ty.path "bool"),
+                              Ty.path "bool",
                               M.alloc (| Ty.path "char", α0 |),
                               [
                                 fun γ =>
@@ -5974,7 +5954,7 @@ Module str.
                                     [
                                       Ty.path "core::char::EscapeDebug";
                                       Ty.function
-                                        [ Ty.tuple [ Ty.path "char" ] ]
+                                        [ Ty.path "char" ]
                                         (Ty.path "core::char::EscapeDebug")
                                     ]
                                   |),
@@ -6002,9 +5982,7 @@ Module str.
                                           | [ α0 ] =>
                                             ltac:(M.monadic
                                               (M.match_operator (|
-                                                Ty.function
-                                                  [ Ty.tuple [ Ty.path "char" ] ]
-                                                  (Ty.path "core::char::EscapeDebug"),
+                                                Ty.path "core::char::EscapeDebug",
                                                 M.alloc (| Ty.path "char", α0 |),
                                                 [
                                                   fun γ =>
@@ -6342,23 +6320,44 @@ Module str.
                         Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ],
                         M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [], [] |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.alloc (|
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 0 ]
-                                      [ Ty.path "u8" ],
-                                    Value.Array []
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 0 ]
+                                    [ Ty.path "u8" ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 0 ]
+                                        [ Ty.path "u8" ],
+                                      Value.Array []
+                                    |)
                                   |)
                                 |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |)
                     |)

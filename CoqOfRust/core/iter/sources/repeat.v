@@ -127,27 +127,34 @@ Module iter.
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Repeat" |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "element" |) |) |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.alloc (|
-                            Ty.apply (Ty.path "&") [] [ A ],
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::iter::sources::repeat::Repeat",
-                                "element"
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ A ] ])
+                      (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Ty.apply (Ty.path "&") [] [ A ],
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::sources::repeat::Repeat",
+                                  "element"
+                                |)
                               |)
                             |)
                           |)
                         |)
                       |)
-                    |))
+                    ]
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"

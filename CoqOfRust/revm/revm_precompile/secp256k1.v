@@ -16,9 +16,47 @@ Module secp256k1.
               M.get_function (| "revm_precompile::u64_to_address", [], [] |),
               [ Value.Integer IntegerKind.U64 1 ]
             |);
-            (* ReifyFnPointer *)
-            M.pointer_coercion
-              (M.get_function (| "revm_precompile::secp256k1::ec_recover_run", [], [] |))
+            M.call_closure (|
+              Ty.function
+                [
+                  Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                  Ty.path "u64"
+                ]
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                  ]),
+              M.pointer_coercion
+                M.PointerCoercion.ReifyFnPointer
+                (Ty.function
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                    Ty.path "u64"
+                  ]
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                    ]))
+                (Ty.function
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                    Ty.path "u64"
+                  ]
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                    ])),
+              [ M.get_function (| "revm_precompile::secp256k1::ec_recover_run", [], [] |) ]
+            |)
           ]
       |))).
   
@@ -868,8 +906,7 @@ Module secp256k1.
                                       [],
                                       [
                                         Ty.function
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
-                                          ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
                                           (Ty.path "bool")
                                       ]
                                     |),
@@ -992,13 +1029,7 @@ Module secp256k1.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
-                                                        ]
-                                                    ]
-                                                    (Ty.path "bool"),
+                                                  Ty.path "bool",
                                                   M.alloc (|
                                                     Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                                                     α0
@@ -1532,13 +1563,10 @@ Module secp256k1.
                           Ty.path "alloy_primitives::bytes_::Bytes";
                           Ty.function
                             [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                    [ Value.Integer IntegerKind.Usize 32 ]
-                                    []
-                                ]
+                              Ty.apply
+                                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                [ Value.Integer IntegerKind.Usize 32 ]
+                                []
                             ]
                             (Ty.path "alloy_primitives::bytes_::Bytes")
                         ]
@@ -1573,17 +1601,7 @@ Module secp256k1.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                              [ Value.Integer IntegerKind.Usize 32 ]
-                                              []
-                                          ]
-                                      ]
-                                      (Ty.path "alloy_primitives::bytes_::Bytes"),
+                                    Ty.path "alloy_primitives::bytes_::Bytes",
                                     M.alloc (|
                                       Ty.apply
                                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
@@ -1630,39 +1648,74 @@ Module secp256k1.
                                                   []
                                                 |),
                                                 [
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.call_closure (|
+                                                  M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ],
+                                                    M.pointer_coercion
+                                                      M.PointerCoercion.Unsize
+                                                      (Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
                                                           Ty.apply
-                                                            (Ty.path "&")
+                                                            (Ty.path "array")
+                                                            [ Value.Integer IntegerKind.Usize 32 ]
+                                                            [ Ty.path "u8" ]
+                                                        ])
+                                                      (Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "slice")
                                                             []
-                                                            [
+                                                            [ Ty.path "u8" ]
+                                                        ]),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "array")
+                                                                  [
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      32
+                                                                  ]
+                                                                  [ Ty.path "u8" ]
+                                                              ],
+                                                            M.get_trait_method (|
+                                                              "core::ops::deref::Deref",
                                                               Ty.apply
-                                                                (Ty.path "array")
+                                                                (Ty.path
+                                                                  "alloy_primitives::bits::fixed::FixedBytes")
                                                                 [ Value.Integer IntegerKind.Usize 32
                                                                 ]
-                                                                [ Ty.path "u8" ]
-                                                            ],
-                                                          M.get_trait_method (|
-                                                            "core::ops::deref::Deref",
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "alloy_primitives::bits::fixed::FixedBytes")
-                                                              [ Value.Integer IntegerKind.Usize 32 ]
+                                                                [],
                                                               [],
-                                                            [],
-                                                            [],
-                                                            "deref",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [ M.borrow (| Pointer.Kind.Ref, o |) ]
+                                                              [],
+                                                              "deref",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [ M.borrow (| Pointer.Kind.Ref, o |) ]
+                                                          |)
                                                         |)
                                                       |)
-                                                    |))
+                                                    ]
+                                                  |)
                                                 ]
                                               |)
                                             ]

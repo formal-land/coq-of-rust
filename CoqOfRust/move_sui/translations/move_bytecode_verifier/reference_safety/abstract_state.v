@@ -149,12 +149,30 @@ Module reference_safety.
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Reference" |) |) |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                          |))
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_borrow_graph::references::RefID" ]
+                              ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
+                        |)
                       ]
                     |)));
                 fun γ =>
@@ -811,12 +829,25 @@ Module reference_safety.
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Local" |) |) |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                          |))
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
+                        |)
                       ]
                     |)));
                 fun γ =>
@@ -850,12 +881,31 @@ Module reference_safety.
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Global" |) |) |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                          |))
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinitionIndex"
+                                  ]
+                              ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
+                        |)
                       ]
                     |)));
                 fun γ =>
@@ -889,12 +939,30 @@ Module reference_safety.
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Field" |) |) |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                          |))
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FieldHandleIndex" ]
+                              ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
+                        |)
                       ]
                     |)))
               ]
@@ -2503,75 +2571,135 @@ Module reference_safety.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AbstractState" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "current_function" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                          "current_function"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                            "current_function"
+                          |)
                         |)
                       |)
                     |)
-                  |));
+                  ]
+                |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "locals" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                          "locals"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.path
+                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                            Ty.path "alloc::alloc::Global"
+                          ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                            "locals"
+                          |)
                         |)
                       |)
                     |)
-                  |));
+                  ]
+                |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "borrow_graph" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                          "borrow_graph"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                          []
+                          [
+                            Ty.tuple [];
+                            Ty.path
+                              "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                          ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                            "borrow_graph"
+                          |)
                         |)
                       |)
                     |)
-                  |));
+                  ]
+                |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "next_id" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                              "next_id"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                "next_id"
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4828,22 +4956,17 @@ Module reference_safety.
                                     [
                                       Ty.function
                                         [
-                                          Ty.tuple
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
                                             [
                                               Ty.apply
-                                                (Ty.path "&")
+                                                (Ty.path "alloc::collections::btree::map::BTreeMap")
                                                 []
                                                 [
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::btree::map::BTreeMap")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_borrow_graph::references::RefID";
-                                                      Ty.tuple [];
-                                                      Ty.path "alloc::alloc::Global"
-                                                    ]
+                                                  Ty.path "move_borrow_graph::references::RefID";
+                                                  Ty.tuple [];
+                                                  Ty.path "alloc::alloc::Global"
                                                 ]
                                             ]
                                         ]
@@ -4918,28 +5041,7 @@ Module reference_safety.
                                           | [ α0 ] =>
                                             ltac:(M.monadic
                                               (M.match_operator (|
-                                                Ty.function
-                                                  [
-                                                    Ty.tuple
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "alloc::collections::btree::map::BTreeMap")
-                                                              []
-                                                              [
-                                                                Ty.path
-                                                                  "move_borrow_graph::references::RefID";
-                                                                Ty.tuple [];
-                                                                Ty.path "alloc::alloc::Global"
-                                                              ]
-                                                          ]
-                                                      ]
-                                                  ]
-                                                  (Ty.path "bool"),
+                                                Ty.path "bool",
                                                 M.alloc (|
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -5066,22 +5168,19 @@ Module reference_safety.
                                           Ty.path "bool";
                                           Ty.function
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
-                                                    (Ty.path "&")
+                                                    (Ty.path
+                                                      "alloc::collections::btree::map::BTreeMap")
                                                     []
                                                     [
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "alloc::collections::btree::map::BTreeMap")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "move_borrow_graph::references::RefID";
-                                                          Ty.tuple [];
-                                                          Ty.path "alloc::alloc::Global"
-                                                        ]
+                                                      Ty.path
+                                                        "move_borrow_graph::references::RefID";
+                                                      Ty.tuple [];
+                                                      Ty.path "alloc::alloc::Global"
                                                     ]
                                                 ]
                                             ]
@@ -5150,28 +5249,7 @@ Module reference_safety.
                                               | [ α0 ] =>
                                                 ltac:(M.monadic
                                                   (M.match_operator (|
-                                                    Ty.function
-                                                      [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "alloc::collections::btree::map::BTreeMap")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "move_borrow_graph::references::RefID";
-                                                                    Ty.tuple [];
-                                                                    Ty.path "alloc::alloc::Global"
-                                                                  ]
-                                                              ]
-                                                          ]
-                                                      ]
-                                                      (Ty.path "bool"),
+                                                    Ty.path "bool",
                                                     M.alloc (|
                                                       Ty.apply
                                                         (Ty.path "&")
@@ -5476,22 +5554,17 @@ Module reference_safety.
                                     [
                                       Ty.function
                                         [
-                                          Ty.tuple
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
                                             [
                                               Ty.apply
-                                                (Ty.path "&")
+                                                (Ty.path "alloc::collections::btree::map::BTreeMap")
                                                 []
                                                 [
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::btree::map::BTreeMap")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_borrow_graph::references::RefID";
-                                                      Ty.tuple [];
-                                                      Ty.path "alloc::alloc::Global"
-                                                    ]
+                                                  Ty.path "move_borrow_graph::references::RefID";
+                                                  Ty.tuple [];
+                                                  Ty.path "alloc::alloc::Global"
                                                 ]
                                             ]
                                         ]
@@ -5566,28 +5639,7 @@ Module reference_safety.
                                           | [ α0 ] =>
                                             ltac:(M.monadic
                                               (M.match_operator (|
-                                                Ty.function
-                                                  [
-                                                    Ty.tuple
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "alloc::collections::btree::map::BTreeMap")
-                                                              []
-                                                              [
-                                                                Ty.path
-                                                                  "move_borrow_graph::references::RefID";
-                                                                Ty.tuple [];
-                                                                Ty.path "alloc::alloc::Global"
-                                                              ]
-                                                          ]
-                                                      ]
-                                                  ]
-                                                  (Ty.path "bool"),
+                                                Ty.path "bool",
                                                 M.alloc (|
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -5710,22 +5762,19 @@ Module reference_safety.
                                           Ty.path "bool";
                                           Ty.function
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
                                                   Ty.apply
-                                                    (Ty.path "&")
+                                                    (Ty.path
+                                                      "alloc::collections::btree::map::BTreeMap")
                                                     []
                                                     [
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "alloc::collections::btree::map::BTreeMap")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "move_borrow_graph::references::RefID";
-                                                          Ty.tuple [];
-                                                          Ty.path "alloc::alloc::Global"
-                                                        ]
+                                                      Ty.path
+                                                        "move_borrow_graph::references::RefID";
+                                                      Ty.tuple [];
+                                                      Ty.path "alloc::alloc::Global"
                                                     ]
                                                 ]
                                             ]
@@ -5794,28 +5843,7 @@ Module reference_safety.
                                               | [ α0 ] =>
                                                 ltac:(M.monadic
                                                   (M.match_operator (|
-                                                    Ty.function
-                                                      [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "alloc::collections::btree::map::BTreeMap")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "move_borrow_graph::references::RefID";
-                                                                    Ty.tuple [];
-                                                                    Ty.path "alloc::alloc::Global"
-                                                                  ]
-                                                              ]
-                                                          ]
-                                                      ]
-                                                      (Ty.path "bool"),
+                                                    Ty.path "bool",
                                                     M.alloc (|
                                                       Ty.apply
                                                         (Ty.path "&")
@@ -9729,8 +9757,7 @@ Module reference_safety.
                 ]) (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ is_mut_borrow_with_full_borrows :
-                      Ty.function [ Ty.tuple [] ] (Ty.path "bool") :=
+                  let~ is_mut_borrow_with_full_borrows : Ty.function [] (Ty.path "bool") :=
                     M.closure
                       (fun γ =>
                         ltac:(M.monadic
@@ -9738,7 +9765,7 @@ Module reference_safety.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function [ Ty.tuple [] ] (Ty.path "bool"),
+                                Ty.path "bool",
                                 M.alloc (| Ty.tuple [], α0 |),
                                 [
                                   fun γ =>
@@ -9768,8 +9795,7 @@ Module reference_safety.
                               |)))
                           | _ => M.impossible "wrong number of arguments"
                           end)) in
-                  let~ is_imm_borrow_with_mut_borrows :
-                      Ty.function [ Ty.tuple [] ] (Ty.path "bool") :=
+                  let~ is_imm_borrow_with_mut_borrows : Ty.function [] (Ty.path "bool") :=
                     M.closure
                       (fun γ =>
                         ltac:(M.monadic
@@ -9777,7 +9803,7 @@ Module reference_safety.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function [ Ty.tuple [] ] (Ty.path "bool"),
+                                Ty.path "bool",
                                 M.alloc (| Ty.tuple [], α0 |),
                                 [
                                   fun γ =>
@@ -9833,7 +9859,7 @@ Module reference_safety.
                                       Ty.path "bool",
                                       M.get_trait_method (|
                                         "core::ops::function::Fn",
-                                        Ty.function [ Ty.tuple [] ] (Ty.path "bool"),
+                                        Ty.function [] (Ty.path "bool"),
                                         [],
                                         [ Ty.tuple [] ],
                                         "call",
@@ -9853,7 +9879,7 @@ Module reference_safety.
                                         Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::ops::function::Fn",
-                                          Ty.function [ Ty.tuple [] ] (Ty.path "bool"),
+                                          Ty.function [] (Ty.path "bool"),
                                           [],
                                           [ Ty.tuple [] ],
                                           "call",
@@ -11919,15 +11945,12 @@ Module reference_safety.
                                     ];
                                   Ty.function
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                            ]
+                                          Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                         ]
                                     ]
                                     (Ty.apply
@@ -11949,15 +11972,12 @@ Module reference_safety.
                                       ];
                                     Ty.function
                                       [
-                                        Ty.tuple
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
                                           [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                              ]
+                                            Ty.path
+                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                           ]
                                       ]
                                       (Ty.apply
@@ -11980,15 +12000,12 @@ Module reference_safety.
                                         ];
                                       Ty.function
                                         [
-                                          Ty.tuple
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
                                             [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                ]
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                             ]
                                         ]
                                         (Ty.apply
@@ -12017,15 +12034,12 @@ Module reference_safety.
                                           ];
                                         Ty.function
                                           [
-                                            Ty.tuple
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
                                               [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                  ]
+                                                Ty.path
+                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                               ]
                                           ]
                                           (Ty.apply
@@ -12050,15 +12064,12 @@ Module reference_safety.
                                         Ty.path "move_borrow_graph::references::RefID";
                                         Ty.function
                                           [
-                                            Ty.tuple
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
                                               [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                  ]
+                                                Ty.path
+                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                               ]
                                           ]
                                           (Ty.apply
@@ -12134,26 +12145,11 @@ Module reference_safety.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [
-                                                              Ty.path
-                                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                            ]
-                                                        ]
-                                                    ]
-                                                    (Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_borrow_graph::references::RefID"
-                                                      ]),
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "move_borrow_graph::references::RefID"
+                                                    ],
                                                   M.alloc (|
                                                     Ty.apply
                                                       (Ty.path "&")
@@ -12227,15 +12223,12 @@ Module reference_safety.
                                             ];
                                           Ty.function
                                             [
-                                              Ty.tuple
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
                                                 [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                    ]
+                                                  Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                                 ]
                                             ]
                                             (Ty.apply
@@ -12279,15 +12272,12 @@ Module reference_safety.
                                                         ];
                                                       Ty.function
                                                         [
-                                                          Ty.tuple
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
                                                             [
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                                ]
+                                                              Ty.path
+                                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                                             ]
                                                         ]
                                                         (Ty.apply
@@ -12591,13 +12581,10 @@ Module reference_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ];
                             Ty.function
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "move_binary_format::file_format::SignatureToken" ]
-                                  ]
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                               ]
                               (Ty.path
                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")
@@ -12629,14 +12616,10 @@ Module reference_safety.
                                 [ Ty.path "move_binary_format::file_format::SignatureToken" ];
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
-                                        ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                                 ]
                                 (Ty.path
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")
@@ -12656,14 +12639,10 @@ Module reference_safety.
                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
-                                        ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                                 ]
                                 (Ty.path
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")
@@ -12739,21 +12718,8 @@ Module reference_safety.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::SignatureToken"
-                                                  ]
-                                              ]
-                                          ]
-                                          (Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                        Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                         M.alloc (|
                                           Ty.apply
                                             (Ty.path "&")
@@ -14144,7 +14110,7 @@ Module reference_safety.
                         [],
                         [
                           Ty.function
-                            [ Ty.tuple [ Ty.path "move_borrow_graph::references::RefID" ] ]
+                            [ Ty.path "move_borrow_graph::references::RefID" ]
                             (Ty.tuple [])
                         ]
                       |),
@@ -14181,10 +14147,7 @@ Module reference_safety.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [ Ty.tuple [ Ty.path "move_borrow_graph::references::RefID" ]
-                                      ]
-                                      (Ty.tuple []),
+                                    Ty.tuple [],
                                     M.alloc (|
                                       Ty.path "move_borrow_graph::references::RefID",
                                       α0
@@ -14314,11 +14277,8 @@ Module reference_safety.
                                     ];
                                   Ty.function
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                        ]
+                                      Ty.path
+                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                     ]
                                     (Ty.apply
                                       (Ty.path "core::option::Option")
@@ -14340,11 +14300,8 @@ Module reference_safety.
                                       ];
                                     Ty.function
                                       [
-                                        Ty.tuple
-                                          [
-                                            Ty.path
-                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                          ]
+                                        Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                       ]
                                       (Ty.apply
                                         (Ty.path "core::option::Option")
@@ -14367,11 +14324,8 @@ Module reference_safety.
                                         ];
                                       Ty.function
                                         [
-                                          Ty.tuple
-                                            [
-                                              Ty.path
-                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                            ]
+                                          Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                         ]
                                         (Ty.apply
                                           (Ty.path "core::option::Option")
@@ -14400,11 +14354,8 @@ Module reference_safety.
                                           ];
                                         Ty.function
                                           [
-                                            Ty.tuple
-                                              [
-                                                Ty.path
-                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                              ]
+                                            Ty.path
+                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                           ]
                                           (Ty.apply
                                             (Ty.path "core::option::Option")
@@ -14429,11 +14380,8 @@ Module reference_safety.
                                         Ty.path "move_borrow_graph::references::RefID";
                                         Ty.function
                                           [
-                                            Ty.tuple
-                                              [
-                                                Ty.path
-                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                              ]
+                                            Ty.path
+                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                           ]
                                           (Ty.apply
                                             (Ty.path "core::option::Option")
@@ -14476,21 +14424,11 @@ Module reference_safety.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.path
-                                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                        ]
-                                                    ]
-                                                    (Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_borrow_graph::references::RefID"
-                                                      ]),
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "move_borrow_graph::references::RefID"
+                                                    ],
                                                   M.alloc (|
                                                     Ty.path
                                                       "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
@@ -14550,11 +14488,8 @@ Module reference_safety.
                                             ];
                                           Ty.function
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path
-                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                ]
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                             ]
                                             (Ty.apply
                                               (Ty.path "core::option::Option")
@@ -14598,11 +14533,8 @@ Module reference_safety.
                                                         ];
                                                       Ty.function
                                                         [
-                                                          Ty.tuple
-                                                            [
-                                                              Ty.path
-                                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                            ]
+                                                          Ty.path
+                                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                                         ]
                                                         (Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -14966,16 +14898,13 @@ Module reference_safety.
                           [
                             Ty.tuple
                               [
-                                Ty.tuple
+                                Ty.path "usize";
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
                                   [
-                                    Ty.path "usize";
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.path
-                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                      ]
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                   ]
                               ]
                           ]
@@ -15019,16 +14948,13 @@ Module reference_safety.
                             [
                               Ty.tuple
                                 [
-                                  Ty.tuple
+                                  Ty.path "usize";
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
                                     [
-                                      Ty.path "usize";
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
-                                          Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                        ]
+                                      Ty.path
+                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                     ]
                                 ]
                             ]
@@ -15060,16 +14986,13 @@ Module reference_safety.
                             [
                               Ty.tuple
                                 [
-                                  Ty.tuple
+                                  Ty.path "usize";
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
                                     [
-                                      Ty.path "usize";
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
-                                          Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                        ]
+                                      Ty.path
+                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                     ]
                                 ]
                             ]
@@ -15184,25 +15107,8 @@ Module reference_safety.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.path "usize";
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                  ]
-                                              ]
-                                          ]
-                                      ]
-                                      (Ty.path
-                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                     M.alloc (|
                                       Ty.tuple
                                         [
@@ -15641,14 +15547,7 @@ Module reference_safety.
                   [],
                   [
                     Ty.function
-                      [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.path "move_borrow_graph::references::RefID" ]
-                          ]
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "move_borrow_graph::references::RefID" ]
                       ]
                       (Ty.path "bool")
                   ]
@@ -15690,17 +15589,7 @@ Module reference_safety.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_borrow_graph::references::RefID" ]
-                                    ]
-                                ]
-                                (Ty.path "bool"),
+                              Ty.path "bool",
                               M.alloc (|
                                 Ty.apply
                                   (Ty.path "&")
@@ -15860,16 +15749,13 @@ Module reference_safety.
                         [
                           Ty.tuple
                             [
-                              Ty.tuple
+                              Ty.path "usize";
+                              Ty.apply
+                                (Ty.path "&")
+                                []
                                 [
-                                  Ty.path "usize";
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [
-                                      Ty.path
-                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                    ]
+                                  Ty.path
+                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                 ]
                             ]
                         ]
@@ -16000,24 +15886,7 @@ Module reference_safety.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.path "usize";
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                              ]
-                                          ]
-                                      ]
-                                  ]
-                                  (Ty.path "bool"),
+                                Ty.path "bool",
                                 M.alloc (|
                                   Ty.tuple
                                     [
@@ -16076,13 +15945,7 @@ Module reference_safety.
                                               [
                                                 Ty.path "bool";
                                                 Ty.function
-                                                  [
-                                                    Ty.tuple
-                                                      [
-                                                        Ty.path
-                                                          "move_borrow_graph::references::RefID"
-                                                      ]
-                                                  ]
+                                                  [ Ty.path "move_borrow_graph::references::RefID" ]
                                                   (Ty.path "bool")
                                               ]
                                             |),
@@ -16114,15 +15977,7 @@ Module reference_safety.
                                                     | [ α0 ] =>
                                                       ltac:(M.monadic
                                                         (M.match_operator (|
-                                                          Ty.function
-                                                            [
-                                                              Ty.tuple
-                                                                [
-                                                                  Ty.path
-                                                                    "move_borrow_graph::references::RefID"
-                                                                ]
-                                                            ]
-                                                            (Ty.path "bool"),
+                                                          Ty.path "bool",
                                                           M.alloc (|
                                                             Ty.path
                                                               "move_borrow_graph::references::RefID",
@@ -16672,22 +16527,19 @@ Module reference_safety.
                           [
                             Ty.tuple
                               [
-                                Ty.tuple
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
                                   [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.path
-                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                      ];
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.path
-                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                      ]
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                  ];
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                   ]
                               ]
                           ]
@@ -16738,22 +16590,19 @@ Module reference_safety.
                             [
                               Ty.tuple
                                 [
-                                  Ty.tuple
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
                                     [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
-                                          Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                        ];
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
-                                          Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                        ]
+                                      Ty.path
+                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                    ];
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.path
+                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                     ]
                                 ]
                             ]
@@ -16792,22 +16641,19 @@ Module reference_safety.
                             [
                               Ty.tuple
                                 [
-                                  Ty.tuple
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
                                     [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
-                                          Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                        ];
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
-                                          Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                        ]
+                                      Ty.path
+                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                    ];
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.path
+                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                     ]
                                 ]
                             ]
@@ -16951,31 +16797,8 @@ Module reference_safety.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                  ];
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                  ]
-                                              ]
-                                          ]
-                                      ]
-                                      (Ty.path
-                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                    Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                     M.alloc (|
                                       Ty.tuple
                                         [
@@ -18127,22 +17950,19 @@ Module reference_safety.
                             [
                               Ty.tuple
                                 [
-                                  Ty.tuple
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
                                     [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
-                                          Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                        ];
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
-                                          Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                        ]
+                                      Ty.path
+                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                    ];
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.path
+                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
                                     ]
                                 ]
                             ]
@@ -18309,30 +18129,7 @@ Module reference_safety.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                  ];
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                  ]
-                                              ]
-                                          ]
-                                      ]
-                                      (Ty.path "bool"),
+                                    Ty.path "bool",
                                     M.alloc (|
                                       Ty.tuple
                                         [

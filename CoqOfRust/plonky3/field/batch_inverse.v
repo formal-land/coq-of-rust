@@ -2,7 +2,23 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module batch_inverse.
-  (* #[instrument(level = "debug", skip_all)] *)
+  (*
+  pub fn batch_multiplicative_inverse<F: Field>(x: &[F]) -> Vec<F> {
+      // How many elements to invert in one thread.
+      const CHUNK_SIZE: usize = 1024;
+  
+      let n = x.len();
+      let mut result = F::zero_vec(n);
+  
+      x.par_chunks(CHUNK_SIZE)
+          .zip(result.par_chunks_mut(CHUNK_SIZE))
+          .for_each(|(x, result)| {
+              batch_multiplicative_inverse_helper(x, result);
+          });
+  
+      result
+  }
+  *)
   Definition batch_multiplicative_inverse
       (ε : list Value.t)
       (τ : list Ty.t)
@@ -695,14 +711,8 @@ Module batch_inverse.
                         [
                           Ty.tuple
                             [
-                              Ty.tuple
-                                [
-                                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ];
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [ Ty.apply (Ty.path "slice") [] [ F ] ]
-                                ]
+                              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ];
+                              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ]
                             ]
                         ]
                         (Ty.tuple [])
@@ -801,24 +811,7 @@ Module batch_inverse.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.apply (Ty.path "slice") [] [ F ] ];
-                                            Ty.apply
-                                              (Ty.path "&mut")
-                                              []
-                                              [ Ty.apply (Ty.path "slice") [] [ F ] ]
-                                          ]
-                                      ]
-                                  ]
-                                  (Ty.tuple []),
+                                Ty.tuple [],
                                 M.alloc (|
                                   Ty.tuple
                                     [
@@ -1115,7 +1108,7 @@ Module batch_inverse.
                                 M.get_function (|
                                   "p3_field::batch_inverse::batch_multiplicative_inverse_general",
                                   [],
-                                  [ F; Ty.function [ Ty.tuple [ F ] ] F ]
+                                  [ F; Ty.function [ F ] F ]
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |);
@@ -1130,7 +1123,7 @@ Module batch_inverse.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function [ Ty.tuple [ F ] ] F,
+                                              F,
                                               M.alloc (| F, α0 |),
                                               [
                                                 fun γ =>
@@ -1262,13 +1255,10 @@ Module batch_inverse.
                         [ F ];
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "p3_field::array::FieldArray")
-                                [ Value.Integer IntegerKind.Usize 4 ]
-                                [ F ]
-                            ]
+                          Ty.apply
+                            (Ty.path "p3_field::array::FieldArray")
+                            [ Value.Integer IntegerKind.Usize 4 ]
+                            [ F ]
                         ]
                         (Ty.apply
                           (Ty.path "p3_field::array::FieldArray")
@@ -1286,20 +1276,10 @@ Module batch_inverse.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "p3_field::array::FieldArray")
-                                          [ Value.Integer IntegerKind.Usize 4 ]
-                                          [ F ]
-                                      ]
-                                  ]
-                                  (Ty.apply
-                                    (Ty.path "p3_field::array::FieldArray")
-                                    [ Value.Integer IntegerKind.Usize 4 ]
-                                    [ F ]),
+                                Ty.apply
+                                  (Ty.path "p3_field::array::FieldArray")
+                                  [ Value.Integer IntegerKind.Usize 4 ]
+                                  [ F ],
                                 M.alloc (|
                                   Ty.apply
                                     (Ty.path "p3_field::array::FieldArray")

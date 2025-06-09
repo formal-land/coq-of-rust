@@ -102,7 +102,7 @@ Module num.
             M.catch_return (Ty.path "core::num::dec2flt::common::BiasedFp") (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ get_shift : Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize") :=
+                  let~ get_shift : Ty.function [ Ty.path "usize" ] (Ty.path "usize") :=
                     M.closure
                       (fun γ =>
                         ltac:(M.monadic
@@ -110,7 +110,7 @@ Module num.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize"),
+                                Ty.path "usize",
                                 M.alloc (| Ty.path "usize", α0 |),
                                 [
                                   fun γ =>
@@ -350,9 +350,7 @@ Module num.
                                           Ty.path "usize",
                                           M.get_trait_method (|
                                             "core::ops::function::Fn",
-                                            Ty.function
-                                              [ Ty.tuple [ Ty.path "usize" ] ]
-                                              (Ty.path "usize"),
+                                            Ty.function [ Ty.path "usize" ] (Ty.path "usize"),
                                             [],
                                             [ Ty.tuple [ Ty.path "usize" ] ],
                                             "call",
@@ -604,7 +602,7 @@ Module num.
                                                   M.get_trait_method (|
                                                     "core::ops::function::Fn",
                                                     Ty.function
-                                                      [ Ty.tuple [ Ty.path "usize" ] ]
+                                                      [ Ty.path "usize" ]
                                                       (Ty.path "usize"),
                                                     [],
                                                     [ Ty.tuple [ Ty.path "usize" ] ],

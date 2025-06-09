@@ -230,38 +230,63 @@ Module instructions.
                       []
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.deref (|
-                            M.call_closure (|
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [
                               Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 4 ]
-                                    [ Ty.path "u64" ]
-                                ],
-                              M.get_associated_function (|
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 4 ]
+                                [ Ty.path "u64" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
                                 Ty.apply
-                                  (Ty.path "ruint::Uint")
+                                  (Ty.path "&mut")
+                                  []
                                   [
-                                    Value.Integer IntegerKind.Usize 256;
-                                    Value.Integer IntegerKind.Usize 4
-                                  ]
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 4 ]
+                                      [ Ty.path "u64" ]
+                                  ],
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ]
+                                    [],
+                                  "as_limbs_mut",
                                   [],
-                                "as_limbs_mut",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| dest |) |) |)
-                              ]
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| dest |) |)
+                                  |)
+                                ]
+                              |)
                             |)
                           |)
-                        |))
+                        ]
+                      |)
                     ]
                   |) in
                 let~ i : Ty.path "usize" := Value.Integer IntegerKind.Usize 0 in

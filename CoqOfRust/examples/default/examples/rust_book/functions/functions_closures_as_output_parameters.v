@@ -28,7 +28,7 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
             [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Fn" |) |) |) ]
           |) in
         M.alloc (|
-          Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+          Ty.function [] (Ty.tuple []),
           M.closure
             (fun γ =>
               ltac:(M.monadic
@@ -36,7 +36,7 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                      Ty.tuple [],
                       M.alloc (| Ty.tuple [], α0 |),
                       [
                         fun γ =>
@@ -157,7 +157,7 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
             [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FnMut" |) |) |) ]
           |) in
         M.alloc (|
-          Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+          Ty.function [] (Ty.tuple []),
           M.closure
             (fun γ =>
               ltac:(M.monadic
@@ -165,7 +165,7 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                      Ty.tuple [],
                       M.alloc (| Ty.tuple [], α0 |),
                       [
                         fun γ =>
@@ -286,7 +286,7 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
             [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FnOnce" |) |) |) ]
           |) in
         M.alloc (|
-          Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+          Ty.function [] (Ty.tuple []),
           M.closure
             (fun γ =>
               ltac:(M.monadic
@@ -294,7 +294,7 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                      Ty.tuple [],
                       M.alloc (| Ty.tuple [], α0 |),
                       [
                         fun γ =>

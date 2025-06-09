@@ -4,12 +4,18 @@ Require Import alloy_primitives.links.aliases.
 Require Import alloy_primitives.bits.links.address.
 Require Import alloy_primitives.bits.links.fixed.
 Require Import alloy_primitives.utils.links.mod.
+Require Import core.array.links.mod.
 Require Import core.convert.links.mod.
 Require Import core.convert.links.num.
+Require Import core.intrinsics.links.mod.
+Require Import core.links.array.
 Require Import core.links.cmp.
 Require Import core.links.panicking.
 Require Import core.links.result.
+Require Import core.ops.links.range.
 Require Import core.num.links.mod.
+Require Import core.ptr.links.const_ptr.
+Require Import core.slice.links.index.
 Require Import core.slice.links.mod.
 Require Import revm.revm_interpreter.gas.links.calc.
 Require Import revm.revm_interpreter.gas.links.constants.
@@ -201,8 +207,7 @@ Proof.
   destruct (Impl_Into_for_From_T.run Impl_From_FixedBytes_32_for_U256.run).
   destruct Impl_Ord_for_usize.run.
   run_symbolic.
-  (* array cast *)
-Admitted.
+Defined.
 
 (*
 pub fn calldatasize<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -353,8 +358,32 @@ Proof.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_ReturnData_for_ReturnData.
   destruct Impl_TryFrom_u64_for_usize.run.
+  destruct Impl_Ord_for_usize.run.
+  destruct (Impl_Into_for_From_T.run Impl_From_FixedBytes_32_for_U256.run).
+  destruct (Impl_Into_for_From_T.run Impl_From_FixedBytes_32_for_U256.run).
+  destruct (Impl_From_Array_u8_N_for_FixedBytes_N.run {| Integer.value := 32 |}).
+  destruct (Impl_IndexMut_for_Array.run
+    U8.t
+    (RangeTo.t Usize.t)
+    {| Integer.value := 32 |}
+    (list U8.t)
+  ). {
+    apply Impl_IndexMut_for_Slice.run.
+    apply Impl_SliceIndex_for_RangeTo.run.
+  }
+  destruct (Impl_Index_for_Slice.run
+    U8.t
+    (Range.t Usize.t)
+    (Index_Output := list U8.t)
+  ). {
+    apply Impl_SliceIndex_for_Range.run.
+  }
   run_symbolic.
-Admitted.
+  eapply Run.Rewrite. {
+    exact (array.repeat_φ_eq 32 (Integer.Build_t IntegerKind.U8 0)).
+  }
+  run_symbolic.
+Defined.
 
 (*
 pub fn gas<WIRE: InterpreterTypes, H: Host + ?Sized>(

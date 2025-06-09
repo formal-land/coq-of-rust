@@ -248,12 +248,35 @@ Module bits.
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Raw" |) |) |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                          |))
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                  ]
+                              ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
+                        |)
                       ]
                     |)));
                 fun γ =>
@@ -292,12 +315,35 @@ Module bits.
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Hash" |) |) |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                          |))
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                      [ Value.Integer IntegerKind.Usize 32 ]
+                                      []
+                                  ]
+                              ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
+                        |)
                       ]
                     |)))
               ]

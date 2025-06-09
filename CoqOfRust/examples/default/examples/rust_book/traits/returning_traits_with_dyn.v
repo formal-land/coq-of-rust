@@ -94,11 +94,32 @@ Definition random_animal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
   | [], [], [ random_number ] =>
     ltac:(M.monadic
       (let random_number := M.alloc (| Ty.path "f64", random_number |) in
-      (* Unsize *)
-      M.pointer_coercion
-        (* Unsize *)
-        (M.pointer_coercion
-          (M.match_operator (|
+      M.call_closure (|
+        Ty.apply
+          (Ty.path "alloc::boxed::Box")
+          []
+          [
+            Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
+            Ty.path "alloc::alloc::Global"
+          ],
+        M.pointer_coercion
+          M.PointerCoercion.Unsize
+          (Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            []
+            [
+              Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
+              Ty.path "alloc::alloc::Global"
+            ])
+          (Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            []
+            [
+              Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
+              Ty.path "alloc::alloc::Global"
+            ]),
+        [
+          M.call_closure (|
             Ty.apply
               (Ty.path "alloc::boxed::Box")
               []
@@ -106,71 +127,179 @@ Definition random_animal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                 Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
                 Ty.path "alloc::alloc::Global"
               ],
-            M.alloc (| Ty.tuple [], Value.Tuple [] |),
+            M.pointer_coercion
+              M.PointerCoercion.Unsize
+              (Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                []
+                [
+                  Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
+                  Ty.path "alloc::alloc::Global"
+                ])
+              (Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                []
+                [
+                  Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
+                  Ty.path "alloc::alloc::Global"
+                ]),
             [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.use
-                      (M.alloc (|
-                        Ty.path "bool",
-                        M.call_closure (|
-                          Ty.path "bool",
-                          BinOp.lt,
-                          [ M.read (| random_number |); M.read (| UnsupportedLiteral |) ]
-                        |)
-                      |)) in
-                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (* Unsize *)
-                    (M.pointer_coercion
+              M.match_operator (|
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [
+                    Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
+                    Ty.path "alloc::alloc::Global"
+                  ],
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            Ty.path "bool",
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.lt,
+                              [ M.read (| random_number |); M.read (| UnsupportedLiteral |) ]
+                            |)
+                          |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [
+                            Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [
+                              Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
+                              Ty.path "alloc::alloc::Global"
+                            ])
+                          (Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [
+                              Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
+                              Ty.path "alloc::alloc::Global"
+                            ]),
+                        [
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.path "returning_traits_with_dyn::Sheep";
+                                  Ty.path "alloc::alloc::Global"
+                                ])
+                              (Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
+                                  Ty.path "alloc::alloc::Global"
+                                ]),
+                            [
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "alloc::boxed::Box")
+                                  []
+                                  [
+                                    Ty.path "returning_traits_with_dyn::Sheep";
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.path "returning_traits_with_dyn::Sheep";
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
+                                  "new",
+                                  [],
+                                  []
+                                |),
+                                [ Value.StructTuple "returning_traits_with_dyn::Sheep" [] [] [] ]
+                              |)
+                            ]
+                          |)
+                        ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
                       (M.call_closure (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
                           []
                           [
-                            Ty.path "returning_traits_with_dyn::Sheep";
+                            Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
                             Ty.path "alloc::alloc::Global"
                           ],
-                        M.get_associated_function (|
-                          Ty.apply
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
                             (Ty.path "alloc::boxed::Box")
                             []
                             [
-                              Ty.path "returning_traits_with_dyn::Sheep";
+                              Ty.path "returning_traits_with_dyn::Cow";
                               Ty.path "alloc::alloc::Global"
-                            ],
-                          "new",
-                          [],
-                          []
-                        |),
-                        [ Value.StructTuple "returning_traits_with_dyn::Sheep" [] [] [] ]
-                      |)))));
-              fun γ =>
-                ltac:(M.monadic
-                  (* Unsize *)
-                  (M.pointer_coercion
-                    (M.call_closure (|
-                      Ty.apply
-                        (Ty.path "alloc::boxed::Box")
-                        []
-                        [ Ty.path "returning_traits_with_dyn::Cow"; Ty.path "alloc::alloc::Global"
-                        ],
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [ Ty.path "returning_traits_with_dyn::Cow"; Ty.path "alloc::alloc::Global"
-                          ],
-                        "new",
-                        [],
-                        []
-                      |),
-                      [ Value.StructTuple "returning_traits_with_dyn::Cow" [] [] [] ]
-                    |))))
+                            ])
+                          (Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [
+                              Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
+                              Ty.path "alloc::alloc::Global"
+                            ]),
+                        [
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.path "returning_traits_with_dyn::Cow";
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.path "returning_traits_with_dyn::Cow";
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              "new",
+                              [],
+                              []
+                            |),
+                            [ Value.StructTuple "returning_traits_with_dyn::Cow" [] [] [] ]
+                          |)
+                        ]
+                      |)))
+                ]
+              |)
             ]
-          |)))))
+          |)
+        ]
+      |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 

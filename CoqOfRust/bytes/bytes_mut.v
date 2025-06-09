@@ -933,7 +933,14 @@ Module bytes_mut.
                               []
                             |),
                             [
-                              (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |));
+                              M.call_closure (|
+                                Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.MutToConstPointer
+                                  (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                                  (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]),
+                                [ M.read (| ptr |) ]
+                              |);
                               M.read (| len |);
                               M.read (| data |);
                               M.borrow (|
@@ -2497,29 +2504,45 @@ Module bytes_mut.
                                                   [ Ty.path "u8" ]
                                                 |),
                                                 [
-                                                  (* MutToConstPointer *)
-                                                  M.pointer_coercion
-                                                    (M.call_closure (|
-                                                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                                      M.get_associated_function (|
+                                                  M.call_closure (|
+                                                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                                    M.pointer_coercion
+                                                      M.PointerCoercion.MutToConstPointer
+                                                      (Ty.apply
+                                                        (Ty.path "*mut")
+                                                        []
+                                                        [ Ty.path "u8" ])
+                                                      (Ty.apply
+                                                        (Ty.path "*const")
+                                                        []
+                                                        [ Ty.path "u8" ]),
+                                                    [
+                                                      M.call_closure (|
                                                         Ty.apply
-                                                          (Ty.path "core::ptr::non_null::NonNull")
+                                                          (Ty.path "*mut")
                                                           []
                                                           [ Ty.path "u8" ],
-                                                        "as_ptr",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.deref (| M.read (| self |) |),
-                                                            "bytes::bytes_mut::BytesMut",
-                                                            "ptr"
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "core::ptr::non_null::NonNull")
+                                                            []
+                                                            [ Ty.path "u8" ],
+                                                          "as_ptr",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (|
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.deref (| M.read (| self |) |),
+                                                              "bytes::bytes_mut::BytesMut",
+                                                              "ptr"
+                                                            |)
                                                           |)
-                                                        |)
-                                                      ]
-                                                    |));
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |);
                                                   M.read (| base_ptr |);
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
@@ -3511,30 +3534,44 @@ Module bytes_mut.
                                     Ty.path "usize",
                                     M.get_function (| "bytes::offset_from", [], [] |),
                                     [
-                                      (* MutToConstPointer *)
-                                      M.pointer_coercion
-                                        (M.call_closure (|
-                                          Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "core::ptr::non_null::NonNull")
+                                      M.call_closure (|
+                                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                        M.pointer_coercion
+                                          M.PointerCoercion.MutToConstPointer
+                                          (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                                          (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]),
+                                        [
+                                          M.call_closure (|
+                                            Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "core::ptr::non_null::NonNull")
+                                                []
+                                                [ Ty.path "u8" ],
+                                              "as_ptr",
+                                              [],
                                               []
-                                              [ Ty.path "u8" ],
-                                            "as_ptr",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "bytes::bytes_mut::BytesMut",
-                                                "ptr"
+                                            |),
+                                            [
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "bytes::bytes_mut::BytesMut",
+                                                  "ptr"
+                                                |)
                                               |)
-                                            |)
-                                          ]
-                                        |));
-                                      (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |))
+                                            ]
+                                          |)
+                                        ]
+                                      |);
+                                      M.call_closure (|
+                                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                        M.pointer_coercion
+                                          M.PointerCoercion.MutToConstPointer
+                                          (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                                          (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]),
+                                        [ M.read (| ptr |) ]
+                                      |)
                                     ]
                                   |) in
                                 let~ _ : Ty.tuple [] :=
@@ -3625,33 +3662,51 @@ Module bytes_mut.
                                                           [ Ty.path "u8" ]
                                                         |),
                                                         [
-                                                          (* MutToConstPointer *)
-                                                          M.pointer_coercion
-                                                            (M.call_closure (|
-                                                              Ty.apply
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "*const")
+                                                              []
+                                                              [ Ty.path "u8" ],
+                                                            M.pointer_coercion
+                                                              M.PointerCoercion.MutToConstPointer
+                                                              (Ty.apply
                                                                 (Ty.path "*mut")
                                                                 []
-                                                                [ Ty.path "u8" ],
-                                                              M.get_associated_function (|
+                                                                [ Ty.path "u8" ])
+                                                              (Ty.apply
+                                                                (Ty.path "*const")
+                                                                []
+                                                                [ Ty.path "u8" ]),
+                                                            [
+                                                              M.call_closure (|
                                                                 Ty.apply
-                                                                  (Ty.path
-                                                                    "core::ptr::non_null::NonNull")
+                                                                  (Ty.path "*mut")
                                                                   []
                                                                   [ Ty.path "u8" ],
-                                                                "as_ptr",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.read (|
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.deref (| M.read (| self |) |),
-                                                                    "bytes::bytes_mut::BytesMut",
-                                                                    "ptr"
+                                                                M.get_associated_function (|
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::ptr::non_null::NonNull")
+                                                                    []
+                                                                    [ Ty.path "u8" ],
+                                                                  "as_ptr",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.read (|
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.deref (|
+                                                                        M.read (| self |)
+                                                                      |),
+                                                                      "bytes::bytes_mut::BytesMut",
+                                                                      "ptr"
+                                                                    |)
                                                                   |)
-                                                                |)
-                                                              ]
-                                                            |));
+                                                                ]
+                                                              |)
+                                                            ]
+                                                          |);
                                                           M.read (| ptr |);
                                                           M.read (| len |)
                                                         ]
@@ -5578,26 +5633,33 @@ Module bytes_mut.
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                 M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
                 [
-                  (* MutToConstPointer *)
-                  M.pointer_coercion
-                    (M.call_closure (|
-                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
-                        "as_ptr",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "bytes::bytes_mut::BytesMut",
-                            "ptr"
+                  M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                    M.pointer_coercion
+                      M.PointerCoercion.MutToConstPointer
+                      (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                      (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]),
+                    [
+                      M.call_closure (|
+                        Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
+                          "as_ptr",
+                          [],
+                          []
+                        |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "bytes::bytes_mut::BytesMut",
+                              "ptr"
+                            |)
                           |)
-                        |)
-                      ]
-                    |));
+                        ]
+                      |)
+                    ]
+                  |);
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.deref (| M.read (| self |) |),
@@ -9926,9 +9988,14 @@ Module bytes_mut.
               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_function (| "core::fmt::write", [], [] |),
             [
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |));
+              M.call_closure (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&mut") [] [ Ty.path "bytes::bytes_mut::BytesMut" ])
+                  (Ty.apply (Ty.path "&mut") [] [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ]),
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+              |);
               M.read (| args |)
             ]
           |)))
@@ -13589,49 +13656,56 @@ Module bytes_mut.
                         Ty.tuple [],
                         M.get_function (| "core::intrinsics::copy", [], [ Ty.path "u8" ] |),
                         [
-                          (* MutToConstPointer *)
-                          M.pointer_coercion
-                            (M.call_closure (|
-                              Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::ptr::non_null::NonNull")
+                          M.call_closure (|
+                            Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                            M.pointer_coercion
+                              M.PointerCoercion.MutToConstPointer
+                              (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                              (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]),
+                            [
+                              M.call_closure (|
+                                Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.path "u8" ],
+                                  "as_ptr",
+                                  [],
                                   []
-                                  [ Ty.path "u8" ],
-                                "as_ptr",
-                                [],
-                                []
-                              |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "bytes::bytes_mut::BytesMut" ],
-                                        M.get_trait_method (|
-                                          "core::ops::deref::Deref",
+                                |),
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (|
+                                        M.call_closure (|
                                           Ty.apply
-                                            (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                            (Ty.path "&")
                                             []
                                             [ Ty.path "bytes::bytes_mut::BytesMut" ],
-                                          [],
-                                          [],
-                                          "deref",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.borrow (| Pointer.Kind.Ref, bytes |) ]
-                                      |)
-                                    |),
-                                    "bytes::bytes_mut::BytesMut",
-                                    "ptr"
+                                          M.get_trait_method (|
+                                            "core::ops::deref::Deref",
+                                            Ty.apply
+                                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                              []
+                                              [ Ty.path "bytes::bytes_mut::BytesMut" ],
+                                            [],
+                                            [],
+                                            "deref",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.borrow (| Pointer.Kind.Ref, bytes |) ]
+                                        |)
+                                      |),
+                                      "bytes::bytes_mut::BytesMut",
+                                      "ptr"
+                                    |)
                                   |)
-                                |)
-                              ]
-                            |));
+                                ]
+                              |)
+                            ]
+                          |);
                           M.call_closure (|
                             Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                             M.get_associated_function (|
@@ -14031,24 +14105,188 @@ Module bytes_mut.
             []
             [
               ("clone",
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_function (| "bytes::bytes_mut::shared_v_clone", [], [] |)));
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.path "bytes::bytes::Bytes"),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.path "bytes::bytes::Bytes"))
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.path "bytes::bytes::Bytes")),
+                  [ M.get_function (| "bytes::bytes_mut::shared_v_clone", [], [] |) ]
+                |));
               ("to_vec",
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_function (| "bytes::bytes_mut::shared_v_to_vec", [], [] |)));
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]))
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])),
+                  [ M.get_function (| "bytes::bytes_mut::shared_v_to_vec", [], [] |) ]
+                |));
               ("to_mut",
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_function (| "bytes::bytes_mut::shared_v_to_mut", [], [] |)));
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.path "bytes::bytes_mut::BytesMut"),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.path "bytes::bytes_mut::BytesMut"))
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.path "bytes::bytes_mut::BytesMut")),
+                  [ M.get_function (| "bytes::bytes_mut::shared_v_to_mut", [], [] |) ]
+                |));
               ("is_unique",
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_function (| "bytes::bytes_mut::shared_v_is_unique", [], [] |)));
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ]
+                    ]
+                    (Ty.path "bool"),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ]
+                      ]
+                      (Ty.path "bool"))
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ]
+                      ]
+                      (Ty.path "bool")),
+                  [ M.get_function (| "bytes::bytes_mut::shared_v_is_unique", [], [] |) ]
+                |));
               ("drop",
-                (* ReifyFnPointer *)
-                M.pointer_coercion (M.get_function (| "bytes::bytes_mut::shared_v_drop", [], [] |)))
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.tuple []),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.tuple []))
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.tuple [])),
+                  [ M.get_function (| "bytes::bytes_mut::shared_v_drop", [], [] |) ]
+                |))
             ]
         |)
       |))).
@@ -14558,12 +14796,26 @@ Module bytes_mut.
                           Ty.path "usize",
                           M.get_function (| "bytes::offset_from", [], [] |),
                           [
-                            (* MutToConstPointer *)
-                            M.pointer_coercion
-                              (M.cast
+                            M.call_closure (|
+                              Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                              M.pointer_coercion
+                                M.PointerCoercion.MutToConstPointer
                                 (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
-                                (M.read (| ptr |)));
-                            (* MutToConstPointer *) M.pointer_coercion (M.read (| v_ptr |))
+                                (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]),
+                              [
+                                M.cast
+                                  (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                                  (M.read (| ptr |))
+                              ]
+                            |);
+                            M.call_closure (|
+                              Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                              M.pointer_coercion
+                                M.PointerCoercion.MutToConstPointer
+                                (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                                (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]),
+                              [ M.read (| v_ptr |) ]
+                            |)
                           ]
                         |) in
                       let~ cap : Ty.path "usize" :=
@@ -14789,14 +15041,7 @@ Module bytes_mut.
                 [],
                 [
                   Ty.function
-                    [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
-                        ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
                     ]
                     (Ty.tuple []);
                   Ty.tuple []
@@ -14811,17 +15056,7 @@ Module bytes_mut.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
-                                  ]
-                              ]
-                              (Ty.tuple []),
+                            Ty.tuple [],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&mut")

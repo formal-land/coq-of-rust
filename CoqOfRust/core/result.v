@@ -675,12 +675,22 @@ Module result.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ok" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -703,12 +713,22 @@ Module result.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Err" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ E ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)))
             ]
@@ -1624,7 +1644,7 @@ Module result.
                   []
                   [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target" ];
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
+                  [ Ty.apply (Ty.path "&") [] [ T ] ]
                   (Ty.apply
                     (Ty.path "&")
                     []
@@ -1652,13 +1672,10 @@ Module result.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                            (Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target"
-                              ]),
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target" ],
                           M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                           [
                             fun γ =>
@@ -1752,7 +1769,7 @@ Module result.
                   []
                   [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target" ];
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
+                  [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                   (Ty.apply
                     (Ty.path "&mut")
                     []
@@ -1780,13 +1797,10 @@ Module result.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
-                            (Ty.apply
-                              (Ty.path "&mut")
-                              []
-                              [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target"
-                              ]),
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target" ],
                           M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], α0 |),
                           [
                             fun γ =>
@@ -1992,12 +2006,22 @@ Module result.
                       M.get_function (| "core::result::unwrap_failed", [], [] |),
                       [
                         M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| msg |) |) |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, e |) |)
-                          |))
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply (Ty.path "&") [] [ E ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, e |) |)
+                            |)
+                          ]
+                        |)
                       ]
                     |)
                   |)))
@@ -2053,12 +2077,22 @@ Module result.
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "called `Result::unwrap()` on an `Err` value" |) |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, e |) |)
-                          |))
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply (Ty.path "&") [] [ E ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, e |) |)
+                            |)
+                          ]
+                        |)
                       ]
                     |)
                   |)))
@@ -2158,12 +2192,22 @@ Module result.
                       M.get_function (| "core::result::unwrap_failed", [], [] |),
                       [
                         M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| msg |) |) |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, t |) |)
-                          |))
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply (Ty.path "&") [] [ T ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, t |) |)
+                            |)
+                          ]
+                        |)
                       ]
                     |)
                   |)));
@@ -2221,12 +2265,22 @@ Module result.
                             mk_str (| "called `Result::unwrap_err()` on an `Ok` value" |)
                           |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, t |) |)
-                          |))
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply (Ty.path "&") [] [ T ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, t |) |)
+                            |)
+                          ]
+                        |)
                       ]
                     |)
                   |)));
@@ -2837,7 +2891,7 @@ Module result.
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.apply (Ty.path "&") [] [ T ]; E ],
               "map",
               [],
-              [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] T ]
+              [ T; Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] T ]
             |),
             [
               M.read (| self |);
@@ -2848,7 +2902,7 @@ Module result.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] T,
+                          T,
                           M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                           [
                             fun γ =>
@@ -2971,7 +3025,7 @@ Module result.
                 [ Ty.apply (Ty.path "&mut") [] [ T ]; E ],
               "map",
               [],
-              [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ] T ]
+              [ T; Ty.function [ Ty.apply (Ty.path "&mut") [] [ T ] ] T ]
             |),
             [
               M.read (| self |);
@@ -2982,7 +3036,7 @@ Module result.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ] T,
+                          T,
                           M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], α0 |),
                           [
                             fun γ =>
@@ -3687,35 +3741,55 @@ Module result.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Iter" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "&") [] [ T ] ]
-                          ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::result::Iter",
-                            "inner"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ T ] ]
+                        ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ T ] ]
+                            ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::result::Iter",
+                              "inner"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4040,35 +4114,55 @@ Module result.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IterMut" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "&mut") [] [ T ] ]
-                          ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::result::IterMut",
-                            "inner"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                        ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                            ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::result::IterMut",
+                              "inner"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4405,30 +4499,45 @@ Module result.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IntoIter" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::result::IntoIter",
-                            "inner"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::result::IntoIter",
+                              "inner"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4695,23 +4804,20 @@ Module result.
                   [ Ty.path "core::convert::Infallible"; E ];
                 Ty.function
                   [
-                    Ty.tuple
+                    Ty.apply
+                      (Ty.path "core::iter::adapters::GenericShunt")
+                      []
                       [
-                        Ty.apply
-                          (Ty.path "core::iter::adapters::GenericShunt")
+                        Ty.associated_in_trait
+                          "core::iter::traits::collect::IntoIterator"
                           []
-                          [
-                            Ty.associated_in_trait
-                              "core::iter::traits::collect::IntoIterator"
-                              []
-                              []
-                              I
-                              "IntoIter";
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "core::convert::Infallible"; E ]
-                          ]
+                          []
+                          I
+                          "IntoIter";
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "core::convert::Infallible"; E ]
                       ]
                   ]
                   V;
@@ -4744,28 +4850,7 @@ Module result.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::iter::adapters::GenericShunt")
-                                    []
-                                    [
-                                      Ty.associated_in_trait
-                                        "core::iter::traits::collect::IntoIterator"
-                                        []
-                                        []
-                                        I
-                                        "IntoIter";
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.path "core::convert::Infallible"; E ]
-                                    ]
-                                ]
-                            ]
-                            V,
+                          V,
                           M.alloc (|
                             Ty.apply
                               (Ty.path "core::iter::adapters::GenericShunt")

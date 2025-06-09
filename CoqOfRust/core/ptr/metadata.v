@@ -425,38 +425,56 @@ Module ptr.
                             |)
                           |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.alloc (|
-                                  Ty.apply
-                                    (Ty.path "*const")
-                                    []
-                                    [ Ty.path "core::ptr::metadata::VTable" ],
-                                  M.call_closure (|
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "*const")
+                                  []
+                                  [ Ty.path "core::ptr::metadata::VTable" ]
+                              ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
                                     Ty.apply
                                       (Ty.path "*const")
                                       []
                                       [ Ty.path "core::ptr::metadata::VTable" ],
-                                    M.get_associated_function (|
+                                    M.call_closure (|
                                       Ty.apply
-                                        (Ty.path "core::ptr::metadata::DynMetadata")
+                                        (Ty.path "*const")
                                         []
-                                        [ Dyn ],
-                                      "vtable_ptr",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                                        [ Ty.path "core::ptr::metadata::VTable" ],
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::ptr::metadata::DynMetadata")
+                                          []
+                                          [ Dyn ],
+                                        "vtable_ptr",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                                    |)
                                   |)
                                 |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   |)

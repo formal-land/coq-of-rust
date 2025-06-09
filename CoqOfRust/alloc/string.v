@@ -308,43 +308,68 @@ Module string.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FromUtf8Error" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "bytes" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "alloc::string::FromUtf8Error",
-                        "bytes"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::string::FromUtf8Error",
+                          "bytes"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "error" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "core::str::error::Utf8Error" ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "alloc::string::FromUtf8Error",
-                            "error"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "core::str::error::Utf8Error" ] ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "core::str::error::Utf8Error" ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::string::FromUtf8Error",
+                              "error"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -645,27 +670,34 @@ Module string.
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FromUtf16Error" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.tuple [] ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "alloc::string::FromUtf16Error",
-                            0
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.tuple [] ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::string::FromUtf16Error",
+                              0
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2350,13 +2382,10 @@ Module string.
                     ];
                   Ty.function
                     [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.path "char"; Ty.path "core::char::decode::DecodeUtf16Error" ]
-                        ]
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "char"; Ty.path "core::char::decode::DecodeUtf16Error" ]
                     ]
                     (Ty.path "char")
                 ],
@@ -2383,13 +2412,10 @@ Module string.
                       ];
                     Ty.function
                       [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "char"; Ty.path "core::char::decode::DecodeUtf16Error" ]
-                          ]
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "char"; Ty.path "core::char::decode::DecodeUtf16Error" ]
                       ]
                       (Ty.path "char")
                   ],
@@ -2412,13 +2438,10 @@ Module string.
                     Ty.path "char";
                     Ty.function
                       [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "char"; Ty.path "core::char::decode::DecodeUtf16Error" ]
-                          ]
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "char"; Ty.path "core::char::decode::DecodeUtf16Error" ]
                       ]
                       (Ty.path "char")
                   ]
@@ -2482,20 +2505,7 @@ Module string.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.path "char";
-                                          Ty.path "core::char::decode::DecodeUtf16Error"
-                                        ]
-                                    ]
-                                ]
-                                (Ty.path "char"),
+                              Ty.path "char",
                               M.alloc (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -2772,7 +2782,7 @@ Module string.
                               [
                                 Ty.path "alloc::string::FromUtf16Error";
                                 Ty.function
-                                  [ Ty.tuple [ Ty.path "core::char::decode::DecodeUtf16Error" ] ]
+                                  [ Ty.path "core::char::decode::DecodeUtf16Error" ]
                                   (Ty.path "alloc::string::FromUtf16Error")
                               ]
                             |),
@@ -3030,12 +3040,7 @@ Module string.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [ Ty.path "core::char::decode::DecodeUtf16Error" ]
-                                            ]
-                                            (Ty.path "alloc::string::FromUtf16Error"),
+                                          Ty.path "alloc::string::FromUtf16Error",
                                           M.alloc (|
                                             Ty.path "core::char::decode::DecodeUtf16Error",
                                             α0
@@ -3271,15 +3276,10 @@ Module string.
                                 ];
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.path "char";
-                                          Ty.path "core::char::decode::DecodeUtf16Error"
-                                        ]
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "char"; Ty.path "core::char::decode::DecodeUtf16Error"
                                     ]
                                 ]
                                 (Ty.path "char")
@@ -3335,15 +3335,12 @@ Module string.
                                   ];
                                 Ty.function
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
                                       [
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.path "char";
-                                            Ty.path "core::char::decode::DecodeUtf16Error"
-                                          ]
+                                        Ty.path "char";
+                                        Ty.path "core::char::decode::DecodeUtf16Error"
                                       ]
                                   ]
                                   (Ty.path "char")
@@ -3393,15 +3390,12 @@ Module string.
                                 Ty.path "char";
                                 Ty.function
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
                                       [
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.path "char";
-                                            Ty.path "core::char::decode::DecodeUtf16Error"
-                                          ]
+                                        Ty.path "char";
+                                        Ty.path "core::char::decode::DecodeUtf16Error"
                                       ]
                                   ]
                                   (Ty.path "char")
@@ -3643,20 +3637,7 @@ Module string.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "char";
-                                                      Ty.path "core::char::decode::DecodeUtf16Error"
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "char"),
+                                          Ty.path "char",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -4016,7 +3997,7 @@ Module string.
                               [
                                 Ty.path "alloc::string::FromUtf16Error";
                                 Ty.function
-                                  [ Ty.tuple [ Ty.path "core::char::decode::DecodeUtf16Error" ] ]
+                                  [ Ty.path "core::char::decode::DecodeUtf16Error" ]
                                   (Ty.path "alloc::string::FromUtf16Error")
                               ]
                             |),
@@ -4274,12 +4255,7 @@ Module string.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [ Ty.path "core::char::decode::DecodeUtf16Error" ]
-                                            ]
-                                            (Ty.path "alloc::string::FromUtf16Error"),
+                                          Ty.path "alloc::string::FromUtf16Error",
                                           M.alloc (|
                                             Ty.path "core::char::decode::DecodeUtf16Error",
                                             α0
@@ -4515,15 +4491,10 @@ Module string.
                                 ];
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.path "char";
-                                          Ty.path "core::char::decode::DecodeUtf16Error"
-                                        ]
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "char"; Ty.path "core::char::decode::DecodeUtf16Error"
                                     ]
                                 ]
                                 (Ty.path "char")
@@ -4579,15 +4550,12 @@ Module string.
                                   ];
                                 Ty.function
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
                                       [
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.path "char";
-                                            Ty.path "core::char::decode::DecodeUtf16Error"
-                                          ]
+                                        Ty.path "char";
+                                        Ty.path "core::char::decode::DecodeUtf16Error"
                                       ]
                                   ]
                                   (Ty.path "char")
@@ -4637,15 +4605,12 @@ Module string.
                                 Ty.path "char";
                                 Ty.function
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
                                       [
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.path "char";
-                                            Ty.path "core::char::decode::DecodeUtf16Error"
-                                          ]
+                                        Ty.path "char";
+                                        Ty.path "core::char::decode::DecodeUtf16Error"
                                       ]
                                   ]
                                   (Ty.path "char")
@@ -4887,20 +4852,7 @@ Module string.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "char";
-                                                      Ty.path "core::char::decode::DecodeUtf16Error"
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "char"),
+                                          Ty.path "char",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -5989,26 +5941,47 @@ Module string.
                                     |),
                                     [
                                       M.read (| ch |);
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.borrow (|
-                                          Pointer.Kind.MutRef,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.MutRef,
-                                              M.alloc (|
-                                                Ty.apply
-                                                  (Ty.path "array")
-                                                  [ Value.Integer IntegerKind.Usize 4 ]
-                                                  [ Ty.path "u8" ],
-                                                lib.repeat (|
-                                                  Value.Integer IntegerKind.U8 0,
-                                                  Value.Integer IntegerKind.Usize 4
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                        M.pointer_coercion
+                                          M.PointerCoercion.Unsize
+                                          (Ty.apply
+                                            (Ty.path "&mut")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 4 ]
+                                                [ Ty.path "u8" ]
+                                            ])
+                                          (Ty.apply
+                                            (Ty.path "&mut")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer IntegerKind.Usize 4 ]
+                                                    [ Ty.path "u8" ],
+                                                  lib.repeat (|
+                                                    Value.Integer IntegerKind.U8 0,
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  |)
                                                 |)
                                               |)
                                             |)
                                           |)
-                                        |))
+                                        ]
+                                      |)
                                     ]
                                   |)
                                 |)
@@ -6897,7 +6870,7 @@ Module string.
                         []
                         [
                           Ty.function
-                            [ Ty.tuple [] ]
+                            []
                             (Ty.apply
                               (Ty.path "core::option::Option")
                               []
@@ -6924,7 +6897,7 @@ Module string.
                           []
                           [
                             Ty.function
-                              [ Ty.tuple [] ]
+                              []
                               (Ty.apply
                                 (Ty.path "core::option::Option")
                                 []
@@ -6936,7 +6909,7 @@ Module string.
                           [
                             Ty.tuple [ Ty.path "usize"; Ty.path "usize" ];
                             Ty.function
-                              [ Ty.tuple [] ]
+                              []
                               (Ty.apply
                                 (Ty.path "core::option::Option")
                                 []
@@ -6951,12 +6924,10 @@ Module string.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [ Ty.tuple [] ]
-                                        (Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]),
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                                       M.alloc (| Ty.tuple [], α0 |),
                                       [
                                         fun γ =>
@@ -7516,27 +7487,43 @@ Module string.
                                                                 [ Ty.path "u8" ]
                                                               |),
                                                               [
-                                                                (* MutToConstPointer *)
-                                                                M.pointer_coercion
-                                                                  (M.call_closure (|
-                                                                    Ty.apply
+                                                                M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "*const")
+                                                                    []
+                                                                    [ Ty.path "u8" ],
+                                                                  M.pointer_coercion
+                                                                    M.PointerCoercion.MutToConstPointer
+                                                                    (Ty.apply
                                                                       (Ty.path "*mut")
                                                                       []
-                                                                      [ Ty.path "u8" ],
-                                                                    M.get_associated_function (|
+                                                                      [ Ty.path "u8" ])
+                                                                    (Ty.apply
+                                                                      (Ty.path "*const")
+                                                                      []
+                                                                      [ Ty.path "u8" ]),
+                                                                  [
+                                                                    M.call_closure (|
                                                                       Ty.apply
                                                                         (Ty.path "*mut")
                                                                         []
                                                                         [ Ty.path "u8" ],
-                                                                      "add",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.read (| ptr |);
-                                                                      M.read (| start |)
-                                                                    ]
-                                                                  |));
+                                                                      M.get_associated_function (|
+                                                                        Ty.apply
+                                                                          (Ty.path "*mut")
+                                                                          []
+                                                                          [ Ty.path "u8" ],
+                                                                        "add",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.read (| ptr |);
+                                                                        M.read (| start |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                                |);
                                                                 M.call_closure (|
                                                                   Ty.apply
                                                                     (Ty.path "*mut")
@@ -8250,12 +8237,33 @@ Module string.
                         M.get_associated_function (| Ty.path "char", "encode_utf8", [], [] |),
                         [
                           M.read (| ch |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, bits |) |)
-                            |))
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 4 ]
+                                    [ Ty.path "u8" ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.borrow (| Pointer.Kind.MutRef, bits |) |)
+                              |)
+                            ]
+                          |)
                         ]
                       |)
                     |)
@@ -11311,7 +11319,7 @@ Module string.
                               [],
                               "for_each",
                               [],
-                              [ Ty.function [ Ty.tuple [ Ty.path "char" ] ] (Ty.tuple []) ]
+                              [ Ty.function [ Ty.path "char" ] (Ty.tuple []) ]
                             |),
                             [
                               M.read (| iterator |);
@@ -11322,7 +11330,7 @@ Module string.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function [ Ty.tuple [ Ty.path "char" ] ] (Ty.tuple []),
+                                          Ty.tuple [],
                                           M.alloc (| Ty.path "char", α0 |),
                                           [
                                             fun γ =>
@@ -11642,11 +11650,7 @@ Module string.
                   [],
                   "for_each",
                   [],
-                  [
-                    Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
-                      (Ty.tuple [])
-                  ]
+                  [ Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] (Ty.tuple []) ]
                 |),
                 [
                   M.call_closure (|
@@ -11674,9 +11678,7 @@ Module string.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
-                                (Ty.tuple []),
+                              Ty.tuple [],
                               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], α0 |),
                               [
                                 fun γ =>
@@ -11785,8 +11787,7 @@ Module string.
                   [],
                   [
                     Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ] ]
-                      ]
+                      [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ] ]
                       (Ty.tuple [])
                   ]
                 |),
@@ -11816,13 +11817,7 @@ Module string.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ]
-                                    ]
-                                ]
-                                (Ty.tuple []),
+                              Ty.tuple [],
                               M.alloc (|
                                 Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ],
                                 α0
@@ -11914,7 +11909,7 @@ Module string.
                   [],
                   "for_each",
                   [],
-                  [ Ty.function [ Ty.tuple [ Ty.path "alloc::string::String" ] ] (Ty.tuple []) ]
+                  [ Ty.function [ Ty.path "alloc::string::String" ] (Ty.tuple []) ]
                 |),
                 [
                   M.call_closure (|
@@ -11942,9 +11937,7 @@ Module string.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.path "alloc::string::String" ] ]
-                                (Ty.tuple []),
+                              Ty.tuple [],
                               M.alloc (| Ty.path "alloc::string::String", α0 |),
                               [
                                 fun γ =>
@@ -12092,7 +12085,7 @@ Module string.
                   [],
                   [
                     Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ] ]
+                      [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
                       (Ty.tuple [])
                   ]
                 |),
@@ -12122,12 +12115,7 @@ Module string.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
-                                ]
-                                (Ty.tuple []),
+                              Ty.tuple [],
                               M.alloc (|
                                 Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
                                 α0
@@ -15369,12 +15357,19 @@ Module string.
                 Ty.path "core::fmt::Formatter",
                 M.get_associated_function (| Ty.path "core::fmt::Formatter", "new", [], [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
-                    |))
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&mut") [] [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply (Ty.path "&mut") [] [ Ty.path "alloc::string::String" ])
+                      (Ty.apply (Ty.path "&mut") [] [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ]),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
+                      |)
+                    ]
+                  |)
                 ]
               |) in
             let~ _ : Ty.tuple [] :=
@@ -15515,26 +15510,44 @@ Module string.
                 M.get_associated_function (| Ty.path "char", "encode_utf8", [], [] |),
                 [
                   M.read (| M.deref (| M.read (| self |) |) |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.alloc (|
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 4 ]
-                              [ Ty.path "u8" ],
-                            lib.repeat (|
-                              Value.Integer IntegerKind.U8 0,
-                              Value.Integer IntegerKind.Usize 4
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 4 ]
+                            [ Ty.path "u8" ]
+                        ])
+                      (Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 4 ]
+                                [ Ty.path "u8" ],
+                              lib.repeat (|
+                                Value.Integer IntegerKind.U8 0,
+                                Value.Integer IntegerKind.Usize 4
+                              |)
                             |)
                           |)
                         |)
                       |)
-                    |))
+                    ]
+                  |)
                 ]
               |)
             ]
@@ -18428,30 +18441,47 @@ Module string.
                           |)
                         |)
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                                M.call_closure (|
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
                                   Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                                  M.get_associated_function (|
-                                    Ty.path "alloc::string::Drain",
-                                    "as_str",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
+                                  M.call_closure (|
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                    M.get_associated_function (|
+                                      Ty.path "alloc::string::Drain",
+                                      "as_str",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
                                 |)
                               |)
                             |)
                           |)
-                        |))
+                        ]
+                      |)
                     ]
                   |)
                 |)

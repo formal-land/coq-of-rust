@@ -405,108 +405,257 @@ Module host.
                         []
                         [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
                     ] :=
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "array")
-                            [ Value.Integer IntegerKind.Usize 6 ]
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
-                            ],
-                          Value.Array
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                    ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 6 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                          ]
+                      ])
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                          ]
+                      ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 6 ]
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                              ],
+                            Value.Array
+                              [
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply (Ty.path "&") [] [ TX ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "revm_context_interface::host::dummy::DummyHost",
-                                        "tx"
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "revm_context_interface::host::dummy::DummyHost",
+                                            "tx"
+                                          |)
+                                        |)
                                       |)
                                     |)
-                                  |)
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply (Ty.path "&") [] [ BLOCK ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "revm_context_interface::host::dummy::DummyHost",
-                                        "block"
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "revm_context_interface::host::dummy::DummyHost",
+                                            "block"
+                                          |)
+                                        |)
                                       |)
                                     |)
-                                  |)
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply (Ty.path "&") [] [ CFG ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "revm_context_interface::host::dummy::DummyHost",
-                                        "cfg"
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "revm_context_interface::host::dummy::DummyHost",
+                                            "cfg"
+                                          |)
+                                        |)
                                       |)
                                     |)
-                                  |)
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "hashbrown::map::HashMap")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ]
+                                              [];
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ]
+                                              [];
+                                            Ty.path "foldhash::seed::fast::RandomState";
+                                            Ty.path "hashbrown::raw::alloc::inner::Global"
+                                          ]
+                                      ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "revm_context_interface::host::dummy::DummyHost",
-                                        "storage"
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "revm_context_interface::host::dummy::DummyHost",
+                                            "storage"
+                                          |)
+                                        |)
                                       |)
                                     |)
-                                  |)
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "hashbrown::map::HashMap")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ]
+                                              [];
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ]
+                                              [];
+                                            Ty.path "foldhash::seed::fast::RandomState";
+                                            Ty.path "hashbrown::raw::alloc::inner::Global"
+                                          ]
+                                      ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "revm_context_interface::host::dummy::DummyHost",
-                                        "transient_storage"
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "revm_context_interface::host::dummy::DummyHost",
+                                            "transient_storage"
+                                          |)
+                                        |)
                                       |)
                                     |)
-                                  |)
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
                                         Ty.apply
                                           (Ty.path "&")
                                           []
@@ -521,24 +670,55 @@ Module host.
                                                   [ Ty.path "alloy_primitives::log::LogData" ];
                                                 Ty.path "alloc::alloc::Global"
                                               ]
-                                          ],
+                                          ]
+                                      ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "revm_context_interface::host::dummy::DummyHost",
-                                            "log"
+                                          M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "alloy_primitives::log::Log")
+                                                      []
+                                                      [ Ty.path "alloy_primitives::log::LogData" ];
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ]
+                                              ],
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "revm_context_interface::host::dummy::DummyHost",
+                                                "log"
+                                              |)
+                                            |)
                                           |)
                                         |)
                                       |)
                                     |)
-                                  |)
-                                |))
-                            ]
+                                  ]
+                                |)
+                              ]
+                          |)
                         |)
                       |)
                     |)
-                  |)) in
+                  ]
+                |) in
               M.alloc (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -558,9 +738,38 @@ Module host.
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DummyHost" |) |) |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |));
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        ],
+                      M.pointer_coercion
+                        M.PointerCoercion.Unsize
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 6 ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          ])
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          ]),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |) ]
+                    |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                   ]
                 |)

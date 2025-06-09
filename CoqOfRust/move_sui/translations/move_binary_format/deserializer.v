@@ -639,59 +639,83 @@ Module deserializer.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Table" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "kind" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "move_binary_format::deserializer::Table",
-                        "kind"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_binary_format::file_format_common::TableType" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::deserializer::Table",
+                          "kind"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "offset" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "move_binary_format::deserializer::Table",
-                        "offset"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.path "u32" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::deserializer::Table",
+                          "offset"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "count" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_binary_format::deserializer::Table",
-                            "count"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_binary_format::deserializer::Table",
+                              "count"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -839,7 +863,7 @@ Module deserializer.
                             [
                               Ty.path "move_binary_format::errors::PartialVMError";
                               Ty.function
-                                [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                [ Ty.path "std::io::error::Error" ]
                                 (Ty.path "move_binary_format::errors::PartialVMError")
                             ]
                           |),
@@ -863,12 +887,33 @@ Module deserializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| cursor |) |)
                                 |);
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, u16_bytes |) |)
-                                  |))
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                          [ Ty.path "u8" ]
+                                      ])
+                                    (Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, u16_bytes |) |)
+                                    |)
+                                  ]
+                                |)
                               ]
                             |);
                             M.closure
@@ -878,9 +923,7 @@ Module deserializer.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                          (Ty.path "move_binary_format::errors::PartialVMError"),
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.alloc (| Ty.path "std::io::error::Error", α0 |),
                                         [
                                           fun γ =>
@@ -1106,7 +1149,7 @@ Module deserializer.
                             [
                               Ty.path "move_binary_format::errors::PartialVMError";
                               Ty.function
-                                [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                [ Ty.path "std::io::error::Error" ]
                                 (Ty.path "move_binary_format::errors::PartialVMError")
                             ]
                           |),
@@ -1130,12 +1173,33 @@ Module deserializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| cursor |) |)
                                 |);
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, u32_bytes |) |)
-                                  |))
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 4 ]
+                                          [ Ty.path "u8" ]
+                                      ])
+                                    (Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, u32_bytes |) |)
+                                    |)
+                                  ]
+                                |)
                               ]
                             |);
                             M.closure
@@ -1145,9 +1209,7 @@ Module deserializer.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                          (Ty.path "move_binary_format::errors::PartialVMError"),
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.alloc (| Ty.path "std::io::error::Error", α0 |),
                                         [
                                           fun γ =>
@@ -1373,7 +1435,7 @@ Module deserializer.
                             [
                               Ty.path "move_binary_format::errors::PartialVMError";
                               Ty.function
-                                [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                [ Ty.path "std::io::error::Error" ]
                                 (Ty.path "move_binary_format::errors::PartialVMError")
                             ]
                           |),
@@ -1397,12 +1459,33 @@ Module deserializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| cursor |) |)
                                 |);
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, u64_bytes |) |)
-                                  |))
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 8 ]
+                                          [ Ty.path "u8" ]
+                                      ])
+                                    (Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, u64_bytes |) |)
+                                    |)
+                                  ]
+                                |)
                               ]
                             |);
                             M.closure
@@ -1412,9 +1495,7 @@ Module deserializer.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                          (Ty.path "move_binary_format::errors::PartialVMError"),
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.alloc (| Ty.path "std::io::error::Error", α0 |),
                                         [
                                           fun γ =>
@@ -1640,7 +1721,7 @@ Module deserializer.
                             [
                               Ty.path "move_binary_format::errors::PartialVMError";
                               Ty.function
-                                [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                [ Ty.path "std::io::error::Error" ]
                                 (Ty.path "move_binary_format::errors::PartialVMError")
                             ]
                           |),
@@ -1664,12 +1745,33 @@ Module deserializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| cursor |) |)
                                 |);
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, u128_bytes |) |)
-                                  |))
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 16 ]
+                                          [ Ty.path "u8" ]
+                                      ])
+                                    (Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, u128_bytes |) |)
+                                    |)
+                                  ]
+                                |)
                               ]
                             |);
                             M.closure
@@ -1679,9 +1781,7 @@ Module deserializer.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                          (Ty.path "move_binary_format::errors::PartialVMError"),
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.alloc (| Ty.path "std::io::error::Error", α0 |),
                                         [
                                           fun γ =>
@@ -1912,7 +2012,7 @@ Module deserializer.
                             [
                               Ty.path "move_binary_format::errors::PartialVMError";
                               Ty.function
-                                [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                [ Ty.path "std::io::error::Error" ]
                                 (Ty.path "move_binary_format::errors::PartialVMError")
                             ]
                           |),
@@ -1936,12 +2036,33 @@ Module deserializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| cursor |) |)
                                 |);
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, u256_bytes |) |)
-                                  |))
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 32 ]
+                                          [ Ty.path "u8" ]
+                                      ])
+                                    (Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, u256_bytes |) |)
+                                    |)
+                                  ]
+                                |)
                               ]
                             |);
                             M.closure
@@ -1951,9 +2072,7 @@ Module deserializer.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                          (Ty.path "move_binary_format::errors::PartialVMError"),
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.alloc (| Ty.path "std::io::error::Error", α0 |),
                                         [
                                           fun γ =>
@@ -2198,7 +2317,7 @@ Module deserializer.
                             [
                               Ty.path "move_binary_format::errors::PartialVMError";
                               Ty.function
-                                [ Ty.tuple [ Ty.path "anyhow::Error" ] ]
+                                [ Ty.path "anyhow::Error" ]
                                 (Ty.path "move_binary_format::errors::PartialVMError")
                             ]
                           |),
@@ -2228,9 +2347,7 @@ Module deserializer.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "anyhow::Error" ] ]
-                                          (Ty.path "move_binary_format::errors::PartialVMError"),
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.alloc (| Ty.path "anyhow::Error", α0 |),
                                         [
                                           fun γ =>
@@ -2467,15 +2584,12 @@ Module deserializer.
                       Ty.path "move_binary_format::errors::PartialVMError";
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              Ty.associated_in_trait
-                                "core::convert::TryInto"
-                                []
-                                [ T ]
-                                (Ty.path "u64")
-                                "Error"
-                            ]
+                          Ty.associated_in_trait
+                            "core::convert::TryInto"
+                            []
+                            [ T ]
+                            (Ty.path "u64")
+                            "Error"
                         ]
                         (Ty.path "move_binary_format::errors::PartialVMError")
                     ]
@@ -2512,19 +2626,7 @@ Module deserializer.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.associated_in_trait
-                                          "core::convert::TryInto"
-                                          []
-                                          [ T ]
-                                          (Ty.path "u64")
-                                          "Error"
-                                      ]
-                                  ]
-                                  (Ty.path "move_binary_format::errors::PartialVMError"),
+                                Ty.path "move_binary_format::errors::PartialVMError",
                                 M.alloc (|
                                   Ty.associated_in_trait
                                     "core::convert::TryInto"
@@ -7317,17 +7419,14 @@ Module deserializer.
                     [
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.path "move_binary_format::deserializer::Table" ];
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.path "move_binary_format::deserializer::Table" ]
-                            ]
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::deserializer::Table" ];
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::deserializer::Table" ]
                         ]
                         (Ty.path "core::cmp::Ordering")
                     ]
@@ -7372,21 +7471,7 @@ Module deserializer.
                           | [ α0; α1 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "move_binary_format::deserializer::Table" ];
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "move_binary_format::deserializer::Table" ]
-                                      ]
-                                  ]
-                                  (Ty.path "core::cmp::Ordering"),
+                                Ty.path "core::cmp::Ordering",
                                 M.alloc (|
                                   Ty.apply
                                     (Ty.path "&")
@@ -7406,27 +7491,7 @@ Module deserializer.
                                           γ
                                         |) in
                                       M.match_operator (|
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::deserializer::Table"
-                                                  ];
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::deserializer::Table"
-                                                  ]
-                                              ]
-                                          ]
-                                          (Ty.path "core::cmp::Ordering"),
+                                        Ty.path "core::cmp::Ordering",
                                         M.alloc (|
                                           Ty.apply
                                             (Ty.path "&")
@@ -23004,10 +23069,7 @@ Module deserializer.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError";
                                                               Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [ Ty.path "anyhow::Error" ]
-                                                                ]
+                                                                [ Ty.path "anyhow::Error" ]
                                                                 (Ty.path
                                                                   "move_binary_format::errors::PartialVMError")
                                                             ]
@@ -23038,16 +23100,8 @@ Module deserializer.
                                                                   | [ α0 ] =>
                                                                     ltac:(M.monadic
                                                                       (M.match_operator (|
-                                                                        Ty.function
-                                                                          [
-                                                                            Ty.tuple
-                                                                              [
-                                                                                Ty.path
-                                                                                  "anyhow::Error"
-                                                                              ]
-                                                                          ]
-                                                                          (Ty.path
-                                                                            "move_binary_format::errors::PartialVMError"),
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError",
                                                                         M.alloc (|
                                                                           Ty.path "anyhow::Error",
                                                                           α0
@@ -25682,7 +25736,7 @@ Module deserializer.
                             [
                               Ty.path "move_binary_format::errors::PartialVMError";
                               Ty.function
-                                [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                [ Ty.path "std::io::error::Error" ]
                                 (Ty.path "move_binary_format::errors::PartialVMError")
                             ]
                           |),
@@ -25744,9 +25798,7 @@ Module deserializer.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                          (Ty.path "move_binary_format::errors::PartialVMError"),
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.alloc (| Ty.path "std::io::error::Error", α0 |),
                                         [
                                           fun γ =>
@@ -27177,7 +27229,7 @@ Module deserializer.
             (M.read (|
               let~ read_next :
                   Ty.function
-                    [ Ty.tuple [] ]
+                    []
                     (Ty.apply
                       (Ty.path "core::result::Result")
                       []
@@ -27193,16 +27245,14 @@ Module deserializer.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [] ]
-                              (Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.path
-                                    "move_binary_format::deserializer::load_signature_token::TypeBuilder";
-                                  Ty.path "move_binary_format::errors::PartialVMError"
-                                ]),
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path
+                                  "move_binary_format::deserializer::load_signature_token::TypeBuilder";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ],
                             M.alloc (| Ty.tuple [], α0 |),
                             [
                               fun γ =>
@@ -29177,7 +29227,7 @@ Module deserializer.
                               M.get_trait_method (|
                                 "core::ops::function::FnMut",
                                 Ty.function
-                                  [ Ty.tuple [] ]
+                                  []
                                   (Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
@@ -29332,24 +29382,51 @@ Module deserializer.
                             [ Ty.path "alloc::alloc::Global" ]
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.read (|
-                                M.call_closure (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
                                   Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
+                                    (Ty.path "slice")
                                     []
                                     [
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [
-                                          Ty.path
-                                            "move_binary_format::deserializer::load_signature_token::TypeBuilder"
-                                        ];
-                                      Ty.path "alloc::alloc::Global"
-                                    ],
-                                  M.get_associated_function (|
+                                      Ty.path
+                                        "move_binary_format::deserializer::load_signature_token::TypeBuilder"
+                                    ];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              M.pointer_coercion
+                                M.PointerCoercion.Unsize
+                                (Ty.apply
+                                  (Ty.path "alloc::boxed::Box")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                      [
+                                        Ty.path
+                                          "move_binary_format::deserializer::load_signature_token::TypeBuilder"
+                                      ];
+                                    Ty.path "alloc::alloc::Global"
+                                  ])
+                                (Ty.apply
+                                  (Ty.path "alloc::boxed::Box")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_binary_format::deserializer::load_signature_token::TypeBuilder"
+                                      ];
+                                    Ty.path "alloc::alloc::Global"
+                                  ]),
+                              [
+                                M.read (|
+                                  M.call_closure (|
                                     Ty.apply
                                       (Ty.path "alloc::boxed::Box")
                                       []
@@ -29363,24 +29440,40 @@ Module deserializer.
                                           ];
                                         Ty.path "alloc::alloc::Global"
                                       ],
-                                    "new",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.alloc (|
+                                    M.get_associated_function (|
                                       Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
                                         [
-                                          Ty.path
-                                            "move_binary_format::deserializer::load_signature_token::TypeBuilder"
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 1 ]
+                                            [
+                                              Ty.path
+                                                "move_binary_format::deserializer::load_signature_token::TypeBuilder"
+                                            ];
+                                          Ty.path "alloc::alloc::Global"
                                         ],
-                                      Value.Array [ M.read (| t |) ]
-                                    |)
-                                  ]
+                                      "new",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [
+                                            Ty.path
+                                              "move_binary_format::deserializer::load_signature_token::TypeBuilder"
+                                          ],
+                                        Value.Array [ M.read (| t |) ]
+                                      |)
+                                    ]
+                                  |)
                                 |)
-                              |))
+                              ]
+                            |)
                           ]
                         |)))
                   ]
@@ -29897,7 +29990,7 @@ Module deserializer.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   Ty.function
-                                                    [ Ty.tuple [] ]
+                                                    []
                                                     (Ty.apply
                                                       (Ty.path "core::result::Result")
                                                       []
@@ -37142,7 +37235,7 @@ Module deserializer.
                             [
                               Ty.path "move_binary_format::errors::PartialVMError";
                               Ty.function
-                                [ Ty.tuple [ Ty.path "anyhow::Error" ] ]
+                                [ Ty.path "anyhow::Error" ]
                                 (Ty.path "move_binary_format::errors::PartialVMError")
                             ]
                           |),
@@ -37172,9 +37265,7 @@ Module deserializer.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "anyhow::Error" ] ]
-                                          (Ty.path "move_binary_format::errors::PartialVMError"),
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.alloc (| Ty.path "anyhow::Error", α0 |),
                                         [
                                           fun γ =>
@@ -37662,7 +37753,7 @@ Module deserializer.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError";
                                                                   Ty.function
-                                                                    [ Ty.tuple [ Ty.tuple [] ] ]
+                                                                    [ Ty.tuple [] ]
                                                                     (Ty.path
                                                                       "move_binary_format::errors::PartialVMError")
                                                                 ]
@@ -37698,13 +37789,8 @@ Module deserializer.
                                                                       | [ α0 ] =>
                                                                         ltac:(M.monadic
                                                                           (M.match_operator (|
-                                                                            Ty.function
-                                                                              [
-                                                                                Ty.tuple
-                                                                                  [ Ty.tuple [] ]
-                                                                              ]
-                                                                              (Ty.path
-                                                                                "move_binary_format::errors::PartialVMError"),
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError",
                                                                             M.alloc (|
                                                                               Ty.tuple [],
                                                                               α0
@@ -37967,10 +38053,7 @@ Module deserializer.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError";
                                                               Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [ Ty.path "anyhow::Error" ]
-                                                                ]
+                                                                [ Ty.path "anyhow::Error" ]
                                                                 (Ty.path
                                                                   "move_binary_format::errors::PartialVMError")
                                                             ]
@@ -38005,16 +38088,8 @@ Module deserializer.
                                                                   | [ α0 ] =>
                                                                     ltac:(M.monadic
                                                                       (M.match_operator (|
-                                                                        Ty.function
-                                                                          [
-                                                                            Ty.tuple
-                                                                              [
-                                                                                Ty.path
-                                                                                  "anyhow::Error"
-                                                                              ]
-                                                                          ]
-                                                                          (Ty.path
-                                                                            "move_binary_format::errors::PartialVMError"),
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError",
                                                                         M.alloc (|
                                                                           Ty.path "anyhow::Error",
                                                                           α0
@@ -38267,7 +38342,7 @@ Module deserializer.
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError";
                                                       Ty.function
-                                                        [ Ty.tuple [ Ty.tuple [] ] ]
+                                                        [ Ty.tuple [] ]
                                                         (Ty.path
                                                           "move_binary_format::errors::PartialVMError")
                                                     ]
@@ -38303,10 +38378,8 @@ Module deserializer.
                                                           | [ α0 ] =>
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
-                                                                Ty.function
-                                                                  [ Ty.tuple [ Ty.tuple [] ] ]
-                                                                  (Ty.path
-                                                                    "move_binary_format::errors::PartialVMError"),
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError",
                                                                 M.alloc (| Ty.tuple [], α0 |),
                                                                 [
                                                                   fun γ =>
@@ -38527,7 +38600,7 @@ Module deserializer.
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError";
                                                       Ty.function
-                                                        [ Ty.tuple [ Ty.path "anyhow::Error" ] ]
+                                                        [ Ty.path "anyhow::Error" ]
                                                         (Ty.path
                                                           "move_binary_format::errors::PartialVMError")
                                                     ]
@@ -38559,13 +38632,8 @@ Module deserializer.
                                                           | [ α0 ] =>
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
-                                                                Ty.function
-                                                                  [
-                                                                    Ty.tuple
-                                                                      [ Ty.path "anyhow::Error" ]
-                                                                  ]
-                                                                  (Ty.path
-                                                                    "move_binary_format::errors::PartialVMError"),
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError",
                                                                 M.alloc (|
                                                                   Ty.path "anyhow::Error",
                                                                   α0
@@ -40784,7 +40852,7 @@ Module deserializer.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError";
                                                   Ty.function
-                                                    [ Ty.tuple [ Ty.path "anyhow::Error" ] ]
+                                                    [ Ty.path "anyhow::Error" ]
                                                     (Ty.path
                                                       "move_binary_format::errors::PartialVMError")
                                                 ]
@@ -40816,11 +40884,8 @@ Module deserializer.
                                                       | [ α0 ] =>
                                                         ltac:(M.monadic
                                                           (M.match_operator (|
-                                                            Ty.function
-                                                              [ Ty.tuple [ Ty.path "anyhow::Error" ]
-                                                              ]
-                                                              (Ty.path
-                                                                "move_binary_format::errors::PartialVMError"),
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError",
                                                             M.alloc (|
                                                               Ty.path "anyhow::Error",
                                                               α0
@@ -42368,10 +42433,7 @@ Module deserializer.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError";
                                                               Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [ Ty.path "anyhow::Error" ]
-                                                                ]
+                                                                [ Ty.path "anyhow::Error" ]
                                                                 (Ty.path
                                                                   "move_binary_format::errors::PartialVMError")
                                                             ]
@@ -42406,16 +42468,8 @@ Module deserializer.
                                                                   | [ α0 ] =>
                                                                     ltac:(M.monadic
                                                                       (M.match_operator (|
-                                                                        Ty.function
-                                                                          [
-                                                                            Ty.tuple
-                                                                              [
-                                                                                Ty.path
-                                                                                  "anyhow::Error"
-                                                                              ]
-                                                                          ]
-                                                                          (Ty.path
-                                                                            "move_binary_format::errors::PartialVMError"),
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError",
                                                                         M.alloc (|
                                                                           Ty.path "anyhow::Error",
                                                                           α0
@@ -53279,137 +53333,298 @@ Module deserializer.
                       []
                       [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
                   ] :=
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 7 ]
-                          [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
-                          ],
-                        Value.Array
-                          [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                  ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 7 ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                    ])
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                    ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 7 ]
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                            ],
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "move_binary_format::binary_config::BinaryConfig"
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_binary_format::deserializer::VersionedBinary",
-                                      "binary_config"
-                                    |)
-                                  |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_binary_format::deserializer::VersionedBinary",
-                                      "binary"
-                                    |)
-                                  |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_binary_format::deserializer::VersionedBinary",
-                                      "version"
-                                    |)
-                                  |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_binary_format::deserializer::VersionedBinary",
-                                      "tables"
-                                    |)
-                                  |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_binary_format::deserializer::VersionedBinary",
-                                      "module_idx"
-                                    |)
-                                  |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_binary_format::deserializer::VersionedBinary",
-                                      "data_offset"
-                                    |)
-                                  |)
-                                |)
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                    M.deref (|
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.SubPointer.get_struct_record_field (|
                                           M.deref (| M.read (| self |) |),
                                           "move_binary_format::deserializer::VersionedBinary",
-                                          "binary_end_offset"
+                                          "binary_config"
                                         |)
                                       |)
                                     |)
                                   |)
-                                |)
-                              |))
-                          ]
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_binary_format::deserializer::VersionedBinary",
+                                          "binary"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply (Ty.path "&") [] [ Ty.path "u32" ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_binary_format::deserializer::VersionedBinary",
+                                          "version"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "move_binary_format::deserializer::Table";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_binary_format::deserializer::VersionedBinary",
+                                          "tables"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::ModuleHandleIndex"
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_binary_format::deserializer::VersionedBinary",
+                                          "module_idx"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply (Ty.path "&") [] [ Ty.path "usize" ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_binary_format::deserializer::VersionedBinary",
+                                          "data_offset"
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "move_binary_format::deserializer::VersionedBinary",
+                                              "binary_end_offset"
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            ]
+                        |)
                       |)
                     |)
                   |)
-                |)) in
+                ]
+              |) in
             M.alloc (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -53429,9 +53644,38 @@ Module deserializer.
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VersionedBinary" |) |) |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |));
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 7 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        ])
+                      (Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        ]),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |) ]
+                  |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                 ]
               |)
@@ -53498,56 +53742,88 @@ Module deserializer.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VersionedCursor" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "version" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "move_binary_format::deserializer::VersionedCursor",
-                        "version"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.path "u32" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_binary_format::deserializer::VersionedCursor",
+                          "version"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "cursor" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "std::io::cursor::Cursor")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                              ]
-                          ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_binary_format::deserializer::VersionedCursor",
-                            "cursor"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "std::io::cursor::Cursor")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                            ]
+                        ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "std::io::cursor::Cursor")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                ]
+                            ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_binary_format::deserializer::VersionedCursor",
+                              "cursor"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -53743,12 +54019,33 @@ Module deserializer.
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.MutRef, cursor |);
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (|
-                                      Pointer.Kind.MutRef,
-                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, magic |) |)
-                                    |))
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 4 ]
+                                            [ Ty.path "u8" ]
+                                        ])
+                                      (Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, magic |) |)
+                                      |)
+                                    ]
+                                  |)
                                 ]
                               |)
                             |) in

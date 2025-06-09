@@ -97,15 +97,7 @@ Module fmt.
                 [],
                 [
                   Ty.function
-                    [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ]
-                        ]
-                    ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ] ]
                     (Ty.apply (Ty.path "&mut") [] [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ])
                 ]
               |),
@@ -118,20 +110,10 @@ Module fmt.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ]
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ]),
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&mut")
@@ -150,52 +132,91 @@ Module fmt.
                                         [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ],
                                       γ
                                     |) in
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (|
-                                      Pointer.Kind.MutRef,
-                                      M.deref (|
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [ Ty.path "core::fmt::builders::PadAdapter" ],
-                                          M.get_associated_function (|
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [ Ty.path "core::fmt::builders::PadAdapter" ])
+                                      (Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ]),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.call_closure (|
                                             Ty.apply
-                                              (Ty.path "core::option::Option")
+                                              (Ty.path "&mut")
                                               []
                                               [ Ty.path "core::fmt::builders::PadAdapter" ],
-                                            "insert",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.MutRef,
-                                              M.deref (| M.read (| slot |) |)
-                                            |);
-                                            Value.mkStructRecord
-                                              "core::fmt::builders::PadAdapter"
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "core::fmt::builders::PadAdapter" ],
+                                              "insert",
+                                              [],
                                               []
-                                              []
-                                              [
-                                                ("buf",
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.borrow (|
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| slot |) |)
+                                              |);
+                                              Value.mkStructRecord
+                                                "core::fmt::builders::PadAdapter"
+                                                []
+                                                []
+                                                [
+                                                  ("buf",
+                                                    M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "&mut")
+                                                        []
+                                                        [ Ty.dyn [ ("core::fmt::Write::Trait", []) ]
+                                                        ],
+                                                      M.pointer_coercion
+                                                        M.PointerCoercion.Unsize
+                                                        (Ty.apply
+                                                          (Ty.path "&mut")
+                                                          []
+                                                          [
+                                                            Ty.dyn
+                                                              [ ("core::fmt::Write::Trait", []) ]
+                                                          ])
+                                                        (Ty.apply
+                                                          (Ty.path "&mut")
+                                                          []
+                                                          [
+                                                            Ty.dyn
+                                                              [ ("core::fmt::Write::Trait", []) ]
+                                                          ]),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.MutRef,
+                                                          M.deref (| M.read (| buf |) |)
+                                                        |)
+                                                      ]
+                                                    |));
+                                                  ("state",
+                                                    M.borrow (|
                                                       Pointer.Kind.MutRef,
-                                                      M.deref (| M.read (| buf |) |)
-                                                    |)));
-                                                ("state",
-                                                  M.borrow (|
-                                                    Pointer.Kind.MutRef,
-                                                    M.deref (| M.read (| state |) |)
-                                                  |))
-                                              ]
-                                          ]
+                                                      M.deref (| M.read (| state |) |)
+                                                    |))
+                                                ]
+                                            ]
+                                          |)
                                         |)
                                       |)
-                                    |))))
+                                    ]
+                                  |)))
                             ]
                           |)))
                       | _ => M.impossible "wrong number of arguments"
@@ -1221,10 +1242,7 @@ Module fmt.
                         [],
                         [
                           Ty.function
-                            [
-                              Ty.tuple
-                                [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
-                            ]
+                            [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
                             (Ty.apply
                               (Ty.path "core::result::Result")
                               []
@@ -1241,20 +1259,10 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&mut")
-                                              []
-                                              [ Ty.path "core::fmt::Formatter" ]
-                                          ]
-                                      ]
-                                      (Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                     M.alloc (|
                                       Ty.apply
                                         (Ty.path "&mut")
@@ -1382,7 +1390,7 @@ Module fmt.
                           [
                             Ty.tuple [];
                             Ty.function
-                              [ Ty.tuple [ Ty.tuple [] ] ]
+                              [ Ty.tuple [] ]
                               (Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
@@ -1404,12 +1412,10 @@ Module fmt.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.tuple [] ] ]
-                                        (Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       M.alloc (| Ty.tuple [], α0 |),
                                       [
                                         fun γ =>
@@ -2994,7 +3000,7 @@ Module fmt.
                       [
                         Ty.tuple [];
                         Ty.function
-                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          [ Ty.tuple [] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
@@ -3016,12 +3022,10 @@ Module fmt.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.tuple [] ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   M.alloc (| Ty.tuple [], α0 |),
                                   [
                                     fun γ =>
@@ -3531,7 +3535,7 @@ Module fmt.
                                   [
                                     Ty.tuple [];
                                     Ty.function
-                                      [ Ty.tuple [ Ty.tuple [] ] ]
+                                      [ Ty.tuple [] ]
                                       (Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
@@ -3553,12 +3557,10 @@ Module fmt.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function
-                                                [ Ty.tuple [ Ty.tuple [] ] ]
-                                                (Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                               M.alloc (| Ty.tuple [], α0 |),
                                               [
                                                 fun γ =>
@@ -3854,10 +3856,7 @@ Module fmt.
                         [],
                         [
                           Ty.function
-                            [
-                              Ty.tuple
-                                [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
-                            ]
+                            [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
                             (Ty.apply
                               (Ty.path "core::result::Result")
                               []
@@ -3873,20 +3872,10 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&mut")
-                                              []
-                                              [ Ty.path "core::fmt::Formatter" ]
-                                          ]
-                                      ]
-                                      (Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                     M.alloc (|
                                       Ty.apply
                                         (Ty.path "&mut")
@@ -4009,7 +3998,7 @@ Module fmt.
                           [
                             Ty.tuple [];
                             Ty.function
-                              [ Ty.tuple [ Ty.tuple [] ] ]
+                              [ Ty.tuple [] ]
                               (Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
@@ -4031,12 +4020,10 @@ Module fmt.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.tuple [] ] ]
-                                        (Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       M.alloc (| Ty.tuple [], α0 |),
                                       [
                                         fun γ =>
@@ -4980,7 +4967,7 @@ Module fmt.
                       [
                         Ty.tuple [];
                         Ty.function
-                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          [ Ty.tuple [] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
@@ -5002,12 +4989,10 @@ Module fmt.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.tuple [] ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   M.alloc (| Ty.tuple [], α0 |),
                                   [
                                     fun γ =>
@@ -5544,7 +5529,7 @@ Module fmt.
                                   [
                                     Ty.tuple [];
                                     Ty.function
-                                      [ Ty.tuple [ Ty.tuple [] ] ]
+                                      [ Ty.tuple [] ]
                                       (Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
@@ -5566,12 +5551,10 @@ Module fmt.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function
-                                                [ Ty.tuple [ Ty.tuple [] ] ]
-                                                (Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                               M.alloc (| Ty.tuple [], α0 |),
                                               [
                                                 fun γ =>
@@ -6039,7 +6022,7 @@ Module fmt.
                       [
                         Ty.tuple [];
                         Ty.function
-                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          [ Ty.tuple [] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
@@ -6061,12 +6044,10 @@ Module fmt.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.tuple [] ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   M.alloc (| Ty.tuple [], α0 |),
                                   [
                                     fun γ =>
@@ -7029,10 +7010,7 @@ Module fmt.
                         [],
                         [
                           Ty.function
-                            [
-                              Ty.tuple
-                                [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
-                            ]
+                            [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
                             (Ty.apply
                               (Ty.path "core::result::Result")
                               []
@@ -7055,20 +7033,10 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&mut")
-                                              []
-                                              [ Ty.path "core::fmt::Formatter" ]
-                                          ]
-                                      ]
-                                      (Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                     M.alloc (|
                                       Ty.apply
                                         (Ty.path "&mut")
@@ -7340,17 +7308,40 @@ Module fmt.
                                                             Pointer.Kind.MutRef,
                                                             M.deref (| M.read (| self |) |)
                                                           |);
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (|
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  entry
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.dyn
+                                                                  [ ("core::fmt::Debug::Trait", [])
+                                                                  ]
+                                                              ],
+                                                            M.pointer_coercion
+                                                              M.PointerCoercion.Unsize
+                                                              (Ty.apply (Ty.path "&") [] [ D ])
+                                                              (Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.dyn
+                                                                    [
+                                                                      ("core::fmt::Debug::Trait",
+                                                                        [])
+                                                                    ]
+                                                                ]),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    entry
+                                                                  |)
                                                                 |)
                                                               |)
-                                                            |))
+                                                            ]
+                                                          |)
                                                         ]
                                                       |) in
                                                     M.alloc (| Ty.tuple [], Value.Tuple [] |)
@@ -7434,7 +7425,7 @@ Module fmt.
                       [
                         Ty.tuple [];
                         Ty.function
-                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          [ Ty.tuple [] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
@@ -7460,12 +7451,10 @@ Module fmt.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.tuple [] ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   M.alloc (| Ty.tuple [], α0 |),
                                   [
                                     fun γ =>
@@ -7991,7 +7980,7 @@ Module fmt.
                       [
                         Ty.tuple [];
                         Ty.function
-                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          [ Ty.tuple [] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
@@ -8017,12 +8006,10 @@ Module fmt.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.tuple [] ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   M.alloc (| Ty.tuple [], α0 |),
                                   [
                                     fun γ =>
@@ -8187,10 +8174,7 @@ Module fmt.
                         [],
                         [
                           Ty.function
-                            [
-                              Ty.tuple
-                                [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
-                            ]
+                            [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
                             (Ty.apply
                               (Ty.path "core::result::Result")
                               []
@@ -8213,20 +8197,10 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&mut")
-                                              []
-                                              [ Ty.path "core::fmt::Formatter" ]
-                                          ]
-                                      ]
-                                      (Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                     M.alloc (|
                                       Ty.apply
                                         (Ty.path "&mut")
@@ -8498,17 +8472,40 @@ Module fmt.
                                                             Pointer.Kind.MutRef,
                                                             M.deref (| M.read (| self |) |)
                                                           |);
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (|
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  entry
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.dyn
+                                                                  [ ("core::fmt::Debug::Trait", [])
+                                                                  ]
+                                                              ],
+                                                            M.pointer_coercion
+                                                              M.PointerCoercion.Unsize
+                                                              (Ty.apply (Ty.path "&") [] [ D ])
+                                                              (Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.dyn
+                                                                    [
+                                                                      ("core::fmt::Debug::Trait",
+                                                                        [])
+                                                                    ]
+                                                                ]),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    entry
+                                                                  |)
                                                                 |)
                                                               |)
-                                                            |))
+                                                            ]
+                                                          |)
                                                         ]
                                                       |) in
                                                     M.alloc (| Ty.tuple [], Value.Tuple [] |)
@@ -8579,7 +8576,7 @@ Module fmt.
                 [
                   Ty.tuple [];
                   Ty.function
-                    [ Ty.tuple [ Ty.tuple [] ] ]
+                    [ Ty.tuple [] ]
                     (Ty.apply
                       (Ty.path "core::result::Result")
                       []
@@ -8605,12 +8602,10 @@ Module fmt.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [ Ty.tuple [] ] ]
-                              (Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             M.alloc (| Ty.tuple [], α0 |),
                             [
                               fun γ =>
@@ -9091,7 +9086,7 @@ Module fmt.
                       [
                         Ty.tuple [];
                         Ty.function
-                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          [ Ty.tuple [] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
@@ -9117,12 +9112,10 @@ Module fmt.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.tuple [] ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   M.alloc (| Ty.tuple [], α0 |),
                                   [
                                     fun γ =>
@@ -9328,16 +9321,42 @@ Module fmt.
                               |),
                               [
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| key |) |) |))
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| key |) |) |)
+                                  ]
+                                |)
                               ]
                             |)
                           |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |))
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |) ]
+                        |)
                       ]
                     |)
                   |)
@@ -9384,10 +9403,7 @@ Module fmt.
                         [],
                         [
                           Ty.function
-                            [
-                              Ty.tuple
-                                [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
-                            ]
+                            [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
                             (Ty.apply
                               (Ty.path "core::result::Result")
                               []
@@ -9403,20 +9419,10 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&mut")
-                                              []
-                                              [ Ty.path "core::fmt::Formatter" ]
-                                          ]
-                                      ]
-                                      (Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                     M.alloc (|
                                       Ty.apply
                                         (Ty.path "&mut")
@@ -9549,7 +9555,7 @@ Module fmt.
                           [
                             Ty.tuple [];
                             Ty.function
-                              [ Ty.tuple [ Ty.tuple [] ] ]
+                              [ Ty.tuple [] ]
                               (Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
@@ -9571,12 +9577,10 @@ Module fmt.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.tuple [] ] ]
-                                        (Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       M.alloc (| Ty.tuple [], α0 |),
                                       [
                                         fun γ =>
@@ -11076,10 +11080,7 @@ Module fmt.
                         [],
                         [
                           Ty.function
-                            [
-                              Ty.tuple
-                                [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
-                            ]
+                            [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
                             (Ty.apply
                               (Ty.path "core::result::Result")
                               []
@@ -11095,20 +11096,10 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&mut")
-                                              []
-                                              [ Ty.path "core::fmt::Formatter" ]
-                                          ]
-                                      ]
-                                      (Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                     M.alloc (|
                                       Ty.apply
                                         (Ty.path "&mut")
@@ -11230,7 +11221,7 @@ Module fmt.
                           [
                             Ty.tuple [];
                             Ty.function
-                              [ Ty.tuple [ Ty.tuple [] ] ]
+                              [ Ty.tuple [] ]
                               (Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
@@ -11252,12 +11243,10 @@ Module fmt.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.tuple [] ] ]
-                                        (Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       M.alloc (| Ty.tuple [], α0 |),
                                       [
                                         fun γ =>
@@ -12228,22 +12217,68 @@ Module fmt.
                                                             Pointer.Kind.MutRef,
                                                             M.deref (| M.read (| self |) |)
                                                           |);
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (|
-                                                                M.borrow (| Pointer.Kind.Ref, k |)
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.dyn
+                                                                  [ ("core::fmt::Debug::Trait", [])
+                                                                  ]
+                                                              ],
+                                                            M.pointer_coercion
+                                                              M.PointerCoercion.Unsize
+                                                              (Ty.apply (Ty.path "&") [] [ K ])
+                                                              (Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.dyn
+                                                                    [
+                                                                      ("core::fmt::Debug::Trait",
+                                                                        [])
+                                                                    ]
+                                                                ]),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (| Pointer.Kind.Ref, k |)
+                                                                |)
                                                               |)
-                                                            |));
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (|
-                                                                M.borrow (| Pointer.Kind.Ref, v |)
+                                                            ]
+                                                          |);
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.dyn
+                                                                  [ ("core::fmt::Debug::Trait", [])
+                                                                  ]
+                                                              ],
+                                                            M.pointer_coercion
+                                                              M.PointerCoercion.Unsize
+                                                              (Ty.apply (Ty.path "&") [] [ V ])
+                                                              (Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.dyn
+                                                                    [
+                                                                      ("core::fmt::Debug::Trait",
+                                                                        [])
+                                                                    ]
+                                                                ]),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (| Pointer.Kind.Ref, v |)
+                                                                |)
                                                               |)
-                                                            |))
+                                                            ]
+                                                          |)
                                                         ]
                                                       |) in
                                                     M.alloc (| Ty.tuple [], Value.Tuple [] |)
@@ -12325,7 +12360,7 @@ Module fmt.
                       [
                         Ty.tuple [];
                         Ty.function
-                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          [ Ty.tuple [] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
@@ -12347,12 +12382,10 @@ Module fmt.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.tuple [] ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   M.alloc (| Ty.tuple [], α0 |),
                                   [
                                     fun γ =>
@@ -12948,7 +12981,7 @@ Module fmt.
                       [
                         Ty.tuple [];
                         Ty.function
-                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          [ Ty.tuple [] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
@@ -12970,12 +13003,10 @@ Module fmt.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.tuple [] ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   M.alloc (| Ty.tuple [], α0 |),
                                   [
                                     fun γ =>

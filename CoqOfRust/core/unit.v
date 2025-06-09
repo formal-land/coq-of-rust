@@ -24,7 +24,7 @@ Module unit_.
               [],
               "for_each",
               [],
-              [ Ty.function [ Ty.tuple [ Ty.tuple [] ] ] (Ty.tuple []) ]
+              [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ]
             |),
             [
               M.call_closure (|
@@ -52,7 +52,7 @@ Module unit_.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function [ Ty.tuple [ Ty.tuple [] ] ] (Ty.tuple []),
+                          Ty.tuple [],
                           M.alloc (| Ty.tuple [], α0 |),
                           [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
                         |)))

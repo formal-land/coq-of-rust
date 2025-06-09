@@ -2,6 +2,7 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.intrinsics.links.mod.
 Require Import core.links.array.
+Require Import core.links.option.
 Require Import core.num.mod.
 
 Module Impl_u16.
@@ -91,6 +92,14 @@ Module Impl_usize.
     constructor.
     run_symbolic.
   Defined.
+
+  (* pub const fn checked_sub(self, rhs: Self) -> Option<Self> *)
+  Instance run_checked_sub (self rhs: Self) :
+    Run.Trait num.Impl_usize.checked_sub [] [] [ φ self; φ rhs ] (option Self).
+  Proof.
+    constructor.
+    run_symbolic.
+  Admitted.
 
   (* pub const fn saturating_add(self, rhs: Self) -> Self *)
   Instance run_saturating_add (self rhs: Self) :

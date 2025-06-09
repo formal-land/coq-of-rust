@@ -36,7 +36,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ outer_var : Ty.path "i32" := Value.Integer IntegerKind.I32 42 in
-        let~ closure_annotated : Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32") :=
+        let~ closure_annotated : Ty.function [ Ty.path "i32" ] (Ty.path "i32") :=
           M.closure
             (fun γ =>
               ltac:(M.monadic
@@ -44,7 +44,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32"),
+                      Ty.path "i32",
                       M.alloc (| Ty.path "i32", α0 |),
                       [
                         fun γ =>
@@ -59,7 +59,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |)))
                 | _ => M.impossible "wrong number of arguments"
                 end)) in
-        let~ closure_inferred : Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32") :=
+        let~ closure_inferred : Ty.function [ Ty.path "i32" ] (Ty.path "i32") :=
           M.closure
             (fun γ =>
               ltac:(M.monadic
@@ -67,7 +67,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32"),
+                      Ty.path "i32",
                       M.alloc (| Ty.path "i32", α0 |),
                       [
                         fun γ =>
@@ -146,9 +146,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 Ty.path "i32",
                                                 M.get_trait_method (|
                                                   "core::ops::function::Fn",
-                                                  Ty.function
-                                                    [ Ty.tuple [ Ty.path "i32" ] ]
-                                                    (Ty.path "i32"),
+                                                  Ty.function [ Ty.path "i32" ] (Ty.path "i32"),
                                                   [],
                                                   [ Ty.tuple [ Ty.path "i32" ] ],
                                                   "call",
@@ -244,9 +242,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 Ty.path "i32",
                                                 M.get_trait_method (|
                                                   "core::ops::function::Fn",
-                                                  Ty.function
-                                                    [ Ty.tuple [ Ty.path "i32" ] ]
-                                                    (Ty.path "i32"),
+                                                  Ty.function [ Ty.path "i32" ] (Ty.path "i32"),
                                                   [],
                                                   [ Ty.tuple [ Ty.path "i32" ] ],
                                                   "call",
@@ -275,7 +271,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |) in
             M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        let~ one : Ty.function [ Ty.tuple [] ] (Ty.path "i32") :=
+        let~ one : Ty.function [] (Ty.path "i32") :=
           M.closure
             (fun γ =>
               ltac:(M.monadic
@@ -283,7 +279,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.function [ Ty.tuple [] ] (Ty.path "i32"),
+                      Ty.path "i32",
                       M.alloc (| Ty.tuple [], α0 |),
                       [ fun γ => ltac:(M.monadic (Value.Integer IntegerKind.I32 1)) ]
                     |)))
@@ -354,7 +350,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 Ty.path "i32",
                                                 M.get_trait_method (|
                                                   "core::ops::function::Fn",
-                                                  Ty.function [ Ty.tuple [] ] (Ty.path "i32"),
+                                                  Ty.function [] (Ty.path "i32"),
                                                   [],
                                                   [ Ty.tuple [] ],
                                                   "call",

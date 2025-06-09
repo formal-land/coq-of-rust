@@ -364,30 +364,45 @@ Module ffi.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FromBytesWithNulError" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "kind" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [ Ty.path "core::ffi::c_str::FromBytesWithNulErrorKind" ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::ffi::c_str::FromBytesWithNulError",
-                              "kind"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "core::ffi::c_str::FromBytesWithNulErrorKind" ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "core::ffi::c_str::FromBytesWithNulErrorKind" ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::ffi::c_str::FromBytesWithNulError",
+                                "kind"
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -715,12 +730,25 @@ Module ffi.
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "InteriorNul" |) |) |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                          |))
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
+                        |)
                       ]
                     |)));
                 fun γ =>
@@ -1098,27 +1126,34 @@ Module ffi.
                   Pointer.Kind.Ref,
                   M.deref (| mk_str (| "FromBytesUntilNulError" |) |)
                 |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.tuple [] ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::ffi::c_str::FromBytesUntilNulError",
-                              0
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.tuple [] ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::ffi::c_str::FromBytesUntilNulError",
+                                0
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3496,56 +3531,91 @@ Module ffi.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Bytes" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ptr" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::ffi::c_str::Bytes",
-                          "ptr"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ] ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::ffi::c_str::Bytes",
+                            "ptr"
+                          |)
                         |)
                       |)
                     |)
-                  |));
+                  ]
+                |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "phantom" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::marker::PhantomData")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ] ]
-                                ]
-                            ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::ffi::c_str::Bytes",
-                              "phantom"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::marker::PhantomData")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ] ]
+                              ]
+                          ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::marker::PhantomData")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ] ]
+                                  ]
+                              ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::ffi::c_str::Bytes",
+                                "phantom"
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3884,37 +3954,44 @@ Module ffi.
               Ty.path "usize",
               M.get_function (| "core::ffi::c_str::strlen", [], [] |),
               [
-                (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
-                    Ty.apply (Ty.path "*mut") [] [ Ty.path "i8" ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                      "cast",
-                      [],
-                      [ Ty.path "i8" ]
-                    |),
-                    [
-                      M.call_closure (|
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ Ty.path "i8" ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ Ty.path "i8" ])
+                    (Ty.apply (Ty.path "*const") [] [ Ty.path "i8" ]),
+                  [
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "i8" ],
+                      M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
-                          "as_ptr",
-                          [],
-                          []
-                        |),
-                        [
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              self,
-                              "core::ffi::c_str::Bytes",
-                              "ptr"
+                        "cast",
+                        [],
+                        [ Ty.path "i8" ]
+                      |),
+                      [
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
+                            "as_ptr",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "core::ffi::c_str::Bytes",
+                                "ptr"
+                              |)
                             |)
-                          |)
-                        ]
-                      |)
-                    ]
-                  |))
+                          ]
+                        |)
+                      ]
+                    |)
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

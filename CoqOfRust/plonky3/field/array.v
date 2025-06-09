@@ -134,27 +134,37 @@ Module array.
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FieldArray" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ F ] ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "p3_field::array::FieldArray",
-                            0
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ F ] ] ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ F ] ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "p3_field::array::FieldArray",
+                              0
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -354,39 +364,53 @@ Module array.
                 M.get_function (|
                   "p3_field::batch_inverse::batch_multiplicative_inverse_general",
                   [],
-                  [ F; Ty.function [ Ty.tuple [ F ] ] F ]
+                  [ F; Ty.function [ F ] F ]
                 |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "p3_field::array::FieldArray",
-                            0
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ F ] ])
+                      (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ]),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "p3_field::array::FieldArray",
+                              0
+                            |)
                           |)
                         |)
                       |)
-                    |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_tuple_field (|
-                            result,
-                            "p3_field::array::FieldArray",
-                            0
+                    ]
+                  |);
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ F ] ])
+                      (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ]),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_tuple_field (|
+                              result,
+                              "p3_field::array::FieldArray",
+                              0
+                            |)
                           |)
                         |)
                       |)
-                    |));
+                    ]
+                  |);
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -394,7 +418,7 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function [ Ty.tuple [ F ] ] F,
+                              F,
                               M.alloc (| F, α0 |),
                               [
                                 fun γ =>
@@ -1243,21 +1267,28 @@ Module array.
                 [ Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ] ],
               self
             |) in
-          (* Unsize *)
-          M.pointer_coercion
-            (M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| self |) |),
-                    "p3_field::array::FieldArray",
-                    0
+          M.call_closure (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+            M.pointer_coercion
+              M.PointerCoercion.Unsize
+              (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ F ] ])
+              (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ]),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "p3_field::array::FieldArray",
+                      0
+                    |)
                   |)
                 |)
               |)
-            |))))
+            ]
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -1288,21 +1319,28 @@ Module array.
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.MutRef,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "p3_field::array::FieldArray",
-                        0
+              M.call_closure (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ F ] ])
+                  (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "p3_field::array::FieldArray",
+                          0
+                        |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1372,7 +1410,7 @@ Module array.
                 M.get_function (|
                   "core::array::from_fn",
                   [ N ],
-                  [ F; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] F ]
+                  [ F; Ty.function [ Ty.path "usize" ] F ]
                 |),
                 [
                   M.closure
@@ -1382,7 +1420,7 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function [ Ty.tuple [ Ty.path "usize" ] ] F,
+                              F,
                               M.alloc (| Ty.path "usize", α0 |),
                               [
                                 fun γ =>
@@ -1490,7 +1528,7 @@ Module array.
                   Ty.apply (Ty.path "array") [ N ] [ F ],
                   "map",
                   [],
-                  [ Ty.function [ Ty.tuple [ F ] ] F; F ]
+                  [ Ty.function [ F ] F; F ]
                 |),
                 [
                   M.read (|
@@ -1503,7 +1541,7 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function [ Ty.tuple [ F ] ] F,
+                              F,
                               M.alloc (| F, α0 |),
                               [
                                 fun γ =>
@@ -1591,10 +1629,7 @@ Module array.
                   [],
                   "for_each",
                   [],
-                  [
-                    Ty.function
-                      [ Ty.tuple [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ] ] ]
-                      (Ty.tuple [])
+                  [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ] ] (Ty.tuple [])
                   ]
                 |),
                 [
@@ -1625,16 +1660,29 @@ Module array.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.SubPointer.get_struct_tuple_field (|
-                                M.deref (| M.read (| self |) |),
-                                "p3_field::array::FieldArray",
-                                0
+                          M.call_closure (|
+                            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.apply (Ty.path "array") [ N ] [ F ] ])
+                              (Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ F ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_tuple_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "p3_field::array::FieldArray",
+                                  0
+                                |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |);
                       M.read (|
@@ -1653,9 +1701,7 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ] ] ]
-                                (Ty.tuple []),
+                              Ty.tuple [],
                               M.alloc (| Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ], α0 |),
                               [
                                 fun γ =>
@@ -1746,7 +1792,7 @@ Module array.
                   [],
                   "for_each",
                   [],
-                  [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ] ] ] (Ty.tuple []) ]
+                  [ Ty.function [ Ty.apply (Ty.path "&mut") [] [ F ] ] (Ty.tuple []) ]
                 |),
                 [
                   M.call_closure (|
@@ -1758,16 +1804,23 @@ Module array.
                       []
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "p3_field::array::FieldArray",
-                            0
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ F ] ])
+                          (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "p3_field::array::FieldArray",
+                              0
+                            |)
                           |)
-                        |))
+                        ]
+                      |)
                     ]
                   |);
                   M.closure
@@ -1777,9 +1830,7 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ] ] ]
-                                (Ty.tuple []),
+                              Ty.tuple [],
                               M.alloc (| Ty.apply (Ty.path "&mut") [] [ F ], α0 |),
                               [
                                 fun γ =>
@@ -1870,7 +1921,7 @@ Module array.
                 M.get_function (|
                   "core::array::from_fn",
                   [ N ],
-                  [ F; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] F ]
+                  [ F; Ty.function [ Ty.path "usize" ] F ]
                 |),
                 [
                   M.closure
@@ -1880,7 +1931,7 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function [ Ty.tuple [ Ty.path "usize" ] ] F,
+                              F,
                               M.alloc (| Ty.path "usize", α0 |),
                               [
                                 fun γ =>
@@ -1988,7 +2039,7 @@ Module array.
                   Ty.apply (Ty.path "array") [ N ] [ F ],
                   "map",
                   [],
-                  [ Ty.function [ Ty.tuple [ F ] ] F; F ]
+                  [ Ty.function [ F ] F; F ]
                 |),
                 [
                   M.read (|
@@ -2001,7 +2052,7 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function [ Ty.tuple [ F ] ] F,
+                              F,
                               M.alloc (| F, α0 |),
                               [
                                 fun γ =>
@@ -2089,10 +2140,7 @@ Module array.
                   [],
                   "for_each",
                   [],
-                  [
-                    Ty.function
-                      [ Ty.tuple [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ] ] ]
-                      (Ty.tuple [])
+                  [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ] ] (Ty.tuple [])
                   ]
                 |),
                 [
@@ -2123,16 +2171,29 @@ Module array.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.SubPointer.get_struct_tuple_field (|
-                                M.deref (| M.read (| self |) |),
-                                "p3_field::array::FieldArray",
-                                0
+                          M.call_closure (|
+                            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.apply (Ty.path "array") [ N ] [ F ] ])
+                              (Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ F ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_tuple_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "p3_field::array::FieldArray",
+                                  0
+                                |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |);
                       M.read (|
@@ -2151,9 +2212,7 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ] ] ]
-                                (Ty.tuple []),
+                              Ty.tuple [],
                               M.alloc (| Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ], α0 |),
                               [
                                 fun γ =>
@@ -2244,7 +2303,7 @@ Module array.
                   [],
                   "for_each",
                   [],
-                  [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ] ] ] (Ty.tuple []) ]
+                  [ Ty.function [ Ty.apply (Ty.path "&mut") [] [ F ] ] (Ty.tuple []) ]
                 |),
                 [
                   M.call_closure (|
@@ -2256,16 +2315,23 @@ Module array.
                       []
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "p3_field::array::FieldArray",
-                            0
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ F ] ])
+                          (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "p3_field::array::FieldArray",
+                              0
+                            |)
                           |)
-                        |))
+                        ]
+                      |)
                     ]
                   |);
                   M.closure
@@ -2275,9 +2341,7 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ] ] ]
-                                (Ty.tuple []),
+                              Ty.tuple [],
                               M.alloc (| Ty.apply (Ty.path "&mut") [] [ F ], α0 |),
                               [
                                 fun γ =>
@@ -2367,7 +2431,7 @@ Module array.
                   Ty.apply (Ty.path "array") [ N ] [ F ],
                   "map",
                   [],
-                  [ Ty.function [ Ty.tuple [ F ] ] F; F ]
+                  [ Ty.function [ F ] F; F ]
                 |),
                 [
                   M.read (|
@@ -2380,7 +2444,7 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function [ Ty.tuple [ F ] ] F,
+                              F,
                               M.alloc (| F, α0 |),
                               [
                                 fun γ =>
@@ -2466,7 +2530,7 @@ Module array.
                 M.get_function (|
                   "core::array::from_fn",
                   [ N ],
-                  [ F; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] F ]
+                  [ F; Ty.function [ Ty.path "usize" ] F ]
                 |),
                 [
                   M.closure
@@ -2476,7 +2540,7 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function [ Ty.tuple [ Ty.path "usize" ] ] F,
+                              F,
                               M.alloc (| Ty.path "usize", α0 |),
                               [
                                 fun γ =>
@@ -2584,7 +2648,7 @@ Module array.
                   Ty.apply (Ty.path "array") [ N ] [ F ],
                   "map",
                   [],
-                  [ Ty.function [ Ty.tuple [ F ] ] F; F ]
+                  [ Ty.function [ F ] F; F ]
                 |),
                 [
                   M.read (|
@@ -2597,7 +2661,7 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function [ Ty.tuple [ F ] ] F,
+                              F,
                               M.alloc (| F, α0 |),
                               [
                                 fun γ =>
@@ -2685,10 +2749,7 @@ Module array.
                   [],
                   "for_each",
                   [],
-                  [
-                    Ty.function
-                      [ Ty.tuple [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ] ] ]
-                      (Ty.tuple [])
+                  [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ] ] (Ty.tuple [])
                   ]
                 |),
                 [
@@ -2719,16 +2780,29 @@ Module array.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.SubPointer.get_struct_tuple_field (|
-                                M.deref (| M.read (| self |) |),
-                                "p3_field::array::FieldArray",
-                                0
+                          M.call_closure (|
+                            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.apply (Ty.path "array") [ N ] [ F ] ])
+                              (Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ F ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_tuple_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "p3_field::array::FieldArray",
+                                  0
+                                |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |);
                       M.read (|
@@ -2747,9 +2821,7 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ] ] ]
-                                (Ty.tuple []),
+                              Ty.tuple [],
                               M.alloc (| Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ], α0 |),
                               [
                                 fun γ =>
@@ -2840,7 +2912,7 @@ Module array.
                   [],
                   "for_each",
                   [],
-                  [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ] ] ] (Ty.tuple []) ]
+                  [ Ty.function [ Ty.apply (Ty.path "&mut") [] [ F ] ] (Ty.tuple []) ]
                 |),
                 [
                   M.call_closure (|
@@ -2852,16 +2924,23 @@ Module array.
                       []
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "p3_field::array::FieldArray",
-                            0
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ F ] ])
+                          (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "p3_field::array::FieldArray",
+                              0
+                            |)
                           |)
-                        |))
+                        ]
+                      |)
                     ]
                   |);
                   M.closure
@@ -2871,9 +2950,7 @@ Module array.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ] ] ]
-                                (Ty.tuple []),
+                              Ty.tuple [],
                               M.alloc (| Ty.apply (Ty.path "&mut") [] [ F ], α0 |),
                               [
                                 fun γ =>
@@ -3033,11 +3110,8 @@ Module array.
                   [
                     Ty.function
                       [
-                        Ty.tuple
-                          [
-                            Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ];
-                            Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ]
-                          ]
+                        Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ];
+                        Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ]
                       ]
                       (Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ])
                   ]
@@ -3051,15 +3125,7 @@ Module array.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ];
-                                      Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ]),
+                              Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
                               M.alloc (|
                                 Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
                                 α0
@@ -3076,24 +3142,7 @@ Module array.
                                         γ
                                       |) in
                                     M.match_operator (|
-                                      Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
-                                                (Ty.path "p3_field::array::FieldArray")
-                                                [ N ]
-                                                [ F ];
-                                              Ty.apply
-                                                (Ty.path "p3_field::array::FieldArray")
-                                                [ N ]
-                                                [ F ]
-                                            ]
-                                        ]
-                                        (Ty.apply
-                                          (Ty.path "p3_field::array::FieldArray")
-                                          [ N ]
-                                          [ F ]),
+                                      Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
                                       M.alloc (|
                                         Ty.apply
                                           (Ty.path "p3_field::array::FieldArray")
@@ -3214,11 +3263,8 @@ Module array.
                   [
                     Ty.function
                       [
-                        Ty.tuple
-                          [
-                            Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ];
-                            Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ]
-                          ]
+                        Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ];
+                        Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ]
                       ]
                       (Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ])
                   ]
@@ -3232,15 +3278,7 @@ Module array.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ];
-                                      Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ]),
+                              Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
                               M.alloc (|
                                 Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
                                 α0
@@ -3257,24 +3295,7 @@ Module array.
                                         γ
                                       |) in
                                     M.match_operator (|
-                                      Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
-                                                (Ty.path "p3_field::array::FieldArray")
-                                                [ N ]
-                                                [ F ];
-                                              Ty.apply
-                                                (Ty.path "p3_field::array::FieldArray")
-                                                [ N ]
-                                                [ F ]
-                                            ]
-                                        ]
-                                        (Ty.apply
-                                          (Ty.path "p3_field::array::FieldArray")
-                                          [ N ]
-                                          [ F ]),
+                                      Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
                                       M.alloc (|
                                         Ty.apply
                                           (Ty.path "p3_field::array::FieldArray")

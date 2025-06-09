@@ -24,13 +24,53 @@ Module bls12_381.
                   |)
                 ]
               |);
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_precompile::bls12_381::map_fp2_to_g2::map_fp2_to_g2",
-                  [],
-                  []
-                |))
+              M.call_closure (|
+                Ty.function
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                    Ty.path "u64"
+                  ]
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                    ]),
+                M.pointer_coercion
+                  M.PointerCoercion.ReifyFnPointer
+                  (Ty.function
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                      Ty.path "u64"
+                    ]
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                      ]))
+                  (Ty.function
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                      Ty.path "u64"
+                    ]
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                      ])),
+                [
+                  M.get_function (|
+                    "revm_precompile::bls12_381::map_fp2_to_g2::map_fp2_to_g2",
+                    [],
+                    []
+                  |)
+                ]
+              |)
             ]
         |))).
     

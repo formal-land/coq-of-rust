@@ -661,110 +661,190 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 2 ]
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                Value.Array [ mk_str (| "" |); mk_str (| "
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "" |); mk_str (| "
 " |) ]
+                                |)
                               |)
                             |)
                           |)
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 1 ]
-                                  [ Ty.path "core::fmt::rt::Argument" ],
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      M.get_associated_function (|
+                        ]
+                      |);
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Argument" ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Argument" ]
+                            ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
                                         Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [],
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.alloc (|
-                                                Ty.path "i32",
-                                                Value.Integer IntegerKind.I32 1
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [],
+                                          [ Ty.path "i32" ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Ty.path "i32",
+                                                  Value.Integer IntegerKind.I32 1
+                                                |)
                                               |)
                                             |)
                                           |)
-                                        |)
-                                      ]
-                                    |)
-                                  ]
+                                        ]
+                                      |)
+                                    ]
+                                |)
                               |)
                             |)
                           |)
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 1 ]
-                                  [ Ty.path "core::fmt::rt::Placeholder" ],
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "core::fmt::rt::Placeholder",
-                                      M.get_associated_function (|
+                        ]
+                      |);
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Placeholder" ]
+                          ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Placeholder" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Placeholder" ]
+                            ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Placeholder" ],
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
                                         Ty.path "core::fmt::rt::Placeholder",
-                                        "new",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        Value.Integer IntegerKind.Usize 0;
-                                        Value.UnicodeChar 32;
-                                        Value.StructTuple
-                                          "core::fmt::rt::Alignment::Right"
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Placeholder",
+                                          "new",
+                                          [],
                                           []
-                                          []
-                                          [];
-                                        Value.Integer IntegerKind.U32 0;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [] [] [];
-                                        Value.StructTuple
-                                          "core::fmt::rt::Count::Is"
-                                          []
-                                          []
-                                          [ Value.Integer IntegerKind.Usize 5 ]
-                                      ]
-                                    |)
-                                  ]
+                                        |),
+                                        [
+                                          Value.Integer IntegerKind.Usize 0;
+                                          Value.UnicodeChar 32;
+                                          Value.StructTuple
+                                            "core::fmt::rt::Alignment::Right"
+                                            []
+                                            []
+                                            [];
+                                          Value.Integer IntegerKind.U32 0;
+                                          Value.StructTuple
+                                            "core::fmt::rt::Count::Implied"
+                                            []
+                                            []
+                                            [];
+                                          Value.StructTuple
+                                            "core::fmt::rt::Count::Is"
+                                            []
+                                            []
+                                            [ Value.Integer IntegerKind.Usize 5 ]
+                                        ]
+                                      |)
+                                    ]
+                                |)
                               |)
                             |)
                           |)
-                        |));
+                        ]
+                      |);
                       M.call_closure (|
                         Ty.path "core::fmt::rt::UnsafeArg",
                         M.get_associated_function (|
@@ -797,106 +877,190 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 2 ]
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                Value.Array [ mk_str (| "" |); mk_str (| "
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "" |); mk_str (| "
 " |) ]
+                                |)
                               |)
                             |)
                           |)
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 1 ]
-                                  [ Ty.path "core::fmt::rt::Argument" ],
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      M.get_associated_function (|
+                        ]
+                      |);
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Argument" ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Argument" ]
+                            ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
                                         Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [],
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.alloc (|
-                                                Ty.path "i32",
-                                                Value.Integer IntegerKind.I32 1
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [],
+                                          [ Ty.path "i32" ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Ty.path "i32",
+                                                  Value.Integer IntegerKind.I32 1
+                                                |)
                                               |)
                                             |)
                                           |)
-                                        |)
-                                      ]
-                                    |)
-                                  ]
+                                        ]
+                                      |)
+                                    ]
+                                |)
                               |)
                             |)
                           |)
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 1 ]
-                                  [ Ty.path "core::fmt::rt::Placeholder" ],
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "core::fmt::rt::Placeholder",
-                                      M.get_associated_function (|
+                        ]
+                      |);
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Placeholder" ]
+                          ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Placeholder" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Placeholder" ]
+                            ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Placeholder" ],
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
                                         Ty.path "core::fmt::rt::Placeholder",
-                                        "new",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        Value.Integer IntegerKind.Usize 0;
-                                        Value.UnicodeChar 48;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Left" [] [] [];
-                                        Value.Integer IntegerKind.U32 0;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [] [] [];
-                                        Value.StructTuple
-                                          "core::fmt::rt::Count::Is"
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Placeholder",
+                                          "new",
+                                          [],
                                           []
-                                          []
-                                          [ Value.Integer IntegerKind.Usize 5 ]
-                                      ]
-                                    |)
-                                  ]
+                                        |),
+                                        [
+                                          Value.Integer IntegerKind.Usize 0;
+                                          Value.UnicodeChar 48;
+                                          Value.StructTuple
+                                            "core::fmt::rt::Alignment::Left"
+                                            []
+                                            []
+                                            [];
+                                          Value.Integer IntegerKind.U32 0;
+                                          Value.StructTuple
+                                            "core::fmt::rt::Count::Implied"
+                                            []
+                                            []
+                                            [];
+                                          Value.StructTuple
+                                            "core::fmt::rt::Count::Is"
+                                            []
+                                            []
+                                            [ Value.Integer IntegerKind.Usize 5 ]
+                                        ]
+                                      |)
+                                    ]
+                                |)
                               |)
                             |)
                           |)
-                        |));
+                        ]
+                      |);
                       M.call_closure (|
                         Ty.path "core::fmt::rt::UnsafeArg",
                         M.get_associated_function (|
@@ -929,133 +1093,213 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 2 ]
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                Value.Array [ mk_str (| "" |); mk_str (| "
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "" |); mk_str (| "
 " |) ]
+                                |)
                               |)
                             |)
                           |)
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 2 ]
-                                  [ Ty.path "core::fmt::rt::Argument" ],
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      M.get_associated_function (|
+                        ]
+                      |);
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Argument" ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.path "core::fmt::rt::Argument" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Argument" ]
+                            ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
                                         Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [],
-                                        [ Ty.path "i32" ]
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.alloc (|
-                                                Ty.path "i32",
-                                                Value.Integer IntegerKind.I32 1
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [],
+                                          [ Ty.path "i32" ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Ty.path "i32",
+                                                  Value.Integer IntegerKind.I32 1
+                                                |)
                                               |)
                                             |)
                                           |)
-                                        |)
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      M.get_associated_function (|
+                                        ]
+                                      |);
+                                      M.call_closure (|
                                         Ty.path "core::fmt::rt::Argument",
-                                        "from_usize",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.alloc (|
-                                                Ty.path "usize",
-                                                Value.Integer IntegerKind.Usize 5
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "from_usize",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Ty.path "usize",
+                                                  Value.Integer IntegerKind.Usize 5
+                                                |)
                                               |)
                                             |)
                                           |)
-                                        |)
-                                      ]
-                                    |)
-                                  ]
+                                        ]
+                                      |)
+                                    ]
+                                |)
                               |)
                             |)
                           |)
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 1 ]
-                                  [ Ty.path "core::fmt::rt::Placeholder" ],
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "core::fmt::rt::Placeholder",
-                                      M.get_associated_function (|
+                        ]
+                      |);
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Placeholder" ]
+                          ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Placeholder" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Placeholder" ]
+                            ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Placeholder" ],
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
                                         Ty.path "core::fmt::rt::Placeholder",
-                                        "new",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        Value.Integer IntegerKind.Usize 0;
-                                        Value.UnicodeChar 48;
-                                        Value.StructTuple
-                                          "core::fmt::rt::Alignment::Right"
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Placeholder",
+                                          "new",
+                                          [],
                                           []
-                                          []
-                                          [];
-                                        Value.Integer IntegerKind.U32 0;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [] [] [];
-                                        Value.StructTuple
-                                          "core::fmt::rt::Count::Param"
-                                          []
-                                          []
-                                          [ Value.Integer IntegerKind.Usize 1 ]
-                                      ]
-                                    |)
-                                  ]
+                                        |),
+                                        [
+                                          Value.Integer IntegerKind.Usize 0;
+                                          Value.UnicodeChar 48;
+                                          Value.StructTuple
+                                            "core::fmt::rt::Alignment::Right"
+                                            []
+                                            []
+                                            [];
+                                          Value.Integer IntegerKind.U32 0;
+                                          Value.StructTuple
+                                            "core::fmt::rt::Count::Implied"
+                                            []
+                                            []
+                                            [];
+                                          Value.StructTuple
+                                            "core::fmt::rt::Count::Param"
+                                            []
+                                            []
+                                            [ Value.Integer IntegerKind.Usize 1 ]
+                                        ]
+                                      |)
+                                    ]
+                                |)
                               |)
                             |)
                           |)
-                        |));
+                        ]
+                      |);
                       M.call_closure (|
                         Ty.path "core::fmt::rt::UnsafeArg",
                         M.get_associated_function (|
@@ -1155,117 +1399,197 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 2 ]
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                Value.Array [ mk_str (| "" |); mk_str (| "
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "" |); mk_str (| "
 " |) ]
+                                |)
                               |)
                             |)
                           |)
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 2 ]
-                                  [ Ty.path "core::fmt::rt::Argument" ],
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      M.get_associated_function (|
+                        ]
+                      |);
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Argument" ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.path "core::fmt::rt::Argument" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Argument" ]
+                            ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
                                         Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [],
-                                        [ Ty.path "f64" ]
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.borrow (| Pointer.Kind.Ref, number |) |)
-                                        |)
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      M.get_associated_function (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [],
+                                          [ Ty.path "f64" ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, number |) |)
+                                          |)
+                                        ]
+                                      |);
+                                      M.call_closure (|
                                         Ty.path "core::fmt::rt::Argument",
-                                        "from_usize",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.borrow (| Pointer.Kind.Ref, width |) |)
-                                        |)
-                                      ]
-                                    |)
-                                  ]
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "from_usize",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, width |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                |)
                               |)
                             |)
                           |)
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 1 ]
-                                  [ Ty.path "core::fmt::rt::Placeholder" ],
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "core::fmt::rt::Placeholder",
-                                      M.get_associated_function (|
+                        ]
+                      |);
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Placeholder" ]
+                          ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Placeholder" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Placeholder" ]
+                            ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Placeholder" ],
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
                                         Ty.path "core::fmt::rt::Placeholder",
-                                        "new",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        Value.Integer IntegerKind.Usize 0;
-                                        Value.UnicodeChar 32;
-                                        Value.StructTuple
-                                          "core::fmt::rt::Alignment::Right"
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Placeholder",
+                                          "new",
+                                          [],
                                           []
-                                          []
-                                          [];
-                                        Value.Integer IntegerKind.U32 0;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [] [] [];
-                                        Value.StructTuple
-                                          "core::fmt::rt::Count::Param"
-                                          []
-                                          []
-                                          [ Value.Integer IntegerKind.Usize 1 ]
-                                      ]
-                                    |)
-                                  ]
+                                        |),
+                                        [
+                                          Value.Integer IntegerKind.Usize 0;
+                                          Value.UnicodeChar 32;
+                                          Value.StructTuple
+                                            "core::fmt::rt::Alignment::Right"
+                                            []
+                                            []
+                                            [];
+                                          Value.Integer IntegerKind.U32 0;
+                                          Value.StructTuple
+                                            "core::fmt::rt::Count::Implied"
+                                            []
+                                            []
+                                            [];
+                                          Value.StructTuple
+                                            "core::fmt::rt::Count::Param"
+                                            []
+                                            []
+                                            [ Value.Integer IntegerKind.Usize 1 ]
+                                        ]
+                                      |)
+                                    ]
+                                |)
                               |)
                             |)
                           |)
-                        |));
+                        ]
+                      |);
                       M.call_closure (|
                         Ty.path "core::fmt::rt::UnsafeArg",
                         M.get_associated_function (|

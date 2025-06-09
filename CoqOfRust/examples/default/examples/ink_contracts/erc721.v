@@ -2643,7 +2643,7 @@ Module Impl_erc721_Erc721.
                                         [],
                                         [
                                           Ty.path "u32";
-                                          Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
+                                          Ty.function [ Ty.path "u32" ] (Ty.path "u32")
                                         ]
                                       |),
                                       [
@@ -2679,9 +2679,7 @@ Module Impl_erc721_Erc721.
                                               | [ α0 ] =>
                                                 ltac:(M.monadic
                                                   (M.match_operator (|
-                                                    Ty.function
-                                                      [ Ty.tuple [ Ty.path "u32" ] ]
-                                                      (Ty.path "u32"),
+                                                    Ty.path "u32",
                                                     M.alloc (| Ty.path "u32", α0 |),
                                                     [
                                                       fun γ =>

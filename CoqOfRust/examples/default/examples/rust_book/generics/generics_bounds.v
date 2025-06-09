@@ -35,43 +35,57 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Rectangle" |) |) |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "length" |) |) |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "generics_bounds::Rectangle",
-                      "length"
+            M.call_closure (|
+              Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+              M.pointer_coercion
+                M.PointerCoercion.Unsize
+                (Ty.apply (Ty.path "&") [] [ Ty.path "f64" ])
+                (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "generics_bounds::Rectangle",
+                        "length"
+                      |)
                     |)
                   |)
                 |)
-              |));
+              ]
+            |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "height" |) |) |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      Ty.apply (Ty.path "&") [] [ Ty.path "f64" ],
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "generics_bounds::Rectangle",
-                          "height"
+            M.call_closure (|
+              Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+              M.pointer_coercion
+                M.PointerCoercion.Unsize
+                (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "f64" ] ])
+                (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "f64" ],
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "generics_bounds::Rectangle",
+                            "height"
+                          |)
                         |)
                       |)
                     |)
                   |)
                 |)
-              |))
+              ]
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

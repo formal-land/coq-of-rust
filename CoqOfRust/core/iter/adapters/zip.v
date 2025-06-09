@@ -7162,41 +7162,67 @@ Module iter.
                                     |)
                                   |);
                                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "a" |) |) |);
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "core::iter::adapters::zip::Zip",
-                                            "a"
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply (Ty.path "&") [] [ A ])
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::iter::adapters::zip::Zip",
+                                              "a"
+                                            |)
                                           |)
                                         |)
                                       |)
-                                    |))
+                                    ]
+                                  |)
                                 ]
                               |)
                             |)
                           |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "b" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::iter::adapters::zip::Zip",
-                                    "b"
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply (Ty.path "&") [] [ B ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::zip::Zip",
+                                      "b"
+                                    |)
                                   |)
                                 |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |)
                     |)

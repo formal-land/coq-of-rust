@@ -124,43 +124,57 @@ Module iter.
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Cycle" |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "orig" |) |) |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::iter::adapters::cycle::Cycle",
-                            "orig"
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply (Ty.path "&") [] [ I ])
+                      (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::cycle::Cycle",
+                              "orig"
+                            |)
                           |)
                         |)
                       |)
-                    |));
+                    ]
+                  |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.alloc (|
-                            Ty.apply (Ty.path "&") [] [ I ],
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::iter::adapters::cycle::Cycle",
-                                "iter"
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ I ] ])
+                      (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Ty.apply (Ty.path "&") [] [ I ],
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::cycle::Cycle",
+                                  "iter"
+                                |)
                               |)
                             |)
                           |)
                         |)
                       |)
-                    |))
+                    ]
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -767,16 +781,13 @@ Module iter.
                                       Acc;
                                       Ty.function
                                         [
-                                          Ty.tuple
-                                            [
-                                              Acc;
-                                              Ty.associated_in_trait
-                                                "core::iter::traits::iterator::Iterator"
-                                                []
-                                                []
-                                                I
-                                                "Item"
-                                            ]
+                                          Acc;
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            I
+                                            "Item"
                                         ]
                                         R;
                                       R
@@ -799,40 +810,14 @@ Module iter.
                                           | [ α0; α1 ] =>
                                             ltac:(M.monadic
                                               (M.match_operator (|
-                                                Ty.function
-                                                  [
-                                                    Ty.tuple
-                                                      [
-                                                        Acc;
-                                                        Ty.associated_in_trait
-                                                          "core::iter::traits::iterator::Iterator"
-                                                          []
-                                                          []
-                                                          I
-                                                          "Item"
-                                                      ]
-                                                  ]
-                                                  R,
+                                                R,
                                                 M.alloc (| Acc, α0 |),
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let acc := M.copy (| Acc, γ |) in
                                                       M.match_operator (|
-                                                        Ty.function
-                                                          [
-                                                            Ty.tuple
-                                                              [
-                                                                Acc;
-                                                                Ty.associated_in_trait
-                                                                  "core::iter::traits::iterator::Iterator"
-                                                                  []
-                                                                  []
-                                                                  I
-                                                                  "Item"
-                                                              ]
-                                                          ]
-                                                          R,
+                                                        R,
                                                         M.alloc (|
                                                           Ty.associated_in_trait
                                                             "core::iter::traits::iterator::Iterator"

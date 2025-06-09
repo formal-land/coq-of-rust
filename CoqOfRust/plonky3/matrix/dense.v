@@ -177,62 +177,91 @@ Module dense.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DenseMatrix" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "values" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "p3_matrix::dense::DenseMatrix",
-                        "values"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ V ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "p3_matrix::dense::DenseMatrix",
+                          "values"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "width" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "p3_matrix::dense::DenseMatrix",
-                        "width"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.path "usize" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "p3_matrix::dense::DenseMatrix",
+                          "width"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "_phantom" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "p3_matrix::dense::DenseMatrix",
-                            "_phantom"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "p3_matrix::dense::DenseMatrix",
+                              "_phantom"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1905,9 +1934,7 @@ Module dense.
                               Ty.apply (Ty.path "&mut") [] [ R ];
                               T
                             ];
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                            (Ty.path "bool")
+                          Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] (Ty.path "bool")
                         ]
                     ],
                   [],
@@ -1934,9 +1961,7 @@ Module dense.
                                 Ty.apply (Ty.path "&mut") [] [ R ];
                                 T
                               ];
-                            Ty.function
-                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                              (Ty.path "bool")
+                            Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] (Ty.path "bool")
                           ]
                       ],
                     M.get_trait_method (|
@@ -1953,9 +1978,7 @@ Module dense.
                               Ty.apply (Ty.path "&mut") [] [ R ];
                               T
                             ];
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                            (Ty.path "bool")
+                          Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] (Ty.path "bool")
                         ],
                       [],
                       [],
@@ -1977,9 +2000,7 @@ Module dense.
                                 Ty.apply (Ty.path "&mut") [] [ R ];
                                 T
                               ];
-                            Ty.function
-                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                              (Ty.path "bool")
+                            Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] (Ty.path "bool")
                           ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
@@ -1995,11 +2016,7 @@ Module dense.
                           [],
                           "filter",
                           [],
-                          [
-                            Ty.function
-                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                              (Ty.path "bool")
-                          ]
+                          [ Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] (Ty.path "bool") ]
                         |),
                         [
                           M.call_closure (|
@@ -2032,9 +2049,7 @@ Module dense.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                                        (Ty.path "bool"),
+                                      Ty.path "bool",
                                       M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                                       [
                                         fun γ =>
@@ -3621,14 +3636,8 @@ Module dense.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [ Ty.apply (Ty.path "slice") [] [ T ] ];
-                                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                              ]
+                            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
                           ]
                       ]
                       (Ty.tuple [])
@@ -3679,24 +3688,7 @@ Module dense.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [ Ty.apply (Ty.path "slice") [] [ T ] ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.tuple []),
+                              Ty.tuple [],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -3842,7 +3834,7 @@ Module dense.
                         []
                         [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ F ] ];
                       Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
+                        [ Ty.apply (Ty.path "&") [] [ T ] ]
                         (Ty.apply
                           (Ty.path "core::iter::adapters::copied::Copied")
                           []
@@ -3866,7 +3858,7 @@ Module dense.
                           []
                           [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ F ] ];
                         Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
                           (Ty.apply
                             (Ty.path "core::iter::adapters::copied::Copied")
                             []
@@ -3885,7 +3877,7 @@ Module dense.
                           []
                           [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ F ] ];
                         Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
+                          [ Ty.apply (Ty.path "&") [] [ T ] ]
                           (Ty.apply
                             (Ty.path "core::iter::adapters::copied::Copied")
                             []
@@ -3938,12 +3930,10 @@ Module dense.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::iter::adapters::copied::Copied")
-                                      []
-                                      [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ F ] ]),
+                                  Ty.apply
+                                    (Ty.path "core::iter::adapters::copied::Copied")
+                                    []
+                                    [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ F ] ],
                                   M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                                   [
                                     fun γ =>
@@ -5116,7 +5106,7 @@ Module dense.
               [
                 Ty.apply (Ty.path "core::slice::iter::Chunks") [] [ T ];
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ] ]
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
                   (Ty.apply
                     (Ty.path "p3_matrix::dense::DenseMatrix")
                     []
@@ -5135,7 +5125,7 @@ Module dense.
                   []
                   [ T; Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ];
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ] ]
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
                   (Ty.apply
                     (Ty.path "p3_matrix::dense::DenseMatrix")
                     []
@@ -5205,17 +5195,11 @@ Module dense.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                                ]
-                            ]
-                            (Ty.apply
-                              (Ty.path "p3_matrix::dense::DenseMatrix")
-                              []
-                              [ T; Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                              ]),
+                          Ty.apply
+                            (Ty.path "p3_matrix::dense::DenseMatrix")
+                            []
+                            [ T; Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                            ],
                           M.alloc (|
                             Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                             α0
@@ -5326,7 +5310,7 @@ Module dense.
               [
                 Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ T ];
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ] ]
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
                   (Ty.apply
                     (Ty.path "p3_matrix::dense::DenseMatrix")
                     []
@@ -5345,7 +5329,7 @@ Module dense.
                   []
                   [ T; Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ];
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ] ]
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
                   (Ty.apply
                     (Ty.path "p3_matrix::dense::DenseMatrix")
                     []
@@ -5415,17 +5399,11 @@ Module dense.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                                ]
-                            ]
-                            (Ty.apply
-                              (Ty.path "p3_matrix::dense::DenseMatrix")
-                              []
-                              [ T; Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                              ]),
+                          Ty.apply
+                            (Ty.path "p3_matrix::dense::DenseMatrix")
+                            []
+                            [ T; Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                            ],
                           M.alloc (|
                             Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                             α0
@@ -5537,10 +5515,7 @@ Module dense.
               [
                 Ty.apply (Ty.path "core::slice::iter::ChunksMut") [] [ T ];
                 Ty.function
-                  [
-                    Ty.tuple
-                      [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
-                  ]
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
                   (Ty.apply
                     (Ty.path "p3_matrix::dense::DenseMatrix")
                     []
@@ -5559,10 +5534,7 @@ Module dense.
                   []
                   [ T; Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ];
                 Ty.function
-                  [
-                    Ty.tuple
-                      [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
-                  ]
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
                   (Ty.apply
                     (Ty.path "p3_matrix::dense::DenseMatrix")
                     []
@@ -5632,23 +5604,13 @@ Module dense.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
+                          Ty.apply
+                            (Ty.path "p3_matrix::dense::DenseMatrix")
+                            []
                             [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                                ]
-                            ]
-                            (Ty.apply
-                              (Ty.path "p3_matrix::dense::DenseMatrix")
-                              []
-                              [
-                                T;
-                                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                              ]),
+                              T;
+                              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                            ],
                           M.alloc (|
                             Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                             α0
@@ -5760,10 +5722,7 @@ Module dense.
               [
                 Ty.apply (Ty.path "core::slice::iter::ChunksExactMut") [] [ T ];
                 Ty.function
-                  [
-                    Ty.tuple
-                      [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
-                  ]
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
                   (Ty.apply
                     (Ty.path "p3_matrix::dense::DenseMatrix")
                     []
@@ -5782,10 +5741,7 @@ Module dense.
                   []
                   [ T; Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ];
                 Ty.function
-                  [
-                    Ty.tuple
-                      [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
-                  ]
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
                   (Ty.apply
                     (Ty.path "p3_matrix::dense::DenseMatrix")
                     []
@@ -5852,23 +5808,13 @@ Module dense.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
+                          Ty.apply
+                            (Ty.path "p3_matrix::dense::DenseMatrix")
+                            []
                             [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                                ]
-                            ]
-                            (Ty.apply
-                              (Ty.path "p3_matrix::dense::DenseMatrix")
-                              []
-                              [
-                                T;
-                                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                              ]),
+                              T;
+                              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                            ],
                           M.alloc (|
                             Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                             α0
@@ -5980,10 +5926,7 @@ Module dense.
               [
                 Ty.apply (Ty.path "core::slice::iter::ChunksExactMut") [] [ T ];
                 Ty.function
-                  [
-                    Ty.tuple
-                      [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
-                  ]
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
                   (Ty.apply
                     (Ty.path "p3_matrix::dense::DenseMatrix")
                     []
@@ -6002,10 +5945,7 @@ Module dense.
                   []
                   [ T; Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ];
                 Ty.function
-                  [
-                    Ty.tuple
-                      [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
-                  ]
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
                   (Ty.apply
                     (Ty.path "p3_matrix::dense::DenseMatrix")
                     []
@@ -6075,23 +6015,13 @@ Module dense.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
+                          Ty.apply
+                            (Ty.path "p3_matrix::dense::DenseMatrix")
+                            []
                             [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                                ]
-                            ]
-                            (Ty.apply
-                              (Ty.path "p3_matrix::dense::DenseMatrix")
-                              []
-                              [
-                                T;
-                                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                              ]),
+                              T;
+                              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                            ],
                           M.alloc (|
                             Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                             α0
@@ -6714,7 +6644,35 @@ Module dense.
     Admitted.
     Global Typeclasses Opaque packed_row_pair_mut.
     
-    (*     #[instrument(level = "debug", skip_all)] *)
+    (*
+        pub fn bit_reversed_zero_pad(self, added_bits: usize) -> RowMajorMatrix<T>
+        where
+            T: Field,
+        {
+            if added_bits == 0 {
+                return self.to_row_major_matrix();
+            }
+    
+            // This is equivalent to:
+            //     reverse_matrix_index_bits(mat);
+            //     mat
+            //         .values
+            //         .resize(mat.values.len() << added_bits, F::ZERO);
+            //     reverse_matrix_index_bits(mat);
+            // But rather than implement it with bit reversals, we directly construct the resulting matrix,
+            // whose rows are zero except for rows whose low `added_bits` bits are zero.
+    
+            let w = self.width;
+            let mut padded =
+                RowMajorMatrix::new(T::zero_vec(self.values.borrow().len() << added_bits), w);
+            padded
+                .par_row_chunks_exact_mut(1 << added_bits)
+                .zip(self.par_row_slices())
+                .for_each(|(mut ch, r)| ch.row_mut(0).copy_from_slice(r));
+    
+            padded
+        }
+    *)
     Definition bit_reversed_zero_pad
         (T S : Ty.t)
         (ε : list Value.t)
@@ -7561,23 +7519,17 @@ Module dense.
                           [
                             Ty.tuple
                               [
-                                Ty.tuple
+                                Ty.apply
+                                  (Ty.path "p3_matrix::dense::DenseMatrix")
+                                  []
                                   [
+                                    T;
                                     Ty.apply
-                                      (Ty.path "p3_matrix::dense::DenseMatrix")
-                                      []
-                                      [
-                                        T;
-                                        Ty.apply
-                                          (Ty.path "&mut")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                                      ];
-                                    Ty.apply
-                                      (Ty.path "&")
+                                      (Ty.path "&mut")
                                       []
                                       [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                                  ]
+                                  ];
+                                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
                               ]
                           ]
                           (Ty.tuple [])
@@ -7644,30 +7596,7 @@ Module dense.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
-                                                (Ty.path "p3_matrix::dense::DenseMatrix")
-                                                []
-                                                [
-                                                  T;
-                                                  Ty.apply
-                                                    (Ty.path "&mut")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                                                ];
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                                            ]
-                                        ]
-                                    ]
-                                    (Ty.tuple []),
+                                  Ty.tuple [],
                                   M.alloc (|
                                     Ty.tuple
                                       [
@@ -8821,7 +8750,7 @@ Module dense.
                                   [],
                                   "from_fn",
                                   [],
-                                  [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T ]
+                                  [ Ty.function [ Ty.path "usize" ] T ]
                                 |),
                                 [
                                   M.closure
@@ -8831,7 +8760,7 @@ Module dense.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T,
+                                              T,
                                               M.alloc (| Ty.path "usize", α0 |),
                                               [
                                                 fun γ =>

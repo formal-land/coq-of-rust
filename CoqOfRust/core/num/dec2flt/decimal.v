@@ -2751,7 +2751,7 @@ Module num.
                           [],
                           "parse_digits",
                           [],
-                          [ Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.tuple []) ]
+                          [ Ty.function [ Ty.path "u8" ] (Ty.tuple []) ]
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
@@ -2762,7 +2762,7 @@ Module num.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.tuple []),
+                                      Ty.tuple [],
                                       M.alloc (| Ty.path "u8", α0 |),
                                       [
                                         fun γ =>
@@ -3361,7 +3361,7 @@ Module num.
                                       [],
                                       "parse_digits",
                                       [],
-                                      [ Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.tuple []) ]
+                                      [ Ty.function [ Ty.path "u8" ] (Ty.tuple []) ]
                                     |),
                                     [
                                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
@@ -3372,9 +3372,7 @@ Module num.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Ty.function
-                                                    [ Ty.tuple [ Ty.path "u8" ] ]
-                                                    (Ty.tuple []),
+                                                  Ty.tuple [],
                                                   M.alloc (| Ty.path "u8", α0 |),
                                                   [
                                                     fun γ =>
@@ -4267,7 +4265,7 @@ Module num.
                                         [],
                                         "parse_digits",
                                         [],
-                                        [ Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.tuple []) ]
+                                        [ Ty.function [ Ty.path "u8" ] (Ty.tuple []) ]
                                       |),
                                       [
                                         M.borrow (|
@@ -4281,9 +4279,7 @@ Module num.
                                               | [ α0 ] =>
                                                 ltac:(M.monadic
                                                   (M.match_operator (|
-                                                    Ty.function
-                                                      [ Ty.tuple [ Ty.path "u8" ] ]
-                                                      (Ty.tuple []),
+                                                    Ty.tuple [],
                                                     M.alloc (| Ty.path "u8", α0 |),
                                                     [
                                                       fun γ =>

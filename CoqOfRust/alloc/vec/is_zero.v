@@ -23,7 +23,7 @@ Module vec.
               Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
-                Ty.function [ Ty.tuple [ Ty.path "i8" ] ] (Ty.path "bool"),
+                Ty.function [ Ty.path "i8" ] (Ty.path "bool"),
                 [],
                 [ Ty.tuple [ Ty.path "i8" ] ],
                 "call",
@@ -34,7 +34,7 @@ Module vec.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
-                    Ty.function [ Ty.tuple [ Ty.path "i8" ] ] (Ty.path "bool"),
+                    Ty.function [ Ty.path "i8" ] (Ty.path "bool"),
                     M.closure
                       (fun γ =>
                         ltac:(M.monadic
@@ -42,7 +42,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function [ Ty.tuple [ Ty.path "i8" ] ] (Ty.path "bool"),
+                                Ty.path "bool",
                                 M.alloc (| Ty.path "i8", α0 |),
                                 [
                                   fun γ =>
@@ -91,7 +91,7 @@ Module vec.
               Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
-                Ty.function [ Ty.tuple [ Ty.path "i16" ] ] (Ty.path "bool"),
+                Ty.function [ Ty.path "i16" ] (Ty.path "bool"),
                 [],
                 [ Ty.tuple [ Ty.path "i16" ] ],
                 "call",
@@ -102,7 +102,7 @@ Module vec.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
-                    Ty.function [ Ty.tuple [ Ty.path "i16" ] ] (Ty.path "bool"),
+                    Ty.function [ Ty.path "i16" ] (Ty.path "bool"),
                     M.closure
                       (fun γ =>
                         ltac:(M.monadic
@@ -110,7 +110,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function [ Ty.tuple [ Ty.path "i16" ] ] (Ty.path "bool"),
+                                Ty.path "bool",
                                 M.alloc (| Ty.path "i16", α0 |),
                                 [
                                   fun γ =>
@@ -159,7 +159,7 @@ Module vec.
               Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
-                Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "bool"),
+                Ty.function [ Ty.path "i32" ] (Ty.path "bool"),
                 [],
                 [ Ty.tuple [ Ty.path "i32" ] ],
                 "call",
@@ -170,7 +170,7 @@ Module vec.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
-                    Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "bool"),
+                    Ty.function [ Ty.path "i32" ] (Ty.path "bool"),
                     M.closure
                       (fun γ =>
                         ltac:(M.monadic
@@ -178,7 +178,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "bool"),
+                                Ty.path "bool",
                                 M.alloc (| Ty.path "i32", α0 |),
                                 [
                                   fun γ =>
@@ -227,7 +227,7 @@ Module vec.
               Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
-                Ty.function [ Ty.tuple [ Ty.path "i64" ] ] (Ty.path "bool"),
+                Ty.function [ Ty.path "i64" ] (Ty.path "bool"),
                 [],
                 [ Ty.tuple [ Ty.path "i64" ] ],
                 "call",
@@ -238,7 +238,7 @@ Module vec.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
-                    Ty.function [ Ty.tuple [ Ty.path "i64" ] ] (Ty.path "bool"),
+                    Ty.function [ Ty.path "i64" ] (Ty.path "bool"),
                     M.closure
                       (fun γ =>
                         ltac:(M.monadic
@@ -246,7 +246,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function [ Ty.tuple [ Ty.path "i64" ] ] (Ty.path "bool"),
+                                Ty.path "bool",
                                 M.alloc (| Ty.path "i64", α0 |),
                                 [
                                   fun γ =>
@@ -295,7 +295,7 @@ Module vec.
               Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
-                Ty.function [ Ty.tuple [ Ty.path "i128" ] ] (Ty.path "bool"),
+                Ty.function [ Ty.path "i128" ] (Ty.path "bool"),
                 [],
                 [ Ty.tuple [ Ty.path "i128" ] ],
                 "call",
@@ -306,7 +306,7 @@ Module vec.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
-                    Ty.function [ Ty.tuple [ Ty.path "i128" ] ] (Ty.path "bool"),
+                    Ty.function [ Ty.path "i128" ] (Ty.path "bool"),
                     M.closure
                       (fun γ =>
                         ltac:(M.monadic
@@ -314,7 +314,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function [ Ty.tuple [ Ty.path "i128" ] ] (Ty.path "bool"),
+                                Ty.path "bool",
                                 M.alloc (| Ty.path "i128", α0 |),
                                 [
                                   fun γ =>
@@ -363,7 +363,7 @@ Module vec.
               Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
-                Ty.function [ Ty.tuple [ Ty.path "isize" ] ] (Ty.path "bool"),
+                Ty.function [ Ty.path "isize" ] (Ty.path "bool"),
                 [],
                 [ Ty.tuple [ Ty.path "isize" ] ],
                 "call",
@@ -374,7 +374,7 @@ Module vec.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
-                    Ty.function [ Ty.tuple [ Ty.path "isize" ] ] (Ty.path "bool"),
+                    Ty.function [ Ty.path "isize" ] (Ty.path "bool"),
                     M.closure
                       (fun γ =>
                         ltac:(M.monadic
@@ -382,7 +382,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function [ Ty.tuple [ Ty.path "isize" ] ] (Ty.path "bool"),
+                                Ty.path "bool",
                                 M.alloc (| Ty.path "isize", α0 |),
                                 [
                                   fun γ =>
@@ -431,7 +431,7 @@ Module vec.
               Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
-                Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.path "bool"),
+                Ty.function [ Ty.path "u8" ] (Ty.path "bool"),
                 [],
                 [ Ty.tuple [ Ty.path "u8" ] ],
                 "call",
@@ -442,7 +442,7 @@ Module vec.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
-                    Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.path "bool"),
+                    Ty.function [ Ty.path "u8" ] (Ty.path "bool"),
                     M.closure
                       (fun γ =>
                         ltac:(M.monadic
@@ -450,7 +450,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function [ Ty.tuple [ Ty.path "u8" ] ] (Ty.path "bool"),
+                                Ty.path "bool",
                                 M.alloc (| Ty.path "u8", α0 |),
                                 [
                                   fun γ =>
@@ -499,7 +499,7 @@ Module vec.
               Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
-                Ty.function [ Ty.tuple [ Ty.path "u16" ] ] (Ty.path "bool"),
+                Ty.function [ Ty.path "u16" ] (Ty.path "bool"),
                 [],
                 [ Ty.tuple [ Ty.path "u16" ] ],
                 "call",
@@ -510,7 +510,7 @@ Module vec.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
-                    Ty.function [ Ty.tuple [ Ty.path "u16" ] ] (Ty.path "bool"),
+                    Ty.function [ Ty.path "u16" ] (Ty.path "bool"),
                     M.closure
                       (fun γ =>
                         ltac:(M.monadic
@@ -518,7 +518,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function [ Ty.tuple [ Ty.path "u16" ] ] (Ty.path "bool"),
+                                Ty.path "bool",
                                 M.alloc (| Ty.path "u16", α0 |),
                                 [
                                   fun γ =>
@@ -567,7 +567,7 @@ Module vec.
               Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
-                Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "bool"),
+                Ty.function [ Ty.path "u32" ] (Ty.path "bool"),
                 [],
                 [ Ty.tuple [ Ty.path "u32" ] ],
                 "call",
@@ -578,7 +578,7 @@ Module vec.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
-                    Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "bool"),
+                    Ty.function [ Ty.path "u32" ] (Ty.path "bool"),
                     M.closure
                       (fun γ =>
                         ltac:(M.monadic
@@ -586,7 +586,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "bool"),
+                                Ty.path "bool",
                                 M.alloc (| Ty.path "u32", α0 |),
                                 [
                                   fun γ =>
@@ -635,7 +635,7 @@ Module vec.
               Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
-                Ty.function [ Ty.tuple [ Ty.path "u64" ] ] (Ty.path "bool"),
+                Ty.function [ Ty.path "u64" ] (Ty.path "bool"),
                 [],
                 [ Ty.tuple [ Ty.path "u64" ] ],
                 "call",
@@ -646,7 +646,7 @@ Module vec.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
-                    Ty.function [ Ty.tuple [ Ty.path "u64" ] ] (Ty.path "bool"),
+                    Ty.function [ Ty.path "u64" ] (Ty.path "bool"),
                     M.closure
                       (fun γ =>
                         ltac:(M.monadic
@@ -654,7 +654,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function [ Ty.tuple [ Ty.path "u64" ] ] (Ty.path "bool"),
+                                Ty.path "bool",
                                 M.alloc (| Ty.path "u64", α0 |),
                                 [
                                   fun γ =>
@@ -703,7 +703,7 @@ Module vec.
               Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
-                Ty.function [ Ty.tuple [ Ty.path "u128" ] ] (Ty.path "bool"),
+                Ty.function [ Ty.path "u128" ] (Ty.path "bool"),
                 [],
                 [ Ty.tuple [ Ty.path "u128" ] ],
                 "call",
@@ -714,7 +714,7 @@ Module vec.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
-                    Ty.function [ Ty.tuple [ Ty.path "u128" ] ] (Ty.path "bool"),
+                    Ty.function [ Ty.path "u128" ] (Ty.path "bool"),
                     M.closure
                       (fun γ =>
                         ltac:(M.monadic
@@ -722,7 +722,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function [ Ty.tuple [ Ty.path "u128" ] ] (Ty.path "bool"),
+                                Ty.path "bool",
                                 M.alloc (| Ty.path "u128", α0 |),
                                 [
                                   fun γ =>
@@ -771,7 +771,7 @@ Module vec.
               Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
-                Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "bool"),
+                Ty.function [ Ty.path "usize" ] (Ty.path "bool"),
                 [],
                 [ Ty.tuple [ Ty.path "usize" ] ],
                 "call",
@@ -782,7 +782,7 @@ Module vec.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
-                    Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "bool"),
+                    Ty.function [ Ty.path "usize" ] (Ty.path "bool"),
                     M.closure
                       (fun γ =>
                         ltac:(M.monadic
@@ -790,7 +790,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "bool"),
+                                Ty.path "bool",
                                 M.alloc (| Ty.path "usize", α0 |),
                                 [
                                   fun γ =>
@@ -839,7 +839,7 @@ Module vec.
               Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
-                Ty.function [ Ty.tuple [ Ty.path "bool" ] ] (Ty.path "bool"),
+                Ty.function [ Ty.path "bool" ] (Ty.path "bool"),
                 [],
                 [ Ty.tuple [ Ty.path "bool" ] ],
                 "call",
@@ -850,7 +850,7 @@ Module vec.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
-                    Ty.function [ Ty.tuple [ Ty.path "bool" ] ] (Ty.path "bool"),
+                    Ty.function [ Ty.path "bool" ] (Ty.path "bool"),
                     M.closure
                       (fun γ =>
                         ltac:(M.monadic
@@ -858,7 +858,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function [ Ty.tuple [ Ty.path "bool" ] ] (Ty.path "bool"),
+                                Ty.path "bool",
                                 M.alloc (| Ty.path "bool", α0 |),
                                 [
                                   fun γ =>
@@ -907,7 +907,7 @@ Module vec.
               Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
-                Ty.function [ Ty.tuple [ Ty.path "char" ] ] (Ty.path "bool"),
+                Ty.function [ Ty.path "char" ] (Ty.path "bool"),
                 [],
                 [ Ty.tuple [ Ty.path "char" ] ],
                 "call",
@@ -918,7 +918,7 @@ Module vec.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
-                    Ty.function [ Ty.tuple [ Ty.path "char" ] ] (Ty.path "bool"),
+                    Ty.function [ Ty.path "char" ] (Ty.path "bool"),
                     M.closure
                       (fun γ =>
                         ltac:(M.monadic
@@ -926,7 +926,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function [ Ty.tuple [ Ty.path "char" ] ] (Ty.path "bool"),
+                                Ty.path "bool",
                                 M.alloc (| Ty.path "char", α0 |),
                                 [
                                   fun γ =>
@@ -975,7 +975,7 @@ Module vec.
               Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
-                Ty.function [ Ty.tuple [ Ty.path "f32" ] ] (Ty.path "bool"),
+                Ty.function [ Ty.path "f32" ] (Ty.path "bool"),
                 [],
                 [ Ty.tuple [ Ty.path "f32" ] ],
                 "call",
@@ -986,7 +986,7 @@ Module vec.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
-                    Ty.function [ Ty.tuple [ Ty.path "f32" ] ] (Ty.path "bool"),
+                    Ty.function [ Ty.path "f32" ] (Ty.path "bool"),
                     M.closure
                       (fun γ =>
                         ltac:(M.monadic
@@ -994,7 +994,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function [ Ty.tuple [ Ty.path "f32" ] ] (Ty.path "bool"),
+                                Ty.path "bool",
                                 M.alloc (| Ty.path "f32", α0 |),
                                 [
                                   fun γ =>
@@ -1055,7 +1055,7 @@ Module vec.
               Ty.path "bool",
               M.get_trait_method (|
                 "core::ops::function::Fn",
-                Ty.function [ Ty.tuple [ Ty.path "f64" ] ] (Ty.path "bool"),
+                Ty.function [ Ty.path "f64" ] (Ty.path "bool"),
                 [],
                 [ Ty.tuple [ Ty.path "f64" ] ],
                 "call",
@@ -1066,7 +1066,7 @@ Module vec.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
-                    Ty.function [ Ty.tuple [ Ty.path "f64" ] ] (Ty.path "bool"),
+                    Ty.function [ Ty.path "f64" ] (Ty.path "bool"),
                     M.closure
                       (fun γ =>
                         ltac:(M.monadic
@@ -1074,7 +1074,7 @@ Module vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function [ Ty.tuple [ Ty.path "f64" ] ] (Ty.path "bool"),
+                                Ty.path "bool",
                                 M.alloc (| Ty.path "f64", α0 |),
                                 [
                                   fun γ =>
@@ -1258,9 +1258,17 @@ Module vec.
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))
+                            M.call_closure (|
+                              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                              M.pointer_coercion
+                                M.PointerCoercion.Unsize
+                                (Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
+                                (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                            |)
                           ]
                         |)
                       |)

@@ -1547,40 +1547,57 @@ Module signed.
                                     []
                                   |),
                                   [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+                                      M.pointer_coercion
+                                        M.PointerCoercion.Unsize
+                                        (Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ]
+                                          ])
+                                        (Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ LIMBS ]
+                                                    [ Ty.path "u64" ]
+                                                ],
+                                              M.get_associated_function (|
+                                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                                "as_limbs",
+                                                [],
+                                                []
+                                              |),
                                               [
-                                                Ty.apply
-                                                  (Ty.path "array")
-                                                  [ LIMBS ]
-                                                  [ Ty.path "u64" ]
-                                              ],
-                                            M.get_associated_function (|
-                                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                              "as_limbs",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  M.deref (| M.read (| self |) |),
-                                                  "alloy_primitives::signed::int::Signed",
-                                                  0
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_tuple_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "alloy_primitives::signed::int::Signed",
+                                                    0
+                                                  |)
                                                 |)
-                                              |)
-                                            ]
+                                              ]
+                                            |)
                                           |)
                                         |)
-                                      |))
+                                      ]
+                                    |)
                                   ]
                                 |)
                               |) in

@@ -1736,11 +1736,7 @@ Module field.
                   Ty.function
                     [
                       Ty.tuple
-                        [
-                          Ty.tuple
-                            [ Ty.apply (Ty.path "&") [] [ Self ]; Ty.apply (Ty.path "&") [] [ Self ]
-                            ]
-                        ]
+                        [ Ty.apply (Ty.path "&") [] [ Self ]; Ty.apply (Ty.path "&") [] [ Self ] ]
                     ]
                     Self
                 ],
@@ -1766,13 +1762,7 @@ Module field.
                     Ty.function
                       [
                         Ty.tuple
-                          [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ Self ];
-                                Ty.apply (Ty.path "&") [] [ Self ]
-                              ]
-                          ]
+                          [ Ty.apply (Ty.path "&") [] [ Self ]; Ty.apply (Ty.path "&") [] [ Self ] ]
                       ]
                       Self
                   ],
@@ -1794,13 +1784,7 @@ Module field.
                     Ty.function
                       [
                         Ty.tuple
-                          [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ Self ];
-                                Ty.apply (Ty.path "&") [] [ Self ]
-                              ]
-                          ]
+                          [ Ty.apply (Ty.path "&") [] [ Self ]; Ty.apply (Ty.path "&") [] [ Self ] ]
                       ]
                       Self
                   ]
@@ -1833,9 +1817,20 @@ Module field.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| u |) |) |))
+                          M.call_closure (|
+                            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Self ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "array") [ N ] [ Self ] ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Self ] ]),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| u |) |) |) ]
+                          |)
                         ]
                       |);
                       M.read (| v |)
@@ -1848,18 +1843,7 @@ Module field.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ Self ];
-                                          Ty.apply (Ty.path "&") [] [ Self ]
-                                        ]
-                                    ]
-                                ]
-                                Self,
+                              Self,
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -4085,7 +4069,7 @@ Module field.
               Ty.path "bool",
               "then",
               [],
-              [ Self; Ty.function [ Ty.tuple [] ] Self ]
+              [ Self; Ty.function [] Self ]
             |),
             [
               M.call_closure (|
@@ -4108,7 +4092,7 @@ Module field.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function [ Ty.tuple [] ] Self,
+                          Self,
                           M.alloc (| Ty.tuple [], α0 |),
                           [
                             fun γ =>
@@ -4122,7 +4106,7 @@ Module field.
                                     [ F ],
                                     "from_basis_coefficients_fn",
                                     [],
-                                    [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] F ]
+                                    [ Ty.function [ Ty.path "usize" ] F ]
                                   |),
                                   [
                                     M.closure
@@ -4132,7 +4116,7 @@ Module field.
                                           | [ α0 ] =>
                                             ltac:(M.monadic
                                               (M.match_operator (|
-                                                Ty.function [ Ty.tuple [ Ty.path "usize" ] ] F,
+                                                F,
                                                 M.alloc (| Ty.path "usize", α0 |),
                                                 [
                                                   fun γ =>
@@ -4206,7 +4190,7 @@ Module field.
                     [ Self; Ty.path "alloc::alloc::Global" ];
                   Ty.apply (Ty.path "alloc::vec::Vec") [] [ F; Ty.path "alloc::alloc::Global" ];
                   Ty.function
-                    [ Ty.tuple [ Self ] ]
+                    [ Self ]
                     (Ty.apply (Ty.path "alloc::vec::Vec") [] [ F; Ty.path "alloc::alloc::Global" ])
                 ],
               [],
@@ -4227,7 +4211,7 @@ Module field.
                       [ Self; Ty.path "alloc::alloc::Global" ];
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ F; Ty.path "alloc::alloc::Global" ];
                     Ty.function
-                      [ Ty.tuple [ Self ] ]
+                      [ Self ]
                       (Ty.apply
                         (Ty.path "alloc::vec::Vec")
                         []
@@ -4246,7 +4230,7 @@ Module field.
                   [
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ F; Ty.path "alloc::alloc::Global" ];
                     Ty.function
-                      [ Ty.tuple [ Self ] ]
+                      [ Self ]
                       (Ty.apply
                         (Ty.path "alloc::vec::Vec")
                         []
@@ -4280,12 +4264,10 @@ Module field.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Self ] ]
-                                (Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
-                                  [ F; Ty.path "alloc::alloc::Global" ]),
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [ F; Ty.path "alloc::alloc::Global" ],
                               M.alloc (| Self, α0 |),
                               [
                                 fun γ =>
@@ -4496,10 +4478,7 @@ Module field.
                       Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ F ];
                       Ty.apply (Ty.path "core::option::Option") [] [ Self ];
                       Ty.function
-                        [
-                          Ty.tuple
-                            [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ] ]
-                        ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ] ]
                         (Ty.apply (Ty.path "core::option::Option") [] [ Self ])
                     ],
                   [],
@@ -4518,10 +4497,7 @@ Module field.
                         Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ F ];
                         Ty.apply (Ty.path "core::option::Option") [] [ Self ];
                         Ty.function
-                          [
-                            Ty.tuple
-                              [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ] ]
-                          ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ] ]
                           (Ty.apply (Ty.path "core::option::Option") [] [ Self ])
                       ],
                     M.get_trait_method (|
@@ -4534,10 +4510,7 @@ Module field.
                       [
                         Ty.apply (Ty.path "core::option::Option") [] [ Self ];
                         Ty.function
-                          [
-                            Ty.tuple
-                              [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ] ]
-                          ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ] ]
                           (Ty.apply (Ty.path "core::option::Option") [] [ Self ])
                       ]
                     |),
@@ -4587,17 +4560,7 @@ Module field.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.apply (Ty.path "slice") [] [ F ] ]
-                                        ]
-                                    ]
-                                    (Ty.apply (Ty.path "core::option::Option") [] [ Self ]),
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Self ],
                                   M.alloc (|
                                     Ty.apply
                                       (Ty.path "&")
@@ -4751,12 +4714,7 @@ Module field.
           (let iter := M.alloc (| I, iter |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ F ],
-            M.get_associated_function (|
-              Ty.path "bool",
-              "then",
-              [],
-              [ F; Ty.function [ Ty.tuple [] ] F ]
-            |),
+            M.get_associated_function (| Ty.path "bool", "then", [], [ F; Ty.function [] F ] |),
             [
               M.call_closure (|
                 Ty.path "bool",
@@ -4785,7 +4743,7 @@ Module field.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function [ Ty.tuple [] ] F,
+                          F,
                           M.alloc (| Ty.tuple [], α0 |),
                           [
                             fun γ =>
@@ -5559,43 +5517,57 @@ Module field.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Powers" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "base" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "p3_field::field::Powers",
-                        "base"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ F ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "p3_field::field::Powers",
+                          "base"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "current" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ F ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "p3_field::field::Powers",
-                            "current"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ F ] ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ F ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "p3_field::field::Powers",
+                              "current"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

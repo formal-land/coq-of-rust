@@ -275,17 +275,14 @@ Module state.
             [
               Ty.function
                 [
-                  Ty.tuple
+                  Ty.apply
+                    (Ty.path "&")
+                    []
                     [
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "core::cell::RefCell")
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "core::cell::RefCell")
-                            []
-                            [ Ty.path "move_core_types::state::VMState" ]
-                        ]
+                        [ Ty.path "move_core_types::state::VMState" ]
                     ]
                 ]
                 (Ty.path "move_core_types::state::VMState");
@@ -315,22 +312,7 @@ Module state.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function
-                          [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::cell::RefCell")
-                                      []
-                                      [ Ty.path "move_core_types::state::VMState" ]
-                                  ]
-                              ]
-                          ]
-                          (Ty.path "move_core_types::state::VMState"),
+                        Ty.path "move_core_types::state::VMState",
                         M.alloc (|
                           Ty.apply
                             (Ty.path "&")
@@ -415,17 +397,14 @@ Module state.
             [
               Ty.function
                 [
-                  Ty.tuple
+                  Ty.apply
+                    (Ty.path "&")
+                    []
                     [
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "core::cell::RefCell")
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "core::cell::RefCell")
-                            []
-                            [ Ty.path "move_core_types::state::VMState" ]
-                        ]
+                        [ Ty.path "move_core_types::state::VMState" ]
                     ]
                 ]
                 (Ty.path "move_core_types::state::VMState");
@@ -455,22 +434,7 @@ Module state.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function
-                          [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::cell::RefCell")
-                                      []
-                                      [ Ty.path "move_core_types::state::VMState" ]
-                                  ]
-                              ]
-                          ]
-                          (Ty.path "move_core_types::state::VMState"),
+                        Ty.path "move_core_types::state::VMState",
                         M.alloc (|
                           Ty.apply
                             (Ty.path "&")

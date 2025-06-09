@@ -379,7 +379,14 @@ Module ptr.
               Ty.tuple [],
               M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
               [
-                (* MutToConstPointer *) M.pointer_coercion (M.read (| x |));
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ T ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ T ])
+                    (Ty.apply (Ty.path "*const") [] [ T ]),
+                  [ M.read (| x |) ]
+                |);
                 M.call_closure (|
                   Ty.apply (Ty.path "*mut") [] [ T ],
                   M.get_associated_function (|
@@ -398,7 +405,14 @@ Module ptr.
               Ty.tuple [],
               M.get_function (| "core::intrinsics::copy", [], [ T ] |),
               [
-                (* MutToConstPointer *) M.pointer_coercion (M.read (| y |));
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ T ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ T ])
+                    (Ty.apply (Ty.path "*const") [] [ T ]),
+                  [ M.read (| y |) ]
+                |);
                 M.read (| x |);
                 Value.Integer IntegerKind.Usize 1
               ]
@@ -1131,7 +1145,40 @@ Module ptr.
                                         [ T ]
                                     ]
                                   |),
-                                  [ (* MutToConstPointer *) M.pointer_coercion (M.read (| x |)) ]
+                                  [
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "*const")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ T ]
+                                        ],
+                                      M.pointer_coercion
+                                        M.PointerCoercion.MutToConstPointer
+                                        (Ty.apply
+                                          (Ty.path "*mut")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ T ]
+                                          ])
+                                        (Ty.apply
+                                          (Ty.path "*const")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ T ]
+                                          ]),
+                                      [ M.read (| x |) ]
+                                    |)
+                                  ]
                                 |) in
                               let~ b :
                                   Ty.apply
@@ -1153,7 +1200,40 @@ Module ptr.
                                         [ T ]
                                     ]
                                   |),
-                                  [ (* MutToConstPointer *) M.pointer_coercion (M.read (| y |)) ]
+                                  [
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "*const")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ T ]
+                                        ],
+                                      M.pointer_coercion
+                                        M.PointerCoercion.MutToConstPointer
+                                        (Ty.apply
+                                          (Ty.path "*mut")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ T ]
+                                          ])
+                                        (Ty.apply
+                                          (Ty.path "*const")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ T ]
+                                          ]),
+                                      [ M.read (| y |) ]
+                                    |)
+                                  ]
                                 |) in
                               let~ _ : Ty.tuple [] :=
                                 M.call_closure (|

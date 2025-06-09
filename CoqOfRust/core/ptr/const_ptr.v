@@ -2955,7 +2955,14 @@ Module ptr.
                 Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                 self
               |) in
-            (* Unsize *) M.pointer_coercion (M.read (| self |))))
+            M.call_closure (|
+              Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+              M.pointer_coercion
+                M.PointerCoercion.Unsize
+                (Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
+                (Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+              [ M.read (| self |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

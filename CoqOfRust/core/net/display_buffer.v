@@ -323,16 +323,62 @@ Module net.
                                 ]
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::net::display_buffer::DisplayBuffer",
-                                      "buf"
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ Ty.path "u8" ]
+                                        ]
+                                    ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ SIZE ]
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ Ty.path "u8" ]
+                                          ]
+                                      ])
+                                    (Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ Ty.path "u8" ]
+                                          ]
+                                      ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::net::display_buffer::DisplayBuffer",
+                                        "buf"
+                                      |)
                                     |)
-                                  |));
+                                  ]
+                                |);
                                 Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []

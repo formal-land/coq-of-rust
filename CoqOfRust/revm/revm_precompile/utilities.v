@@ -987,35 +987,50 @@ Module utilities.
             []
           |),
           [
-            (* Unsize *)
-            M.pointer_coercion
-              (M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.deref (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                [ Value.Integer IntegerKind.Usize 32 ]
-                                []
-                            ],
-                          M.get_function (| "revm_precompile::utilities::bool_to_b256", [], [] |),
-                          [ M.read (| value |) ]
-                        |)
-                      |),
-                      "alloy_primitives::bits::fixed::FixedBytes",
-                      0
+            M.call_closure (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+              M.pointer_coercion
+                M.PointerCoercion.Unsize
+                (Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 32 ]
+                      [ Ty.path "u8" ]
+                  ])
+                (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.deref (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                  [ Value.Integer IntegerKind.Usize 32 ]
+                                  []
+                              ],
+                            M.get_function (| "revm_precompile::utilities::bool_to_b256", [], [] |),
+                            [ M.read (| value |) ]
+                          |)
+                        |),
+                        "alloy_primitives::bits::fixed::FixedBytes",
+                        0
+                      |)
                     |)
                   |)
                 |)
-              |))
+              ]
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

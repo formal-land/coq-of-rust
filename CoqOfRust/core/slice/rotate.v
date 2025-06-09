@@ -1254,27 +1254,43 @@ Module slice.
                                                                   [ T ]
                                                                 |),
                                                                 [
-                                                                  (* MutToConstPointer *)
-                                                                  M.pointer_coercion
-                                                                    (M.call_closure (|
-                                                                      Ty.apply
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "*const")
+                                                                      []
+                                                                      [ T ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.MutToConstPointer
+                                                                      (Ty.apply
                                                                         (Ty.path "*mut")
                                                                         []
-                                                                        [ T ],
-                                                                      M.get_associated_function (|
+                                                                        [ T ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "*const")
+                                                                        []
+                                                                        [ T ]),
+                                                                    [
+                                                                      M.call_closure (|
                                                                         Ty.apply
                                                                           (Ty.path "*mut")
                                                                           []
                                                                           [ T ],
-                                                                        "sub",
-                                                                        [],
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        M.read (| mid |);
-                                                                        M.read (| left |)
-                                                                      ]
-                                                                    |));
+                                                                        M.get_associated_function (|
+                                                                          Ty.apply
+                                                                            (Ty.path "*mut")
+                                                                            []
+                                                                            [ T ],
+                                                                          "sub",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.read (| mid |);
+                                                                          M.read (| left |)
+                                                                        ]
+                                                                      |)
+                                                                    ]
+                                                                  |);
                                                                   M.read (| buf |);
                                                                   M.read (| left |)
                                                                 ]
@@ -1288,9 +1304,23 @@ Module slice.
                                                                   [ T ]
                                                                 |),
                                                                 [
-                                                                  (* MutToConstPointer *)
-                                                                  M.pointer_coercion
-                                                                    (M.read (| mid |));
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "*const")
+                                                                      []
+                                                                      [ T ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.MutToConstPointer
+                                                                      (Ty.apply
+                                                                        (Ty.path "*mut")
+                                                                        []
+                                                                        [ T ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "*const")
+                                                                        []
+                                                                        [ T ]),
+                                                                    [ M.read (| mid |) ]
+                                                                  |);
                                                                   M.call_closure (|
                                                                     Ty.apply
                                                                       (Ty.path "*mut")
@@ -1322,9 +1352,23 @@ Module slice.
                                                                   [ T ]
                                                                 |),
                                                                 [
-                                                                  (* MutToConstPointer *)
-                                                                  M.pointer_coercion
-                                                                    (M.read (| buf |));
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "*const")
+                                                                      []
+                                                                      [ T ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.MutToConstPointer
+                                                                      (Ty.apply
+                                                                        (Ty.path "*mut")
+                                                                        []
+                                                                        [ T ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "*const")
+                                                                        []
+                                                                        [ T ]),
+                                                                    [ M.read (| buf |) ]
+                                                                  |);
                                                                   M.read (| dim |);
                                                                   M.read (| left |)
                                                                 ]
@@ -1346,9 +1390,23 @@ Module slice.
                                                                   [ T ]
                                                                 |),
                                                                 [
-                                                                  (* MutToConstPointer *)
-                                                                  M.pointer_coercion
-                                                                    (M.read (| mid |));
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "*const")
+                                                                      []
+                                                                      [ T ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.MutToConstPointer
+                                                                      (Ty.apply
+                                                                        (Ty.path "*mut")
+                                                                        []
+                                                                        [ T ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "*const")
+                                                                        []
+                                                                        [ T ]),
+                                                                    [ M.read (| mid |) ]
+                                                                  |);
                                                                   M.read (| buf |);
                                                                   M.read (| right |)
                                                                 ]
@@ -1362,27 +1420,43 @@ Module slice.
                                                                   [ T ]
                                                                 |),
                                                                 [
-                                                                  (* MutToConstPointer *)
-                                                                  M.pointer_coercion
-                                                                    (M.call_closure (|
-                                                                      Ty.apply
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "*const")
+                                                                      []
+                                                                      [ T ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.MutToConstPointer
+                                                                      (Ty.apply
                                                                         (Ty.path "*mut")
                                                                         []
-                                                                        [ T ],
-                                                                      M.get_associated_function (|
+                                                                        [ T ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "*const")
+                                                                        []
+                                                                        [ T ]),
+                                                                    [
+                                                                      M.call_closure (|
                                                                         Ty.apply
                                                                           (Ty.path "*mut")
                                                                           []
                                                                           [ T ],
-                                                                        "sub",
-                                                                        [],
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        M.read (| mid |);
-                                                                        M.read (| left |)
-                                                                      ]
-                                                                    |));
+                                                                        M.get_associated_function (|
+                                                                          Ty.apply
+                                                                            (Ty.path "*mut")
+                                                                            []
+                                                                            [ T ],
+                                                                          "sub",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.read (| mid |);
+                                                                          M.read (| left |)
+                                                                        ]
+                                                                      |)
+                                                                    ]
+                                                                  |);
                                                                   M.read (| dim |);
                                                                   M.read (| left |)
                                                                 ]
@@ -1396,9 +1470,23 @@ Module slice.
                                                                   [ T ]
                                                                 |),
                                                                 [
-                                                                  (* MutToConstPointer *)
-                                                                  M.pointer_coercion
-                                                                    (M.read (| buf |));
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "*const")
+                                                                      []
+                                                                      [ T ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.MutToConstPointer
+                                                                      (Ty.apply
+                                                                        (Ty.path "*mut")
+                                                                        []
+                                                                        [ T ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "*const")
+                                                                        []
+                                                                        [ T ]),
+                                                                    [ M.read (| buf |) ]
+                                                                  |);
                                                                   M.call_closure (|
                                                                     Ty.apply
                                                                       (Ty.path "*mut")

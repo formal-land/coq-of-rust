@@ -21,9 +21,47 @@ Module bls12_381.
                   |)
                 ]
               |);
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (| "revm_precompile::bls12_381::g1_mul::g1_mul", [], [] |))
+              M.call_closure (|
+                Ty.function
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                    Ty.path "u64"
+                  ]
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                    ]),
+                M.pointer_coercion
+                  M.PointerCoercion.ReifyFnPointer
+                  (Ty.function
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                      Ty.path "u64"
+                    ]
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                      ]))
+                  (Ty.function
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                      Ty.path "u64"
+                    ]
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                      ])),
+                [ M.get_function (| "revm_precompile::bls12_381::g1_mul::g1_mul", [], [] |) ]
+              |)
             ]
         |))).
     
@@ -1058,16 +1096,37 @@ Module bls12_381.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_record_field (|
-                                input_scalar0,
-                                "blst::blst_scalar",
-                                "b"
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 32 ]
+                                    [ Ty.path "u8" ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  input_scalar0,
+                                  "blst::blst_scalar",
+                                  "b"
+                                |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |);
                       M.read (|

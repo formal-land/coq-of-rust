@@ -1401,21 +1401,36 @@ Module control_flow_graph.
                   [ Ty.path "alloc::alloc::Global" ]
                 |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.read (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 1 ]
-                              [ Ty.path "u16" ];
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        M.get_associated_function (|
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.path "u16" ];
+                          Ty.path "alloc::alloc::Global"
+                        ])
+                      (Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ];
+                          Ty.path "alloc::alloc::Global"
+                        ]),
+                    [
+                      M.read (|
+                        M.call_closure (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
                             []
@@ -1426,29 +1441,42 @@ Module control_flow_graph.
                                 [ Ty.path "u16" ];
                               Ty.path "alloc::alloc::Global"
                             ],
-                          "new",
-                          [],
-                          []
-                        |),
-                        [
-                          M.alloc (|
+                          M.get_associated_function (|
                             Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 1 ]
-                              [ Ty.path "u16" ],
-                            Value.Array
+                              (Ty.path "alloc::boxed::Box")
+                              []
                               [
-                                M.read (|
-                                  get_constant (|
-                                    "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID",
-                                    Ty.path "u16"
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "u16" ];
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "u16" ],
+                              Value.Array
+                                [
+                                  M.read (|
+                                    get_constant (|
+                                      "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID",
+                                      Ty.path "u16"
+                                    |)
                                   |)
-                                |)
-                              ]
-                          |)
-                        ]
+                                ]
+                            |)
+                          ]
+                        |)
                       |)
-                    |))
+                    ]
+                  |)
                 ]
               |) in
             let~ loop_heads :
@@ -2391,13 +2419,10 @@ Module control_flow_graph.
                       Ty.apply (Ty.path "core::slice::iter::Windows") [] [ Ty.path "u16" ];
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]
-                            ]
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]
                         ]
                         (Ty.tuple [ Ty.path "u16"; Ty.path "u16" ])
                     ],
@@ -2421,13 +2446,10 @@ Module control_flow_graph.
                         Ty.apply (Ty.path "core::slice::iter::Windows") [] [ Ty.path "u16" ];
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]
                           ]
                           (Ty.tuple [ Ty.path "u16"; Ty.path "u16" ])
                       ],
@@ -2442,13 +2464,10 @@ Module control_flow_graph.
                         Ty.tuple [ Ty.path "u16"; Ty.path "u16" ];
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]
                           ]
                           (Ty.tuple [ Ty.path "u16"; Ty.path "u16" ])
                       ]
@@ -2497,17 +2516,7 @@ Module control_flow_graph.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]
-                                        ]
-                                    ]
-                                    (Ty.tuple [ Ty.path "u16"; Ty.path "u16" ]),
+                                  Ty.tuple [ Ty.path "u16"; Ty.path "u16" ],
                                   M.alloc (|
                                     Ty.apply
                                       (Ty.path "&")
@@ -2906,124 +2915,214 @@ Module control_flow_graph.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 2 ]
-                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                    Value.Array [ mk_str (| "Traversal: " |); mk_str (| "
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                              ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                      Value.Array [ mk_str (| "Traversal: " |); mk_str (| "
 " |) ]
+                                    |)
                                   |)
                                 |)
                               |)
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 1 ]
-                                      [ Ty.path "core::fmt::rt::Argument" ],
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          M.get_associated_function (|
+                            ]
+                          |);
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Argument" ]
+                              ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.path "core::fmt::rt::Argument" ]
+                                ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.path "core::fmt::rt::Argument" ],
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
                                             Ty.path "core::fmt::rt::Argument",
-                                            "new_debug",
-                                            [],
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Argument",
+                                              "new_debug",
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "alloc::collections::btree::map::BTreeMap")
+                                                  []
+                                                  [
+                                                    Ty.path "u16";
+                                                    Ty.path "u16";
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ]
+                                              ]
+                                            |),
                                             [
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::btree::map::BTreeMap")
-                                                []
-                                                [
-                                                  Ty.path "u16";
-                                                  Ty.path "u16";
-                                                  Ty.path "alloc::alloc::Global"
-                                                ]
-                                            ]
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.deref (| M.read (| self |) |),
-                                                    "move_binary_format::control_flow_graph::VMControlFlowGraph",
-                                                    "traversal_successors"
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "move_binary_format::control_flow_graph::VMControlFlowGraph",
+                                                      "traversal_successors"
+                                                    |)
                                                   |)
                                                 |)
                                               |)
-                                            |)
-                                          ]
-                                        |)
-                                      ]
+                                            ]
+                                          |)
+                                        ]
+                                    |)
                                   |)
                                 |)
                               |)
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 1 ]
-                                      [ Ty.path "core::fmt::rt::Placeholder" ],
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          Ty.path "core::fmt::rt::Placeholder",
-                                          M.get_associated_function (|
+                            ]
+                          |);
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "core::fmt::rt::Placeholder" ]
+                              ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Placeholder" ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.path "core::fmt::rt::Placeholder" ]
+                                ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.path "core::fmt::rt::Placeholder" ],
+                                      Value.Array
+                                        [
+                                          M.call_closure (|
                                             Ty.path "core::fmt::rt::Placeholder",
-                                            "new",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            Value.Integer IntegerKind.Usize 0;
-                                            Value.UnicodeChar 32;
-                                            Value.StructTuple
-                                              "core::fmt::rt::Alignment::Unknown"
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::rt::Placeholder",
+                                              "new",
+                                              [],
                                               []
-                                              []
-                                              [];
-                                            Value.Integer IntegerKind.U32 4;
-                                            Value.StructTuple
-                                              "core::fmt::rt::Count::Implied"
-                                              []
-                                              []
-                                              [];
-                                            Value.StructTuple
-                                              "core::fmt::rt::Count::Implied"
-                                              []
-                                              []
-                                              []
-                                          ]
-                                        |)
-                                      ]
+                                            |),
+                                            [
+                                              Value.Integer IntegerKind.Usize 0;
+                                              Value.UnicodeChar 32;
+                                              Value.StructTuple
+                                                "core::fmt::rt::Alignment::Unknown"
+                                                []
+                                                []
+                                                [];
+                                              Value.Integer IntegerKind.U32 4;
+                                              Value.StructTuple
+                                                "core::fmt::rt::Count::Implied"
+                                                []
+                                                []
+                                                [];
+                                              Value.StructTuple
+                                                "core::fmt::rt::Count::Implied"
+                                                []
+                                                []
+                                                []
+                                            ]
+                                          |)
+                                        ]
+                                    |)
                                   |)
                                 |)
                               |)
-                            |));
+                            ]
+                          |);
                           M.call_closure (|
                             Ty.path "core::fmt::rt::UnsafeArg",
                             M.get_associated_function (|
@@ -4314,76 +4413,132 @@ Module control_flow_graph.
               self
             |) in
           let block_id := M.alloc (| Ty.path "u16", block_id |) in
-          (* Unsize *)
-          M.pointer_coercion
-            (* Unsize *)
-            (M.pointer_coercion
-              (M.call_closure (|
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              []
+              [
+                Ty.dyn [ ("core::iter::traits::iterator::Iterator::Trait", []) ];
+                Ty.path "alloc::alloc::Global"
+              ],
+            M.pointer_coercion
+              M.PointerCoercion.Unsize
+              (Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                []
+                [
+                  Ty.dyn [ ("core::iter::traits::iterator::Iterator::Trait", []) ];
+                  Ty.path "alloc::alloc::Global"
+                ])
+              (Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                []
+                [
+                  Ty.dyn [ ("core::iter::traits::iterator::Iterator::Trait", []) ];
+                  Ty.path "alloc::alloc::Global"
+                ]),
+            [
+              M.call_closure (|
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
                   []
                   [
-                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u16" ];
+                    Ty.dyn [ ("core::iter::traits::iterator::Iterator::Trait", []) ];
                     Ty.path "alloc::alloc::Global"
                   ],
-                M.get_associated_function (|
-                  Ty.apply
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
                     (Ty.path "alloc::boxed::Box")
                     []
                     [
                       Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u16" ];
                       Ty.path "alloc::alloc::Global"
-                    ],
-                  "new",
-                  [],
-                  []
-                |),
+                    ])
+                  (Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [
+                      Ty.dyn [ ("core::iter::traits::iterator::Iterator::Trait", []) ];
+                      Ty.path "alloc::alloc::Global"
+                    ]),
                 [
                   M.call_closure (|
-                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u16" ],
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u16" ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u16" ],
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::ops::range::RangeInclusive")
+                            []
+                            [ Ty.path "u16" ];
+                          Ty.path "alloc::alloc::Global"
+                        ],
                       "new",
                       [],
                       []
                     |),
                     [
                       M.call_closure (|
-                        Ty.path "u16",
-                        M.get_trait_method (|
-                          "move_binary_format::control_flow_graph::ControlFlowGraph",
-                          Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
-                          [],
-                          [],
-                          "block_start",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                          M.read (| block_id |)
-                        ]
-                      |);
-                      M.call_closure (|
-                        Ty.path "u16",
-                        M.get_trait_method (|
-                          "move_binary_format::control_flow_graph::ControlFlowGraph",
-                          Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
-                          [],
-                          [],
-                          "block_end",
+                        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u16" ],
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "core::ops::range::RangeInclusive")
+                            []
+                            [ Ty.path "u16" ],
+                          "new",
                           [],
                           []
                         |),
                         [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                          M.read (| block_id |)
+                          M.call_closure (|
+                            Ty.path "u16",
+                            M.get_trait_method (|
+                              "move_binary_format::control_flow_graph::ControlFlowGraph",
+                              Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
+                              [],
+                              [],
+                              "block_start",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                              M.read (| block_id |)
+                            ]
+                          |);
+                          M.call_closure (|
+                            Ty.path "u16",
+                            M.get_trait_method (|
+                              "move_binary_format::control_flow_graph::ControlFlowGraph",
+                              Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
+                              [],
+                              [],
+                              "block_end",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                              M.read (| block_id |)
+                            ]
+                          |)
                         ]
                       |)
                     ]
                   |)
                 ]
-              |)))))
+              |)
+            ]
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -4665,17 +4820,14 @@ Module control_flow_graph.
                 Ty.path "bool";
                 Ty.function
                   [
-                    Ty.tuple
+                    Ty.apply
+                      (Ty.path "&")
+                      []
                       [
                         Ty.apply
-                          (Ty.path "&")
+                          (Ty.path "alloc::collections::btree::set::BTreeSet")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::set::BTreeSet")
-                              []
-                              [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
-                          ]
+                          [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
                       ]
                   ]
                   (Ty.path "bool")
@@ -4736,22 +4888,7 @@ Module control_flow_graph.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::set::BTreeSet")
-                                        []
-                                        [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
-                                    ]
-                                ]
-                            ]
-                            (Ty.path "bool"),
+                          Ty.path "bool",
                           M.alloc (|
                             Ty.apply
                               (Ty.path "&")
@@ -4852,21 +4989,18 @@ Module control_flow_graph.
                 Ty.path "usize";
                 Ty.function
                   [
+                    Ty.path "usize";
                     Ty.tuple
                       [
-                        Ty.path "usize";
-                        Ty.tuple
+                        Ty.apply (Ty.path "&") [] [ Ty.path "u16" ];
+                        Ty.apply
+                          (Ty.path "&")
+                          []
                           [
-                            Ty.apply (Ty.path "&") [] [ Ty.path "u16" ];
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "alloc::collections::btree::set::BTreeSet")
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "alloc::collections::btree::set::BTreeSet")
-                                  []
-                                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
-                              ]
+                              [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
                           ]
                       ]
                   ]
@@ -4920,56 +5054,14 @@ Module control_flow_graph.
                     | [ α0; α1 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.path "usize";
-                                  Ty.tuple
-                                    [
-                                      Ty.apply (Ty.path "&") [] [ Ty.path "u16" ];
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::btree::set::BTreeSet")
-                                            []
-                                            [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
-                                        ]
-                                    ]
-                                ]
-                            ]
-                            (Ty.path "usize"),
+                          Ty.path "usize",
                           M.alloc (| Ty.path "usize", α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let acc := M.copy (| Ty.path "usize", γ |) in
                                 M.match_operator (|
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.path "usize";
-                                          Ty.tuple
-                                            [
-                                              Ty.apply (Ty.path "&") [] [ Ty.path "u16" ];
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::btree::set::BTreeSet")
-                                                    []
-                                                    [ Ty.path "u16"; Ty.path "alloc::alloc::Global"
-                                                    ]
-                                                ]
-                                            ]
-                                        ]
-                                    ]
-                                    (Ty.path "usize"),
+                                  Ty.path "usize",
                                   M.alloc (|
                                     Ty.tuple
                                       [

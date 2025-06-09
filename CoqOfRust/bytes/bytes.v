@@ -5859,7 +5859,15 @@ Module bytes.
                     []
                     []
                     [
-                      ("ptr", (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |)));
+                      ("ptr",
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                          M.pointer_coercion
+                            M.PointerCoercion.MutToConstPointer
+                            (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                            (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]),
+                          [ M.read (| ptr |) ]
+                        |));
                       ("len", M.read (| len |));
                       ("data",
                         M.call_closure (|
@@ -6076,7 +6084,7 @@ Module bytes.
                                 M.get_function (|
                                   "bytes::bytes::ptr_map",
                                   [],
-                                  [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize") ]
+                                  [ Ty.function [ Ty.path "usize" ] (Ty.path "usize") ]
                                 |),
                                 [
                                   M.read (| ptr |);
@@ -6087,9 +6095,7 @@ Module bytes.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function
-                                                [ Ty.tuple [ Ty.path "usize" ] ]
-                                                (Ty.path "usize"),
+                                              Ty.path "usize",
                                               M.alloc (| Ty.path "usize", α0 |),
                                               [
                                                 fun γ =>
@@ -6122,7 +6128,14 @@ Module bytes.
                                 []
                                 [
                                   ("ptr",
-                                    (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |)));
+                                    M.call_closure (|
+                                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                      M.pointer_coercion
+                                        M.PointerCoercion.MutToConstPointer
+                                        (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                                        (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]),
+                                      [ M.read (| ptr |) ]
+                                    |));
                                   ("len", M.read (| len |));
                                   ("data",
                                     M.call_closure (|
@@ -6183,7 +6196,14 @@ Module bytes.
                             []
                             [
                               ("ptr",
-                                (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |)));
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.MutToConstPointer
+                                    (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]),
+                                  [ M.read (| ptr |) ]
+                                |));
                               ("len", M.read (| len |));
                               ("data",
                                 M.call_closure (|
@@ -6739,55 +6759,84 @@ Module bytes.
                                 |)
                               |);
                               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "clone" |) |) |);
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
-                                        M.cast
-                                          (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ])
-                                          (M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| self |) |),
-                                              "bytes::bytes::Vtable",
-                                              "clone"
-                                            |)
-                                          |))
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ] ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                                          M.cast
+                                            (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ])
+                                            (M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "bytes::bytes::Vtable",
+                                                "clone"
+                                              |)
+                                            |))
+                                        |)
                                       |)
                                     |)
                                   |)
-                                |))
+                                ]
+                              |)
                             ]
                           |)
                         |)
                       |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "drop" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
-                                M.cast
-                                  (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ])
-                                  (M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "bytes::bytes::Vtable",
-                                      "drop"
-                                    |)
-                                  |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                                  M.cast
+                                    (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ])
+                                    (M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "bytes::bytes::Vtable",
+                                        "drop"
+                                      |)
+                                    |))
+                                |)
                               |)
                             |)
                           |)
-                        |))
+                        ]
+                      |)
                     ]
                   |)
                 |)
@@ -6816,23 +6865,220 @@ Module bytes.
           []
           [
             ("clone",
-              (* ReifyFnPointer *)
-              M.pointer_coercion (M.get_function (| "bytes::bytes::static_clone", [], [] |)));
+              M.call_closure (|
+                Ty.function
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                    Ty.path "usize"
+                  ]
+                  (Ty.path "bytes::bytes::Bytes"),
+                M.pointer_coercion
+                  M.PointerCoercion.ReifyFnPointer
+                  (Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.path "bytes::bytes::Bytes"))
+                  (Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.path "bytes::bytes::Bytes")),
+                [ M.get_function (| "bytes::bytes::static_clone", [], [] |) ]
+              |));
             ("to_vec",
-              (* ReifyFnPointer *)
-              M.pointer_coercion (M.get_function (| "bytes::bytes::static_to_vec", [], [] |)));
+              M.call_closure (|
+                Ty.function
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                    Ty.path "usize"
+                  ]
+                  (Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]),
+                M.pointer_coercion
+                  M.PointerCoercion.ReifyFnPointer
+                  (Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]))
+                  (Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])),
+                [ M.get_function (| "bytes::bytes::static_to_vec", [], [] |) ]
+              |));
             ("to_mut",
-              (* ReifyFnPointer *)
-              M.pointer_coercion (M.get_function (| "bytes::bytes::static_to_mut", [], [] |)));
+              M.call_closure (|
+                Ty.function
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                    Ty.path "usize"
+                  ]
+                  (Ty.path "bytes::bytes_mut::BytesMut"),
+                M.pointer_coercion
+                  M.PointerCoercion.ReifyFnPointer
+                  (Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.path "bytes::bytes_mut::BytesMut"))
+                  (Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.path "bytes::bytes_mut::BytesMut")),
+                [ M.get_function (| "bytes::bytes::static_to_mut", [], [] |) ]
+              |));
             ("is_unique",
-              (* UnsafeFnPointer *)
-              M.pointer_coercion
-                (* ReifyFnPointer *)
-                (M.pointer_coercion
-                  (M.get_function (| "bytes::bytes::static_is_unique", [], [] |))));
+              M.call_closure (|
+                Ty.function
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ]
+                  ]
+                  (Ty.path "bool"),
+                M.pointer_coercion
+                  M.PointerCoercion.UnsafeFnPointer
+                  (Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ]
+                    ]
+                    (Ty.path "bool"))
+                  (Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ]
+                    ]
+                    (Ty.path "bool")),
+                [
+                  M.call_closure (|
+                    Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ]
+                      ]
+                      (Ty.path "bool"),
+                    M.pointer_coercion
+                      M.PointerCoercion.ReifyFnPointer
+                      (Ty.function
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ]
+                            ]
+                        ]
+                        (Ty.path "bool"))
+                      (Ty.function
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ]
+                            ]
+                        ]
+                        (Ty.path "bool")),
+                    [ M.get_function (| "bytes::bytes::static_is_unique", [], [] |) ]
+                  |)
+                ]
+              |));
             ("drop",
-              (* ReifyFnPointer *)
-              M.pointer_coercion (M.get_function (| "bytes::bytes::static_drop", [], [] |)))
+              M.call_closure (|
+                Ty.function
+                  [
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                    Ty.path "usize"
+                  ]
+                  (Ty.tuple []),
+                M.pointer_coercion
+                  M.PointerCoercion.ReifyFnPointer
+                  (Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.tuple []))
+                  (Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.tuple [])),
+                [ M.get_function (| "bytes::bytes::static_drop", [], [] |) ]
+              |))
           ]
       |))).
   
@@ -7132,25 +7378,188 @@ Module bytes.
             []
             [
               ("clone",
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_function (| "bytes::bytes::promotable_even_clone", [], [] |)));
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.path "bytes::bytes::Bytes"),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.path "bytes::bytes::Bytes"))
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.path "bytes::bytes::Bytes")),
+                  [ M.get_function (| "bytes::bytes::promotable_even_clone", [], [] |) ]
+                |));
               ("to_vec",
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_function (| "bytes::bytes::promotable_even_to_vec", [], [] |)));
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]))
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])),
+                  [ M.get_function (| "bytes::bytes::promotable_even_to_vec", [], [] |) ]
+                |));
               ("to_mut",
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_function (| "bytes::bytes::promotable_even_to_mut", [], [] |)));
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.path "bytes::bytes_mut::BytesMut"),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.path "bytes::bytes_mut::BytesMut"))
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.path "bytes::bytes_mut::BytesMut")),
+                  [ M.get_function (| "bytes::bytes::promotable_even_to_mut", [], [] |) ]
+                |));
               ("is_unique",
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_function (| "bytes::bytes::promotable_is_unique", [], [] |)));
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ]
+                    ]
+                    (Ty.path "bool"),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ]
+                      ]
+                      (Ty.path "bool"))
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ]
+                      ]
+                      (Ty.path "bool")),
+                  [ M.get_function (| "bytes::bytes::promotable_is_unique", [], [] |) ]
+                |));
               ("drop",
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_function (| "bytes::bytes::promotable_even_drop", [], [] |)))
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.tuple []),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.tuple []))
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.tuple [])),
+                  [ M.get_function (| "bytes::bytes::promotable_even_drop", [], [] |) ]
+                |))
             ]
         |)
       |))).
@@ -7176,25 +7585,188 @@ Module bytes.
             []
             [
               ("clone",
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_function (| "bytes::bytes::promotable_odd_clone", [], [] |)));
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.path "bytes::bytes::Bytes"),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.path "bytes::bytes::Bytes"))
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.path "bytes::bytes::Bytes")),
+                  [ M.get_function (| "bytes::bytes::promotable_odd_clone", [], [] |) ]
+                |));
               ("to_vec",
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_function (| "bytes::bytes::promotable_odd_to_vec", [], [] |)));
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]))
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])),
+                  [ M.get_function (| "bytes::bytes::promotable_odd_to_vec", [], [] |) ]
+                |));
               ("to_mut",
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_function (| "bytes::bytes::promotable_odd_to_mut", [], [] |)));
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.path "bytes::bytes_mut::BytesMut"),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.path "bytes::bytes_mut::BytesMut"))
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.path "bytes::bytes_mut::BytesMut")),
+                  [ M.get_function (| "bytes::bytes::promotable_odd_to_mut", [], [] |) ]
+                |));
               ("is_unique",
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_function (| "bytes::bytes::promotable_is_unique", [], [] |)));
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ]
+                    ]
+                    (Ty.path "bool"),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ]
+                      ]
+                      (Ty.path "bool"))
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ]
+                      ]
+                      (Ty.path "bool")),
+                  [ M.get_function (| "bytes::bytes::promotable_is_unique", [], [] |) ]
+                |));
               ("drop",
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_function (| "bytes::bytes::promotable_odd_drop", [], [] |)))
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.tuple []),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.tuple []))
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.tuple [])),
+                  [ M.get_function (| "bytes::bytes::promotable_odd_drop", [], [] |) ]
+                |))
             ]
         |)
       |))).
@@ -7453,7 +8025,7 @@ Module bytes.
                           M.get_function (|
                             "bytes::bytes::ptr_map",
                             [],
-                            [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize") ]
+                            [ Ty.function [ Ty.path "usize" ] (Ty.path "usize") ]
                           |),
                           [
                             M.call_closure (|
@@ -7473,9 +8045,7 @@ Module bytes.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "usize" ] ]
-                                          (Ty.path "usize"),
+                                        Ty.path "usize",
                                         M.alloc (| Ty.path "usize", α0 |),
                                         [
                                           fun γ =>
@@ -7509,7 +8079,14 @@ Module bytes.
                           M.get_function (| "bytes::bytes::shallow_clone_vec", [], [] |),
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
-                            (* MutToConstPointer *) M.pointer_coercion (M.read (| shared |));
+                            M.call_closure (|
+                              Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                              M.pointer_coercion
+                                M.PointerCoercion.MutToConstPointer
+                                (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
+                              [ M.read (| shared |) ]
+                            |);
                             M.read (| buf |);
                             M.read (| ptr |);
                             M.read (| len |)
@@ -7817,7 +8394,14 @@ Module bytes.
                               M.get_function (| "bytes::offset_from", [], [] |),
                               [
                                 M.read (| ptr |);
-                                (* MutToConstPointer *) M.pointer_coercion (M.read (| buf |))
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.MutToConstPointer
+                                    (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                                    (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]),
+                                  [ M.read (| buf |) ]
+                                |)
                               ]
                             |);
                             M.read (| len |)
@@ -8142,7 +8726,14 @@ Module bytes.
                           M.get_function (| "bytes::offset_from", [], [] |),
                           [
                             M.read (| ptr |);
-                            (* MutToConstPointer *) M.pointer_coercion (M.read (| buf |))
+                            M.call_closure (|
+                              Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                              M.pointer_coercion
+                                M.PointerCoercion.MutToConstPointer
+                                (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                                (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]),
+                              [ M.read (| buf |) ]
+                            |)
                           ]
                         |) in
                       let~ cap : Ty.path "usize" :=
@@ -8236,84 +8827,92 @@ Module bytes.
             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
             M.read (| ptr |);
             M.read (| len |);
-            (* ClosureFnPointer(Safe) *)
-            M.pointer_coercion
-              (M.closure
-                (fun γ =>
-                  ltac:(M.monadic
-                    match γ with
-                    | [ α0 ] =>
-                      ltac:(M.monadic
-                        (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ] ]
-                            (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ]),
-                          M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ], α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let shared :=
-                                  M.copy (| Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ], γ |) in
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                  M.get_function (|
-                                    "bytes::bytes::ptr_map",
-                                    [],
-                                    [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize")
-                                    ]
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
-                                        "cast",
-                                        [],
-                                        [ Ty.path "u8" ]
-                                      |),
-                                      [ M.read (| shared |) ]
-                                    |);
-                                    M.closure
-                                      (fun γ =>
-                                        ltac:(M.monadic
-                                          match γ with
-                                          | [ α0 ] =>
-                                            ltac:(M.monadic
-                                              (M.match_operator (|
-                                                Ty.function
-                                                  [ Ty.tuple [ Ty.path "usize" ] ]
-                                                  (Ty.path "usize"),
-                                                M.alloc (| Ty.path "usize", α0 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let addr :=
-                                                        M.copy (| Ty.path "usize", γ |) in
-                                                      M.call_closure (|
-                                                        Ty.path "usize",
-                                                        BinOp.Wrap.bit_and,
-                                                        [
-                                                          M.read (| addr |);
-                                                          UnOp.not (|
-                                                            M.read (|
-                                                              get_constant (|
-                                                                "bytes::bytes::KIND_MASK",
-                                                                Ty.path "usize"
+            M.call_closure (|
+              Ty.function
+                [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
+                (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ]),
+              M.pointer_coercion
+                (M.PointerCoercion.ClosureFnPointer M.PointerCoercion.Safety.Safe)
+                (Ty.function
+                  [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
+                  (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ]))
+                (Ty.function
+                  [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
+                  (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])),
+              [
+                M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0 ] =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                            M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ], α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let shared :=
+                                    M.copy (| Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ], γ |) in
+                                  M.call_closure (|
+                                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                    M.get_function (|
+                                      "bytes::bytes::ptr_map",
+                                      [],
+                                      [ Ty.function [ Ty.path "usize" ] (Ty.path "usize") ]
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
+                                          "cast",
+                                          [],
+                                          [ Ty.path "u8" ]
+                                        |),
+                                        [ M.read (| shared |) ]
+                                      |);
+                                      M.closure
+                                        (fun γ =>
+                                          ltac:(M.monadic
+                                            match γ with
+                                            | [ α0 ] =>
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
+                                                  Ty.path "usize",
+                                                  M.alloc (| Ty.path "usize", α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let addr :=
+                                                          M.copy (| Ty.path "usize", γ |) in
+                                                        M.call_closure (|
+                                                          Ty.path "usize",
+                                                          BinOp.Wrap.bit_and,
+                                                          [
+                                                            M.read (| addr |);
+                                                            UnOp.not (|
+                                                              M.read (|
+                                                                get_constant (|
+                                                                  "bytes::bytes::KIND_MASK",
+                                                                  Ty.path "usize"
+                                                                |)
                                                               |)
                                                             |)
-                                                          |)
-                                                        ]
-                                                      |)))
-                                                ]
-                                              |)))
-                                          | _ => M.impossible "wrong number of arguments"
-                                          end))
-                                  ]
-                                |)))
-                          ]
-                        |)))
-                    | _ => M.impossible "wrong number of arguments"
-                    end)))
+                                                          ]
+                                                        |)))
+                                                  ]
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
+                                            end))
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
+                      end))
+              ]
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -8352,84 +8951,92 @@ Module bytes.
             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
             M.read (| ptr |);
             M.read (| len |);
-            (* ClosureFnPointer(Safe) *)
-            M.pointer_coercion
-              (M.closure
-                (fun γ =>
-                  ltac:(M.monadic
-                    match γ with
-                    | [ α0 ] =>
-                      ltac:(M.monadic
-                        (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ] ]
-                            (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ]),
-                          M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ], α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let shared :=
-                                  M.copy (| Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ], γ |) in
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                  M.get_function (|
-                                    "bytes::bytes::ptr_map",
-                                    [],
-                                    [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize")
-                                    ]
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
-                                        "cast",
-                                        [],
-                                        [ Ty.path "u8" ]
-                                      |),
-                                      [ M.read (| shared |) ]
-                                    |);
-                                    M.closure
-                                      (fun γ =>
-                                        ltac:(M.monadic
-                                          match γ with
-                                          | [ α0 ] =>
-                                            ltac:(M.monadic
-                                              (M.match_operator (|
-                                                Ty.function
-                                                  [ Ty.tuple [ Ty.path "usize" ] ]
-                                                  (Ty.path "usize"),
-                                                M.alloc (| Ty.path "usize", α0 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let addr :=
-                                                        M.copy (| Ty.path "usize", γ |) in
-                                                      M.call_closure (|
-                                                        Ty.path "usize",
-                                                        BinOp.Wrap.bit_and,
-                                                        [
-                                                          M.read (| addr |);
-                                                          UnOp.not (|
-                                                            M.read (|
-                                                              get_constant (|
-                                                                "bytes::bytes::KIND_MASK",
-                                                                Ty.path "usize"
+            M.call_closure (|
+              Ty.function
+                [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
+                (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ]),
+              M.pointer_coercion
+                (M.PointerCoercion.ClosureFnPointer M.PointerCoercion.Safety.Safe)
+                (Ty.function
+                  [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
+                  (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ]))
+                (Ty.function
+                  [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
+                  (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])),
+              [
+                M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0 ] =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                            M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ], α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let shared :=
+                                    M.copy (| Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ], γ |) in
+                                  M.call_closure (|
+                                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                    M.get_function (|
+                                      "bytes::bytes::ptr_map",
+                                      [],
+                                      [ Ty.function [ Ty.path "usize" ] (Ty.path "usize") ]
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
+                                          "cast",
+                                          [],
+                                          [ Ty.path "u8" ]
+                                        |),
+                                        [ M.read (| shared |) ]
+                                      |);
+                                      M.closure
+                                        (fun γ =>
+                                          ltac:(M.monadic
+                                            match γ with
+                                            | [ α0 ] =>
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
+                                                  Ty.path "usize",
+                                                  M.alloc (| Ty.path "usize", α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let addr :=
+                                                          M.copy (| Ty.path "usize", γ |) in
+                                                        M.call_closure (|
+                                                          Ty.path "usize",
+                                                          BinOp.Wrap.bit_and,
+                                                          [
+                                                            M.read (| addr |);
+                                                            UnOp.not (|
+                                                              M.read (|
+                                                                get_constant (|
+                                                                  "bytes::bytes::KIND_MASK",
+                                                                  Ty.path "usize"
+                                                                |)
                                                               |)
                                                             |)
-                                                          |)
-                                                        ]
-                                                      |)))
-                                                ]
-                                              |)))
-                                          | _ => M.impossible "wrong number of arguments"
-                                          end))
-                                  ]
-                                |)))
-                          ]
-                        |)))
-                    | _ => M.impossible "wrong number of arguments"
-                    end)))
+                                                          ]
+                                                        |)))
+                                                  ]
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
+                                            end))
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
+                      end))
+              ]
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -8483,14 +9090,7 @@ Module bytes.
                 [],
                 [
                   Ty.function
-                    [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
-                        ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
                     ]
                     (Ty.tuple []);
                   Ty.tuple []
@@ -8505,17 +9105,7 @@ Module bytes.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
-                                  ]
-                              ]
-                              (Ty.tuple []),
+                            Ty.tuple [],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&mut")
@@ -8827,7 +9417,7 @@ Module bytes.
                                                       [],
                                                       [
                                                         Ty.function
-                                                          [ Ty.tuple [ Ty.path "usize" ] ]
+                                                          [ Ty.path "usize" ]
                                                           (Ty.path "usize")
                                                       ]
                                                     |),
@@ -8855,9 +9445,7 @@ Module bytes.
                                                             | [ α0 ] =>
                                                               ltac:(M.monadic
                                                                 (M.match_operator (|
-                                                                  Ty.function
-                                                                    [ Ty.tuple [ Ty.path "usize" ] ]
-                                                                    (Ty.path "usize"),
+                                                                  Ty.path "usize",
                                                                   M.alloc (| Ty.path "usize", α0 |),
                                                                   [
                                                                     fun γ =>
@@ -9168,7 +9756,14 @@ Module bytes.
                           M.get_function (| "bytes::bytes::shallow_clone_vec", [], [] |),
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
-                            (* MutToConstPointer *) M.pointer_coercion (M.read (| shared |));
+                            M.call_closure (|
+                              Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                              M.pointer_coercion
+                                M.PointerCoercion.MutToConstPointer
+                                (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
+                              [ M.read (| shared |) ]
+                            |);
                             M.call_closure (|
                               Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                               M.get_associated_function (|
@@ -9223,38 +9818,49 @@ Module bytes.
             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
             M.read (| ptr |);
             M.read (| len |);
-            (* ClosureFnPointer(Safe) *)
-            M.pointer_coercion
-              (M.closure
-                (fun γ =>
-                  ltac:(M.monadic
-                    match γ with
-                    | [ α0 ] =>
-                      ltac:(M.monadic
-                        (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ] ]
-                            (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ]),
-                          M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ], α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let shared :=
-                                  M.copy (| Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ], γ |) in
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
-                                    "cast",
-                                    [],
-                                    [ Ty.path "u8" ]
-                                  |),
-                                  [ M.read (| shared |) ]
-                                |)))
-                          ]
-                        |)))
-                    | _ => M.impossible "wrong number of arguments"
-                    end)))
+            M.call_closure (|
+              Ty.function
+                [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
+                (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ]),
+              M.pointer_coercion
+                (M.PointerCoercion.ClosureFnPointer M.PointerCoercion.Safety.Safe)
+                (Ty.function
+                  [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
+                  (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ]))
+                (Ty.function
+                  [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
+                  (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])),
+              [
+                M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0 ] =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                            M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ], α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let shared :=
+                                    M.copy (| Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ], γ |) in
+                                  M.call_closure (|
+                                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
+                                      "cast",
+                                      [],
+                                      [ Ty.path "u8" ]
+                                    |),
+                                    [ M.read (| shared |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
+                      end))
+              ]
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -9291,38 +9897,49 @@ Module bytes.
             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
             M.read (| ptr |);
             M.read (| len |);
-            (* ClosureFnPointer(Safe) *)
-            M.pointer_coercion
-              (M.closure
-                (fun γ =>
-                  ltac:(M.monadic
-                    match γ with
-                    | [ α0 ] =>
-                      ltac:(M.monadic
-                        (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ] ]
-                            (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ]),
-                          M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ], α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let shared :=
-                                  M.copy (| Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ], γ |) in
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
-                                    "cast",
-                                    [],
-                                    [ Ty.path "u8" ]
-                                  |),
-                                  [ M.read (| shared |) ]
-                                |)))
-                          ]
-                        |)))
-                    | _ => M.impossible "wrong number of arguments"
-                    end)))
+            M.call_closure (|
+              Ty.function
+                [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
+                (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ]),
+              M.pointer_coercion
+                (M.PointerCoercion.ClosureFnPointer M.PointerCoercion.Safety.Safe)
+                (Ty.function
+                  [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
+                  (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ]))
+                (Ty.function
+                  [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
+                  (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])),
+              [
+                M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0 ] =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                            M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ], α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let shared :=
+                                    M.copy (| Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ], γ |) in
+                                  M.call_closure (|
+                                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
+                                      "cast",
+                                      [],
+                                      [ Ty.path "u8" ]
+                                    |),
+                                    [ M.read (| shared |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
+                      end))
+              ]
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -9376,14 +9993,7 @@ Module bytes.
                 [],
                 [
                   Ty.function
-                    [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
-                        ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
                     ]
                     (Ty.tuple []);
                   Ty.tuple []
@@ -9398,17 +10008,7 @@ Module bytes.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
-                                  ]
-                              ]
-                              (Ty.tuple []),
+                            Ty.tuple [],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&mut")
@@ -9914,7 +10514,14 @@ Module bytes.
                   M.get_function (| "bytes::offset_from", [], [] |),
                   [
                     M.read (| offset |);
-                    (* MutToConstPointer *) M.pointer_coercion (M.read (| buf |))
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                      M.pointer_coercion
+                        M.PointerCoercion.MutToConstPointer
+                        (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                        (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]),
+                      [ M.read (| buf |) ]
+                    |)
                   ]
                 |);
                 M.read (| len |)
@@ -10078,20 +10685,188 @@ Module bytes.
             []
             [
               ("clone",
-                (* ReifyFnPointer *)
-                M.pointer_coercion (M.get_function (| "bytes::bytes::shared_clone", [], [] |)));
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.path "bytes::bytes::Bytes"),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.path "bytes::bytes::Bytes"))
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.path "bytes::bytes::Bytes")),
+                  [ M.get_function (| "bytes::bytes::shared_clone", [], [] |) ]
+                |));
               ("to_vec",
-                (* ReifyFnPointer *)
-                M.pointer_coercion (M.get_function (| "bytes::bytes::shared_to_vec", [], [] |)));
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]))
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])),
+                  [ M.get_function (| "bytes::bytes::shared_to_vec", [], [] |) ]
+                |));
               ("to_mut",
-                (* ReifyFnPointer *)
-                M.pointer_coercion (M.get_function (| "bytes::bytes::shared_to_mut", [], [] |)));
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.path "bytes::bytes_mut::BytesMut"),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.path "bytes::bytes_mut::BytesMut"))
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.path "bytes::bytes_mut::BytesMut")),
+                  [ M.get_function (| "bytes::bytes::shared_to_mut", [], [] |) ]
+                |));
               ("is_unique",
-                (* ReifyFnPointer *)
-                M.pointer_coercion (M.get_function (| "bytes::bytes::shared_is_unique", [], [] |)));
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ]
+                    ]
+                    (Ty.path "bool"),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ]
+                      ]
+                      (Ty.path "bool"))
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ]
+                      ]
+                      (Ty.path "bool")),
+                  [ M.get_function (| "bytes::bytes::shared_is_unique", [], [] |) ]
+                |));
               ("drop",
-                (* ReifyFnPointer *)
-                M.pointer_coercion (M.get_function (| "bytes::bytes::shared_drop", [], [] |)))
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                      Ty.path "usize"
+                    ]
+                    (Ty.tuple []),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.tuple []))
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ Ty.tuple [] ] ];
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ];
+                        Ty.path "usize"
+                      ]
+                      (Ty.tuple [])),
+                  [ M.get_function (| "bytes::bytes::shared_drop", [], [] |) ]
+                |))
             ]
         |)
       |))).
@@ -10702,7 +11477,14 @@ Module bytes.
                       M.get_function (| "bytes::offset_from", [], [] |),
                       [
                         M.read (| ptr |);
-                        (* MutToConstPointer *) M.pointer_coercion (M.read (| buf |))
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                          M.pointer_coercion
+                            M.PointerCoercion.MutToConstPointer
+                            (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                            (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]),
+                          [ M.read (| buf |) ]
+                        |)
                       ]
                     |) in
                   let~ v :
@@ -11003,14 +11785,7 @@ Module bytes.
                 [],
                 [
                   Ty.function
-                    [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
-                        ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
                     ]
                     (Ty.tuple []);
                   Ty.tuple []
@@ -11025,17 +11800,7 @@ Module bytes.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
-                                  ]
-                              ]
-                              (Ty.tuple []),
+                            Ty.tuple [],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&mut")
@@ -11353,7 +12118,14 @@ Module bytes.
                             M.get_function (| "bytes::offset_from", [], [] |),
                             [
                               M.read (| offset |);
-                              (* MutToConstPointer *) M.pointer_coercion (M.read (| buf |))
+                              M.call_closure (|
+                                Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.MutToConstPointer
+                                  (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                                  (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]),
+                                [ M.read (| buf |) ]
+                              |)
                             ]
                           |);
                           M.read (| len |)

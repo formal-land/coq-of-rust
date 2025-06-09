@@ -89,40 +89,56 @@ Module vec.
                             |)
                           |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.alloc (|
-                                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                  M.call_closure (|
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
                                     Ty.apply
                                       (Ty.path "&")
                                       []
                                       [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                    M.get_associated_function (|
+                                    M.call_closure (|
                                       Ty.apply
-                                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                                        (Ty.path "&")
                                         []
-                                        [ T; A ],
-                                      "as_slice",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| self |) |)
-                                      |)
-                                    ]
+                                        [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::into_iter::IntoIter")
+                                          []
+                                          [ T; A ],
+                                        "as_slice",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
+                                    |)
                                   |)
                                 |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   |)
@@ -171,26 +187,33 @@ Module vec.
                   Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                   M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
                   [
-                    (* MutToConstPointer *)
-                    M.pointer_coercion
-                      (M.call_closure (|
-                        Ty.apply (Ty.path "*mut") [] [ T ],
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                          "as_ptr",
-                          [],
-                          []
-                        |),
-                        [
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "alloc::vec::into_iter::IntoIter",
-                              "ptr"
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ T ],
+                      M.pointer_coercion
+                        M.PointerCoercion.MutToConstPointer
+                        (Ty.apply (Ty.path "*mut") [] [ T ])
+                        (Ty.apply (Ty.path "*const") [] [ T ]),
+                      [
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ T ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            "as_ptr",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloc::vec::into_iter::IntoIter",
+                                "ptr"
+                              |)
                             |)
-                          |)
-                        ]
-                      |));
+                          ]
+                        |)
+                      ]
+                    |);
                     M.call_closure (|
                       Ty.path "usize",
                       M.get_trait_method (|
@@ -539,26 +562,33 @@ Module vec.
                     "alloc::vec::into_iter::IntoIter",
                     "end"
                   |),
-                  (* MutToConstPointer *)
-                  M.pointer_coercion
-                    (M.call_closure (|
-                      Ty.apply (Ty.path "*mut") [] [ T ],
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                        "as_ptr",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "alloc::vec::into_iter::IntoIter",
-                            "buf"
+                  M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ T ],
+                    M.pointer_coercion
+                      M.PointerCoercion.MutToConstPointer
+                      (Ty.apply (Ty.path "*mut") [] [ T ])
+                      (Ty.apply (Ty.path "*const") [] [ T ]),
+                    [
+                      M.call_closure (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                          "as_ptr",
+                          [],
+                          []
+                        |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::vec::into_iter::IntoIter",
+                              "buf"
+                            |)
                           |)
-                        |)
-                      ]
-                    |))
+                        ]
+                      |)
+                    ]
+                  |)
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -617,26 +647,33 @@ Module vec.
                     "alloc::vec::into_iter::IntoIter",
                     "end"
                   |),
-                  (* MutToConstPointer *)
-                  M.pointer_coercion
-                    (M.call_closure (|
-                      Ty.apply (Ty.path "*mut") [] [ T ],
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                        "as_ptr",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "alloc::vec::into_iter::IntoIter",
-                            "ptr"
+                  M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ T ],
+                    M.pointer_coercion
+                      M.PointerCoercion.MutToConstPointer
+                      (Ty.apply (Ty.path "*mut") [] [ T ])
+                      (Ty.apply (Ty.path "*const") [] [ T ]),
+                    [
+                      M.call_closure (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                          "as_ptr",
+                          [],
+                          []
+                        |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::vec::into_iter::IntoIter",
+                              "ptr"
+                            |)
                           |)
-                        |)
-                      ]
-                    |))
+                        ]
+                      |)
+                    ]
+                  |)
                 |) in
               M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
@@ -966,7 +1003,14 @@ Module vec.
                                       "end"
                                     |)
                                   |);
-                                  (* MutToConstPointer *) M.pointer_coercion (M.read (| buf |))
+                                  M.call_closure (|
+                                    Ty.apply (Ty.path "*const") [] [ T ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.MutToConstPointer
+                                      (Ty.apply (Ty.path "*mut") [] [ T ])
+                                      (Ty.apply (Ty.path "*const") [] [ T ]),
+                                    [ M.read (| buf |) ]
+                                  |)
                                 ]
                               |))
                           ]))
@@ -2212,29 +2256,36 @@ Module vec.
                                       [ T ]
                                     |),
                                     [
-                                      (* MutToConstPointer *)
-                                      M.pointer_coercion
-                                        (M.call_closure (|
-                                          Ty.apply (Ty.path "*mut") [] [ T ],
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "core::ptr::non_null::NonNull")
+                                      M.call_closure (|
+                                        Ty.apply (Ty.path "*const") [] [ T ],
+                                        M.pointer_coercion
+                                          M.PointerCoercion.MutToConstPointer
+                                          (Ty.apply (Ty.path "*mut") [] [ T ])
+                                          (Ty.apply (Ty.path "*const") [] [ T ]),
+                                        [
+                                          M.call_closure (|
+                                            Ty.apply (Ty.path "*mut") [] [ T ],
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "core::ptr::non_null::NonNull")
+                                                []
+                                                [ T ],
+                                              "as_ptr",
+                                              [],
                                               []
-                                              [ T ],
-                                            "as_ptr",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "alloc::vec::into_iter::IntoIter",
-                                                "ptr"
+                                            |),
+                                            [
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "alloc::vec::into_iter::IntoIter",
+                                                  "ptr"
+                                                |)
                                               |)
-                                            |)
-                                          ]
-                                        |));
+                                            ]
+                                          |)
+                                        ]
+                                      |);
                                       M.cast
                                         (Ty.apply (Ty.path "*mut") [] [ T ])
                                         (M.call_closure (|
@@ -2262,9 +2313,56 @@ Module vec.
                                             []
                                           |),
                                           [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (| Pointer.Kind.MutRef, raw_ary |))
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "slice")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::mem::maybe_uninit::MaybeUninit")
+                                                        []
+                                                        [ T ]
+                                                    ]
+                                                ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ N ]
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::mem::maybe_uninit::MaybeUninit")
+                                                          []
+                                                          [ T ]
+                                                      ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "slice")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::mem::maybe_uninit::MaybeUninit")
+                                                          []
+                                                          [ T ]
+                                                      ]
+                                                  ]),
+                                              [ M.borrow (| Pointer.Kind.MutRef, raw_ary |) ]
+                                            |)
                                           ]
                                         |));
                                       M.read (| len |)
@@ -2336,26 +2434,33 @@ Module vec.
                       Ty.tuple [],
                       M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                       [
-                        (* MutToConstPointer *)
-                        M.pointer_coercion
-                          (M.call_closure (|
-                            Ty.apply (Ty.path "*mut") [] [ T ],
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                              "as_ptr",
-                              [],
-                              []
-                            |),
-                            [
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "alloc::vec::into_iter::IntoIter",
-                                  "ptr"
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*const") [] [ T ],
+                          M.pointer_coercion
+                            M.PointerCoercion.MutToConstPointer
+                            (Ty.apply (Ty.path "*mut") [] [ T ])
+                            (Ty.apply (Ty.path "*const") [] [ T ]),
+                          [
+                            M.call_closure (|
+                              Ty.apply (Ty.path "*mut") [] [ T ],
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                "as_ptr",
+                                [],
+                                []
+                              |),
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::vec::into_iter::IntoIter",
+                                    "ptr"
+                                  |)
                                 |)
-                              |)
-                            ]
-                          |));
+                              ]
+                            |)
+                          ]
+                        |);
                         M.cast
                           (Ty.apply (Ty.path "*mut") [] [ T ])
                           (M.call_closure (|
@@ -2375,8 +2480,53 @@ Module vec.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion (M.borrow (| Pointer.Kind.MutRef, raw_ary |))
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ T ]
+                                      ]
+                                  ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ N ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ T ]
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ T ]
+                                        ]
+                                    ]),
+                                [ M.borrow (| Pointer.Kind.MutRef, raw_ary |) ]
+                              |)
                             ]
                           |));
                         N
@@ -3715,29 +3865,36 @@ Module vec.
                                   T,
                                   M.get_function (| "core::ptr::read", [], [ T ] |),
                                   [
-                                    (* MutToConstPointer *)
-                                    M.pointer_coercion
-                                      (M.call_closure (|
-                                        Ty.apply (Ty.path "*mut") [] [ T ],
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::ptr::non_null::NonNull")
+                                    M.call_closure (|
+                                      Ty.apply (Ty.path "*const") [] [ T ],
+                                      M.pointer_coercion
+                                        M.PointerCoercion.MutToConstPointer
+                                        (Ty.apply (Ty.path "*mut") [] [ T ])
+                                        (Ty.apply (Ty.path "*const") [] [ T ]),
+                                      [
+                                        M.call_closure (|
+                                          Ty.apply (Ty.path "*mut") [] [ T ],
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [ T ],
+                                            "as_ptr",
+                                            [],
                                             []
-                                            [ T ],
-                                          "as_ptr",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| self |) |),
-                                              "alloc::vec::into_iter::IntoIter",
-                                              "ptr"
+                                          |),
+                                          [
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "alloc::vec::into_iter::IntoIter",
+                                                "ptr"
+                                              |)
                                             |)
-                                          |)
-                                        ]
-                                      |))
+                                          ]
+                                        |)
+                                      ]
+                                    |)
                                   ]
                                 |)
                               ]

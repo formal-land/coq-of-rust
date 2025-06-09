@@ -73,7 +73,7 @@ Module signature.
               [
                 Ty.path "move_binary_format::errors::VMError";
                 Ty.function
-                  [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
+                  [ Ty.path "move_binary_format::errors::PartialVMError" ]
                   (Ty.path "move_binary_format::errors::VMError")
               ]
             |),
@@ -98,9 +98,7 @@ Module signature.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
-                            (Ty.path "move_binary_format::errors::VMError"),
+                          Ty.path "move_binary_format::errors::VMError",
                           M.alloc (| Ty.path "move_binary_format::errors::PartialVMError", α0 |),
                           [
                             fun γ =>
@@ -1229,10 +1227,7 @@ Module signature.
               (M.read (|
                 let~ err_handler :
                     Ty.function
-                      [
-                        Ty.tuple
-                          [ Ty.path "move_binary_format::errors::PartialVMError"; Ty.path "usize" ]
-                      ]
+                      [ Ty.path "move_binary_format::errors::PartialVMError"; Ty.path "usize" ]
                       (Ty.path "move_binary_format::errors::PartialVMError") :=
                   M.closure
                     (fun γ =>
@@ -1241,15 +1236,7 @@ Module signature.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.path "move_binary_format::errors::PartialVMError";
-                                      Ty.path "usize"
-                                    ]
-                                ]
-                                (Ty.path "move_binary_format::errors::PartialVMError"),
+                              Ty.path "move_binary_format::errors::PartialVMError",
                               M.alloc (|
                                 Ty.path "move_binary_format::errors::PartialVMError",
                                 α0
@@ -1263,15 +1250,7 @@ Module signature.
                                         γ
                                       |) in
                                     M.match_operator (|
-                                      Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.path "move_binary_format::errors::PartialVMError";
-                                              Ty.path "usize"
-                                            ]
-                                        ]
-                                        (Ty.path "move_binary_format::errors::PartialVMError"),
+                                      Ty.path "move_binary_format::errors::PartialVMError",
                                       M.alloc (| Ty.path "usize", α1 |),
                                       [
                                         fun γ =>
@@ -1623,11 +1602,8 @@ Module signature.
                                                                     "move_binary_format::errors::PartialVMError";
                                                                   Ty.function
                                                                     [
-                                                                      Ty.tuple
-                                                                        [
-                                                                          Ty.path
-                                                                            "move_binary_format::errors::PartialVMError"
-                                                                        ]
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError"
                                                                     ]
                                                                     (Ty.path
                                                                       "move_binary_format::errors::PartialVMError")
@@ -1731,16 +1707,8 @@ Module signature.
                                                                       | [ α0 ] =>
                                                                         ltac:(M.monadic
                                                                           (M.match_operator (|
-                                                                            Ty.function
-                                                                              [
-                                                                                Ty.tuple
-                                                                                  [
-                                                                                    Ty.path
-                                                                                      "move_binary_format::errors::PartialVMError"
-                                                                                  ]
-                                                                              ]
-                                                                              (Ty.path
-                                                                                "move_binary_format::errors::PartialVMError"),
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError",
                                                                             M.alloc (|
                                                                               Ty.path
                                                                                 "move_binary_format::errors::PartialVMError",
@@ -1762,13 +1730,10 @@ Module signature.
                                                                                       "core::ops::function::Fn",
                                                                                       Ty.function
                                                                                         [
-                                                                                          Ty.tuple
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "move_binary_format::errors::PartialVMError";
-                                                                                              Ty.path
-                                                                                                "usize"
-                                                                                            ]
+                                                                                          Ty.path
+                                                                                            "move_binary_format::errors::PartialVMError";
+                                                                                          Ty.path
+                                                                                            "usize"
                                                                                         ]
                                                                                         (Ty.path
                                                                                           "move_binary_format::errors::PartialVMError"),
@@ -1972,11 +1937,8 @@ Module signature.
                                                                     "move_binary_format::errors::PartialVMError";
                                                                   Ty.function
                                                                     [
-                                                                      Ty.tuple
-                                                                        [
-                                                                          Ty.path
-                                                                            "move_binary_format::errors::PartialVMError"
-                                                                        ]
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError"
                                                                     ]
                                                                     (Ty.path
                                                                       "move_binary_format::errors::PartialVMError")
@@ -2080,16 +2042,8 @@ Module signature.
                                                                       | [ α0 ] =>
                                                                         ltac:(M.monadic
                                                                           (M.match_operator (|
-                                                                            Ty.function
-                                                                              [
-                                                                                Ty.tuple
-                                                                                  [
-                                                                                    Ty.path
-                                                                                      "move_binary_format::errors::PartialVMError"
-                                                                                  ]
-                                                                              ]
-                                                                              (Ty.path
-                                                                                "move_binary_format::errors::PartialVMError"),
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError",
                                                                             M.alloc (|
                                                                               Ty.path
                                                                                 "move_binary_format::errors::PartialVMError",
@@ -2111,13 +2065,10 @@ Module signature.
                                                                                       "core::ops::function::Fn",
                                                                                       Ty.function
                                                                                         [
-                                                                                          Ty.tuple
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "move_binary_format::errors::PartialVMError";
-                                                                                              Ty.path
-                                                                                                "usize"
-                                                                                            ]
+                                                                                          Ty.path
+                                                                                            "move_binary_format::errors::PartialVMError";
+                                                                                          Ty.path
+                                                                                            "usize"
                                                                                         ]
                                                                                         (Ty.path
                                                                                           "move_binary_format::errors::PartialVMError"),
@@ -2758,12 +2709,9 @@ Module signature.
                                                   let~ err_handler :
                                                       Ty.function
                                                         [
-                                                          Ty.tuple
-                                                            [
-                                                              Ty.path
-                                                                "move_binary_format::errors::PartialVMError";
-                                                              Ty.path "usize"
-                                                            ]
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError";
+                                                          Ty.path "usize"
                                                         ]
                                                         (Ty.path
                                                           "move_binary_format::errors::PartialVMError") :=
@@ -2774,17 +2722,8 @@ Module signature.
                                                           | [ α0; α1 ] =>
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
-                                                                Ty.function
-                                                                  [
-                                                                    Ty.tuple
-                                                                      [
-                                                                        Ty.path
-                                                                          "move_binary_format::errors::PartialVMError";
-                                                                        Ty.path "usize"
-                                                                      ]
-                                                                  ]
-                                                                  (Ty.path
-                                                                    "move_binary_format::errors::PartialVMError"),
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError",
                                                                 M.alloc (|
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
@@ -2800,17 +2739,8 @@ Module signature.
                                                                           γ
                                                                         |) in
                                                                       M.match_operator (|
-                                                                        Ty.function
-                                                                          [
-                                                                            Ty.tuple
-                                                                              [
-                                                                                Ty.path
-                                                                                  "move_binary_format::errors::PartialVMError";
-                                                                                Ty.path "usize"
-                                                                              ]
-                                                                          ]
-                                                                          (Ty.path
-                                                                            "move_binary_format::errors::PartialVMError"),
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError",
                                                                         M.alloc (|
                                                                           Ty.path "usize",
                                                                           α1
@@ -3282,11 +3212,8 @@ Module signature.
                                                                                                   "move_binary_format::errors::PartialVMError";
                                                                                                 Ty.function
                                                                                                   [
-                                                                                                    Ty.tuple
-                                                                                                      [
-                                                                                                        Ty.path
-                                                                                                          "move_binary_format::errors::PartialVMError"
-                                                                                                      ]
+                                                                                                    Ty.path
+                                                                                                      "move_binary_format::errors::PartialVMError"
                                                                                                   ]
                                                                                                   (Ty.path
                                                                                                     "move_binary_format::errors::PartialVMError")
@@ -3355,16 +3282,8 @@ Module signature.
                                                                                                         ] =>
                                                                                                       ltac:(M.monadic
                                                                                                         (M.match_operator (|
-                                                                                                          Ty.function
-                                                                                                            [
-                                                                                                              Ty.tuple
-                                                                                                                [
-                                                                                                                  Ty.path
-                                                                                                                    "move_binary_format::errors::PartialVMError"
-                                                                                                                ]
-                                                                                                            ]
-                                                                                                            (Ty.path
-                                                                                                              "move_binary_format::errors::PartialVMError"),
+                                                                                                          Ty.path
+                                                                                                            "move_binary_format::errors::PartialVMError",
                                                                                                           M.alloc (|
                                                                                                             Ty.path
                                                                                                               "move_binary_format::errors::PartialVMError",
@@ -3388,13 +3307,10 @@ Module signature.
                                                                                                                     "core::ops::function::Fn",
                                                                                                                     Ty.function
                                                                                                                       [
-                                                                                                                        Ty.tuple
-                                                                                                                          [
-                                                                                                                            Ty.path
-                                                                                                                              "move_binary_format::errors::PartialVMError";
-                                                                                                                            Ty.path
-                                                                                                                              "usize"
-                                                                                                                          ]
+                                                                                                                        Ty.path
+                                                                                                                          "move_binary_format::errors::PartialVMError";
+                                                                                                                        Ty.path
+                                                                                                                          "usize"
                                                                                                                       ]
                                                                                                                       (Ty.path
                                                                                                                         "move_binary_format::errors::PartialVMError"),
@@ -3692,11 +3608,8 @@ Module signature.
                                                                                                   "move_binary_format::errors::PartialVMError";
                                                                                                 Ty.function
                                                                                                   [
-                                                                                                    Ty.tuple
-                                                                                                      [
-                                                                                                        Ty.path
-                                                                                                          "move_binary_format::errors::PartialVMError"
-                                                                                                      ]
+                                                                                                    Ty.path
+                                                                                                      "move_binary_format::errors::PartialVMError"
                                                                                                   ]
                                                                                                   (Ty.path
                                                                                                     "move_binary_format::errors::PartialVMError")
@@ -3815,16 +3728,8 @@ Module signature.
                                                                                                         ] =>
                                                                                                       ltac:(M.monadic
                                                                                                         (M.match_operator (|
-                                                                                                          Ty.function
-                                                                                                            [
-                                                                                                              Ty.tuple
-                                                                                                                [
-                                                                                                                  Ty.path
-                                                                                                                    "move_binary_format::errors::PartialVMError"
-                                                                                                                ]
-                                                                                                            ]
-                                                                                                            (Ty.path
-                                                                                                              "move_binary_format::errors::PartialVMError"),
+                                                                                                          Ty.path
+                                                                                                            "move_binary_format::errors::PartialVMError",
                                                                                                           M.alloc (|
                                                                                                             Ty.path
                                                                                                               "move_binary_format::errors::PartialVMError",
@@ -3848,13 +3753,10 @@ Module signature.
                                                                                                                     "core::ops::function::Fn",
                                                                                                                     Ty.function
                                                                                                                       [
-                                                                                                                        Ty.tuple
-                                                                                                                          [
-                                                                                                                            Ty.path
-                                                                                                                              "move_binary_format::errors::PartialVMError";
-                                                                                                                            Ty.path
-                                                                                                                              "usize"
-                                                                                                                          ]
+                                                                                                                        Ty.path
+                                                                                                                          "move_binary_format::errors::PartialVMError";
+                                                                                                                        Ty.path
+                                                                                                                          "usize"
                                                                                                                       ]
                                                                                                                       (Ty.path
                                                                                                                         "move_binary_format::errors::PartialVMError"),
@@ -4086,11 +3988,8 @@ Module signature.
                                                                                                   "move_binary_format::errors::PartialVMError";
                                                                                                 Ty.function
                                                                                                   [
-                                                                                                    Ty.tuple
-                                                                                                      [
-                                                                                                        Ty.path
-                                                                                                          "move_binary_format::errors::PartialVMError"
-                                                                                                      ]
+                                                                                                    Ty.path
+                                                                                                      "move_binary_format::errors::PartialVMError"
                                                                                                   ]
                                                                                                   (Ty.path
                                                                                                     "move_binary_format::errors::PartialVMError")
@@ -4219,16 +4118,8 @@ Module signature.
                                                                                                         ] =>
                                                                                                       ltac:(M.monadic
                                                                                                         (M.match_operator (|
-                                                                                                          Ty.function
-                                                                                                            [
-                                                                                                              Ty.tuple
-                                                                                                                [
-                                                                                                                  Ty.path
-                                                                                                                    "move_binary_format::errors::PartialVMError"
-                                                                                                                ]
-                                                                                                            ]
-                                                                                                            (Ty.path
-                                                                                                              "move_binary_format::errors::PartialVMError"),
+                                                                                                          Ty.path
+                                                                                                            "move_binary_format::errors::PartialVMError",
                                                                                                           M.alloc (|
                                                                                                             Ty.path
                                                                                                               "move_binary_format::errors::PartialVMError",
@@ -4252,13 +4143,10 @@ Module signature.
                                                                                                                     "core::ops::function::Fn",
                                                                                                                     Ty.function
                                                                                                                       [
-                                                                                                                        Ty.tuple
-                                                                                                                          [
-                                                                                                                            Ty.path
-                                                                                                                              "move_binary_format::errors::PartialVMError";
-                                                                                                                            Ty.path
-                                                                                                                              "usize"
-                                                                                                                          ]
+                                                                                                                        Ty.path
+                                                                                                                          "move_binary_format::errors::PartialVMError";
+                                                                                                                        Ty.path
+                                                                                                                          "usize"
                                                                                                                       ]
                                                                                                                       (Ty.path
                                                                                                                         "move_binary_format::errors::PartialVMError"),
@@ -4929,11 +4817,8 @@ Module signature.
                                                                     "move_binary_format::errors::PartialVMError";
                                                                   Ty.function
                                                                     [
-                                                                      Ty.tuple
-                                                                        [
-                                                                          Ty.path
-                                                                            "move_binary_format::errors::PartialVMError"
-                                                                        ]
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError"
                                                                     ]
                                                                     (Ty.path
                                                                       "move_binary_format::errors::PartialVMError")
@@ -5034,16 +4919,8 @@ Module signature.
                                                                       | [ α0 ] =>
                                                                         ltac:(M.monadic
                                                                           (M.match_operator (|
-                                                                            Ty.function
-                                                                              [
-                                                                                Ty.tuple
-                                                                                  [
-                                                                                    Ty.path
-                                                                                      "move_binary_format::errors::PartialVMError"
-                                                                                  ]
-                                                                              ]
-                                                                              (Ty.path
-                                                                                "move_binary_format::errors::PartialVMError"),
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError",
                                                                             M.alloc (|
                                                                               Ty.path
                                                                                 "move_binary_format::errors::PartialVMError",
@@ -9201,11 +9078,8 @@ Module signature.
                                                                     "move_binary_format::errors::PartialVMError";
                                                                   Ty.function
                                                                     [
-                                                                      Ty.tuple
-                                                                        [
-                                                                          Ty.path
-                                                                            "move_binary_format::errors::PartialVMError"
-                                                                        ]
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError"
                                                                     ]
                                                                     (Ty.path
                                                                       "move_binary_format::errors::PartialVMError")
@@ -9220,16 +9094,8 @@ Module signature.
                                                                       | [ α0 ] =>
                                                                         ltac:(M.monadic
                                                                           (M.match_operator (|
-                                                                            Ty.function
-                                                                              [
-                                                                                Ty.tuple
-                                                                                  [
-                                                                                    Ty.path
-                                                                                      "move_binary_format::errors::PartialVMError"
-                                                                                  ]
-                                                                              ]
-                                                                              (Ty.path
-                                                                                "move_binary_format::errors::PartialVMError"),
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError",
                                                                             M.alloc (|
                                                                               Ty.path
                                                                                 "move_binary_format::errors::PartialVMError",

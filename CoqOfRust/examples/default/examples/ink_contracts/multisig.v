@@ -335,27 +335,34 @@ Module Impl_core_fmt_Debug_for_multisig_AccountId.
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AccountId" |) |) |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      Ty.apply (Ty.path "&") [] [ Ty.path "u128" ],
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "multisig::AccountId",
-                          0
+            M.call_closure (|
+              Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+              M.pointer_coercion
+                M.PointerCoercion.Unsize
+                (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ])
+                (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "u128" ],
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "multisig::AccountId",
+                            0
+                          |)
                         |)
                       |)
                     |)
                   |)
                 |)
-              |))
+              ]
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2746,7 +2753,7 @@ Module Impl_multisig_Multisig.
                   [],
                   [
                     Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ] ] ]
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ] ]
                       (Ty.path "bool")
                   ]
                 |),
@@ -2816,12 +2823,7 @@ Module Impl_multisig_Multisig.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ] ]
-                                ]
-                                (Ty.path "bool"),
+                              Ty.path "bool",
                               M.alloc (|
                                 Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ],
                                 α0
@@ -4464,7 +4466,7 @@ Module Impl_multisig_Multisig.
                                 [],
                                 [
                                   Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
                                     (Ty.path "bool")
                                 ]
                               |),
@@ -4536,12 +4538,7 @@ Module Impl_multisig_Multisig.
                                       | [ α0 ] =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
-                                            Ty.function
-                                              [
-                                                Ty.tuple
-                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
-                                              ]
-                                              (Ty.path "bool"),
+                                            Ty.path "bool",
                                             M.alloc (|
                                               Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
                                               α0
@@ -5674,7 +5671,7 @@ Module Impl_multisig_Multisig.
                                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                                   ];
                                 Ty.function
-                                  [ Ty.tuple [ Ty.tuple [] ] ]
+                                  [ Ty.tuple [] ]
                                   (Ty.apply
                                     (Ty.path "core::option::Option")
                                     []
@@ -5695,17 +5692,15 @@ Module Impl_multisig_Multisig.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.tuple [] ] ]
-                                            (Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloc::vec::Vec")
-                                                  []
-                                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                                              ]),
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::Vec")
+                                                []
+                                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                            ],
                                           M.alloc (| Ty.tuple [], α0 |),
                                           [
                                             fun γ =>

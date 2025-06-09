@@ -943,10 +943,39 @@ Definition is_struct_tuple (value : Value.t) (constructor : string) : M :=
   end.
 Arguments is_struct_tuple /.
 
-(** For now, we use the identity as a definition. The use case we have seen is making a coercion
-    between function types. *)
-Definition pointer_coercion (value : Value.t) : Value.t :=
-  value.
+(*
+  pub enum PointerCoercion {
+      ReifyFnPointer,
+      UnsafeFnPointer,
+      ClosureFnPointer(Safety),
+      MutToConstPointer,
+      ArrayToPointer,
+      Unsize,
+      DynStar,
+  }
+*)
+Module PointerCoercion.
+  (*
+    pub enum Safety {
+        Unsafe,
+        Safe,
+    }
+  *)
+  Module Safety.
+    Inductive t : Set :=
+    | Unsafe
+    | Safe.
+  End Safety.
+
+  Inductive t : Set :=
+  | ReifyFnPointer
+  | UnsafeFnPointer
+  | ClosureFnPointer (safety : Safety.t)
+  | MutToConstPointer
+  | ArrayToPointer
+  | Unsize
+  | DynStar.
+End PointerCoercion.
 
 (** This function is explicitly called in the Rust AST, and should take two
     types that are actually different but convertible, like different kinds of
@@ -960,6 +989,12 @@ Definition constructor_as_closure (constructor : string) (consts : list Value.t)
     Value.t :=
   closure (fun args =>
     pure (Value.StructTuple constructor consts tys args)).
+
+Parameter pointer_coercion_intrinsic : PointerCoercion.t -> PolymorphicFunction.t.
+
+Definition pointer_coercion (coercion : PointerCoercion.t) (source target : Ty.t) : Value.t :=
+  M.closure (pointer_coercion_intrinsic coercion [] [source; target]).
+Arguments pointer_coercion /.
 
 Parameter struct_record_update : Value.t -> list (string * Value.t) -> Value.t.
 

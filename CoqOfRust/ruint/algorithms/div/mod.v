@@ -95,7 +95,7 @@ Module algorithms.
                           [],
                           [
                             Ty.function
-                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ] ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
                               (Ty.path "bool")
                           ]
                         |),
@@ -128,9 +128,7 @@ Module algorithms.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ] ]
-                                        (Ty.path "bool"),
+                                      Ty.path "bool",
                                       M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], α0 |),
                                       [
                                         fun γ =>
@@ -428,7 +426,7 @@ Module algorithms.
                                   [],
                                   [
                                     Ty.function
-                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ] ]
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
                                       (Ty.path "bool")
                                   ]
                                 |),
@@ -467,12 +465,7 @@ Module algorithms.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function
-                                                [
-                                                  Ty.tuple
-                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
-                                                ]
-                                                (Ty.path "bool"),
+                                              Ty.path "bool",
                                               M.alloc (|
                                                 Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
                                                 α0

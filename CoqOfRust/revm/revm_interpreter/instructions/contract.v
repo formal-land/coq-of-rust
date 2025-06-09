@@ -3032,18 +3032,14 @@ Module instructions.
                                                           [ Ty.path "u8" ]
                                                         |),
                                                         [
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.alloc (|
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
                                                                 Ty.apply
-                                                                  (Ty.path "array")
-                                                                  [
-                                                                    Value.Integer
-                                                                      IntegerKind.Usize
-                                                                      2
-                                                                  ]
+                                                                  (Ty.path "slice")
+                                                                  []
                                                                   [
                                                                     Ty.apply
                                                                       (Ty.path "&")
@@ -3054,73 +3050,22 @@ Module instructions.
                                                                           []
                                                                           [ Ty.path "u8" ]
                                                                       ]
-                                                                  ],
-                                                                Value.Array
-                                                                  [
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.call_closure (|
-                                                                          Ty.apply
-                                                                            (Ty.path "&")
-                                                                            []
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path "slice")
-                                                                                []
-                                                                                [ Ty.path "u8" ]
-                                                                            ],
-                                                                          M.get_trait_method (|
-                                                                            "core::ops::deref::Deref",
-                                                                            Ty.path
-                                                                              "bytes::bytes::Bytes",
-                                                                            [],
-                                                                            [],
-                                                                            "deref",
-                                                                            [],
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.borrow (|
-                                                                              Pointer.Kind.Ref,
-                                                                              M.deref (|
-                                                                                M.call_closure (|
-                                                                                  Ty.apply
-                                                                                    (Ty.path "&")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "bytes::bytes::Bytes"
-                                                                                    ],
-                                                                                  M.get_trait_method (|
-                                                                                    "core::ops::deref::Deref",
-                                                                                    Ty.path
-                                                                                      "alloy_primitives::bytes_::Bytes",
-                                                                                    [],
-                                                                                    [],
-                                                                                    "deref",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.Ref,
-                                                                                      M.deref (|
-                                                                                        M.borrow (|
-                                                                                          Pointer.Kind.Ref,
-                                                                                          container
-                                                                                        |)
-                                                                                      |)
-                                                                                    |)
-                                                                                  ]
-                                                                                |)
-                                                                              |)
-                                                                            |)
-                                                                          ]
-                                                                        |)
-                                                                      |)
-                                                                    |);
-                                                                    M.call_closure (|
+                                                                  ]
+                                                              ],
+                                                            M.pointer_coercion
+                                                              M.PointerCoercion.Unsize
+                                                              (Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "array")
+                                                                    [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        2
+                                                                    ]
+                                                                    [
                                                                       Ty.apply
                                                                         (Ty.path "&")
                                                                         []
@@ -3129,72 +3074,193 @@ Module instructions.
                                                                             (Ty.path "slice")
                                                                             []
                                                                             [ Ty.path "u8" ]
-                                                                        ],
-                                                                      M.get_trait_method (|
-                                                                        "core::convert::AsRef",
-                                                                        Ty.apply
-                                                                          (Ty.path "slice")
-                                                                          []
-                                                                          [ Ty.path "u8" ],
-                                                                        [],
+                                                                        ]
+                                                                    ]
+                                                                ])
+                                                              (Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "slice")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
                                                                         [
                                                                           Ty.apply
                                                                             (Ty.path "slice")
                                                                             []
                                                                             [ Ty.path "u8" ]
-                                                                        ],
-                                                                        "as_ref",
-                                                                        [],
+                                                                        ]
+                                                                    ]
+                                                                ]),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (|
+                                                                  Ty.apply
+                                                                    (Ty.path "array")
+                                                                    [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        2
+                                                                    ]
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
                                                                         []
-                                                                      |),
-                                                                      [
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.deref (|
-                                                                            M.call_closure (|
-                                                                              Ty.apply
-                                                                                (Ty.path "&")
-                                                                                []
-                                                                                [
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "slice")
-                                                                                    []
-                                                                                    [ Ty.path "u8" ]
-                                                                                ],
-                                                                              M.get_trait_method (|
-                                                                                "core::ops::deref::Deref",
-                                                                                Ty.associated_in_trait
-                                                                                  "revm_interpreter::interpreter_types::MemoryTrait"
-                                                                                  []
-                                                                                  []
-                                                                                  (Ty.associated_in_trait
-                                                                                    "revm_interpreter::interpreter_types::InterpreterTypes"
-                                                                                    []
-                                                                                    []
-                                                                                    impl_InterpreterTypes
-                                                                                    "Memory")
-                                                                                  "{{synthetic}}'1",
-                                                                                [],
-                                                                                [],
-                                                                                "deref",
-                                                                                [],
-                                                                                []
-                                                                              |),
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [ Ty.path "u8" ]
+                                                                        ]
+                                                                    ],
+                                                                  Value.Array
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
                                                                               [
-                                                                                M.borrow (|
-                                                                                  Pointer.Kind.Ref,
-                                                                                  aux_slice
+                                                                                Ty.apply
+                                                                                  (Ty.path "slice")
+                                                                                  []
+                                                                                  [ Ty.path "u8" ]
+                                                                              ],
+                                                                            M.get_trait_method (|
+                                                                              "core::ops::deref::Deref",
+                                                                              Ty.path
+                                                                                "bytes::bytes::Bytes",
+                                                                              [],
+                                                                              [],
+                                                                              "deref",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.call_closure (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path "&")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "bytes::bytes::Bytes"
+                                                                                      ],
+                                                                                    M.get_trait_method (|
+                                                                                      "core::ops::deref::Deref",
+                                                                                      Ty.path
+                                                                                        "alloy_primitives::bytes_::Bytes",
+                                                                                      [],
+                                                                                      [],
+                                                                                      "deref",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            container
+                                                                                          |)
+                                                                                        |)
+                                                                                      |)
+                                                                                    ]
+                                                                                  |)
                                                                                 |)
-                                                                              ]
-                                                                            |)
+                                                                              |)
+                                                                            ]
                                                                           |)
                                                                         |)
-                                                                      ]
-                                                                    |)
-                                                                  ]
+                                                                      |);
+                                                                      M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "slice")
+                                                                              []
+                                                                              [ Ty.path "u8" ]
+                                                                          ],
+                                                                        M.get_trait_method (|
+                                                                          "core::convert::AsRef",
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [ Ty.path "u8" ],
+                                                                          [],
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "slice")
+                                                                              []
+                                                                              [ Ty.path "u8" ]
+                                                                          ],
+                                                                          "as_ref",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "slice")
+                                                                                      []
+                                                                                      [ Ty.path "u8"
+                                                                                      ]
+                                                                                  ],
+                                                                                M.get_trait_method (|
+                                                                                  "core::ops::deref::Deref",
+                                                                                  Ty.associated_in_trait
+                                                                                    "revm_interpreter::interpreter_types::MemoryTrait"
+                                                                                    []
+                                                                                    []
+                                                                                    (Ty.associated_in_trait
+                                                                                      "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                                                      []
+                                                                                      []
+                                                                                      impl_InterpreterTypes
+                                                                                      "Memory")
+                                                                                    "{{synthetic}}'1",
+                                                                                  [],
+                                                                                  [],
+                                                                                  "deref",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    aux_slice
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    ]
+                                                                |)
                                                               |)
-                                                            |))
+                                                            ]
+                                                          |)
                                                         ]
                                                       |)
                                                     |)
@@ -3583,14 +3649,37 @@ Module instructions.
                                                   |)
                                                 |)
                                               |);
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.borrow (| Pointer.Kind.Ref, new_data_size |)
+                                              M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ],
+                                                M.pointer_coercion
+                                                  M.PointerCoercion.Unsize
+                                                  (Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                                        [ Ty.path "u8" ]
+                                                    ])
+                                                  (Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ]),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.Ref, new_data_size |)
+                                                    |)
                                                   |)
-                                                |))
+                                                ]
+                                              |)
                                             ]
                                           |) in
                                         let~ output : Ty.path "alloy_primitives::bytes_::Bytes" :=
@@ -5088,10 +5177,7 @@ Module instructions.
                                             [],
                                             [
                                               Ty.function
-                                                [
-                                                  Ty.tuple
-                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
-                                                ]
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
                                                 (Ty.path "bool")
                                             ]
                                           |),
@@ -5177,17 +5263,7 @@ Module instructions.
                                                   | [ α0 ] =>
                                                     ltac:(M.monadic
                                                       (M.match_operator (|
-                                                        (* Ty.function
-                                                          [
-                                                            Ty.tuple
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [ Ty.path "u8" ]
-                                                              ]
-                                                          ] *)
-                                                          (Ty.path "bool"),
+                                                        Ty.path "bool",
                                                         M.alloc (|
                                                           Ty.apply
                                                             (Ty.path "&")

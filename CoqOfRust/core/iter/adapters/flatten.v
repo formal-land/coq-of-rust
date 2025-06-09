@@ -374,21 +374,53 @@ Module iter.
                             |)
                           |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::iter::adapters::flatten::FlatMap",
-                                    "inner"
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::iter::adapters::flatten::FlattenCompat")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::map::Map")
+                                        []
+                                        [ I; F ];
+                                      Ty.associated_in_trait
+                                        "core::iter::traits::collect::IntoIterator"
+                                        []
+                                        []
+                                        U
+                                        "IntoIter"
+                                    ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::flatten::FlatMap",
+                                      "inner"
+                                    |)
                                   |)
                                 |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |)
                     |)
@@ -1876,21 +1908,42 @@ Module iter.
                             |)
                           |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::iter::adapters::flatten::Flatten",
-                                    "inner"
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::iter::adapters::flatten::FlattenCompat")
+                                    []
+                                    [ I; U ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::flatten::Flatten",
+                                      "inner"
+                                    |)
                                   |)
                                 |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |)
                     |)
@@ -2985,62 +3038,97 @@ Module iter.
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FlattenCompat" |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::iter::adapters::flatten::FlattenCompat",
-                            "iter"
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ] ])
+                      (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::flatten::FlattenCompat",
+                              "iter"
+                            |)
                           |)
                         |)
                       |)
-                    |));
+                    ]
+                  |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "frontiter" |) |) |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::iter::adapters::flatten::FlattenCompat",
-                            "frontiter"
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::option::Option") [] [ U ] ])
+                      (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::flatten::FlattenCompat",
+                              "frontiter"
+                            |)
                           |)
                         |)
                       |)
-                    |));
+                    ]
+                  |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "backiter" |) |) |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.alloc (|
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.apply (Ty.path "core::option::Option") [] [ U ] ],
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::iter::adapters::flatten::FlattenCompat",
-                                "backiter"
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "core::option::Option") [] [ U ] ]
+                        ])
+                      (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "core::option::Option") [] [ U ] ],
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::flatten::FlattenCompat",
+                                  "backiter"
+                                |)
                               |)
                             |)
                           |)
                         |)
                       |)
-                    |))
+                    ]
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -6788,7 +6876,7 @@ Module iter.
                                                 U
                                                 "Item";
                                               Ty.function
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ U ] ] ]
+                                                [ Ty.apply (Ty.path "&mut") [] [ U ] ]
                                                 (Ty.apply
                                                   (Ty.path "core::option::Option")
                                                   []
@@ -6823,22 +6911,17 @@ Module iter.
                                                   | [ α0 ] =>
                                                     ltac:(M.monadic
                                                       (M.match_operator (|
-                                                        Ty.function
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
                                                           [
-                                                            Ty.tuple
-                                                              [ Ty.apply (Ty.path "&mut") [] [ U ] ]
-                                                          ]
-                                                          (Ty.apply
-                                                            (Ty.path "core::option::Option")
-                                                            []
-                                                            [
-                                                              Ty.associated_in_trait
-                                                                "core::iter::traits::iterator::Iterator"
-                                                                []
-                                                                []
-                                                                U
-                                                                "Item"
-                                                            ]),
+                                                            Ty.associated_in_trait
+                                                              "core::iter::traits::iterator::Iterator"
+                                                              []
+                                                              []
+                                                              U
+                                                              "Item"
+                                                          ],
                                                         M.alloc (|
                                                           Ty.apply (Ty.path "&mut") [] [ U ],
                                                           α0
@@ -6997,8 +7080,7 @@ Module iter.
                                                   U
                                                   "Item";
                                                 Ty.function
-                                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ U ] ]
-                                                  ]
+                                                  [ Ty.apply (Ty.path "&mut") [] [ U ] ]
                                                   (Ty.apply
                                                     (Ty.path "core::option::Option")
                                                     []
@@ -7033,23 +7115,17 @@ Module iter.
                                                     | [ α0 ] =>
                                                       ltac:(M.monadic
                                                         (M.match_operator (|
-                                                          Ty.function
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
                                                             [
-                                                              Ty.tuple
-                                                                [ Ty.apply (Ty.path "&mut") [] [ U ]
-                                                                ]
-                                                            ]
-                                                            (Ty.apply
-                                                              (Ty.path "core::option::Option")
-                                                              []
-                                                              [
-                                                                Ty.associated_in_trait
-                                                                  "core::iter::traits::iterator::Iterator"
-                                                                  []
-                                                                  []
-                                                                  U
-                                                                  "Item"
-                                                              ]),
+                                                              Ty.associated_in_trait
+                                                                "core::iter::traits::iterator::Iterator"
+                                                                []
+                                                                []
+                                                                U
+                                                                "Item"
+                                                            ],
                                                           M.alloc (|
                                                             Ty.apply (Ty.path "&mut") [] [ U ],
                                                             α0
@@ -8235,14 +8311,14 @@ Module iter.
                   | [ α0; α1 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function [ Ty.tuple [ Acc; I ] ] Acc,
+                        Acc,
                         M.alloc (| Acc, α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let acc := M.copy (| Acc, γ |) in
                               M.match_operator (|
-                                Ty.function [ Ty.tuple [ Acc; I ] ] Acc,
+                                Acc,
                                 M.alloc (| I, α1 |),
                                 [
                                   fun γ =>
@@ -8414,14 +8490,14 @@ Module iter.
                   | [ α0; α1 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function [ Ty.tuple [ Acc; I ] ] R,
+                        R,
                         M.alloc (| Acc, α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let acc := M.copy (| Acc, γ |) in
                               M.match_operator (|
-                                Ty.function [ Ty.tuple [ Acc; I ] ] R,
+                                R,
                                 M.alloc (| I, α1 |),
                                 [
                                   fun γ =>

@@ -769,15 +769,7 @@ Module bls12_381.
                                                   [],
                                                   [
                                                     Ty.function
-                                                      [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [ Ty.path "u8" ]
-                                                          ]
-                                                      ]
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
                                                       (Ty.path "bool")
                                                   ]
                                                 |),
@@ -819,17 +811,7 @@ Module bls12_381.
                                                         | [ α0 ] =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
-                                                              Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        []
-                                                                        [ Ty.path "u8" ]
-                                                                    ]
-                                                                ]
-                                                                (Ty.path "bool"),
+                                                              Ty.path "bool",
                                                               M.alloc (|
                                                                 Ty.apply
                                                                   (Ty.path "&")
@@ -1655,12 +1637,33 @@ Module bls12_381.
                                         []
                                       |),
                                       [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| input |) |)
-                                          |))
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                          M.pointer_coercion
+                                            M.PointerCoercion.Unsize
+                                            (Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 48 ]
+                                                  [ Ty.path "u8" ]
+                                              ])
+                                            (Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| input |) |)
+                                            |)
+                                          ]
+                                        |)
                                       ]
                                     |);
                                     M.call_closure (|
@@ -1675,18 +1678,39 @@ Module bls12_381.
                                         []
                                       |),
                                       [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            get_constant (|
-                                              "revm_precompile::bls12_381::utils::MODULUS_REPR",
-                                              Ty.apply
-                                                (Ty.path "array")
-                                                [ Value.Integer IntegerKind.Usize 48 ]
-                                                [ Ty.path "u8" ]
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                          M.pointer_coercion
+                                            M.PointerCoercion.Unsize
+                                            (Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 48 ]
+                                                  [ Ty.path "u8" ]
+                                              ])
+                                            (Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              get_constant (|
+                                                "revm_precompile::bls12_381::utils::MODULUS_REPR",
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 48 ]
+                                                  [ Ty.path "u8" ]
+                                              |)
                                             |)
-                                          |))
+                                          ]
+                                        |)
                                       ]
                                     |)
                                   ]
@@ -2030,9 +2054,29 @@ Module bls12_381.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |))
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 48 ]
+                                        [ Ty.path "u8" ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |)
+                                ]
+                              |)
                             ]
                           |)
                         ]

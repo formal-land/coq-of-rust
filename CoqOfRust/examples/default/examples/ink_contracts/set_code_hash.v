@@ -302,7 +302,7 @@ Module Impl_set_code_hash_Incrementer.
                   [ Ty.tuple []; Ty.path "set_code_hash::Error" ],
                 "unwrap_or_else",
                 [],
-                [ Ty.function [ Ty.tuple [ Ty.path "set_code_hash::Error" ] ] (Ty.tuple []) ]
+                [ Ty.function [ Ty.path "set_code_hash::Error" ] (Ty.tuple []) ]
               |),
               [
                 M.call_closure (|
@@ -334,9 +334,7 @@ Module Impl_set_code_hash_Incrementer.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [ Ty.path "set_code_hash::Error" ] ]
-                              (Ty.tuple []),
+                            Ty.tuple [],
                             M.alloc (| Ty.path "set_code_hash::Error", α0 |),
                             [
                               fun γ =>

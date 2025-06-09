@@ -144,12 +144,28 @@ Module unicode.
                                         []
                                       |),
                                       [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| chunk_idx_map |) |)
-                                          |))
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                          M.pointer_coercion
+                                            M.PointerCoercion.Unsize
+                                            (Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ])
+                                            (Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| chunk_idx_map |) |)
+                                            |)
+                                          ]
+                                        |)
                                       ]
                                     |)
                                   ]
@@ -205,12 +221,33 @@ Module unicode.
                                         []
                                       |),
                                       [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| bitset_canonical |) |)
-                                          |))
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+                                          M.pointer_coercion
+                                            M.PointerCoercion.Unsize
+                                            (Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ CANONICAL ]
+                                                  [ Ty.path "u64" ]
+                                              ])
+                                            (Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| bitset_canonical |) |)
+                                            |)
+                                          ]
+                                        |)
                                       ]
                                     |)
                                   ]
@@ -244,12 +281,33 @@ Module unicode.
                                       []
                                     |),
                                     [
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| bitset_canonical |) |)
-                                        |))
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+                                        M.pointer_coercion
+                                          M.PointerCoercion.Unsize
+                                          (Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ CANONICAL ]
+                                                [ Ty.path "u64" ]
+                                            ])
+                                          (Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| bitset_canonical |) |)
+                                          |)
+                                        ]
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -605,18 +663,32 @@ Module unicode.
                       [],
                       [
                         Ty.path "u32";
-                        Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
-                          (Ty.path "u32")
+                        Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] (Ty.path "u32")
                       ]
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| short_offset_runs |) |)
-                        |));
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "array") [ SOR ] [ Ty.path "u32" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| short_offset_runs |) |)
+                          |)
+                        ]
+                      |);
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.deref (|
@@ -640,9 +712,7 @@ Module unicode.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
-                                    (Ty.path "u32"),
+                                  Ty.path "u32",
                                   M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], α0 |),
                                   [
                                     fun γ =>
@@ -737,12 +807,28 @@ Module unicode.
                               [ Ty.path "usize" ]
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| short_offset_runs |) |)
-                                |));
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "array") [ SOR ] [ Ty.path "u32" ] ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| short_offset_runs |) |)
+                                  |)
+                                ]
+                              |);
                               M.call_closure (|
                                 Ty.path "usize",
                                 BinOp.Wrap.add,
@@ -789,12 +875,28 @@ Module unicode.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| offsets |) |)
-                                |))
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "array") [ OFFSETS ] [ Ty.path "u8" ] ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| offsets |) |)
+                                  |)
+                                ]
+                              |)
                             ]
                           |);
                           M.read (| offset_idx |)
@@ -818,8 +920,7 @@ Module unicode.
                       Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                       "map",
                       [],
-                      [ Ty.path "u32"; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "u32")
-                      ]
+                      [ Ty.path "u32"; Ty.function [ Ty.path "usize" ] (Ty.path "u32") ]
                     |),
                     [
                       M.call_closure (|
@@ -834,7 +935,7 @@ Module unicode.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "u32"),
+                                  Ty.path "u32",
                                   M.alloc (| Ty.path "usize", α0 |),
                                   [
                                     fun γ =>
@@ -7966,7 +8067,7 @@ Module unicode.
                                 [ Value.Integer IntegerKind.Usize 3 ]
                                 [ Ty.path "char" ];
                               Ty.function
-                                [ Ty.tuple [ Ty.path "usize" ] ]
+                                [ Ty.path "usize" ]
                                 (Ty.apply
                                   (Ty.path "array")
                                   [ Value.Integer IntegerKind.Usize 3 ]
@@ -7989,13 +8090,10 @@ Module unicode.
                                 [
                                   Ty.function
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ]
                                     ]
                                     (Ty.path "core::cmp::Ordering")
                                 ]
@@ -8036,17 +8134,7 @@ Module unicode.
                                       | [ α0 ] =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
-                                            Ty.function
-                                              [
-                                                Ty.tuple
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ]
-                                                  ]
-                                              ]
-                                              (Ty.path "core::cmp::Ordering"),
+                                            Ty.path "core::cmp::Ordering",
                                             M.alloc (|
                                               Ty.apply
                                                 (Ty.path "&")
@@ -8097,12 +8185,10 @@ Module unicode.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "usize" ] ]
-                                          (Ty.apply
-                                            (Ty.path "array")
-                                            [ Value.Integer IntegerKind.Usize 3 ]
-                                            [ Ty.path "char" ]),
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 3 ]
+                                          [ Ty.path "char" ],
                                         M.alloc (| Ty.path "usize", α0 |),
                                         [
                                           fun γ =>
@@ -8173,7 +8259,7 @@ Module unicode.
                                                       [],
                                                       [
                                                         Ty.function
-                                                          [ Ty.tuple [] ]
+                                                          []
                                                           (Ty.apply
                                                             (Ty.path "array")
                                                             [ Value.Integer IntegerKind.Usize 3 ]
@@ -8204,7 +8290,7 @@ Module unicode.
                                                               [ Value.Integer IntegerKind.Usize 3 ]
                                                               [ Ty.path "char" ];
                                                             Ty.function
-                                                              [ Ty.tuple [ Ty.path "char" ] ]
+                                                              [ Ty.path "char" ]
                                                               (Ty.apply
                                                                 (Ty.path "array")
                                                                 [ Value.Integer IntegerKind.Usize 3
@@ -8233,19 +8319,14 @@ Module unicode.
                                                                 | [ α0 ] =>
                                                                   ltac:(M.monadic
                                                                     (M.match_operator (|
-                                                                      Ty.function
+                                                                      Ty.apply
+                                                                        (Ty.path "array")
                                                                         [
-                                                                          Ty.tuple
-                                                                            [ Ty.path "char" ]
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            3
                                                                         ]
-                                                                        (Ty.apply
-                                                                          (Ty.path "array")
-                                                                          [
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              3
-                                                                          ]
-                                                                          [ Ty.path "char" ]),
+                                                                        [ Ty.path "char" ],
                                                                       M.alloc (|
                                                                         Ty.path "char",
                                                                         α0
@@ -8279,16 +8360,14 @@ Module unicode.
                                                             | [ α0 ] =>
                                                               ltac:(M.monadic
                                                                 (M.match_operator (|
-                                                                  Ty.function
-                                                                    [ Ty.tuple [] ]
-                                                                    (Ty.apply
-                                                                      (Ty.path "array")
-                                                                      [
-                                                                        Value.Integer
-                                                                          IntegerKind.Usize
-                                                                          3
-                                                                      ]
-                                                                      [ Ty.path "char" ]),
+                                                                  Ty.apply
+                                                                    (Ty.path "array")
+                                                                    [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        3
+                                                                    ]
+                                                                    [ Ty.path "char" ],
                                                                   M.alloc (| Ty.tuple [], α0 |),
                                                                   [
                                                                     fun γ =>
@@ -8548,7 +8627,7 @@ Module unicode.
                                 [ Value.Integer IntegerKind.Usize 3 ]
                                 [ Ty.path "char" ];
                               Ty.function
-                                [ Ty.tuple [ Ty.path "usize" ] ]
+                                [ Ty.path "usize" ]
                                 (Ty.apply
                                   (Ty.path "array")
                                   [ Value.Integer IntegerKind.Usize 3 ]
@@ -8571,13 +8650,10 @@ Module unicode.
                                 [
                                   Ty.function
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ]
                                     ]
                                     (Ty.path "core::cmp::Ordering")
                                 ]
@@ -8618,17 +8694,7 @@ Module unicode.
                                       | [ α0 ] =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
-                                            Ty.function
-                                              [
-                                                Ty.tuple
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ]
-                                                  ]
-                                              ]
-                                              (Ty.path "core::cmp::Ordering"),
+                                            Ty.path "core::cmp::Ordering",
                                             M.alloc (|
                                               Ty.apply
                                                 (Ty.path "&")
@@ -8679,12 +8745,10 @@ Module unicode.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "usize" ] ]
-                                          (Ty.apply
-                                            (Ty.path "array")
-                                            [ Value.Integer IntegerKind.Usize 3 ]
-                                            [ Ty.path "char" ]),
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 3 ]
+                                          [ Ty.path "char" ],
                                         M.alloc (| Ty.path "usize", α0 |),
                                         [
                                           fun γ =>
@@ -8755,7 +8819,7 @@ Module unicode.
                                                       [],
                                                       [
                                                         Ty.function
-                                                          [ Ty.tuple [] ]
+                                                          []
                                                           (Ty.apply
                                                             (Ty.path "array")
                                                             [ Value.Integer IntegerKind.Usize 3 ]
@@ -8786,7 +8850,7 @@ Module unicode.
                                                               [ Value.Integer IntegerKind.Usize 3 ]
                                                               [ Ty.path "char" ];
                                                             Ty.function
-                                                              [ Ty.tuple [ Ty.path "char" ] ]
+                                                              [ Ty.path "char" ]
                                                               (Ty.apply
                                                                 (Ty.path "array")
                                                                 [ Value.Integer IntegerKind.Usize 3
@@ -8815,19 +8879,14 @@ Module unicode.
                                                                 | [ α0 ] =>
                                                                   ltac:(M.monadic
                                                                     (M.match_operator (|
-                                                                      Ty.function
+                                                                      Ty.apply
+                                                                        (Ty.path "array")
                                                                         [
-                                                                          Ty.tuple
-                                                                            [ Ty.path "char" ]
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            3
                                                                         ]
-                                                                        (Ty.apply
-                                                                          (Ty.path "array")
-                                                                          [
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              3
-                                                                          ]
-                                                                          [ Ty.path "char" ]),
+                                                                        [ Ty.path "char" ],
                                                                       M.alloc (|
                                                                         Ty.path "char",
                                                                         α0
@@ -8861,16 +8920,14 @@ Module unicode.
                                                             | [ α0 ] =>
                                                               ltac:(M.monadic
                                                                 (M.match_operator (|
-                                                                  Ty.function
-                                                                    [ Ty.tuple [] ]
-                                                                    (Ty.apply
-                                                                      (Ty.path "array")
-                                                                      [
-                                                                        Value.Integer
-                                                                          IntegerKind.Usize
-                                                                          3
-                                                                      ]
-                                                                      [ Ty.path "char" ]),
+                                                                  Ty.apply
+                                                                    (Ty.path "array")
+                                                                    [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        3
+                                                                    ]
+                                                                    [ Ty.path "char" ],
                                                                   M.alloc (| Ty.tuple [], α0 |),
                                                                   [
                                                                     fun γ =>
@@ -9033,2893 +9090,2915 @@ Module unicode.
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "slice") [] [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ] ],
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 1434 ]
-                          [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ],
-                        Value.Array
-                          [
-                            Value.Tuple
-                              [ Value.UnicodeChar 192; Value.Integer IntegerKind.U32 224 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 193; Value.Integer IntegerKind.U32 225 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 194; Value.Integer IntegerKind.U32 226 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 195; Value.Integer IntegerKind.U32 227 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 196; Value.Integer IntegerKind.U32 228 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 197; Value.Integer IntegerKind.U32 229 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 198; Value.Integer IntegerKind.U32 230 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 199; Value.Integer IntegerKind.U32 231 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 200; Value.Integer IntegerKind.U32 232 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 201; Value.Integer IntegerKind.U32 233 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 202; Value.Integer IntegerKind.U32 234 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 203; Value.Integer IntegerKind.U32 235 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 204; Value.Integer IntegerKind.U32 236 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 205; Value.Integer IntegerKind.U32 237 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 206; Value.Integer IntegerKind.U32 238 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 207; Value.Integer IntegerKind.U32 239 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 208; Value.Integer IntegerKind.U32 240 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 209; Value.Integer IntegerKind.U32 241 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 210; Value.Integer IntegerKind.U32 242 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 211; Value.Integer IntegerKind.U32 243 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 212; Value.Integer IntegerKind.U32 244 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 213; Value.Integer IntegerKind.U32 245 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 214; Value.Integer IntegerKind.U32 246 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 216; Value.Integer IntegerKind.U32 248 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 217; Value.Integer IntegerKind.U32 249 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 218; Value.Integer IntegerKind.U32 250 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 219; Value.Integer IntegerKind.U32 251 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 220; Value.Integer IntegerKind.U32 252 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 221; Value.Integer IntegerKind.U32 253 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 222; Value.Integer IntegerKind.U32 254 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 256; Value.Integer IntegerKind.U32 257 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 258; Value.Integer IntegerKind.U32 259 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 260; Value.Integer IntegerKind.U32 261 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 262; Value.Integer IntegerKind.U32 263 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 264; Value.Integer IntegerKind.U32 265 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 266; Value.Integer IntegerKind.U32 267 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 268; Value.Integer IntegerKind.U32 269 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 270; Value.Integer IntegerKind.U32 271 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 272; Value.Integer IntegerKind.U32 273 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 274; Value.Integer IntegerKind.U32 275 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 276; Value.Integer IntegerKind.U32 277 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 278; Value.Integer IntegerKind.U32 279 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 280; Value.Integer IntegerKind.U32 281 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 282; Value.Integer IntegerKind.U32 283 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 284; Value.Integer IntegerKind.U32 285 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 286; Value.Integer IntegerKind.U32 287 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 288; Value.Integer IntegerKind.U32 289 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 290; Value.Integer IntegerKind.U32 291 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 292; Value.Integer IntegerKind.U32 293 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 294; Value.Integer IntegerKind.U32 295 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 296; Value.Integer IntegerKind.U32 297 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 298; Value.Integer IntegerKind.U32 299 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 300; Value.Integer IntegerKind.U32 301 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 302; Value.Integer IntegerKind.U32 303 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 304; Value.Integer IntegerKind.U32 4194304 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 306; Value.Integer IntegerKind.U32 307 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 308; Value.Integer IntegerKind.U32 309 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 310; Value.Integer IntegerKind.U32 311 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 313; Value.Integer IntegerKind.U32 314 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 315; Value.Integer IntegerKind.U32 316 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 317; Value.Integer IntegerKind.U32 318 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 319; Value.Integer IntegerKind.U32 320 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 321; Value.Integer IntegerKind.U32 322 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 323; Value.Integer IntegerKind.U32 324 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 325; Value.Integer IntegerKind.U32 326 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 327; Value.Integer IntegerKind.U32 328 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 330; Value.Integer IntegerKind.U32 331 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 332; Value.Integer IntegerKind.U32 333 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 334; Value.Integer IntegerKind.U32 335 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 336; Value.Integer IntegerKind.U32 337 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 338; Value.Integer IntegerKind.U32 339 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 340; Value.Integer IntegerKind.U32 341 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 342; Value.Integer IntegerKind.U32 343 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 344; Value.Integer IntegerKind.U32 345 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 346; Value.Integer IntegerKind.U32 347 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 348; Value.Integer IntegerKind.U32 349 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 350; Value.Integer IntegerKind.U32 351 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 352; Value.Integer IntegerKind.U32 353 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 354; Value.Integer IntegerKind.U32 355 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 356; Value.Integer IntegerKind.U32 357 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 358; Value.Integer IntegerKind.U32 359 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 360; Value.Integer IntegerKind.U32 361 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 362; Value.Integer IntegerKind.U32 363 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 364; Value.Integer IntegerKind.U32 365 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 366; Value.Integer IntegerKind.U32 367 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 368; Value.Integer IntegerKind.U32 369 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 370; Value.Integer IntegerKind.U32 371 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 372; Value.Integer IntegerKind.U32 373 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 374; Value.Integer IntegerKind.U32 375 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 376; Value.Integer IntegerKind.U32 255 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 377; Value.Integer IntegerKind.U32 378 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 379; Value.Integer IntegerKind.U32 380 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 381; Value.Integer IntegerKind.U32 382 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 385; Value.Integer IntegerKind.U32 595 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 386; Value.Integer IntegerKind.U32 387 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 388; Value.Integer IntegerKind.U32 389 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 390; Value.Integer IntegerKind.U32 596 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 391; Value.Integer IntegerKind.U32 392 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 393; Value.Integer IntegerKind.U32 598 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 394; Value.Integer IntegerKind.U32 599 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 395; Value.Integer IntegerKind.U32 396 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 398; Value.Integer IntegerKind.U32 477 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 399; Value.Integer IntegerKind.U32 601 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 400; Value.Integer IntegerKind.U32 603 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 401; Value.Integer IntegerKind.U32 402 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 403; Value.Integer IntegerKind.U32 608 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 404; Value.Integer IntegerKind.U32 611 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 406; Value.Integer IntegerKind.U32 617 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 407; Value.Integer IntegerKind.U32 616 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 408; Value.Integer IntegerKind.U32 409 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 412; Value.Integer IntegerKind.U32 623 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 413; Value.Integer IntegerKind.U32 626 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 415; Value.Integer IntegerKind.U32 629 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 416; Value.Integer IntegerKind.U32 417 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 418; Value.Integer IntegerKind.U32 419 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 420; Value.Integer IntegerKind.U32 421 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 422; Value.Integer IntegerKind.U32 640 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 423; Value.Integer IntegerKind.U32 424 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 425; Value.Integer IntegerKind.U32 643 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 428; Value.Integer IntegerKind.U32 429 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 430; Value.Integer IntegerKind.U32 648 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 431; Value.Integer IntegerKind.U32 432 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 433; Value.Integer IntegerKind.U32 650 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 434; Value.Integer IntegerKind.U32 651 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 435; Value.Integer IntegerKind.U32 436 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 437; Value.Integer IntegerKind.U32 438 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 439; Value.Integer IntegerKind.U32 658 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 440; Value.Integer IntegerKind.U32 441 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 444; Value.Integer IntegerKind.U32 445 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 452; Value.Integer IntegerKind.U32 454 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 453; Value.Integer IntegerKind.U32 454 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 455; Value.Integer IntegerKind.U32 457 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 456; Value.Integer IntegerKind.U32 457 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 458; Value.Integer IntegerKind.U32 460 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 459; Value.Integer IntegerKind.U32 460 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 461; Value.Integer IntegerKind.U32 462 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 463; Value.Integer IntegerKind.U32 464 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 465; Value.Integer IntegerKind.U32 466 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 467; Value.Integer IntegerKind.U32 468 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 469; Value.Integer IntegerKind.U32 470 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 471; Value.Integer IntegerKind.U32 472 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 473; Value.Integer IntegerKind.U32 474 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 475; Value.Integer IntegerKind.U32 476 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 478; Value.Integer IntegerKind.U32 479 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 480; Value.Integer IntegerKind.U32 481 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 482; Value.Integer IntegerKind.U32 483 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 484; Value.Integer IntegerKind.U32 485 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 486; Value.Integer IntegerKind.U32 487 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 488; Value.Integer IntegerKind.U32 489 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 490; Value.Integer IntegerKind.U32 491 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 492; Value.Integer IntegerKind.U32 493 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 494; Value.Integer IntegerKind.U32 495 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 497; Value.Integer IntegerKind.U32 499 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 498; Value.Integer IntegerKind.U32 499 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 500; Value.Integer IntegerKind.U32 501 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 502; Value.Integer IntegerKind.U32 405 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 503; Value.Integer IntegerKind.U32 447 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 504; Value.Integer IntegerKind.U32 505 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 506; Value.Integer IntegerKind.U32 507 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 508; Value.Integer IntegerKind.U32 509 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 510; Value.Integer IntegerKind.U32 511 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 512; Value.Integer IntegerKind.U32 513 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 514; Value.Integer IntegerKind.U32 515 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 516; Value.Integer IntegerKind.U32 517 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 518; Value.Integer IntegerKind.U32 519 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 520; Value.Integer IntegerKind.U32 521 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 522; Value.Integer IntegerKind.U32 523 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 524; Value.Integer IntegerKind.U32 525 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 526; Value.Integer IntegerKind.U32 527 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 528; Value.Integer IntegerKind.U32 529 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 530; Value.Integer IntegerKind.U32 531 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 532; Value.Integer IntegerKind.U32 533 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 534; Value.Integer IntegerKind.U32 535 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 536; Value.Integer IntegerKind.U32 537 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 538; Value.Integer IntegerKind.U32 539 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 540; Value.Integer IntegerKind.U32 541 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 542; Value.Integer IntegerKind.U32 543 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 544; Value.Integer IntegerKind.U32 414 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 546; Value.Integer IntegerKind.U32 547 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 548; Value.Integer IntegerKind.U32 549 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 550; Value.Integer IntegerKind.U32 551 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 552; Value.Integer IntegerKind.U32 553 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 554; Value.Integer IntegerKind.U32 555 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 556; Value.Integer IntegerKind.U32 557 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 558; Value.Integer IntegerKind.U32 559 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 560; Value.Integer IntegerKind.U32 561 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 562; Value.Integer IntegerKind.U32 563 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 570; Value.Integer IntegerKind.U32 11365 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 571; Value.Integer IntegerKind.U32 572 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 573; Value.Integer IntegerKind.U32 410 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 574; Value.Integer IntegerKind.U32 11366 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 577; Value.Integer IntegerKind.U32 578 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 579; Value.Integer IntegerKind.U32 384 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 580; Value.Integer IntegerKind.U32 649 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 581; Value.Integer IntegerKind.U32 652 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 582; Value.Integer IntegerKind.U32 583 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 584; Value.Integer IntegerKind.U32 585 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 586; Value.Integer IntegerKind.U32 587 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 588; Value.Integer IntegerKind.U32 589 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 590; Value.Integer IntegerKind.U32 591 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 880; Value.Integer IntegerKind.U32 881 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 882; Value.Integer IntegerKind.U32 883 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 886; Value.Integer IntegerKind.U32 887 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 895; Value.Integer IntegerKind.U32 1011 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 902; Value.Integer IntegerKind.U32 940 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 904; Value.Integer IntegerKind.U32 941 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 905; Value.Integer IntegerKind.U32 942 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 906; Value.Integer IntegerKind.U32 943 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 908; Value.Integer IntegerKind.U32 972 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 910; Value.Integer IntegerKind.U32 973 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 911; Value.Integer IntegerKind.U32 974 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 913; Value.Integer IntegerKind.U32 945 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 914; Value.Integer IntegerKind.U32 946 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 915; Value.Integer IntegerKind.U32 947 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 916; Value.Integer IntegerKind.U32 948 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 917; Value.Integer IntegerKind.U32 949 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 918; Value.Integer IntegerKind.U32 950 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 919; Value.Integer IntegerKind.U32 951 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 920; Value.Integer IntegerKind.U32 952 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 921; Value.Integer IntegerKind.U32 953 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 922; Value.Integer IntegerKind.U32 954 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 923; Value.Integer IntegerKind.U32 955 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 924; Value.Integer IntegerKind.U32 956 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 925; Value.Integer IntegerKind.U32 957 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 926; Value.Integer IntegerKind.U32 958 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 927; Value.Integer IntegerKind.U32 959 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 928; Value.Integer IntegerKind.U32 960 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 929; Value.Integer IntegerKind.U32 961 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 931; Value.Integer IntegerKind.U32 963 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 932; Value.Integer IntegerKind.U32 964 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 933; Value.Integer IntegerKind.U32 965 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 934; Value.Integer IntegerKind.U32 966 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 935; Value.Integer IntegerKind.U32 967 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 936; Value.Integer IntegerKind.U32 968 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 937; Value.Integer IntegerKind.U32 969 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 938; Value.Integer IntegerKind.U32 970 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 939; Value.Integer IntegerKind.U32 971 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 975; Value.Integer IntegerKind.U32 983 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 984; Value.Integer IntegerKind.U32 985 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 986; Value.Integer IntegerKind.U32 987 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 988; Value.Integer IntegerKind.U32 989 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 990; Value.Integer IntegerKind.U32 991 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 992; Value.Integer IntegerKind.U32 993 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 994; Value.Integer IntegerKind.U32 995 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 996; Value.Integer IntegerKind.U32 997 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 998; Value.Integer IntegerKind.U32 999 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1000; Value.Integer IntegerKind.U32 1001 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1002; Value.Integer IntegerKind.U32 1003 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1004; Value.Integer IntegerKind.U32 1005 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1006; Value.Integer IntegerKind.U32 1007 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1012; Value.Integer IntegerKind.U32 952 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1015; Value.Integer IntegerKind.U32 1016 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1017; Value.Integer IntegerKind.U32 1010 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1018; Value.Integer IntegerKind.U32 1019 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1021; Value.Integer IntegerKind.U32 891 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1022; Value.Integer IntegerKind.U32 892 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1023; Value.Integer IntegerKind.U32 893 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1024; Value.Integer IntegerKind.U32 1104 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1025; Value.Integer IntegerKind.U32 1105 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1026; Value.Integer IntegerKind.U32 1106 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1027; Value.Integer IntegerKind.U32 1107 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1028; Value.Integer IntegerKind.U32 1108 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1029; Value.Integer IntegerKind.U32 1109 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1030; Value.Integer IntegerKind.U32 1110 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1031; Value.Integer IntegerKind.U32 1111 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1032; Value.Integer IntegerKind.U32 1112 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1033; Value.Integer IntegerKind.U32 1113 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1034; Value.Integer IntegerKind.U32 1114 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1035; Value.Integer IntegerKind.U32 1115 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1036; Value.Integer IntegerKind.U32 1116 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1037; Value.Integer IntegerKind.U32 1117 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1038; Value.Integer IntegerKind.U32 1118 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1039; Value.Integer IntegerKind.U32 1119 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1040; Value.Integer IntegerKind.U32 1072 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1041; Value.Integer IntegerKind.U32 1073 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1042; Value.Integer IntegerKind.U32 1074 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1043; Value.Integer IntegerKind.U32 1075 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1044; Value.Integer IntegerKind.U32 1076 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1045; Value.Integer IntegerKind.U32 1077 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1046; Value.Integer IntegerKind.U32 1078 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1047; Value.Integer IntegerKind.U32 1079 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1048; Value.Integer IntegerKind.U32 1080 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1049; Value.Integer IntegerKind.U32 1081 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1050; Value.Integer IntegerKind.U32 1082 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1051; Value.Integer IntegerKind.U32 1083 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1052; Value.Integer IntegerKind.U32 1084 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1053; Value.Integer IntegerKind.U32 1085 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1054; Value.Integer IntegerKind.U32 1086 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1055; Value.Integer IntegerKind.U32 1087 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1056; Value.Integer IntegerKind.U32 1088 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1057; Value.Integer IntegerKind.U32 1089 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1058; Value.Integer IntegerKind.U32 1090 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1059; Value.Integer IntegerKind.U32 1091 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1060; Value.Integer IntegerKind.U32 1092 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1061; Value.Integer IntegerKind.U32 1093 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1062; Value.Integer IntegerKind.U32 1094 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1063; Value.Integer IntegerKind.U32 1095 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1064; Value.Integer IntegerKind.U32 1096 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1065; Value.Integer IntegerKind.U32 1097 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1066; Value.Integer IntegerKind.U32 1098 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1067; Value.Integer IntegerKind.U32 1099 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1068; Value.Integer IntegerKind.U32 1100 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1069; Value.Integer IntegerKind.U32 1101 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1070; Value.Integer IntegerKind.U32 1102 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1071; Value.Integer IntegerKind.U32 1103 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1120; Value.Integer IntegerKind.U32 1121 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1122; Value.Integer IntegerKind.U32 1123 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1124; Value.Integer IntegerKind.U32 1125 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1126; Value.Integer IntegerKind.U32 1127 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1128; Value.Integer IntegerKind.U32 1129 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1130; Value.Integer IntegerKind.U32 1131 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1132; Value.Integer IntegerKind.U32 1133 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1134; Value.Integer IntegerKind.U32 1135 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1136; Value.Integer IntegerKind.U32 1137 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1138; Value.Integer IntegerKind.U32 1139 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1140; Value.Integer IntegerKind.U32 1141 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1142; Value.Integer IntegerKind.U32 1143 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1144; Value.Integer IntegerKind.U32 1145 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1146; Value.Integer IntegerKind.U32 1147 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1148; Value.Integer IntegerKind.U32 1149 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1150; Value.Integer IntegerKind.U32 1151 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1152; Value.Integer IntegerKind.U32 1153 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1162; Value.Integer IntegerKind.U32 1163 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1164; Value.Integer IntegerKind.U32 1165 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1166; Value.Integer IntegerKind.U32 1167 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1168; Value.Integer IntegerKind.U32 1169 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1170; Value.Integer IntegerKind.U32 1171 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1172; Value.Integer IntegerKind.U32 1173 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1174; Value.Integer IntegerKind.U32 1175 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1176; Value.Integer IntegerKind.U32 1177 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1178; Value.Integer IntegerKind.U32 1179 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1180; Value.Integer IntegerKind.U32 1181 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1182; Value.Integer IntegerKind.U32 1183 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1184; Value.Integer IntegerKind.U32 1185 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1186; Value.Integer IntegerKind.U32 1187 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1188; Value.Integer IntegerKind.U32 1189 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1190; Value.Integer IntegerKind.U32 1191 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1192; Value.Integer IntegerKind.U32 1193 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1194; Value.Integer IntegerKind.U32 1195 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1196; Value.Integer IntegerKind.U32 1197 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1198; Value.Integer IntegerKind.U32 1199 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1200; Value.Integer IntegerKind.U32 1201 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1202; Value.Integer IntegerKind.U32 1203 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1204; Value.Integer IntegerKind.U32 1205 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1206; Value.Integer IntegerKind.U32 1207 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1208; Value.Integer IntegerKind.U32 1209 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1210; Value.Integer IntegerKind.U32 1211 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1212; Value.Integer IntegerKind.U32 1213 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1214; Value.Integer IntegerKind.U32 1215 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1216; Value.Integer IntegerKind.U32 1231 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1217; Value.Integer IntegerKind.U32 1218 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1219; Value.Integer IntegerKind.U32 1220 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1221; Value.Integer IntegerKind.U32 1222 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1223; Value.Integer IntegerKind.U32 1224 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1225; Value.Integer IntegerKind.U32 1226 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1227; Value.Integer IntegerKind.U32 1228 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1229; Value.Integer IntegerKind.U32 1230 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1232; Value.Integer IntegerKind.U32 1233 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1234; Value.Integer IntegerKind.U32 1235 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1236; Value.Integer IntegerKind.U32 1237 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1238; Value.Integer IntegerKind.U32 1239 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1240; Value.Integer IntegerKind.U32 1241 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1242; Value.Integer IntegerKind.U32 1243 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1244; Value.Integer IntegerKind.U32 1245 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1246; Value.Integer IntegerKind.U32 1247 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1248; Value.Integer IntegerKind.U32 1249 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1250; Value.Integer IntegerKind.U32 1251 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1252; Value.Integer IntegerKind.U32 1253 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1254; Value.Integer IntegerKind.U32 1255 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1256; Value.Integer IntegerKind.U32 1257 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1258; Value.Integer IntegerKind.U32 1259 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1260; Value.Integer IntegerKind.U32 1261 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1262; Value.Integer IntegerKind.U32 1263 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1264; Value.Integer IntegerKind.U32 1265 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1266; Value.Integer IntegerKind.U32 1267 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1268; Value.Integer IntegerKind.U32 1269 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1270; Value.Integer IntegerKind.U32 1271 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1272; Value.Integer IntegerKind.U32 1273 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1274; Value.Integer IntegerKind.U32 1275 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1276; Value.Integer IntegerKind.U32 1277 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1278; Value.Integer IntegerKind.U32 1279 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1280; Value.Integer IntegerKind.U32 1281 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1282; Value.Integer IntegerKind.U32 1283 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1284; Value.Integer IntegerKind.U32 1285 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1286; Value.Integer IntegerKind.U32 1287 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1288; Value.Integer IntegerKind.U32 1289 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1290; Value.Integer IntegerKind.U32 1291 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1292; Value.Integer IntegerKind.U32 1293 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1294; Value.Integer IntegerKind.U32 1295 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1296; Value.Integer IntegerKind.U32 1297 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1298; Value.Integer IntegerKind.U32 1299 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1300; Value.Integer IntegerKind.U32 1301 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1302; Value.Integer IntegerKind.U32 1303 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1304; Value.Integer IntegerKind.U32 1305 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1306; Value.Integer IntegerKind.U32 1307 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1308; Value.Integer IntegerKind.U32 1309 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1310; Value.Integer IntegerKind.U32 1311 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1312; Value.Integer IntegerKind.U32 1313 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1314; Value.Integer IntegerKind.U32 1315 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1316; Value.Integer IntegerKind.U32 1317 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1318; Value.Integer IntegerKind.U32 1319 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1320; Value.Integer IntegerKind.U32 1321 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1322; Value.Integer IntegerKind.U32 1323 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1324; Value.Integer IntegerKind.U32 1325 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1326; Value.Integer IntegerKind.U32 1327 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1329; Value.Integer IntegerKind.U32 1377 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1330; Value.Integer IntegerKind.U32 1378 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1331; Value.Integer IntegerKind.U32 1379 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1332; Value.Integer IntegerKind.U32 1380 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1333; Value.Integer IntegerKind.U32 1381 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1334; Value.Integer IntegerKind.U32 1382 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1335; Value.Integer IntegerKind.U32 1383 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1336; Value.Integer IntegerKind.U32 1384 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1337; Value.Integer IntegerKind.U32 1385 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1338; Value.Integer IntegerKind.U32 1386 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1339; Value.Integer IntegerKind.U32 1387 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1340; Value.Integer IntegerKind.U32 1388 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1341; Value.Integer IntegerKind.U32 1389 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1342; Value.Integer IntegerKind.U32 1390 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1343; Value.Integer IntegerKind.U32 1391 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1344; Value.Integer IntegerKind.U32 1392 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1345; Value.Integer IntegerKind.U32 1393 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1346; Value.Integer IntegerKind.U32 1394 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1347; Value.Integer IntegerKind.U32 1395 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1348; Value.Integer IntegerKind.U32 1396 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1349; Value.Integer IntegerKind.U32 1397 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1350; Value.Integer IntegerKind.U32 1398 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1351; Value.Integer IntegerKind.U32 1399 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1352; Value.Integer IntegerKind.U32 1400 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1353; Value.Integer IntegerKind.U32 1401 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1354; Value.Integer IntegerKind.U32 1402 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1355; Value.Integer IntegerKind.U32 1403 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1356; Value.Integer IntegerKind.U32 1404 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1357; Value.Integer IntegerKind.U32 1405 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1358; Value.Integer IntegerKind.U32 1406 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1359; Value.Integer IntegerKind.U32 1407 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1360; Value.Integer IntegerKind.U32 1408 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1361; Value.Integer IntegerKind.U32 1409 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1362; Value.Integer IntegerKind.U32 1410 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1363; Value.Integer IntegerKind.U32 1411 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1364; Value.Integer IntegerKind.U32 1412 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1365; Value.Integer IntegerKind.U32 1413 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1366; Value.Integer IntegerKind.U32 1414 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4256; Value.Integer IntegerKind.U32 11520 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4257; Value.Integer IntegerKind.U32 11521 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4258; Value.Integer IntegerKind.U32 11522 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4259; Value.Integer IntegerKind.U32 11523 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4260; Value.Integer IntegerKind.U32 11524 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4261; Value.Integer IntegerKind.U32 11525 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4262; Value.Integer IntegerKind.U32 11526 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4263; Value.Integer IntegerKind.U32 11527 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4264; Value.Integer IntegerKind.U32 11528 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4265; Value.Integer IntegerKind.U32 11529 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4266; Value.Integer IntegerKind.U32 11530 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4267; Value.Integer IntegerKind.U32 11531 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4268; Value.Integer IntegerKind.U32 11532 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4269; Value.Integer IntegerKind.U32 11533 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4270; Value.Integer IntegerKind.U32 11534 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4271; Value.Integer IntegerKind.U32 11535 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4272; Value.Integer IntegerKind.U32 11536 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4273; Value.Integer IntegerKind.U32 11537 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4274; Value.Integer IntegerKind.U32 11538 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4275; Value.Integer IntegerKind.U32 11539 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4276; Value.Integer IntegerKind.U32 11540 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4277; Value.Integer IntegerKind.U32 11541 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4278; Value.Integer IntegerKind.U32 11542 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4279; Value.Integer IntegerKind.U32 11543 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4280; Value.Integer IntegerKind.U32 11544 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4281; Value.Integer IntegerKind.U32 11545 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4282; Value.Integer IntegerKind.U32 11546 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4283; Value.Integer IntegerKind.U32 11547 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4284; Value.Integer IntegerKind.U32 11548 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4285; Value.Integer IntegerKind.U32 11549 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4286; Value.Integer IntegerKind.U32 11550 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4287; Value.Integer IntegerKind.U32 11551 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4288; Value.Integer IntegerKind.U32 11552 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4289; Value.Integer IntegerKind.U32 11553 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4290; Value.Integer IntegerKind.U32 11554 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4291; Value.Integer IntegerKind.U32 11555 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4292; Value.Integer IntegerKind.U32 11556 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4293; Value.Integer IntegerKind.U32 11557 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4295; Value.Integer IntegerKind.U32 11559 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4301; Value.Integer IntegerKind.U32 11565 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5024; Value.Integer IntegerKind.U32 43888 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5025; Value.Integer IntegerKind.U32 43889 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5026; Value.Integer IntegerKind.U32 43890 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5027; Value.Integer IntegerKind.U32 43891 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5028; Value.Integer IntegerKind.U32 43892 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5029; Value.Integer IntegerKind.U32 43893 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5030; Value.Integer IntegerKind.U32 43894 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5031; Value.Integer IntegerKind.U32 43895 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5032; Value.Integer IntegerKind.U32 43896 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5033; Value.Integer IntegerKind.U32 43897 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5034; Value.Integer IntegerKind.U32 43898 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5035; Value.Integer IntegerKind.U32 43899 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5036; Value.Integer IntegerKind.U32 43900 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5037; Value.Integer IntegerKind.U32 43901 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5038; Value.Integer IntegerKind.U32 43902 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5039; Value.Integer IntegerKind.U32 43903 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5040; Value.Integer IntegerKind.U32 43904 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5041; Value.Integer IntegerKind.U32 43905 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5042; Value.Integer IntegerKind.U32 43906 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5043; Value.Integer IntegerKind.U32 43907 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5044; Value.Integer IntegerKind.U32 43908 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5045; Value.Integer IntegerKind.U32 43909 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5046; Value.Integer IntegerKind.U32 43910 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5047; Value.Integer IntegerKind.U32 43911 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5048; Value.Integer IntegerKind.U32 43912 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5049; Value.Integer IntegerKind.U32 43913 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5050; Value.Integer IntegerKind.U32 43914 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5051; Value.Integer IntegerKind.U32 43915 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5052; Value.Integer IntegerKind.U32 43916 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5053; Value.Integer IntegerKind.U32 43917 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5054; Value.Integer IntegerKind.U32 43918 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5055; Value.Integer IntegerKind.U32 43919 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5056; Value.Integer IntegerKind.U32 43920 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5057; Value.Integer IntegerKind.U32 43921 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5058; Value.Integer IntegerKind.U32 43922 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5059; Value.Integer IntegerKind.U32 43923 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5060; Value.Integer IntegerKind.U32 43924 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5061; Value.Integer IntegerKind.U32 43925 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5062; Value.Integer IntegerKind.U32 43926 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5063; Value.Integer IntegerKind.U32 43927 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5064; Value.Integer IntegerKind.U32 43928 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5065; Value.Integer IntegerKind.U32 43929 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5066; Value.Integer IntegerKind.U32 43930 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5067; Value.Integer IntegerKind.U32 43931 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5068; Value.Integer IntegerKind.U32 43932 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5069; Value.Integer IntegerKind.U32 43933 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5070; Value.Integer IntegerKind.U32 43934 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5071; Value.Integer IntegerKind.U32 43935 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5072; Value.Integer IntegerKind.U32 43936 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5073; Value.Integer IntegerKind.U32 43937 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5074; Value.Integer IntegerKind.U32 43938 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5075; Value.Integer IntegerKind.U32 43939 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5076; Value.Integer IntegerKind.U32 43940 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5077; Value.Integer IntegerKind.U32 43941 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5078; Value.Integer IntegerKind.U32 43942 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5079; Value.Integer IntegerKind.U32 43943 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5080; Value.Integer IntegerKind.U32 43944 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5081; Value.Integer IntegerKind.U32 43945 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5082; Value.Integer IntegerKind.U32 43946 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5083; Value.Integer IntegerKind.U32 43947 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5084; Value.Integer IntegerKind.U32 43948 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5085; Value.Integer IntegerKind.U32 43949 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5086; Value.Integer IntegerKind.U32 43950 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5087; Value.Integer IntegerKind.U32 43951 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5088; Value.Integer IntegerKind.U32 43952 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5089; Value.Integer IntegerKind.U32 43953 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5090; Value.Integer IntegerKind.U32 43954 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5091; Value.Integer IntegerKind.U32 43955 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5092; Value.Integer IntegerKind.U32 43956 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5093; Value.Integer IntegerKind.U32 43957 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5094; Value.Integer IntegerKind.U32 43958 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5095; Value.Integer IntegerKind.U32 43959 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5096; Value.Integer IntegerKind.U32 43960 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5097; Value.Integer IntegerKind.U32 43961 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5098; Value.Integer IntegerKind.U32 43962 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5099; Value.Integer IntegerKind.U32 43963 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5100; Value.Integer IntegerKind.U32 43964 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5101; Value.Integer IntegerKind.U32 43965 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5102; Value.Integer IntegerKind.U32 43966 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5103; Value.Integer IntegerKind.U32 43967 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5104; Value.Integer IntegerKind.U32 5112 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5105; Value.Integer IntegerKind.U32 5113 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5106; Value.Integer IntegerKind.U32 5114 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5107; Value.Integer IntegerKind.U32 5115 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5108; Value.Integer IntegerKind.U32 5116 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5109; Value.Integer IntegerKind.U32 5117 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7305; Value.Integer IntegerKind.U32 7306 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7312; Value.Integer IntegerKind.U32 4304 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7313; Value.Integer IntegerKind.U32 4305 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7314; Value.Integer IntegerKind.U32 4306 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7315; Value.Integer IntegerKind.U32 4307 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7316; Value.Integer IntegerKind.U32 4308 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7317; Value.Integer IntegerKind.U32 4309 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7318; Value.Integer IntegerKind.U32 4310 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7319; Value.Integer IntegerKind.U32 4311 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7320; Value.Integer IntegerKind.U32 4312 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7321; Value.Integer IntegerKind.U32 4313 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7322; Value.Integer IntegerKind.U32 4314 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7323; Value.Integer IntegerKind.U32 4315 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7324; Value.Integer IntegerKind.U32 4316 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7325; Value.Integer IntegerKind.U32 4317 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7326; Value.Integer IntegerKind.U32 4318 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7327; Value.Integer IntegerKind.U32 4319 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7328; Value.Integer IntegerKind.U32 4320 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7329; Value.Integer IntegerKind.U32 4321 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7330; Value.Integer IntegerKind.U32 4322 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7331; Value.Integer IntegerKind.U32 4323 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7332; Value.Integer IntegerKind.U32 4324 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7333; Value.Integer IntegerKind.U32 4325 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7334; Value.Integer IntegerKind.U32 4326 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7335; Value.Integer IntegerKind.U32 4327 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7336; Value.Integer IntegerKind.U32 4328 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7337; Value.Integer IntegerKind.U32 4329 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7338; Value.Integer IntegerKind.U32 4330 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7339; Value.Integer IntegerKind.U32 4331 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7340; Value.Integer IntegerKind.U32 4332 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7341; Value.Integer IntegerKind.U32 4333 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7342; Value.Integer IntegerKind.U32 4334 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7343; Value.Integer IntegerKind.U32 4335 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7344; Value.Integer IntegerKind.U32 4336 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7345; Value.Integer IntegerKind.U32 4337 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7346; Value.Integer IntegerKind.U32 4338 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7347; Value.Integer IntegerKind.U32 4339 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7348; Value.Integer IntegerKind.U32 4340 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7349; Value.Integer IntegerKind.U32 4341 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7350; Value.Integer IntegerKind.U32 4342 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7351; Value.Integer IntegerKind.U32 4343 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7352; Value.Integer IntegerKind.U32 4344 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7353; Value.Integer IntegerKind.U32 4345 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7354; Value.Integer IntegerKind.U32 4346 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7357; Value.Integer IntegerKind.U32 4349 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7358; Value.Integer IntegerKind.U32 4350 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7359; Value.Integer IntegerKind.U32 4351 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7680; Value.Integer IntegerKind.U32 7681 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7682; Value.Integer IntegerKind.U32 7683 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7684; Value.Integer IntegerKind.U32 7685 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7686; Value.Integer IntegerKind.U32 7687 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7688; Value.Integer IntegerKind.U32 7689 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7690; Value.Integer IntegerKind.U32 7691 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7692; Value.Integer IntegerKind.U32 7693 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7694; Value.Integer IntegerKind.U32 7695 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7696; Value.Integer IntegerKind.U32 7697 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7698; Value.Integer IntegerKind.U32 7699 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7700; Value.Integer IntegerKind.U32 7701 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7702; Value.Integer IntegerKind.U32 7703 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7704; Value.Integer IntegerKind.U32 7705 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7706; Value.Integer IntegerKind.U32 7707 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7708; Value.Integer IntegerKind.U32 7709 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7710; Value.Integer IntegerKind.U32 7711 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7712; Value.Integer IntegerKind.U32 7713 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7714; Value.Integer IntegerKind.U32 7715 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7716; Value.Integer IntegerKind.U32 7717 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7718; Value.Integer IntegerKind.U32 7719 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7720; Value.Integer IntegerKind.U32 7721 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7722; Value.Integer IntegerKind.U32 7723 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7724; Value.Integer IntegerKind.U32 7725 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7726; Value.Integer IntegerKind.U32 7727 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7728; Value.Integer IntegerKind.U32 7729 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7730; Value.Integer IntegerKind.U32 7731 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7732; Value.Integer IntegerKind.U32 7733 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7734; Value.Integer IntegerKind.U32 7735 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7736; Value.Integer IntegerKind.U32 7737 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7738; Value.Integer IntegerKind.U32 7739 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7740; Value.Integer IntegerKind.U32 7741 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7742; Value.Integer IntegerKind.U32 7743 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7744; Value.Integer IntegerKind.U32 7745 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7746; Value.Integer IntegerKind.U32 7747 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7748; Value.Integer IntegerKind.U32 7749 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7750; Value.Integer IntegerKind.U32 7751 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7752; Value.Integer IntegerKind.U32 7753 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7754; Value.Integer IntegerKind.U32 7755 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7756; Value.Integer IntegerKind.U32 7757 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7758; Value.Integer IntegerKind.U32 7759 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7760; Value.Integer IntegerKind.U32 7761 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7762; Value.Integer IntegerKind.U32 7763 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7764; Value.Integer IntegerKind.U32 7765 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7766; Value.Integer IntegerKind.U32 7767 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7768; Value.Integer IntegerKind.U32 7769 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7770; Value.Integer IntegerKind.U32 7771 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7772; Value.Integer IntegerKind.U32 7773 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7774; Value.Integer IntegerKind.U32 7775 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7776; Value.Integer IntegerKind.U32 7777 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7778; Value.Integer IntegerKind.U32 7779 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7780; Value.Integer IntegerKind.U32 7781 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7782; Value.Integer IntegerKind.U32 7783 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7784; Value.Integer IntegerKind.U32 7785 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7786; Value.Integer IntegerKind.U32 7787 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7788; Value.Integer IntegerKind.U32 7789 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7790; Value.Integer IntegerKind.U32 7791 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7792; Value.Integer IntegerKind.U32 7793 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7794; Value.Integer IntegerKind.U32 7795 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7796; Value.Integer IntegerKind.U32 7797 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7798; Value.Integer IntegerKind.U32 7799 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7800; Value.Integer IntegerKind.U32 7801 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7802; Value.Integer IntegerKind.U32 7803 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7804; Value.Integer IntegerKind.U32 7805 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7806; Value.Integer IntegerKind.U32 7807 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7808; Value.Integer IntegerKind.U32 7809 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7810; Value.Integer IntegerKind.U32 7811 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7812; Value.Integer IntegerKind.U32 7813 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7814; Value.Integer IntegerKind.U32 7815 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7816; Value.Integer IntegerKind.U32 7817 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7818; Value.Integer IntegerKind.U32 7819 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7820; Value.Integer IntegerKind.U32 7821 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7822; Value.Integer IntegerKind.U32 7823 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7824; Value.Integer IntegerKind.U32 7825 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7826; Value.Integer IntegerKind.U32 7827 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7828; Value.Integer IntegerKind.U32 7829 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7838; Value.Integer IntegerKind.U32 223 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7840; Value.Integer IntegerKind.U32 7841 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7842; Value.Integer IntegerKind.U32 7843 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7844; Value.Integer IntegerKind.U32 7845 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7846; Value.Integer IntegerKind.U32 7847 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7848; Value.Integer IntegerKind.U32 7849 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7850; Value.Integer IntegerKind.U32 7851 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7852; Value.Integer IntegerKind.U32 7853 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7854; Value.Integer IntegerKind.U32 7855 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7856; Value.Integer IntegerKind.U32 7857 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7858; Value.Integer IntegerKind.U32 7859 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7860; Value.Integer IntegerKind.U32 7861 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7862; Value.Integer IntegerKind.U32 7863 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7864; Value.Integer IntegerKind.U32 7865 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7866; Value.Integer IntegerKind.U32 7867 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7868; Value.Integer IntegerKind.U32 7869 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7870; Value.Integer IntegerKind.U32 7871 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7872; Value.Integer IntegerKind.U32 7873 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7874; Value.Integer IntegerKind.U32 7875 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7876; Value.Integer IntegerKind.U32 7877 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7878; Value.Integer IntegerKind.U32 7879 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7880; Value.Integer IntegerKind.U32 7881 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7882; Value.Integer IntegerKind.U32 7883 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7884; Value.Integer IntegerKind.U32 7885 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7886; Value.Integer IntegerKind.U32 7887 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7888; Value.Integer IntegerKind.U32 7889 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7890; Value.Integer IntegerKind.U32 7891 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7892; Value.Integer IntegerKind.U32 7893 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7894; Value.Integer IntegerKind.U32 7895 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7896; Value.Integer IntegerKind.U32 7897 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7898; Value.Integer IntegerKind.U32 7899 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7900; Value.Integer IntegerKind.U32 7901 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7902; Value.Integer IntegerKind.U32 7903 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7904; Value.Integer IntegerKind.U32 7905 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7906; Value.Integer IntegerKind.U32 7907 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7908; Value.Integer IntegerKind.U32 7909 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7910; Value.Integer IntegerKind.U32 7911 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7912; Value.Integer IntegerKind.U32 7913 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7914; Value.Integer IntegerKind.U32 7915 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7916; Value.Integer IntegerKind.U32 7917 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7918; Value.Integer IntegerKind.U32 7919 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7920; Value.Integer IntegerKind.U32 7921 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7922; Value.Integer IntegerKind.U32 7923 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7924; Value.Integer IntegerKind.U32 7925 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7926; Value.Integer IntegerKind.U32 7927 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7928; Value.Integer IntegerKind.U32 7929 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7930; Value.Integer IntegerKind.U32 7931 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7932; Value.Integer IntegerKind.U32 7933 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7934; Value.Integer IntegerKind.U32 7935 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7944; Value.Integer IntegerKind.U32 7936 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7945; Value.Integer IntegerKind.U32 7937 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7946; Value.Integer IntegerKind.U32 7938 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7947; Value.Integer IntegerKind.U32 7939 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7948; Value.Integer IntegerKind.U32 7940 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7949; Value.Integer IntegerKind.U32 7941 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7950; Value.Integer IntegerKind.U32 7942 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7951; Value.Integer IntegerKind.U32 7943 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7960; Value.Integer IntegerKind.U32 7952 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7961; Value.Integer IntegerKind.U32 7953 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7962; Value.Integer IntegerKind.U32 7954 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7963; Value.Integer IntegerKind.U32 7955 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7964; Value.Integer IntegerKind.U32 7956 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7965; Value.Integer IntegerKind.U32 7957 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7976; Value.Integer IntegerKind.U32 7968 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7977; Value.Integer IntegerKind.U32 7969 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7978; Value.Integer IntegerKind.U32 7970 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7979; Value.Integer IntegerKind.U32 7971 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7980; Value.Integer IntegerKind.U32 7972 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7981; Value.Integer IntegerKind.U32 7973 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7982; Value.Integer IntegerKind.U32 7974 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7983; Value.Integer IntegerKind.U32 7975 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7992; Value.Integer IntegerKind.U32 7984 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7993; Value.Integer IntegerKind.U32 7985 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7994; Value.Integer IntegerKind.U32 7986 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7995; Value.Integer IntegerKind.U32 7987 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7996; Value.Integer IntegerKind.U32 7988 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7997; Value.Integer IntegerKind.U32 7989 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7998; Value.Integer IntegerKind.U32 7990 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7999; Value.Integer IntegerKind.U32 7991 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8008; Value.Integer IntegerKind.U32 8000 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8009; Value.Integer IntegerKind.U32 8001 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8010; Value.Integer IntegerKind.U32 8002 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8011; Value.Integer IntegerKind.U32 8003 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8012; Value.Integer IntegerKind.U32 8004 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8013; Value.Integer IntegerKind.U32 8005 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8025; Value.Integer IntegerKind.U32 8017 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8027; Value.Integer IntegerKind.U32 8019 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8029; Value.Integer IntegerKind.U32 8021 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8031; Value.Integer IntegerKind.U32 8023 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8040; Value.Integer IntegerKind.U32 8032 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8041; Value.Integer IntegerKind.U32 8033 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8042; Value.Integer IntegerKind.U32 8034 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8043; Value.Integer IntegerKind.U32 8035 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8044; Value.Integer IntegerKind.U32 8036 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8045; Value.Integer IntegerKind.U32 8037 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8046; Value.Integer IntegerKind.U32 8038 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8047; Value.Integer IntegerKind.U32 8039 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8072; Value.Integer IntegerKind.U32 8064 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8073; Value.Integer IntegerKind.U32 8065 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8074; Value.Integer IntegerKind.U32 8066 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8075; Value.Integer IntegerKind.U32 8067 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8076; Value.Integer IntegerKind.U32 8068 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8077; Value.Integer IntegerKind.U32 8069 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8078; Value.Integer IntegerKind.U32 8070 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8079; Value.Integer IntegerKind.U32 8071 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8088; Value.Integer IntegerKind.U32 8080 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8089; Value.Integer IntegerKind.U32 8081 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8090; Value.Integer IntegerKind.U32 8082 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8091; Value.Integer IntegerKind.U32 8083 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8092; Value.Integer IntegerKind.U32 8084 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8093; Value.Integer IntegerKind.U32 8085 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8094; Value.Integer IntegerKind.U32 8086 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8095; Value.Integer IntegerKind.U32 8087 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8104; Value.Integer IntegerKind.U32 8096 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8105; Value.Integer IntegerKind.U32 8097 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8106; Value.Integer IntegerKind.U32 8098 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8107; Value.Integer IntegerKind.U32 8099 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8108; Value.Integer IntegerKind.U32 8100 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8109; Value.Integer IntegerKind.U32 8101 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8110; Value.Integer IntegerKind.U32 8102 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8111; Value.Integer IntegerKind.U32 8103 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8120; Value.Integer IntegerKind.U32 8112 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8121; Value.Integer IntegerKind.U32 8113 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8122; Value.Integer IntegerKind.U32 8048 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8123; Value.Integer IntegerKind.U32 8049 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8124; Value.Integer IntegerKind.U32 8115 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8136; Value.Integer IntegerKind.U32 8050 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8137; Value.Integer IntegerKind.U32 8051 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8138; Value.Integer IntegerKind.U32 8052 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8139; Value.Integer IntegerKind.U32 8053 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8140; Value.Integer IntegerKind.U32 8131 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8152; Value.Integer IntegerKind.U32 8144 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8153; Value.Integer IntegerKind.U32 8145 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8154; Value.Integer IntegerKind.U32 8054 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8155; Value.Integer IntegerKind.U32 8055 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8168; Value.Integer IntegerKind.U32 8160 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8169; Value.Integer IntegerKind.U32 8161 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8170; Value.Integer IntegerKind.U32 8058 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8171; Value.Integer IntegerKind.U32 8059 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8172; Value.Integer IntegerKind.U32 8165 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8184; Value.Integer IntegerKind.U32 8056 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8185; Value.Integer IntegerKind.U32 8057 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8186; Value.Integer IntegerKind.U32 8060 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8187; Value.Integer IntegerKind.U32 8061 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8188; Value.Integer IntegerKind.U32 8179 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8486; Value.Integer IntegerKind.U32 969 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8490; Value.Integer IntegerKind.U32 107 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8491; Value.Integer IntegerKind.U32 229 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8498; Value.Integer IntegerKind.U32 8526 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8544; Value.Integer IntegerKind.U32 8560 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8545; Value.Integer IntegerKind.U32 8561 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8546; Value.Integer IntegerKind.U32 8562 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8547; Value.Integer IntegerKind.U32 8563 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8548; Value.Integer IntegerKind.U32 8564 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8549; Value.Integer IntegerKind.U32 8565 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8550; Value.Integer IntegerKind.U32 8566 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8551; Value.Integer IntegerKind.U32 8567 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8552; Value.Integer IntegerKind.U32 8568 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8553; Value.Integer IntegerKind.U32 8569 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8554; Value.Integer IntegerKind.U32 8570 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8555; Value.Integer IntegerKind.U32 8571 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8556; Value.Integer IntegerKind.U32 8572 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8557; Value.Integer IntegerKind.U32 8573 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8558; Value.Integer IntegerKind.U32 8574 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8559; Value.Integer IntegerKind.U32 8575 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8579; Value.Integer IntegerKind.U32 8580 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9398; Value.Integer IntegerKind.U32 9424 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9399; Value.Integer IntegerKind.U32 9425 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9400; Value.Integer IntegerKind.U32 9426 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9401; Value.Integer IntegerKind.U32 9427 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9402; Value.Integer IntegerKind.U32 9428 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9403; Value.Integer IntegerKind.U32 9429 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9404; Value.Integer IntegerKind.U32 9430 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9405; Value.Integer IntegerKind.U32 9431 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9406; Value.Integer IntegerKind.U32 9432 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9407; Value.Integer IntegerKind.U32 9433 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9408; Value.Integer IntegerKind.U32 9434 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9409; Value.Integer IntegerKind.U32 9435 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9410; Value.Integer IntegerKind.U32 9436 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9411; Value.Integer IntegerKind.U32 9437 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9412; Value.Integer IntegerKind.U32 9438 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9413; Value.Integer IntegerKind.U32 9439 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9414; Value.Integer IntegerKind.U32 9440 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9415; Value.Integer IntegerKind.U32 9441 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9416; Value.Integer IntegerKind.U32 9442 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9417; Value.Integer IntegerKind.U32 9443 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9418; Value.Integer IntegerKind.U32 9444 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9419; Value.Integer IntegerKind.U32 9445 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9420; Value.Integer IntegerKind.U32 9446 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9421; Value.Integer IntegerKind.U32 9447 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9422; Value.Integer IntegerKind.U32 9448 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9423; Value.Integer IntegerKind.U32 9449 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11264; Value.Integer IntegerKind.U32 11312 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11265; Value.Integer IntegerKind.U32 11313 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11266; Value.Integer IntegerKind.U32 11314 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11267; Value.Integer IntegerKind.U32 11315 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11268; Value.Integer IntegerKind.U32 11316 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11269; Value.Integer IntegerKind.U32 11317 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11270; Value.Integer IntegerKind.U32 11318 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11271; Value.Integer IntegerKind.U32 11319 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11272; Value.Integer IntegerKind.U32 11320 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11273; Value.Integer IntegerKind.U32 11321 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11274; Value.Integer IntegerKind.U32 11322 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11275; Value.Integer IntegerKind.U32 11323 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11276; Value.Integer IntegerKind.U32 11324 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11277; Value.Integer IntegerKind.U32 11325 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11278; Value.Integer IntegerKind.U32 11326 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11279; Value.Integer IntegerKind.U32 11327 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11280; Value.Integer IntegerKind.U32 11328 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11281; Value.Integer IntegerKind.U32 11329 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11282; Value.Integer IntegerKind.U32 11330 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11283; Value.Integer IntegerKind.U32 11331 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11284; Value.Integer IntegerKind.U32 11332 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11285; Value.Integer IntegerKind.U32 11333 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11286; Value.Integer IntegerKind.U32 11334 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11287; Value.Integer IntegerKind.U32 11335 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11288; Value.Integer IntegerKind.U32 11336 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11289; Value.Integer IntegerKind.U32 11337 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11290; Value.Integer IntegerKind.U32 11338 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11291; Value.Integer IntegerKind.U32 11339 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11292; Value.Integer IntegerKind.U32 11340 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11293; Value.Integer IntegerKind.U32 11341 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11294; Value.Integer IntegerKind.U32 11342 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11295; Value.Integer IntegerKind.U32 11343 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11296; Value.Integer IntegerKind.U32 11344 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11297; Value.Integer IntegerKind.U32 11345 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11298; Value.Integer IntegerKind.U32 11346 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11299; Value.Integer IntegerKind.U32 11347 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11300; Value.Integer IntegerKind.U32 11348 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11301; Value.Integer IntegerKind.U32 11349 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11302; Value.Integer IntegerKind.U32 11350 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11303; Value.Integer IntegerKind.U32 11351 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11304; Value.Integer IntegerKind.U32 11352 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11305; Value.Integer IntegerKind.U32 11353 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11306; Value.Integer IntegerKind.U32 11354 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11307; Value.Integer IntegerKind.U32 11355 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11308; Value.Integer IntegerKind.U32 11356 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11309; Value.Integer IntegerKind.U32 11357 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11310; Value.Integer IntegerKind.U32 11358 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11311; Value.Integer IntegerKind.U32 11359 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11360; Value.Integer IntegerKind.U32 11361 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11362; Value.Integer IntegerKind.U32 619 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11363; Value.Integer IntegerKind.U32 7549 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11364; Value.Integer IntegerKind.U32 637 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11367; Value.Integer IntegerKind.U32 11368 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11369; Value.Integer IntegerKind.U32 11370 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11371; Value.Integer IntegerKind.U32 11372 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11373; Value.Integer IntegerKind.U32 593 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11374; Value.Integer IntegerKind.U32 625 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11375; Value.Integer IntegerKind.U32 592 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11376; Value.Integer IntegerKind.U32 594 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11378; Value.Integer IntegerKind.U32 11379 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11381; Value.Integer IntegerKind.U32 11382 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11390; Value.Integer IntegerKind.U32 575 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11391; Value.Integer IntegerKind.U32 576 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11392; Value.Integer IntegerKind.U32 11393 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11394; Value.Integer IntegerKind.U32 11395 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11396; Value.Integer IntegerKind.U32 11397 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11398; Value.Integer IntegerKind.U32 11399 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11400; Value.Integer IntegerKind.U32 11401 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11402; Value.Integer IntegerKind.U32 11403 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11404; Value.Integer IntegerKind.U32 11405 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11406; Value.Integer IntegerKind.U32 11407 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11408; Value.Integer IntegerKind.U32 11409 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11410; Value.Integer IntegerKind.U32 11411 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11412; Value.Integer IntegerKind.U32 11413 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11414; Value.Integer IntegerKind.U32 11415 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11416; Value.Integer IntegerKind.U32 11417 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11418; Value.Integer IntegerKind.U32 11419 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11420; Value.Integer IntegerKind.U32 11421 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11422; Value.Integer IntegerKind.U32 11423 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11424; Value.Integer IntegerKind.U32 11425 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11426; Value.Integer IntegerKind.U32 11427 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11428; Value.Integer IntegerKind.U32 11429 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11430; Value.Integer IntegerKind.U32 11431 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11432; Value.Integer IntegerKind.U32 11433 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11434; Value.Integer IntegerKind.U32 11435 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11436; Value.Integer IntegerKind.U32 11437 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11438; Value.Integer IntegerKind.U32 11439 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11440; Value.Integer IntegerKind.U32 11441 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11442; Value.Integer IntegerKind.U32 11443 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11444; Value.Integer IntegerKind.U32 11445 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11446; Value.Integer IntegerKind.U32 11447 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11448; Value.Integer IntegerKind.U32 11449 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11450; Value.Integer IntegerKind.U32 11451 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11452; Value.Integer IntegerKind.U32 11453 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11454; Value.Integer IntegerKind.U32 11455 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11456; Value.Integer IntegerKind.U32 11457 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11458; Value.Integer IntegerKind.U32 11459 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11460; Value.Integer IntegerKind.U32 11461 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11462; Value.Integer IntegerKind.U32 11463 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11464; Value.Integer IntegerKind.U32 11465 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11466; Value.Integer IntegerKind.U32 11467 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11468; Value.Integer IntegerKind.U32 11469 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11470; Value.Integer IntegerKind.U32 11471 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11472; Value.Integer IntegerKind.U32 11473 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11474; Value.Integer IntegerKind.U32 11475 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11476; Value.Integer IntegerKind.U32 11477 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11478; Value.Integer IntegerKind.U32 11479 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11480; Value.Integer IntegerKind.U32 11481 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11482; Value.Integer IntegerKind.U32 11483 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11484; Value.Integer IntegerKind.U32 11485 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11486; Value.Integer IntegerKind.U32 11487 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11488; Value.Integer IntegerKind.U32 11489 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11490; Value.Integer IntegerKind.U32 11491 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11499; Value.Integer IntegerKind.U32 11500 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11501; Value.Integer IntegerKind.U32 11502 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11506; Value.Integer IntegerKind.U32 11507 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42560; Value.Integer IntegerKind.U32 42561 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42562; Value.Integer IntegerKind.U32 42563 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42564; Value.Integer IntegerKind.U32 42565 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42566; Value.Integer IntegerKind.U32 42567 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42568; Value.Integer IntegerKind.U32 42569 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42570; Value.Integer IntegerKind.U32 42571 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42572; Value.Integer IntegerKind.U32 42573 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42574; Value.Integer IntegerKind.U32 42575 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42576; Value.Integer IntegerKind.U32 42577 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42578; Value.Integer IntegerKind.U32 42579 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42580; Value.Integer IntegerKind.U32 42581 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42582; Value.Integer IntegerKind.U32 42583 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42584; Value.Integer IntegerKind.U32 42585 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42586; Value.Integer IntegerKind.U32 42587 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42588; Value.Integer IntegerKind.U32 42589 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42590; Value.Integer IntegerKind.U32 42591 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42592; Value.Integer IntegerKind.U32 42593 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42594; Value.Integer IntegerKind.U32 42595 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42596; Value.Integer IntegerKind.U32 42597 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42598; Value.Integer IntegerKind.U32 42599 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42600; Value.Integer IntegerKind.U32 42601 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42602; Value.Integer IntegerKind.U32 42603 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42604; Value.Integer IntegerKind.U32 42605 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42624; Value.Integer IntegerKind.U32 42625 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42626; Value.Integer IntegerKind.U32 42627 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42628; Value.Integer IntegerKind.U32 42629 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42630; Value.Integer IntegerKind.U32 42631 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42632; Value.Integer IntegerKind.U32 42633 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42634; Value.Integer IntegerKind.U32 42635 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42636; Value.Integer IntegerKind.U32 42637 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42638; Value.Integer IntegerKind.U32 42639 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42640; Value.Integer IntegerKind.U32 42641 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42642; Value.Integer IntegerKind.U32 42643 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42644; Value.Integer IntegerKind.U32 42645 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42646; Value.Integer IntegerKind.U32 42647 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42648; Value.Integer IntegerKind.U32 42649 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42650; Value.Integer IntegerKind.U32 42651 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42786; Value.Integer IntegerKind.U32 42787 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42788; Value.Integer IntegerKind.U32 42789 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42790; Value.Integer IntegerKind.U32 42791 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42792; Value.Integer IntegerKind.U32 42793 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42794; Value.Integer IntegerKind.U32 42795 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42796; Value.Integer IntegerKind.U32 42797 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42798; Value.Integer IntegerKind.U32 42799 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42802; Value.Integer IntegerKind.U32 42803 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42804; Value.Integer IntegerKind.U32 42805 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42806; Value.Integer IntegerKind.U32 42807 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42808; Value.Integer IntegerKind.U32 42809 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42810; Value.Integer IntegerKind.U32 42811 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42812; Value.Integer IntegerKind.U32 42813 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42814; Value.Integer IntegerKind.U32 42815 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42816; Value.Integer IntegerKind.U32 42817 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42818; Value.Integer IntegerKind.U32 42819 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42820; Value.Integer IntegerKind.U32 42821 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42822; Value.Integer IntegerKind.U32 42823 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42824; Value.Integer IntegerKind.U32 42825 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42826; Value.Integer IntegerKind.U32 42827 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42828; Value.Integer IntegerKind.U32 42829 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42830; Value.Integer IntegerKind.U32 42831 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42832; Value.Integer IntegerKind.U32 42833 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42834; Value.Integer IntegerKind.U32 42835 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42836; Value.Integer IntegerKind.U32 42837 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42838; Value.Integer IntegerKind.U32 42839 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42840; Value.Integer IntegerKind.U32 42841 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42842; Value.Integer IntegerKind.U32 42843 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42844; Value.Integer IntegerKind.U32 42845 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42846; Value.Integer IntegerKind.U32 42847 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42848; Value.Integer IntegerKind.U32 42849 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42850; Value.Integer IntegerKind.U32 42851 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42852; Value.Integer IntegerKind.U32 42853 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42854; Value.Integer IntegerKind.U32 42855 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42856; Value.Integer IntegerKind.U32 42857 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42858; Value.Integer IntegerKind.U32 42859 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42860; Value.Integer IntegerKind.U32 42861 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42862; Value.Integer IntegerKind.U32 42863 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42873; Value.Integer IntegerKind.U32 42874 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42875; Value.Integer IntegerKind.U32 42876 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42877; Value.Integer IntegerKind.U32 7545 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42878; Value.Integer IntegerKind.U32 42879 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42880; Value.Integer IntegerKind.U32 42881 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42882; Value.Integer IntegerKind.U32 42883 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42884; Value.Integer IntegerKind.U32 42885 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42886; Value.Integer IntegerKind.U32 42887 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42891; Value.Integer IntegerKind.U32 42892 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42893; Value.Integer IntegerKind.U32 613 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42896; Value.Integer IntegerKind.U32 42897 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42898; Value.Integer IntegerKind.U32 42899 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42902; Value.Integer IntegerKind.U32 42903 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42904; Value.Integer IntegerKind.U32 42905 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42906; Value.Integer IntegerKind.U32 42907 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42908; Value.Integer IntegerKind.U32 42909 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42910; Value.Integer IntegerKind.U32 42911 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42912; Value.Integer IntegerKind.U32 42913 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42914; Value.Integer IntegerKind.U32 42915 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42916; Value.Integer IntegerKind.U32 42917 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42918; Value.Integer IntegerKind.U32 42919 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42920; Value.Integer IntegerKind.U32 42921 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42922; Value.Integer IntegerKind.U32 614 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42923; Value.Integer IntegerKind.U32 604 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42924; Value.Integer IntegerKind.U32 609 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42925; Value.Integer IntegerKind.U32 620 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42926; Value.Integer IntegerKind.U32 618 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42928; Value.Integer IntegerKind.U32 670 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42929; Value.Integer IntegerKind.U32 647 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42930; Value.Integer IntegerKind.U32 669 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42931; Value.Integer IntegerKind.U32 43859 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42932; Value.Integer IntegerKind.U32 42933 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42934; Value.Integer IntegerKind.U32 42935 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42936; Value.Integer IntegerKind.U32 42937 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42938; Value.Integer IntegerKind.U32 42939 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42940; Value.Integer IntegerKind.U32 42941 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42942; Value.Integer IntegerKind.U32 42943 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42944; Value.Integer IntegerKind.U32 42945 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42946; Value.Integer IntegerKind.U32 42947 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42948; Value.Integer IntegerKind.U32 42900 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42949; Value.Integer IntegerKind.U32 642 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42950; Value.Integer IntegerKind.U32 7566 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42951; Value.Integer IntegerKind.U32 42952 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42953; Value.Integer IntegerKind.U32 42954 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42955; Value.Integer IntegerKind.U32 612 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42956; Value.Integer IntegerKind.U32 42957 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42960; Value.Integer IntegerKind.U32 42961 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42966; Value.Integer IntegerKind.U32 42967 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42968; Value.Integer IntegerKind.U32 42969 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42970; Value.Integer IntegerKind.U32 42971 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42972; Value.Integer IntegerKind.U32 411 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42997; Value.Integer IntegerKind.U32 42998 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65313; Value.Integer IntegerKind.U32 65345 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65314; Value.Integer IntegerKind.U32 65346 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65315; Value.Integer IntegerKind.U32 65347 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65316; Value.Integer IntegerKind.U32 65348 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65317; Value.Integer IntegerKind.U32 65349 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65318; Value.Integer IntegerKind.U32 65350 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65319; Value.Integer IntegerKind.U32 65351 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65320; Value.Integer IntegerKind.U32 65352 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65321; Value.Integer IntegerKind.U32 65353 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65322; Value.Integer IntegerKind.U32 65354 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65323; Value.Integer IntegerKind.U32 65355 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65324; Value.Integer IntegerKind.U32 65356 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65325; Value.Integer IntegerKind.U32 65357 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65326; Value.Integer IntegerKind.U32 65358 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65327; Value.Integer IntegerKind.U32 65359 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65328; Value.Integer IntegerKind.U32 65360 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65329; Value.Integer IntegerKind.U32 65361 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65330; Value.Integer IntegerKind.U32 65362 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65331; Value.Integer IntegerKind.U32 65363 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65332; Value.Integer IntegerKind.U32 65364 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65333; Value.Integer IntegerKind.U32 65365 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65334; Value.Integer IntegerKind.U32 65366 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65335; Value.Integer IntegerKind.U32 65367 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65336; Value.Integer IntegerKind.U32 65368 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65337; Value.Integer IntegerKind.U32 65369 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65338; Value.Integer IntegerKind.U32 65370 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66560; Value.Integer IntegerKind.U32 66600 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66561; Value.Integer IntegerKind.U32 66601 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66562; Value.Integer IntegerKind.U32 66602 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66563; Value.Integer IntegerKind.U32 66603 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66564; Value.Integer IntegerKind.U32 66604 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66565; Value.Integer IntegerKind.U32 66605 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66566; Value.Integer IntegerKind.U32 66606 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66567; Value.Integer IntegerKind.U32 66607 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66568; Value.Integer IntegerKind.U32 66608 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66569; Value.Integer IntegerKind.U32 66609 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66570; Value.Integer IntegerKind.U32 66610 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66571; Value.Integer IntegerKind.U32 66611 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66572; Value.Integer IntegerKind.U32 66612 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66573; Value.Integer IntegerKind.U32 66613 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66574; Value.Integer IntegerKind.U32 66614 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66575; Value.Integer IntegerKind.U32 66615 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66576; Value.Integer IntegerKind.U32 66616 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66577; Value.Integer IntegerKind.U32 66617 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66578; Value.Integer IntegerKind.U32 66618 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66579; Value.Integer IntegerKind.U32 66619 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66580; Value.Integer IntegerKind.U32 66620 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66581; Value.Integer IntegerKind.U32 66621 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66582; Value.Integer IntegerKind.U32 66622 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66583; Value.Integer IntegerKind.U32 66623 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66584; Value.Integer IntegerKind.U32 66624 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66585; Value.Integer IntegerKind.U32 66625 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66586; Value.Integer IntegerKind.U32 66626 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66587; Value.Integer IntegerKind.U32 66627 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66588; Value.Integer IntegerKind.U32 66628 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66589; Value.Integer IntegerKind.U32 66629 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66590; Value.Integer IntegerKind.U32 66630 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66591; Value.Integer IntegerKind.U32 66631 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66592; Value.Integer IntegerKind.U32 66632 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66593; Value.Integer IntegerKind.U32 66633 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66594; Value.Integer IntegerKind.U32 66634 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66595; Value.Integer IntegerKind.U32 66635 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66596; Value.Integer IntegerKind.U32 66636 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66597; Value.Integer IntegerKind.U32 66637 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66598; Value.Integer IntegerKind.U32 66638 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66599; Value.Integer IntegerKind.U32 66639 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66736; Value.Integer IntegerKind.U32 66776 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66737; Value.Integer IntegerKind.U32 66777 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66738; Value.Integer IntegerKind.U32 66778 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66739; Value.Integer IntegerKind.U32 66779 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66740; Value.Integer IntegerKind.U32 66780 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66741; Value.Integer IntegerKind.U32 66781 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66742; Value.Integer IntegerKind.U32 66782 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66743; Value.Integer IntegerKind.U32 66783 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66744; Value.Integer IntegerKind.U32 66784 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66745; Value.Integer IntegerKind.U32 66785 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66746; Value.Integer IntegerKind.U32 66786 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66747; Value.Integer IntegerKind.U32 66787 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66748; Value.Integer IntegerKind.U32 66788 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66749; Value.Integer IntegerKind.U32 66789 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66750; Value.Integer IntegerKind.U32 66790 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66751; Value.Integer IntegerKind.U32 66791 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66752; Value.Integer IntegerKind.U32 66792 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66753; Value.Integer IntegerKind.U32 66793 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66754; Value.Integer IntegerKind.U32 66794 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66755; Value.Integer IntegerKind.U32 66795 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66756; Value.Integer IntegerKind.U32 66796 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66757; Value.Integer IntegerKind.U32 66797 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66758; Value.Integer IntegerKind.U32 66798 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66759; Value.Integer IntegerKind.U32 66799 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66760; Value.Integer IntegerKind.U32 66800 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66761; Value.Integer IntegerKind.U32 66801 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66762; Value.Integer IntegerKind.U32 66802 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66763; Value.Integer IntegerKind.U32 66803 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66764; Value.Integer IntegerKind.U32 66804 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66765; Value.Integer IntegerKind.U32 66805 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66766; Value.Integer IntegerKind.U32 66806 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66767; Value.Integer IntegerKind.U32 66807 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66768; Value.Integer IntegerKind.U32 66808 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66769; Value.Integer IntegerKind.U32 66809 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66770; Value.Integer IntegerKind.U32 66810 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66771; Value.Integer IntegerKind.U32 66811 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66928; Value.Integer IntegerKind.U32 66967 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66929; Value.Integer IntegerKind.U32 66968 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66930; Value.Integer IntegerKind.U32 66969 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66931; Value.Integer IntegerKind.U32 66970 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66932; Value.Integer IntegerKind.U32 66971 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66933; Value.Integer IntegerKind.U32 66972 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66934; Value.Integer IntegerKind.U32 66973 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66935; Value.Integer IntegerKind.U32 66974 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66936; Value.Integer IntegerKind.U32 66975 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66937; Value.Integer IntegerKind.U32 66976 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66938; Value.Integer IntegerKind.U32 66977 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66940; Value.Integer IntegerKind.U32 66979 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66941; Value.Integer IntegerKind.U32 66980 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66942; Value.Integer IntegerKind.U32 66981 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66943; Value.Integer IntegerKind.U32 66982 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66944; Value.Integer IntegerKind.U32 66983 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66945; Value.Integer IntegerKind.U32 66984 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66946; Value.Integer IntegerKind.U32 66985 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66947; Value.Integer IntegerKind.U32 66986 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66948; Value.Integer IntegerKind.U32 66987 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66949; Value.Integer IntegerKind.U32 66988 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66950; Value.Integer IntegerKind.U32 66989 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66951; Value.Integer IntegerKind.U32 66990 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66952; Value.Integer IntegerKind.U32 66991 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66953; Value.Integer IntegerKind.U32 66992 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66954; Value.Integer IntegerKind.U32 66993 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66956; Value.Integer IntegerKind.U32 66995 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66957; Value.Integer IntegerKind.U32 66996 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66958; Value.Integer IntegerKind.U32 66997 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66959; Value.Integer IntegerKind.U32 66998 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66960; Value.Integer IntegerKind.U32 66999 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66961; Value.Integer IntegerKind.U32 67000 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66962; Value.Integer IntegerKind.U32 67001 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66964; Value.Integer IntegerKind.U32 67003 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66965; Value.Integer IntegerKind.U32 67004 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68736; Value.Integer IntegerKind.U32 68800 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68737; Value.Integer IntegerKind.U32 68801 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68738; Value.Integer IntegerKind.U32 68802 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68739; Value.Integer IntegerKind.U32 68803 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68740; Value.Integer IntegerKind.U32 68804 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68741; Value.Integer IntegerKind.U32 68805 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68742; Value.Integer IntegerKind.U32 68806 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68743; Value.Integer IntegerKind.U32 68807 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68744; Value.Integer IntegerKind.U32 68808 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68745; Value.Integer IntegerKind.U32 68809 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68746; Value.Integer IntegerKind.U32 68810 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68747; Value.Integer IntegerKind.U32 68811 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68748; Value.Integer IntegerKind.U32 68812 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68749; Value.Integer IntegerKind.U32 68813 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68750; Value.Integer IntegerKind.U32 68814 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68751; Value.Integer IntegerKind.U32 68815 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68752; Value.Integer IntegerKind.U32 68816 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68753; Value.Integer IntegerKind.U32 68817 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68754; Value.Integer IntegerKind.U32 68818 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68755; Value.Integer IntegerKind.U32 68819 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68756; Value.Integer IntegerKind.U32 68820 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68757; Value.Integer IntegerKind.U32 68821 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68758; Value.Integer IntegerKind.U32 68822 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68759; Value.Integer IntegerKind.U32 68823 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68760; Value.Integer IntegerKind.U32 68824 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68761; Value.Integer IntegerKind.U32 68825 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68762; Value.Integer IntegerKind.U32 68826 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68763; Value.Integer IntegerKind.U32 68827 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68764; Value.Integer IntegerKind.U32 68828 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68765; Value.Integer IntegerKind.U32 68829 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68766; Value.Integer IntegerKind.U32 68830 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68767; Value.Integer IntegerKind.U32 68831 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68768; Value.Integer IntegerKind.U32 68832 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68769; Value.Integer IntegerKind.U32 68833 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68770; Value.Integer IntegerKind.U32 68834 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68771; Value.Integer IntegerKind.U32 68835 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68772; Value.Integer IntegerKind.U32 68836 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68773; Value.Integer IntegerKind.U32 68837 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68774; Value.Integer IntegerKind.U32 68838 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68775; Value.Integer IntegerKind.U32 68839 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68776; Value.Integer IntegerKind.U32 68840 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68777; Value.Integer IntegerKind.U32 68841 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68778; Value.Integer IntegerKind.U32 68842 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68779; Value.Integer IntegerKind.U32 68843 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68780; Value.Integer IntegerKind.U32 68844 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68781; Value.Integer IntegerKind.U32 68845 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68782; Value.Integer IntegerKind.U32 68846 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68783; Value.Integer IntegerKind.U32 68847 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68784; Value.Integer IntegerKind.U32 68848 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68785; Value.Integer IntegerKind.U32 68849 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68786; Value.Integer IntegerKind.U32 68850 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68944; Value.Integer IntegerKind.U32 68976 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68945; Value.Integer IntegerKind.U32 68977 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68946; Value.Integer IntegerKind.U32 68978 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68947; Value.Integer IntegerKind.U32 68979 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68948; Value.Integer IntegerKind.U32 68980 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68949; Value.Integer IntegerKind.U32 68981 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68950; Value.Integer IntegerKind.U32 68982 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68951; Value.Integer IntegerKind.U32 68983 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68952; Value.Integer IntegerKind.U32 68984 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68953; Value.Integer IntegerKind.U32 68985 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68954; Value.Integer IntegerKind.U32 68986 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68955; Value.Integer IntegerKind.U32 68987 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68956; Value.Integer IntegerKind.U32 68988 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68957; Value.Integer IntegerKind.U32 68989 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68958; Value.Integer IntegerKind.U32 68990 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68959; Value.Integer IntegerKind.U32 68991 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68960; Value.Integer IntegerKind.U32 68992 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68961; Value.Integer IntegerKind.U32 68993 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68962; Value.Integer IntegerKind.U32 68994 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68963; Value.Integer IntegerKind.U32 68995 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68964; Value.Integer IntegerKind.U32 68996 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68965; Value.Integer IntegerKind.U32 68997 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71840; Value.Integer IntegerKind.U32 71872 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71841; Value.Integer IntegerKind.U32 71873 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71842; Value.Integer IntegerKind.U32 71874 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71843; Value.Integer IntegerKind.U32 71875 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71844; Value.Integer IntegerKind.U32 71876 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71845; Value.Integer IntegerKind.U32 71877 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71846; Value.Integer IntegerKind.U32 71878 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71847; Value.Integer IntegerKind.U32 71879 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71848; Value.Integer IntegerKind.U32 71880 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71849; Value.Integer IntegerKind.U32 71881 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71850; Value.Integer IntegerKind.U32 71882 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71851; Value.Integer IntegerKind.U32 71883 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71852; Value.Integer IntegerKind.U32 71884 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71853; Value.Integer IntegerKind.U32 71885 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71854; Value.Integer IntegerKind.U32 71886 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71855; Value.Integer IntegerKind.U32 71887 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71856; Value.Integer IntegerKind.U32 71888 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71857; Value.Integer IntegerKind.U32 71889 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71858; Value.Integer IntegerKind.U32 71890 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71859; Value.Integer IntegerKind.U32 71891 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71860; Value.Integer IntegerKind.U32 71892 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71861; Value.Integer IntegerKind.U32 71893 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71862; Value.Integer IntegerKind.U32 71894 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71863; Value.Integer IntegerKind.U32 71895 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71864; Value.Integer IntegerKind.U32 71896 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71865; Value.Integer IntegerKind.U32 71897 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71866; Value.Integer IntegerKind.U32 71898 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71867; Value.Integer IntegerKind.U32 71899 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71868; Value.Integer IntegerKind.U32 71900 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71869; Value.Integer IntegerKind.U32 71901 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71870; Value.Integer IntegerKind.U32 71902 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71871; Value.Integer IntegerKind.U32 71903 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93760; Value.Integer IntegerKind.U32 93792 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93761; Value.Integer IntegerKind.U32 93793 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93762; Value.Integer IntegerKind.U32 93794 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93763; Value.Integer IntegerKind.U32 93795 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93764; Value.Integer IntegerKind.U32 93796 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93765; Value.Integer IntegerKind.U32 93797 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93766; Value.Integer IntegerKind.U32 93798 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93767; Value.Integer IntegerKind.U32 93799 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93768; Value.Integer IntegerKind.U32 93800 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93769; Value.Integer IntegerKind.U32 93801 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93770; Value.Integer IntegerKind.U32 93802 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93771; Value.Integer IntegerKind.U32 93803 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93772; Value.Integer IntegerKind.U32 93804 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93773; Value.Integer IntegerKind.U32 93805 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93774; Value.Integer IntegerKind.U32 93806 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93775; Value.Integer IntegerKind.U32 93807 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93776; Value.Integer IntegerKind.U32 93808 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93777; Value.Integer IntegerKind.U32 93809 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93778; Value.Integer IntegerKind.U32 93810 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93779; Value.Integer IntegerKind.U32 93811 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93780; Value.Integer IntegerKind.U32 93812 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93781; Value.Integer IntegerKind.U32 93813 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93782; Value.Integer IntegerKind.U32 93814 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93783; Value.Integer IntegerKind.U32 93815 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93784; Value.Integer IntegerKind.U32 93816 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93785; Value.Integer IntegerKind.U32 93817 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93786; Value.Integer IntegerKind.U32 93818 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93787; Value.Integer IntegerKind.U32 93819 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93788; Value.Integer IntegerKind.U32 93820 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93789; Value.Integer IntegerKind.U32 93821 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93790; Value.Integer IntegerKind.U32 93822 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93791; Value.Integer IntegerKind.U32 93823 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125184; Value.Integer IntegerKind.U32 125218 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125185; Value.Integer IntegerKind.U32 125219 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125186; Value.Integer IntegerKind.U32 125220 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125187; Value.Integer IntegerKind.U32 125221 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125188; Value.Integer IntegerKind.U32 125222 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125189; Value.Integer IntegerKind.U32 125223 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125190; Value.Integer IntegerKind.U32 125224 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125191; Value.Integer IntegerKind.U32 125225 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125192; Value.Integer IntegerKind.U32 125226 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125193; Value.Integer IntegerKind.U32 125227 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125194; Value.Integer IntegerKind.U32 125228 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125195; Value.Integer IntegerKind.U32 125229 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125196; Value.Integer IntegerKind.U32 125230 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125197; Value.Integer IntegerKind.U32 125231 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125198; Value.Integer IntegerKind.U32 125232 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125199; Value.Integer IntegerKind.U32 125233 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125200; Value.Integer IntegerKind.U32 125234 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125201; Value.Integer IntegerKind.U32 125235 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125202; Value.Integer IntegerKind.U32 125236 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125203; Value.Integer IntegerKind.U32 125237 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125204; Value.Integer IntegerKind.U32 125238 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125205; Value.Integer IntegerKind.U32 125239 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125206; Value.Integer IntegerKind.U32 125240 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125207; Value.Integer IntegerKind.U32 125241 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125208; Value.Integer IntegerKind.U32 125242 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125209; Value.Integer IntegerKind.U32 125243 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125210; Value.Integer IntegerKind.U32 125244 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125211; Value.Integer IntegerKind.U32 125245 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125212; Value.Integer IntegerKind.U32 125246 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125213; Value.Integer IntegerKind.U32 125247 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125214; Value.Integer IntegerKind.U32 125248 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125215; Value.Integer IntegerKind.U32 125249 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125216; Value.Integer IntegerKind.U32 125250 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125217; Value.Integer IntegerKind.U32 125251 ]
-                          ]
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 1434 ]
+                        [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ]
+                    ])
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "slice") [] [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ]
+                    ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1434 ]
+                            [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ],
+                          Value.Array
+                            [
+                              Value.Tuple
+                                [ Value.UnicodeChar 192; Value.Integer IntegerKind.U32 224 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 193; Value.Integer IntegerKind.U32 225 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 194; Value.Integer IntegerKind.U32 226 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 195; Value.Integer IntegerKind.U32 227 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 196; Value.Integer IntegerKind.U32 228 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 197; Value.Integer IntegerKind.U32 229 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 198; Value.Integer IntegerKind.U32 230 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 199; Value.Integer IntegerKind.U32 231 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 200; Value.Integer IntegerKind.U32 232 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 201; Value.Integer IntegerKind.U32 233 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 202; Value.Integer IntegerKind.U32 234 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 203; Value.Integer IntegerKind.U32 235 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 204; Value.Integer IntegerKind.U32 236 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 205; Value.Integer IntegerKind.U32 237 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 206; Value.Integer IntegerKind.U32 238 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 207; Value.Integer IntegerKind.U32 239 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 208; Value.Integer IntegerKind.U32 240 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 209; Value.Integer IntegerKind.U32 241 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 210; Value.Integer IntegerKind.U32 242 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 211; Value.Integer IntegerKind.U32 243 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 212; Value.Integer IntegerKind.U32 244 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 213; Value.Integer IntegerKind.U32 245 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 214; Value.Integer IntegerKind.U32 246 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 216; Value.Integer IntegerKind.U32 248 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 217; Value.Integer IntegerKind.U32 249 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 218; Value.Integer IntegerKind.U32 250 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 219; Value.Integer IntegerKind.U32 251 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 220; Value.Integer IntegerKind.U32 252 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 221; Value.Integer IntegerKind.U32 253 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 222; Value.Integer IntegerKind.U32 254 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 256; Value.Integer IntegerKind.U32 257 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 258; Value.Integer IntegerKind.U32 259 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 260; Value.Integer IntegerKind.U32 261 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 262; Value.Integer IntegerKind.U32 263 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 264; Value.Integer IntegerKind.U32 265 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 266; Value.Integer IntegerKind.U32 267 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 268; Value.Integer IntegerKind.U32 269 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 270; Value.Integer IntegerKind.U32 271 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 272; Value.Integer IntegerKind.U32 273 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 274; Value.Integer IntegerKind.U32 275 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 276; Value.Integer IntegerKind.U32 277 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 278; Value.Integer IntegerKind.U32 279 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 280; Value.Integer IntegerKind.U32 281 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 282; Value.Integer IntegerKind.U32 283 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 284; Value.Integer IntegerKind.U32 285 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 286; Value.Integer IntegerKind.U32 287 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 288; Value.Integer IntegerKind.U32 289 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 290; Value.Integer IntegerKind.U32 291 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 292; Value.Integer IntegerKind.U32 293 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 294; Value.Integer IntegerKind.U32 295 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 296; Value.Integer IntegerKind.U32 297 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 298; Value.Integer IntegerKind.U32 299 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 300; Value.Integer IntegerKind.U32 301 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 302; Value.Integer IntegerKind.U32 303 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 304; Value.Integer IntegerKind.U32 4194304 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 306; Value.Integer IntegerKind.U32 307 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 308; Value.Integer IntegerKind.U32 309 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 310; Value.Integer IntegerKind.U32 311 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 313; Value.Integer IntegerKind.U32 314 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 315; Value.Integer IntegerKind.U32 316 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 317; Value.Integer IntegerKind.U32 318 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 319; Value.Integer IntegerKind.U32 320 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 321; Value.Integer IntegerKind.U32 322 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 323; Value.Integer IntegerKind.U32 324 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 325; Value.Integer IntegerKind.U32 326 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 327; Value.Integer IntegerKind.U32 328 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 330; Value.Integer IntegerKind.U32 331 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 332; Value.Integer IntegerKind.U32 333 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 334; Value.Integer IntegerKind.U32 335 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 336; Value.Integer IntegerKind.U32 337 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 338; Value.Integer IntegerKind.U32 339 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 340; Value.Integer IntegerKind.U32 341 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 342; Value.Integer IntegerKind.U32 343 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 344; Value.Integer IntegerKind.U32 345 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 346; Value.Integer IntegerKind.U32 347 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 348; Value.Integer IntegerKind.U32 349 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 350; Value.Integer IntegerKind.U32 351 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 352; Value.Integer IntegerKind.U32 353 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 354; Value.Integer IntegerKind.U32 355 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 356; Value.Integer IntegerKind.U32 357 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 358; Value.Integer IntegerKind.U32 359 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 360; Value.Integer IntegerKind.U32 361 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 362; Value.Integer IntegerKind.U32 363 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 364; Value.Integer IntegerKind.U32 365 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 366; Value.Integer IntegerKind.U32 367 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 368; Value.Integer IntegerKind.U32 369 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 370; Value.Integer IntegerKind.U32 371 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 372; Value.Integer IntegerKind.U32 373 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 374; Value.Integer IntegerKind.U32 375 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 376; Value.Integer IntegerKind.U32 255 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 377; Value.Integer IntegerKind.U32 378 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 379; Value.Integer IntegerKind.U32 380 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 381; Value.Integer IntegerKind.U32 382 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 385; Value.Integer IntegerKind.U32 595 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 386; Value.Integer IntegerKind.U32 387 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 388; Value.Integer IntegerKind.U32 389 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 390; Value.Integer IntegerKind.U32 596 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 391; Value.Integer IntegerKind.U32 392 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 393; Value.Integer IntegerKind.U32 598 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 394; Value.Integer IntegerKind.U32 599 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 395; Value.Integer IntegerKind.U32 396 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 398; Value.Integer IntegerKind.U32 477 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 399; Value.Integer IntegerKind.U32 601 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 400; Value.Integer IntegerKind.U32 603 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 401; Value.Integer IntegerKind.U32 402 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 403; Value.Integer IntegerKind.U32 608 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 404; Value.Integer IntegerKind.U32 611 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 406; Value.Integer IntegerKind.U32 617 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 407; Value.Integer IntegerKind.U32 616 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 408; Value.Integer IntegerKind.U32 409 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 412; Value.Integer IntegerKind.U32 623 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 413; Value.Integer IntegerKind.U32 626 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 415; Value.Integer IntegerKind.U32 629 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 416; Value.Integer IntegerKind.U32 417 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 418; Value.Integer IntegerKind.U32 419 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 420; Value.Integer IntegerKind.U32 421 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 422; Value.Integer IntegerKind.U32 640 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 423; Value.Integer IntegerKind.U32 424 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 425; Value.Integer IntegerKind.U32 643 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 428; Value.Integer IntegerKind.U32 429 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 430; Value.Integer IntegerKind.U32 648 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 431; Value.Integer IntegerKind.U32 432 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 433; Value.Integer IntegerKind.U32 650 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 434; Value.Integer IntegerKind.U32 651 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 435; Value.Integer IntegerKind.U32 436 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 437; Value.Integer IntegerKind.U32 438 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 439; Value.Integer IntegerKind.U32 658 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 440; Value.Integer IntegerKind.U32 441 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 444; Value.Integer IntegerKind.U32 445 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 452; Value.Integer IntegerKind.U32 454 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 453; Value.Integer IntegerKind.U32 454 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 455; Value.Integer IntegerKind.U32 457 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 456; Value.Integer IntegerKind.U32 457 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 458; Value.Integer IntegerKind.U32 460 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 459; Value.Integer IntegerKind.U32 460 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 461; Value.Integer IntegerKind.U32 462 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 463; Value.Integer IntegerKind.U32 464 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 465; Value.Integer IntegerKind.U32 466 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 467; Value.Integer IntegerKind.U32 468 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 469; Value.Integer IntegerKind.U32 470 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 471; Value.Integer IntegerKind.U32 472 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 473; Value.Integer IntegerKind.U32 474 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 475; Value.Integer IntegerKind.U32 476 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 478; Value.Integer IntegerKind.U32 479 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 480; Value.Integer IntegerKind.U32 481 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 482; Value.Integer IntegerKind.U32 483 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 484; Value.Integer IntegerKind.U32 485 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 486; Value.Integer IntegerKind.U32 487 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 488; Value.Integer IntegerKind.U32 489 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 490; Value.Integer IntegerKind.U32 491 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 492; Value.Integer IntegerKind.U32 493 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 494; Value.Integer IntegerKind.U32 495 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 497; Value.Integer IntegerKind.U32 499 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 498; Value.Integer IntegerKind.U32 499 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 500; Value.Integer IntegerKind.U32 501 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 502; Value.Integer IntegerKind.U32 405 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 503; Value.Integer IntegerKind.U32 447 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 504; Value.Integer IntegerKind.U32 505 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 506; Value.Integer IntegerKind.U32 507 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 508; Value.Integer IntegerKind.U32 509 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 510; Value.Integer IntegerKind.U32 511 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 512; Value.Integer IntegerKind.U32 513 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 514; Value.Integer IntegerKind.U32 515 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 516; Value.Integer IntegerKind.U32 517 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 518; Value.Integer IntegerKind.U32 519 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 520; Value.Integer IntegerKind.U32 521 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 522; Value.Integer IntegerKind.U32 523 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 524; Value.Integer IntegerKind.U32 525 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 526; Value.Integer IntegerKind.U32 527 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 528; Value.Integer IntegerKind.U32 529 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 530; Value.Integer IntegerKind.U32 531 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 532; Value.Integer IntegerKind.U32 533 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 534; Value.Integer IntegerKind.U32 535 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 536; Value.Integer IntegerKind.U32 537 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 538; Value.Integer IntegerKind.U32 539 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 540; Value.Integer IntegerKind.U32 541 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 542; Value.Integer IntegerKind.U32 543 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 544; Value.Integer IntegerKind.U32 414 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 546; Value.Integer IntegerKind.U32 547 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 548; Value.Integer IntegerKind.U32 549 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 550; Value.Integer IntegerKind.U32 551 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 552; Value.Integer IntegerKind.U32 553 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 554; Value.Integer IntegerKind.U32 555 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 556; Value.Integer IntegerKind.U32 557 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 558; Value.Integer IntegerKind.U32 559 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 560; Value.Integer IntegerKind.U32 561 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 562; Value.Integer IntegerKind.U32 563 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 570; Value.Integer IntegerKind.U32 11365 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 571; Value.Integer IntegerKind.U32 572 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 573; Value.Integer IntegerKind.U32 410 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 574; Value.Integer IntegerKind.U32 11366 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 577; Value.Integer IntegerKind.U32 578 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 579; Value.Integer IntegerKind.U32 384 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 580; Value.Integer IntegerKind.U32 649 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 581; Value.Integer IntegerKind.U32 652 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 582; Value.Integer IntegerKind.U32 583 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 584; Value.Integer IntegerKind.U32 585 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 586; Value.Integer IntegerKind.U32 587 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 588; Value.Integer IntegerKind.U32 589 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 590; Value.Integer IntegerKind.U32 591 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 880; Value.Integer IntegerKind.U32 881 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 882; Value.Integer IntegerKind.U32 883 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 886; Value.Integer IntegerKind.U32 887 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 895; Value.Integer IntegerKind.U32 1011 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 902; Value.Integer IntegerKind.U32 940 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 904; Value.Integer IntegerKind.U32 941 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 905; Value.Integer IntegerKind.U32 942 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 906; Value.Integer IntegerKind.U32 943 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 908; Value.Integer IntegerKind.U32 972 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 910; Value.Integer IntegerKind.U32 973 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 911; Value.Integer IntegerKind.U32 974 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 913; Value.Integer IntegerKind.U32 945 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 914; Value.Integer IntegerKind.U32 946 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 915; Value.Integer IntegerKind.U32 947 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 916; Value.Integer IntegerKind.U32 948 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 917; Value.Integer IntegerKind.U32 949 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 918; Value.Integer IntegerKind.U32 950 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 919; Value.Integer IntegerKind.U32 951 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 920; Value.Integer IntegerKind.U32 952 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 921; Value.Integer IntegerKind.U32 953 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 922; Value.Integer IntegerKind.U32 954 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 923; Value.Integer IntegerKind.U32 955 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 924; Value.Integer IntegerKind.U32 956 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 925; Value.Integer IntegerKind.U32 957 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 926; Value.Integer IntegerKind.U32 958 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 927; Value.Integer IntegerKind.U32 959 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 928; Value.Integer IntegerKind.U32 960 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 929; Value.Integer IntegerKind.U32 961 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 931; Value.Integer IntegerKind.U32 963 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 932; Value.Integer IntegerKind.U32 964 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 933; Value.Integer IntegerKind.U32 965 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 934; Value.Integer IntegerKind.U32 966 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 935; Value.Integer IntegerKind.U32 967 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 936; Value.Integer IntegerKind.U32 968 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 937; Value.Integer IntegerKind.U32 969 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 938; Value.Integer IntegerKind.U32 970 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 939; Value.Integer IntegerKind.U32 971 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 975; Value.Integer IntegerKind.U32 983 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 984; Value.Integer IntegerKind.U32 985 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 986; Value.Integer IntegerKind.U32 987 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 988; Value.Integer IntegerKind.U32 989 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 990; Value.Integer IntegerKind.U32 991 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 992; Value.Integer IntegerKind.U32 993 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 994; Value.Integer IntegerKind.U32 995 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 996; Value.Integer IntegerKind.U32 997 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 998; Value.Integer IntegerKind.U32 999 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1000; Value.Integer IntegerKind.U32 1001 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1002; Value.Integer IntegerKind.U32 1003 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1004; Value.Integer IntegerKind.U32 1005 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1006; Value.Integer IntegerKind.U32 1007 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1012; Value.Integer IntegerKind.U32 952 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1015; Value.Integer IntegerKind.U32 1016 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1017; Value.Integer IntegerKind.U32 1010 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1018; Value.Integer IntegerKind.U32 1019 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1021; Value.Integer IntegerKind.U32 891 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1022; Value.Integer IntegerKind.U32 892 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1023; Value.Integer IntegerKind.U32 893 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1024; Value.Integer IntegerKind.U32 1104 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1025; Value.Integer IntegerKind.U32 1105 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1026; Value.Integer IntegerKind.U32 1106 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1027; Value.Integer IntegerKind.U32 1107 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1028; Value.Integer IntegerKind.U32 1108 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1029; Value.Integer IntegerKind.U32 1109 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1030; Value.Integer IntegerKind.U32 1110 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1031; Value.Integer IntegerKind.U32 1111 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1032; Value.Integer IntegerKind.U32 1112 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1033; Value.Integer IntegerKind.U32 1113 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1034; Value.Integer IntegerKind.U32 1114 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1035; Value.Integer IntegerKind.U32 1115 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1036; Value.Integer IntegerKind.U32 1116 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1037; Value.Integer IntegerKind.U32 1117 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1038; Value.Integer IntegerKind.U32 1118 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1039; Value.Integer IntegerKind.U32 1119 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1040; Value.Integer IntegerKind.U32 1072 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1041; Value.Integer IntegerKind.U32 1073 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1042; Value.Integer IntegerKind.U32 1074 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1043; Value.Integer IntegerKind.U32 1075 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1044; Value.Integer IntegerKind.U32 1076 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1045; Value.Integer IntegerKind.U32 1077 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1046; Value.Integer IntegerKind.U32 1078 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1047; Value.Integer IntegerKind.U32 1079 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1048; Value.Integer IntegerKind.U32 1080 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1049; Value.Integer IntegerKind.U32 1081 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1050; Value.Integer IntegerKind.U32 1082 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1051; Value.Integer IntegerKind.U32 1083 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1052; Value.Integer IntegerKind.U32 1084 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1053; Value.Integer IntegerKind.U32 1085 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1054; Value.Integer IntegerKind.U32 1086 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1055; Value.Integer IntegerKind.U32 1087 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1056; Value.Integer IntegerKind.U32 1088 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1057; Value.Integer IntegerKind.U32 1089 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1058; Value.Integer IntegerKind.U32 1090 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1059; Value.Integer IntegerKind.U32 1091 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1060; Value.Integer IntegerKind.U32 1092 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1061; Value.Integer IntegerKind.U32 1093 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1062; Value.Integer IntegerKind.U32 1094 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1063; Value.Integer IntegerKind.U32 1095 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1064; Value.Integer IntegerKind.U32 1096 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1065; Value.Integer IntegerKind.U32 1097 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1066; Value.Integer IntegerKind.U32 1098 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1067; Value.Integer IntegerKind.U32 1099 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1068; Value.Integer IntegerKind.U32 1100 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1069; Value.Integer IntegerKind.U32 1101 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1070; Value.Integer IntegerKind.U32 1102 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1071; Value.Integer IntegerKind.U32 1103 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1120; Value.Integer IntegerKind.U32 1121 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1122; Value.Integer IntegerKind.U32 1123 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1124; Value.Integer IntegerKind.U32 1125 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1126; Value.Integer IntegerKind.U32 1127 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1128; Value.Integer IntegerKind.U32 1129 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1130; Value.Integer IntegerKind.U32 1131 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1132; Value.Integer IntegerKind.U32 1133 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1134; Value.Integer IntegerKind.U32 1135 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1136; Value.Integer IntegerKind.U32 1137 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1138; Value.Integer IntegerKind.U32 1139 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1140; Value.Integer IntegerKind.U32 1141 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1142; Value.Integer IntegerKind.U32 1143 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1144; Value.Integer IntegerKind.U32 1145 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1146; Value.Integer IntegerKind.U32 1147 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1148; Value.Integer IntegerKind.U32 1149 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1150; Value.Integer IntegerKind.U32 1151 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1152; Value.Integer IntegerKind.U32 1153 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1162; Value.Integer IntegerKind.U32 1163 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1164; Value.Integer IntegerKind.U32 1165 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1166; Value.Integer IntegerKind.U32 1167 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1168; Value.Integer IntegerKind.U32 1169 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1170; Value.Integer IntegerKind.U32 1171 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1172; Value.Integer IntegerKind.U32 1173 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1174; Value.Integer IntegerKind.U32 1175 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1176; Value.Integer IntegerKind.U32 1177 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1178; Value.Integer IntegerKind.U32 1179 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1180; Value.Integer IntegerKind.U32 1181 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1182; Value.Integer IntegerKind.U32 1183 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1184; Value.Integer IntegerKind.U32 1185 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1186; Value.Integer IntegerKind.U32 1187 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1188; Value.Integer IntegerKind.U32 1189 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1190; Value.Integer IntegerKind.U32 1191 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1192; Value.Integer IntegerKind.U32 1193 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1194; Value.Integer IntegerKind.U32 1195 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1196; Value.Integer IntegerKind.U32 1197 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1198; Value.Integer IntegerKind.U32 1199 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1200; Value.Integer IntegerKind.U32 1201 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1202; Value.Integer IntegerKind.U32 1203 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1204; Value.Integer IntegerKind.U32 1205 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1206; Value.Integer IntegerKind.U32 1207 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1208; Value.Integer IntegerKind.U32 1209 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1210; Value.Integer IntegerKind.U32 1211 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1212; Value.Integer IntegerKind.U32 1213 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1214; Value.Integer IntegerKind.U32 1215 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1216; Value.Integer IntegerKind.U32 1231 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1217; Value.Integer IntegerKind.U32 1218 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1219; Value.Integer IntegerKind.U32 1220 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1221; Value.Integer IntegerKind.U32 1222 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1223; Value.Integer IntegerKind.U32 1224 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1225; Value.Integer IntegerKind.U32 1226 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1227; Value.Integer IntegerKind.U32 1228 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1229; Value.Integer IntegerKind.U32 1230 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1232; Value.Integer IntegerKind.U32 1233 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1234; Value.Integer IntegerKind.U32 1235 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1236; Value.Integer IntegerKind.U32 1237 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1238; Value.Integer IntegerKind.U32 1239 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1240; Value.Integer IntegerKind.U32 1241 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1242; Value.Integer IntegerKind.U32 1243 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1244; Value.Integer IntegerKind.U32 1245 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1246; Value.Integer IntegerKind.U32 1247 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1248; Value.Integer IntegerKind.U32 1249 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1250; Value.Integer IntegerKind.U32 1251 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1252; Value.Integer IntegerKind.U32 1253 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1254; Value.Integer IntegerKind.U32 1255 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1256; Value.Integer IntegerKind.U32 1257 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1258; Value.Integer IntegerKind.U32 1259 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1260; Value.Integer IntegerKind.U32 1261 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1262; Value.Integer IntegerKind.U32 1263 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1264; Value.Integer IntegerKind.U32 1265 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1266; Value.Integer IntegerKind.U32 1267 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1268; Value.Integer IntegerKind.U32 1269 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1270; Value.Integer IntegerKind.U32 1271 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1272; Value.Integer IntegerKind.U32 1273 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1274; Value.Integer IntegerKind.U32 1275 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1276; Value.Integer IntegerKind.U32 1277 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1278; Value.Integer IntegerKind.U32 1279 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1280; Value.Integer IntegerKind.U32 1281 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1282; Value.Integer IntegerKind.U32 1283 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1284; Value.Integer IntegerKind.U32 1285 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1286; Value.Integer IntegerKind.U32 1287 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1288; Value.Integer IntegerKind.U32 1289 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1290; Value.Integer IntegerKind.U32 1291 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1292; Value.Integer IntegerKind.U32 1293 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1294; Value.Integer IntegerKind.U32 1295 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1296; Value.Integer IntegerKind.U32 1297 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1298; Value.Integer IntegerKind.U32 1299 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1300; Value.Integer IntegerKind.U32 1301 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1302; Value.Integer IntegerKind.U32 1303 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1304; Value.Integer IntegerKind.U32 1305 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1306; Value.Integer IntegerKind.U32 1307 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1308; Value.Integer IntegerKind.U32 1309 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1310; Value.Integer IntegerKind.U32 1311 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1312; Value.Integer IntegerKind.U32 1313 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1314; Value.Integer IntegerKind.U32 1315 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1316; Value.Integer IntegerKind.U32 1317 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1318; Value.Integer IntegerKind.U32 1319 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1320; Value.Integer IntegerKind.U32 1321 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1322; Value.Integer IntegerKind.U32 1323 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1324; Value.Integer IntegerKind.U32 1325 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1326; Value.Integer IntegerKind.U32 1327 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1329; Value.Integer IntegerKind.U32 1377 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1330; Value.Integer IntegerKind.U32 1378 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1331; Value.Integer IntegerKind.U32 1379 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1332; Value.Integer IntegerKind.U32 1380 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1333; Value.Integer IntegerKind.U32 1381 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1334; Value.Integer IntegerKind.U32 1382 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1335; Value.Integer IntegerKind.U32 1383 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1336; Value.Integer IntegerKind.U32 1384 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1337; Value.Integer IntegerKind.U32 1385 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1338; Value.Integer IntegerKind.U32 1386 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1339; Value.Integer IntegerKind.U32 1387 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1340; Value.Integer IntegerKind.U32 1388 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1341; Value.Integer IntegerKind.U32 1389 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1342; Value.Integer IntegerKind.U32 1390 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1343; Value.Integer IntegerKind.U32 1391 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1344; Value.Integer IntegerKind.U32 1392 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1345; Value.Integer IntegerKind.U32 1393 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1346; Value.Integer IntegerKind.U32 1394 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1347; Value.Integer IntegerKind.U32 1395 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1348; Value.Integer IntegerKind.U32 1396 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1349; Value.Integer IntegerKind.U32 1397 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1350; Value.Integer IntegerKind.U32 1398 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1351; Value.Integer IntegerKind.U32 1399 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1352; Value.Integer IntegerKind.U32 1400 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1353; Value.Integer IntegerKind.U32 1401 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1354; Value.Integer IntegerKind.U32 1402 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1355; Value.Integer IntegerKind.U32 1403 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1356; Value.Integer IntegerKind.U32 1404 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1357; Value.Integer IntegerKind.U32 1405 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1358; Value.Integer IntegerKind.U32 1406 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1359; Value.Integer IntegerKind.U32 1407 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1360; Value.Integer IntegerKind.U32 1408 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1361; Value.Integer IntegerKind.U32 1409 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1362; Value.Integer IntegerKind.U32 1410 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1363; Value.Integer IntegerKind.U32 1411 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1364; Value.Integer IntegerKind.U32 1412 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1365; Value.Integer IntegerKind.U32 1413 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1366; Value.Integer IntegerKind.U32 1414 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4256; Value.Integer IntegerKind.U32 11520 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4257; Value.Integer IntegerKind.U32 11521 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4258; Value.Integer IntegerKind.U32 11522 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4259; Value.Integer IntegerKind.U32 11523 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4260; Value.Integer IntegerKind.U32 11524 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4261; Value.Integer IntegerKind.U32 11525 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4262; Value.Integer IntegerKind.U32 11526 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4263; Value.Integer IntegerKind.U32 11527 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4264; Value.Integer IntegerKind.U32 11528 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4265; Value.Integer IntegerKind.U32 11529 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4266; Value.Integer IntegerKind.U32 11530 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4267; Value.Integer IntegerKind.U32 11531 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4268; Value.Integer IntegerKind.U32 11532 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4269; Value.Integer IntegerKind.U32 11533 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4270; Value.Integer IntegerKind.U32 11534 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4271; Value.Integer IntegerKind.U32 11535 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4272; Value.Integer IntegerKind.U32 11536 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4273; Value.Integer IntegerKind.U32 11537 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4274; Value.Integer IntegerKind.U32 11538 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4275; Value.Integer IntegerKind.U32 11539 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4276; Value.Integer IntegerKind.U32 11540 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4277; Value.Integer IntegerKind.U32 11541 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4278; Value.Integer IntegerKind.U32 11542 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4279; Value.Integer IntegerKind.U32 11543 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4280; Value.Integer IntegerKind.U32 11544 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4281; Value.Integer IntegerKind.U32 11545 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4282; Value.Integer IntegerKind.U32 11546 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4283; Value.Integer IntegerKind.U32 11547 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4284; Value.Integer IntegerKind.U32 11548 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4285; Value.Integer IntegerKind.U32 11549 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4286; Value.Integer IntegerKind.U32 11550 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4287; Value.Integer IntegerKind.U32 11551 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4288; Value.Integer IntegerKind.U32 11552 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4289; Value.Integer IntegerKind.U32 11553 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4290; Value.Integer IntegerKind.U32 11554 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4291; Value.Integer IntegerKind.U32 11555 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4292; Value.Integer IntegerKind.U32 11556 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4293; Value.Integer IntegerKind.U32 11557 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4295; Value.Integer IntegerKind.U32 11559 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4301; Value.Integer IntegerKind.U32 11565 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5024; Value.Integer IntegerKind.U32 43888 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5025; Value.Integer IntegerKind.U32 43889 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5026; Value.Integer IntegerKind.U32 43890 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5027; Value.Integer IntegerKind.U32 43891 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5028; Value.Integer IntegerKind.U32 43892 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5029; Value.Integer IntegerKind.U32 43893 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5030; Value.Integer IntegerKind.U32 43894 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5031; Value.Integer IntegerKind.U32 43895 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5032; Value.Integer IntegerKind.U32 43896 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5033; Value.Integer IntegerKind.U32 43897 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5034; Value.Integer IntegerKind.U32 43898 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5035; Value.Integer IntegerKind.U32 43899 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5036; Value.Integer IntegerKind.U32 43900 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5037; Value.Integer IntegerKind.U32 43901 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5038; Value.Integer IntegerKind.U32 43902 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5039; Value.Integer IntegerKind.U32 43903 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5040; Value.Integer IntegerKind.U32 43904 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5041; Value.Integer IntegerKind.U32 43905 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5042; Value.Integer IntegerKind.U32 43906 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5043; Value.Integer IntegerKind.U32 43907 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5044; Value.Integer IntegerKind.U32 43908 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5045; Value.Integer IntegerKind.U32 43909 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5046; Value.Integer IntegerKind.U32 43910 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5047; Value.Integer IntegerKind.U32 43911 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5048; Value.Integer IntegerKind.U32 43912 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5049; Value.Integer IntegerKind.U32 43913 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5050; Value.Integer IntegerKind.U32 43914 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5051; Value.Integer IntegerKind.U32 43915 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5052; Value.Integer IntegerKind.U32 43916 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5053; Value.Integer IntegerKind.U32 43917 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5054; Value.Integer IntegerKind.U32 43918 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5055; Value.Integer IntegerKind.U32 43919 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5056; Value.Integer IntegerKind.U32 43920 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5057; Value.Integer IntegerKind.U32 43921 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5058; Value.Integer IntegerKind.U32 43922 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5059; Value.Integer IntegerKind.U32 43923 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5060; Value.Integer IntegerKind.U32 43924 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5061; Value.Integer IntegerKind.U32 43925 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5062; Value.Integer IntegerKind.U32 43926 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5063; Value.Integer IntegerKind.U32 43927 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5064; Value.Integer IntegerKind.U32 43928 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5065; Value.Integer IntegerKind.U32 43929 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5066; Value.Integer IntegerKind.U32 43930 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5067; Value.Integer IntegerKind.U32 43931 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5068; Value.Integer IntegerKind.U32 43932 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5069; Value.Integer IntegerKind.U32 43933 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5070; Value.Integer IntegerKind.U32 43934 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5071; Value.Integer IntegerKind.U32 43935 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5072; Value.Integer IntegerKind.U32 43936 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5073; Value.Integer IntegerKind.U32 43937 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5074; Value.Integer IntegerKind.U32 43938 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5075; Value.Integer IntegerKind.U32 43939 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5076; Value.Integer IntegerKind.U32 43940 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5077; Value.Integer IntegerKind.U32 43941 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5078; Value.Integer IntegerKind.U32 43942 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5079; Value.Integer IntegerKind.U32 43943 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5080; Value.Integer IntegerKind.U32 43944 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5081; Value.Integer IntegerKind.U32 43945 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5082; Value.Integer IntegerKind.U32 43946 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5083; Value.Integer IntegerKind.U32 43947 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5084; Value.Integer IntegerKind.U32 43948 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5085; Value.Integer IntegerKind.U32 43949 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5086; Value.Integer IntegerKind.U32 43950 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5087; Value.Integer IntegerKind.U32 43951 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5088; Value.Integer IntegerKind.U32 43952 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5089; Value.Integer IntegerKind.U32 43953 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5090; Value.Integer IntegerKind.U32 43954 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5091; Value.Integer IntegerKind.U32 43955 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5092; Value.Integer IntegerKind.U32 43956 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5093; Value.Integer IntegerKind.U32 43957 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5094; Value.Integer IntegerKind.U32 43958 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5095; Value.Integer IntegerKind.U32 43959 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5096; Value.Integer IntegerKind.U32 43960 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5097; Value.Integer IntegerKind.U32 43961 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5098; Value.Integer IntegerKind.U32 43962 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5099; Value.Integer IntegerKind.U32 43963 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5100; Value.Integer IntegerKind.U32 43964 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5101; Value.Integer IntegerKind.U32 43965 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5102; Value.Integer IntegerKind.U32 43966 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5103; Value.Integer IntegerKind.U32 43967 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5104; Value.Integer IntegerKind.U32 5112 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5105; Value.Integer IntegerKind.U32 5113 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5106; Value.Integer IntegerKind.U32 5114 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5107; Value.Integer IntegerKind.U32 5115 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5108; Value.Integer IntegerKind.U32 5116 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5109; Value.Integer IntegerKind.U32 5117 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7305; Value.Integer IntegerKind.U32 7306 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7312; Value.Integer IntegerKind.U32 4304 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7313; Value.Integer IntegerKind.U32 4305 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7314; Value.Integer IntegerKind.U32 4306 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7315; Value.Integer IntegerKind.U32 4307 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7316; Value.Integer IntegerKind.U32 4308 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7317; Value.Integer IntegerKind.U32 4309 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7318; Value.Integer IntegerKind.U32 4310 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7319; Value.Integer IntegerKind.U32 4311 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7320; Value.Integer IntegerKind.U32 4312 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7321; Value.Integer IntegerKind.U32 4313 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7322; Value.Integer IntegerKind.U32 4314 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7323; Value.Integer IntegerKind.U32 4315 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7324; Value.Integer IntegerKind.U32 4316 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7325; Value.Integer IntegerKind.U32 4317 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7326; Value.Integer IntegerKind.U32 4318 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7327; Value.Integer IntegerKind.U32 4319 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7328; Value.Integer IntegerKind.U32 4320 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7329; Value.Integer IntegerKind.U32 4321 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7330; Value.Integer IntegerKind.U32 4322 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7331; Value.Integer IntegerKind.U32 4323 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7332; Value.Integer IntegerKind.U32 4324 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7333; Value.Integer IntegerKind.U32 4325 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7334; Value.Integer IntegerKind.U32 4326 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7335; Value.Integer IntegerKind.U32 4327 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7336; Value.Integer IntegerKind.U32 4328 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7337; Value.Integer IntegerKind.U32 4329 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7338; Value.Integer IntegerKind.U32 4330 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7339; Value.Integer IntegerKind.U32 4331 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7340; Value.Integer IntegerKind.U32 4332 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7341; Value.Integer IntegerKind.U32 4333 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7342; Value.Integer IntegerKind.U32 4334 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7343; Value.Integer IntegerKind.U32 4335 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7344; Value.Integer IntegerKind.U32 4336 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7345; Value.Integer IntegerKind.U32 4337 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7346; Value.Integer IntegerKind.U32 4338 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7347; Value.Integer IntegerKind.U32 4339 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7348; Value.Integer IntegerKind.U32 4340 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7349; Value.Integer IntegerKind.U32 4341 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7350; Value.Integer IntegerKind.U32 4342 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7351; Value.Integer IntegerKind.U32 4343 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7352; Value.Integer IntegerKind.U32 4344 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7353; Value.Integer IntegerKind.U32 4345 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7354; Value.Integer IntegerKind.U32 4346 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7357; Value.Integer IntegerKind.U32 4349 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7358; Value.Integer IntegerKind.U32 4350 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7359; Value.Integer IntegerKind.U32 4351 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7680; Value.Integer IntegerKind.U32 7681 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7682; Value.Integer IntegerKind.U32 7683 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7684; Value.Integer IntegerKind.U32 7685 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7686; Value.Integer IntegerKind.U32 7687 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7688; Value.Integer IntegerKind.U32 7689 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7690; Value.Integer IntegerKind.U32 7691 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7692; Value.Integer IntegerKind.U32 7693 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7694; Value.Integer IntegerKind.U32 7695 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7696; Value.Integer IntegerKind.U32 7697 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7698; Value.Integer IntegerKind.U32 7699 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7700; Value.Integer IntegerKind.U32 7701 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7702; Value.Integer IntegerKind.U32 7703 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7704; Value.Integer IntegerKind.U32 7705 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7706; Value.Integer IntegerKind.U32 7707 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7708; Value.Integer IntegerKind.U32 7709 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7710; Value.Integer IntegerKind.U32 7711 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7712; Value.Integer IntegerKind.U32 7713 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7714; Value.Integer IntegerKind.U32 7715 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7716; Value.Integer IntegerKind.U32 7717 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7718; Value.Integer IntegerKind.U32 7719 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7720; Value.Integer IntegerKind.U32 7721 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7722; Value.Integer IntegerKind.U32 7723 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7724; Value.Integer IntegerKind.U32 7725 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7726; Value.Integer IntegerKind.U32 7727 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7728; Value.Integer IntegerKind.U32 7729 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7730; Value.Integer IntegerKind.U32 7731 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7732; Value.Integer IntegerKind.U32 7733 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7734; Value.Integer IntegerKind.U32 7735 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7736; Value.Integer IntegerKind.U32 7737 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7738; Value.Integer IntegerKind.U32 7739 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7740; Value.Integer IntegerKind.U32 7741 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7742; Value.Integer IntegerKind.U32 7743 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7744; Value.Integer IntegerKind.U32 7745 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7746; Value.Integer IntegerKind.U32 7747 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7748; Value.Integer IntegerKind.U32 7749 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7750; Value.Integer IntegerKind.U32 7751 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7752; Value.Integer IntegerKind.U32 7753 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7754; Value.Integer IntegerKind.U32 7755 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7756; Value.Integer IntegerKind.U32 7757 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7758; Value.Integer IntegerKind.U32 7759 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7760; Value.Integer IntegerKind.U32 7761 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7762; Value.Integer IntegerKind.U32 7763 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7764; Value.Integer IntegerKind.U32 7765 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7766; Value.Integer IntegerKind.U32 7767 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7768; Value.Integer IntegerKind.U32 7769 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7770; Value.Integer IntegerKind.U32 7771 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7772; Value.Integer IntegerKind.U32 7773 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7774; Value.Integer IntegerKind.U32 7775 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7776; Value.Integer IntegerKind.U32 7777 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7778; Value.Integer IntegerKind.U32 7779 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7780; Value.Integer IntegerKind.U32 7781 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7782; Value.Integer IntegerKind.U32 7783 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7784; Value.Integer IntegerKind.U32 7785 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7786; Value.Integer IntegerKind.U32 7787 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7788; Value.Integer IntegerKind.U32 7789 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7790; Value.Integer IntegerKind.U32 7791 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7792; Value.Integer IntegerKind.U32 7793 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7794; Value.Integer IntegerKind.U32 7795 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7796; Value.Integer IntegerKind.U32 7797 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7798; Value.Integer IntegerKind.U32 7799 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7800; Value.Integer IntegerKind.U32 7801 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7802; Value.Integer IntegerKind.U32 7803 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7804; Value.Integer IntegerKind.U32 7805 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7806; Value.Integer IntegerKind.U32 7807 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7808; Value.Integer IntegerKind.U32 7809 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7810; Value.Integer IntegerKind.U32 7811 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7812; Value.Integer IntegerKind.U32 7813 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7814; Value.Integer IntegerKind.U32 7815 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7816; Value.Integer IntegerKind.U32 7817 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7818; Value.Integer IntegerKind.U32 7819 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7820; Value.Integer IntegerKind.U32 7821 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7822; Value.Integer IntegerKind.U32 7823 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7824; Value.Integer IntegerKind.U32 7825 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7826; Value.Integer IntegerKind.U32 7827 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7828; Value.Integer IntegerKind.U32 7829 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7838; Value.Integer IntegerKind.U32 223 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7840; Value.Integer IntegerKind.U32 7841 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7842; Value.Integer IntegerKind.U32 7843 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7844; Value.Integer IntegerKind.U32 7845 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7846; Value.Integer IntegerKind.U32 7847 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7848; Value.Integer IntegerKind.U32 7849 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7850; Value.Integer IntegerKind.U32 7851 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7852; Value.Integer IntegerKind.U32 7853 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7854; Value.Integer IntegerKind.U32 7855 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7856; Value.Integer IntegerKind.U32 7857 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7858; Value.Integer IntegerKind.U32 7859 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7860; Value.Integer IntegerKind.U32 7861 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7862; Value.Integer IntegerKind.U32 7863 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7864; Value.Integer IntegerKind.U32 7865 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7866; Value.Integer IntegerKind.U32 7867 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7868; Value.Integer IntegerKind.U32 7869 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7870; Value.Integer IntegerKind.U32 7871 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7872; Value.Integer IntegerKind.U32 7873 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7874; Value.Integer IntegerKind.U32 7875 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7876; Value.Integer IntegerKind.U32 7877 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7878; Value.Integer IntegerKind.U32 7879 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7880; Value.Integer IntegerKind.U32 7881 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7882; Value.Integer IntegerKind.U32 7883 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7884; Value.Integer IntegerKind.U32 7885 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7886; Value.Integer IntegerKind.U32 7887 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7888; Value.Integer IntegerKind.U32 7889 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7890; Value.Integer IntegerKind.U32 7891 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7892; Value.Integer IntegerKind.U32 7893 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7894; Value.Integer IntegerKind.U32 7895 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7896; Value.Integer IntegerKind.U32 7897 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7898; Value.Integer IntegerKind.U32 7899 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7900; Value.Integer IntegerKind.U32 7901 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7902; Value.Integer IntegerKind.U32 7903 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7904; Value.Integer IntegerKind.U32 7905 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7906; Value.Integer IntegerKind.U32 7907 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7908; Value.Integer IntegerKind.U32 7909 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7910; Value.Integer IntegerKind.U32 7911 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7912; Value.Integer IntegerKind.U32 7913 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7914; Value.Integer IntegerKind.U32 7915 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7916; Value.Integer IntegerKind.U32 7917 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7918; Value.Integer IntegerKind.U32 7919 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7920; Value.Integer IntegerKind.U32 7921 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7922; Value.Integer IntegerKind.U32 7923 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7924; Value.Integer IntegerKind.U32 7925 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7926; Value.Integer IntegerKind.U32 7927 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7928; Value.Integer IntegerKind.U32 7929 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7930; Value.Integer IntegerKind.U32 7931 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7932; Value.Integer IntegerKind.U32 7933 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7934; Value.Integer IntegerKind.U32 7935 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7944; Value.Integer IntegerKind.U32 7936 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7945; Value.Integer IntegerKind.U32 7937 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7946; Value.Integer IntegerKind.U32 7938 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7947; Value.Integer IntegerKind.U32 7939 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7948; Value.Integer IntegerKind.U32 7940 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7949; Value.Integer IntegerKind.U32 7941 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7950; Value.Integer IntegerKind.U32 7942 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7951; Value.Integer IntegerKind.U32 7943 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7960; Value.Integer IntegerKind.U32 7952 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7961; Value.Integer IntegerKind.U32 7953 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7962; Value.Integer IntegerKind.U32 7954 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7963; Value.Integer IntegerKind.U32 7955 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7964; Value.Integer IntegerKind.U32 7956 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7965; Value.Integer IntegerKind.U32 7957 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7976; Value.Integer IntegerKind.U32 7968 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7977; Value.Integer IntegerKind.U32 7969 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7978; Value.Integer IntegerKind.U32 7970 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7979; Value.Integer IntegerKind.U32 7971 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7980; Value.Integer IntegerKind.U32 7972 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7981; Value.Integer IntegerKind.U32 7973 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7982; Value.Integer IntegerKind.U32 7974 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7983; Value.Integer IntegerKind.U32 7975 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7992; Value.Integer IntegerKind.U32 7984 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7993; Value.Integer IntegerKind.U32 7985 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7994; Value.Integer IntegerKind.U32 7986 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7995; Value.Integer IntegerKind.U32 7987 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7996; Value.Integer IntegerKind.U32 7988 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7997; Value.Integer IntegerKind.U32 7989 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7998; Value.Integer IntegerKind.U32 7990 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7999; Value.Integer IntegerKind.U32 7991 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8008; Value.Integer IntegerKind.U32 8000 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8009; Value.Integer IntegerKind.U32 8001 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8010; Value.Integer IntegerKind.U32 8002 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8011; Value.Integer IntegerKind.U32 8003 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8012; Value.Integer IntegerKind.U32 8004 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8013; Value.Integer IntegerKind.U32 8005 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8025; Value.Integer IntegerKind.U32 8017 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8027; Value.Integer IntegerKind.U32 8019 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8029; Value.Integer IntegerKind.U32 8021 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8031; Value.Integer IntegerKind.U32 8023 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8040; Value.Integer IntegerKind.U32 8032 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8041; Value.Integer IntegerKind.U32 8033 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8042; Value.Integer IntegerKind.U32 8034 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8043; Value.Integer IntegerKind.U32 8035 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8044; Value.Integer IntegerKind.U32 8036 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8045; Value.Integer IntegerKind.U32 8037 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8046; Value.Integer IntegerKind.U32 8038 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8047; Value.Integer IntegerKind.U32 8039 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8072; Value.Integer IntegerKind.U32 8064 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8073; Value.Integer IntegerKind.U32 8065 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8074; Value.Integer IntegerKind.U32 8066 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8075; Value.Integer IntegerKind.U32 8067 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8076; Value.Integer IntegerKind.U32 8068 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8077; Value.Integer IntegerKind.U32 8069 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8078; Value.Integer IntegerKind.U32 8070 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8079; Value.Integer IntegerKind.U32 8071 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8088; Value.Integer IntegerKind.U32 8080 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8089; Value.Integer IntegerKind.U32 8081 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8090; Value.Integer IntegerKind.U32 8082 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8091; Value.Integer IntegerKind.U32 8083 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8092; Value.Integer IntegerKind.U32 8084 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8093; Value.Integer IntegerKind.U32 8085 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8094; Value.Integer IntegerKind.U32 8086 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8095; Value.Integer IntegerKind.U32 8087 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8104; Value.Integer IntegerKind.U32 8096 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8105; Value.Integer IntegerKind.U32 8097 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8106; Value.Integer IntegerKind.U32 8098 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8107; Value.Integer IntegerKind.U32 8099 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8108; Value.Integer IntegerKind.U32 8100 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8109; Value.Integer IntegerKind.U32 8101 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8110; Value.Integer IntegerKind.U32 8102 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8111; Value.Integer IntegerKind.U32 8103 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8120; Value.Integer IntegerKind.U32 8112 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8121; Value.Integer IntegerKind.U32 8113 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8122; Value.Integer IntegerKind.U32 8048 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8123; Value.Integer IntegerKind.U32 8049 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8124; Value.Integer IntegerKind.U32 8115 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8136; Value.Integer IntegerKind.U32 8050 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8137; Value.Integer IntegerKind.U32 8051 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8138; Value.Integer IntegerKind.U32 8052 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8139; Value.Integer IntegerKind.U32 8053 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8140; Value.Integer IntegerKind.U32 8131 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8152; Value.Integer IntegerKind.U32 8144 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8153; Value.Integer IntegerKind.U32 8145 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8154; Value.Integer IntegerKind.U32 8054 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8155; Value.Integer IntegerKind.U32 8055 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8168; Value.Integer IntegerKind.U32 8160 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8169; Value.Integer IntegerKind.U32 8161 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8170; Value.Integer IntegerKind.U32 8058 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8171; Value.Integer IntegerKind.U32 8059 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8172; Value.Integer IntegerKind.U32 8165 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8184; Value.Integer IntegerKind.U32 8056 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8185; Value.Integer IntegerKind.U32 8057 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8186; Value.Integer IntegerKind.U32 8060 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8187; Value.Integer IntegerKind.U32 8061 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8188; Value.Integer IntegerKind.U32 8179 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8486; Value.Integer IntegerKind.U32 969 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8490; Value.Integer IntegerKind.U32 107 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8491; Value.Integer IntegerKind.U32 229 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8498; Value.Integer IntegerKind.U32 8526 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8544; Value.Integer IntegerKind.U32 8560 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8545; Value.Integer IntegerKind.U32 8561 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8546; Value.Integer IntegerKind.U32 8562 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8547; Value.Integer IntegerKind.U32 8563 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8548; Value.Integer IntegerKind.U32 8564 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8549; Value.Integer IntegerKind.U32 8565 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8550; Value.Integer IntegerKind.U32 8566 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8551; Value.Integer IntegerKind.U32 8567 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8552; Value.Integer IntegerKind.U32 8568 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8553; Value.Integer IntegerKind.U32 8569 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8554; Value.Integer IntegerKind.U32 8570 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8555; Value.Integer IntegerKind.U32 8571 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8556; Value.Integer IntegerKind.U32 8572 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8557; Value.Integer IntegerKind.U32 8573 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8558; Value.Integer IntegerKind.U32 8574 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8559; Value.Integer IntegerKind.U32 8575 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8579; Value.Integer IntegerKind.U32 8580 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9398; Value.Integer IntegerKind.U32 9424 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9399; Value.Integer IntegerKind.U32 9425 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9400; Value.Integer IntegerKind.U32 9426 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9401; Value.Integer IntegerKind.U32 9427 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9402; Value.Integer IntegerKind.U32 9428 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9403; Value.Integer IntegerKind.U32 9429 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9404; Value.Integer IntegerKind.U32 9430 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9405; Value.Integer IntegerKind.U32 9431 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9406; Value.Integer IntegerKind.U32 9432 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9407; Value.Integer IntegerKind.U32 9433 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9408; Value.Integer IntegerKind.U32 9434 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9409; Value.Integer IntegerKind.U32 9435 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9410; Value.Integer IntegerKind.U32 9436 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9411; Value.Integer IntegerKind.U32 9437 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9412; Value.Integer IntegerKind.U32 9438 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9413; Value.Integer IntegerKind.U32 9439 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9414; Value.Integer IntegerKind.U32 9440 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9415; Value.Integer IntegerKind.U32 9441 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9416; Value.Integer IntegerKind.U32 9442 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9417; Value.Integer IntegerKind.U32 9443 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9418; Value.Integer IntegerKind.U32 9444 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9419; Value.Integer IntegerKind.U32 9445 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9420; Value.Integer IntegerKind.U32 9446 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9421; Value.Integer IntegerKind.U32 9447 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9422; Value.Integer IntegerKind.U32 9448 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9423; Value.Integer IntegerKind.U32 9449 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11264; Value.Integer IntegerKind.U32 11312 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11265; Value.Integer IntegerKind.U32 11313 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11266; Value.Integer IntegerKind.U32 11314 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11267; Value.Integer IntegerKind.U32 11315 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11268; Value.Integer IntegerKind.U32 11316 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11269; Value.Integer IntegerKind.U32 11317 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11270; Value.Integer IntegerKind.U32 11318 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11271; Value.Integer IntegerKind.U32 11319 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11272; Value.Integer IntegerKind.U32 11320 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11273; Value.Integer IntegerKind.U32 11321 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11274; Value.Integer IntegerKind.U32 11322 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11275; Value.Integer IntegerKind.U32 11323 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11276; Value.Integer IntegerKind.U32 11324 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11277; Value.Integer IntegerKind.U32 11325 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11278; Value.Integer IntegerKind.U32 11326 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11279; Value.Integer IntegerKind.U32 11327 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11280; Value.Integer IntegerKind.U32 11328 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11281; Value.Integer IntegerKind.U32 11329 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11282; Value.Integer IntegerKind.U32 11330 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11283; Value.Integer IntegerKind.U32 11331 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11284; Value.Integer IntegerKind.U32 11332 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11285; Value.Integer IntegerKind.U32 11333 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11286; Value.Integer IntegerKind.U32 11334 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11287; Value.Integer IntegerKind.U32 11335 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11288; Value.Integer IntegerKind.U32 11336 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11289; Value.Integer IntegerKind.U32 11337 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11290; Value.Integer IntegerKind.U32 11338 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11291; Value.Integer IntegerKind.U32 11339 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11292; Value.Integer IntegerKind.U32 11340 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11293; Value.Integer IntegerKind.U32 11341 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11294; Value.Integer IntegerKind.U32 11342 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11295; Value.Integer IntegerKind.U32 11343 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11296; Value.Integer IntegerKind.U32 11344 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11297; Value.Integer IntegerKind.U32 11345 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11298; Value.Integer IntegerKind.U32 11346 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11299; Value.Integer IntegerKind.U32 11347 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11300; Value.Integer IntegerKind.U32 11348 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11301; Value.Integer IntegerKind.U32 11349 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11302; Value.Integer IntegerKind.U32 11350 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11303; Value.Integer IntegerKind.U32 11351 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11304; Value.Integer IntegerKind.U32 11352 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11305; Value.Integer IntegerKind.U32 11353 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11306; Value.Integer IntegerKind.U32 11354 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11307; Value.Integer IntegerKind.U32 11355 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11308; Value.Integer IntegerKind.U32 11356 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11309; Value.Integer IntegerKind.U32 11357 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11310; Value.Integer IntegerKind.U32 11358 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11311; Value.Integer IntegerKind.U32 11359 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11360; Value.Integer IntegerKind.U32 11361 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11362; Value.Integer IntegerKind.U32 619 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11363; Value.Integer IntegerKind.U32 7549 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11364; Value.Integer IntegerKind.U32 637 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11367; Value.Integer IntegerKind.U32 11368 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11369; Value.Integer IntegerKind.U32 11370 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11371; Value.Integer IntegerKind.U32 11372 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11373; Value.Integer IntegerKind.U32 593 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11374; Value.Integer IntegerKind.U32 625 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11375; Value.Integer IntegerKind.U32 592 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11376; Value.Integer IntegerKind.U32 594 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11378; Value.Integer IntegerKind.U32 11379 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11381; Value.Integer IntegerKind.U32 11382 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11390; Value.Integer IntegerKind.U32 575 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11391; Value.Integer IntegerKind.U32 576 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11392; Value.Integer IntegerKind.U32 11393 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11394; Value.Integer IntegerKind.U32 11395 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11396; Value.Integer IntegerKind.U32 11397 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11398; Value.Integer IntegerKind.U32 11399 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11400; Value.Integer IntegerKind.U32 11401 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11402; Value.Integer IntegerKind.U32 11403 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11404; Value.Integer IntegerKind.U32 11405 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11406; Value.Integer IntegerKind.U32 11407 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11408; Value.Integer IntegerKind.U32 11409 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11410; Value.Integer IntegerKind.U32 11411 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11412; Value.Integer IntegerKind.U32 11413 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11414; Value.Integer IntegerKind.U32 11415 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11416; Value.Integer IntegerKind.U32 11417 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11418; Value.Integer IntegerKind.U32 11419 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11420; Value.Integer IntegerKind.U32 11421 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11422; Value.Integer IntegerKind.U32 11423 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11424; Value.Integer IntegerKind.U32 11425 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11426; Value.Integer IntegerKind.U32 11427 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11428; Value.Integer IntegerKind.U32 11429 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11430; Value.Integer IntegerKind.U32 11431 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11432; Value.Integer IntegerKind.U32 11433 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11434; Value.Integer IntegerKind.U32 11435 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11436; Value.Integer IntegerKind.U32 11437 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11438; Value.Integer IntegerKind.U32 11439 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11440; Value.Integer IntegerKind.U32 11441 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11442; Value.Integer IntegerKind.U32 11443 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11444; Value.Integer IntegerKind.U32 11445 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11446; Value.Integer IntegerKind.U32 11447 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11448; Value.Integer IntegerKind.U32 11449 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11450; Value.Integer IntegerKind.U32 11451 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11452; Value.Integer IntegerKind.U32 11453 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11454; Value.Integer IntegerKind.U32 11455 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11456; Value.Integer IntegerKind.U32 11457 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11458; Value.Integer IntegerKind.U32 11459 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11460; Value.Integer IntegerKind.U32 11461 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11462; Value.Integer IntegerKind.U32 11463 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11464; Value.Integer IntegerKind.U32 11465 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11466; Value.Integer IntegerKind.U32 11467 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11468; Value.Integer IntegerKind.U32 11469 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11470; Value.Integer IntegerKind.U32 11471 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11472; Value.Integer IntegerKind.U32 11473 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11474; Value.Integer IntegerKind.U32 11475 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11476; Value.Integer IntegerKind.U32 11477 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11478; Value.Integer IntegerKind.U32 11479 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11480; Value.Integer IntegerKind.U32 11481 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11482; Value.Integer IntegerKind.U32 11483 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11484; Value.Integer IntegerKind.U32 11485 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11486; Value.Integer IntegerKind.U32 11487 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11488; Value.Integer IntegerKind.U32 11489 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11490; Value.Integer IntegerKind.U32 11491 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11499; Value.Integer IntegerKind.U32 11500 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11501; Value.Integer IntegerKind.U32 11502 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11506; Value.Integer IntegerKind.U32 11507 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42560; Value.Integer IntegerKind.U32 42561 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42562; Value.Integer IntegerKind.U32 42563 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42564; Value.Integer IntegerKind.U32 42565 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42566; Value.Integer IntegerKind.U32 42567 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42568; Value.Integer IntegerKind.U32 42569 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42570; Value.Integer IntegerKind.U32 42571 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42572; Value.Integer IntegerKind.U32 42573 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42574; Value.Integer IntegerKind.U32 42575 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42576; Value.Integer IntegerKind.U32 42577 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42578; Value.Integer IntegerKind.U32 42579 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42580; Value.Integer IntegerKind.U32 42581 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42582; Value.Integer IntegerKind.U32 42583 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42584; Value.Integer IntegerKind.U32 42585 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42586; Value.Integer IntegerKind.U32 42587 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42588; Value.Integer IntegerKind.U32 42589 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42590; Value.Integer IntegerKind.U32 42591 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42592; Value.Integer IntegerKind.U32 42593 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42594; Value.Integer IntegerKind.U32 42595 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42596; Value.Integer IntegerKind.U32 42597 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42598; Value.Integer IntegerKind.U32 42599 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42600; Value.Integer IntegerKind.U32 42601 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42602; Value.Integer IntegerKind.U32 42603 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42604; Value.Integer IntegerKind.U32 42605 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42624; Value.Integer IntegerKind.U32 42625 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42626; Value.Integer IntegerKind.U32 42627 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42628; Value.Integer IntegerKind.U32 42629 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42630; Value.Integer IntegerKind.U32 42631 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42632; Value.Integer IntegerKind.U32 42633 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42634; Value.Integer IntegerKind.U32 42635 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42636; Value.Integer IntegerKind.U32 42637 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42638; Value.Integer IntegerKind.U32 42639 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42640; Value.Integer IntegerKind.U32 42641 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42642; Value.Integer IntegerKind.U32 42643 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42644; Value.Integer IntegerKind.U32 42645 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42646; Value.Integer IntegerKind.U32 42647 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42648; Value.Integer IntegerKind.U32 42649 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42650; Value.Integer IntegerKind.U32 42651 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42786; Value.Integer IntegerKind.U32 42787 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42788; Value.Integer IntegerKind.U32 42789 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42790; Value.Integer IntegerKind.U32 42791 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42792; Value.Integer IntegerKind.U32 42793 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42794; Value.Integer IntegerKind.U32 42795 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42796; Value.Integer IntegerKind.U32 42797 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42798; Value.Integer IntegerKind.U32 42799 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42802; Value.Integer IntegerKind.U32 42803 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42804; Value.Integer IntegerKind.U32 42805 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42806; Value.Integer IntegerKind.U32 42807 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42808; Value.Integer IntegerKind.U32 42809 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42810; Value.Integer IntegerKind.U32 42811 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42812; Value.Integer IntegerKind.U32 42813 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42814; Value.Integer IntegerKind.U32 42815 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42816; Value.Integer IntegerKind.U32 42817 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42818; Value.Integer IntegerKind.U32 42819 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42820; Value.Integer IntegerKind.U32 42821 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42822; Value.Integer IntegerKind.U32 42823 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42824; Value.Integer IntegerKind.U32 42825 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42826; Value.Integer IntegerKind.U32 42827 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42828; Value.Integer IntegerKind.U32 42829 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42830; Value.Integer IntegerKind.U32 42831 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42832; Value.Integer IntegerKind.U32 42833 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42834; Value.Integer IntegerKind.U32 42835 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42836; Value.Integer IntegerKind.U32 42837 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42838; Value.Integer IntegerKind.U32 42839 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42840; Value.Integer IntegerKind.U32 42841 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42842; Value.Integer IntegerKind.U32 42843 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42844; Value.Integer IntegerKind.U32 42845 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42846; Value.Integer IntegerKind.U32 42847 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42848; Value.Integer IntegerKind.U32 42849 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42850; Value.Integer IntegerKind.U32 42851 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42852; Value.Integer IntegerKind.U32 42853 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42854; Value.Integer IntegerKind.U32 42855 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42856; Value.Integer IntegerKind.U32 42857 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42858; Value.Integer IntegerKind.U32 42859 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42860; Value.Integer IntegerKind.U32 42861 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42862; Value.Integer IntegerKind.U32 42863 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42873; Value.Integer IntegerKind.U32 42874 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42875; Value.Integer IntegerKind.U32 42876 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42877; Value.Integer IntegerKind.U32 7545 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42878; Value.Integer IntegerKind.U32 42879 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42880; Value.Integer IntegerKind.U32 42881 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42882; Value.Integer IntegerKind.U32 42883 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42884; Value.Integer IntegerKind.U32 42885 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42886; Value.Integer IntegerKind.U32 42887 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42891; Value.Integer IntegerKind.U32 42892 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42893; Value.Integer IntegerKind.U32 613 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42896; Value.Integer IntegerKind.U32 42897 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42898; Value.Integer IntegerKind.U32 42899 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42902; Value.Integer IntegerKind.U32 42903 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42904; Value.Integer IntegerKind.U32 42905 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42906; Value.Integer IntegerKind.U32 42907 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42908; Value.Integer IntegerKind.U32 42909 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42910; Value.Integer IntegerKind.U32 42911 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42912; Value.Integer IntegerKind.U32 42913 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42914; Value.Integer IntegerKind.U32 42915 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42916; Value.Integer IntegerKind.U32 42917 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42918; Value.Integer IntegerKind.U32 42919 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42920; Value.Integer IntegerKind.U32 42921 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42922; Value.Integer IntegerKind.U32 614 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42923; Value.Integer IntegerKind.U32 604 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42924; Value.Integer IntegerKind.U32 609 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42925; Value.Integer IntegerKind.U32 620 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42926; Value.Integer IntegerKind.U32 618 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42928; Value.Integer IntegerKind.U32 670 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42929; Value.Integer IntegerKind.U32 647 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42930; Value.Integer IntegerKind.U32 669 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42931; Value.Integer IntegerKind.U32 43859 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42932; Value.Integer IntegerKind.U32 42933 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42934; Value.Integer IntegerKind.U32 42935 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42936; Value.Integer IntegerKind.U32 42937 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42938; Value.Integer IntegerKind.U32 42939 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42940; Value.Integer IntegerKind.U32 42941 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42942; Value.Integer IntegerKind.U32 42943 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42944; Value.Integer IntegerKind.U32 42945 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42946; Value.Integer IntegerKind.U32 42947 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42948; Value.Integer IntegerKind.U32 42900 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42949; Value.Integer IntegerKind.U32 642 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42950; Value.Integer IntegerKind.U32 7566 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42951; Value.Integer IntegerKind.U32 42952 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42953; Value.Integer IntegerKind.U32 42954 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42955; Value.Integer IntegerKind.U32 612 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42956; Value.Integer IntegerKind.U32 42957 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42960; Value.Integer IntegerKind.U32 42961 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42966; Value.Integer IntegerKind.U32 42967 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42968; Value.Integer IntegerKind.U32 42969 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42970; Value.Integer IntegerKind.U32 42971 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42972; Value.Integer IntegerKind.U32 411 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42997; Value.Integer IntegerKind.U32 42998 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65313; Value.Integer IntegerKind.U32 65345 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65314; Value.Integer IntegerKind.U32 65346 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65315; Value.Integer IntegerKind.U32 65347 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65316; Value.Integer IntegerKind.U32 65348 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65317; Value.Integer IntegerKind.U32 65349 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65318; Value.Integer IntegerKind.U32 65350 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65319; Value.Integer IntegerKind.U32 65351 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65320; Value.Integer IntegerKind.U32 65352 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65321; Value.Integer IntegerKind.U32 65353 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65322; Value.Integer IntegerKind.U32 65354 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65323; Value.Integer IntegerKind.U32 65355 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65324; Value.Integer IntegerKind.U32 65356 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65325; Value.Integer IntegerKind.U32 65357 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65326; Value.Integer IntegerKind.U32 65358 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65327; Value.Integer IntegerKind.U32 65359 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65328; Value.Integer IntegerKind.U32 65360 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65329; Value.Integer IntegerKind.U32 65361 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65330; Value.Integer IntegerKind.U32 65362 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65331; Value.Integer IntegerKind.U32 65363 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65332; Value.Integer IntegerKind.U32 65364 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65333; Value.Integer IntegerKind.U32 65365 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65334; Value.Integer IntegerKind.U32 65366 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65335; Value.Integer IntegerKind.U32 65367 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65336; Value.Integer IntegerKind.U32 65368 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65337; Value.Integer IntegerKind.U32 65369 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65338; Value.Integer IntegerKind.U32 65370 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66560; Value.Integer IntegerKind.U32 66600 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66561; Value.Integer IntegerKind.U32 66601 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66562; Value.Integer IntegerKind.U32 66602 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66563; Value.Integer IntegerKind.U32 66603 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66564; Value.Integer IntegerKind.U32 66604 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66565; Value.Integer IntegerKind.U32 66605 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66566; Value.Integer IntegerKind.U32 66606 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66567; Value.Integer IntegerKind.U32 66607 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66568; Value.Integer IntegerKind.U32 66608 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66569; Value.Integer IntegerKind.U32 66609 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66570; Value.Integer IntegerKind.U32 66610 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66571; Value.Integer IntegerKind.U32 66611 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66572; Value.Integer IntegerKind.U32 66612 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66573; Value.Integer IntegerKind.U32 66613 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66574; Value.Integer IntegerKind.U32 66614 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66575; Value.Integer IntegerKind.U32 66615 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66576; Value.Integer IntegerKind.U32 66616 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66577; Value.Integer IntegerKind.U32 66617 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66578; Value.Integer IntegerKind.U32 66618 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66579; Value.Integer IntegerKind.U32 66619 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66580; Value.Integer IntegerKind.U32 66620 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66581; Value.Integer IntegerKind.U32 66621 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66582; Value.Integer IntegerKind.U32 66622 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66583; Value.Integer IntegerKind.U32 66623 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66584; Value.Integer IntegerKind.U32 66624 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66585; Value.Integer IntegerKind.U32 66625 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66586; Value.Integer IntegerKind.U32 66626 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66587; Value.Integer IntegerKind.U32 66627 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66588; Value.Integer IntegerKind.U32 66628 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66589; Value.Integer IntegerKind.U32 66629 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66590; Value.Integer IntegerKind.U32 66630 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66591; Value.Integer IntegerKind.U32 66631 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66592; Value.Integer IntegerKind.U32 66632 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66593; Value.Integer IntegerKind.U32 66633 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66594; Value.Integer IntegerKind.U32 66634 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66595; Value.Integer IntegerKind.U32 66635 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66596; Value.Integer IntegerKind.U32 66636 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66597; Value.Integer IntegerKind.U32 66637 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66598; Value.Integer IntegerKind.U32 66638 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66599; Value.Integer IntegerKind.U32 66639 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66736; Value.Integer IntegerKind.U32 66776 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66737; Value.Integer IntegerKind.U32 66777 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66738; Value.Integer IntegerKind.U32 66778 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66739; Value.Integer IntegerKind.U32 66779 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66740; Value.Integer IntegerKind.U32 66780 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66741; Value.Integer IntegerKind.U32 66781 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66742; Value.Integer IntegerKind.U32 66782 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66743; Value.Integer IntegerKind.U32 66783 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66744; Value.Integer IntegerKind.U32 66784 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66745; Value.Integer IntegerKind.U32 66785 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66746; Value.Integer IntegerKind.U32 66786 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66747; Value.Integer IntegerKind.U32 66787 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66748; Value.Integer IntegerKind.U32 66788 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66749; Value.Integer IntegerKind.U32 66789 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66750; Value.Integer IntegerKind.U32 66790 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66751; Value.Integer IntegerKind.U32 66791 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66752; Value.Integer IntegerKind.U32 66792 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66753; Value.Integer IntegerKind.U32 66793 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66754; Value.Integer IntegerKind.U32 66794 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66755; Value.Integer IntegerKind.U32 66795 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66756; Value.Integer IntegerKind.U32 66796 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66757; Value.Integer IntegerKind.U32 66797 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66758; Value.Integer IntegerKind.U32 66798 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66759; Value.Integer IntegerKind.U32 66799 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66760; Value.Integer IntegerKind.U32 66800 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66761; Value.Integer IntegerKind.U32 66801 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66762; Value.Integer IntegerKind.U32 66802 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66763; Value.Integer IntegerKind.U32 66803 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66764; Value.Integer IntegerKind.U32 66804 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66765; Value.Integer IntegerKind.U32 66805 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66766; Value.Integer IntegerKind.U32 66806 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66767; Value.Integer IntegerKind.U32 66807 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66768; Value.Integer IntegerKind.U32 66808 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66769; Value.Integer IntegerKind.U32 66809 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66770; Value.Integer IntegerKind.U32 66810 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66771; Value.Integer IntegerKind.U32 66811 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66928; Value.Integer IntegerKind.U32 66967 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66929; Value.Integer IntegerKind.U32 66968 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66930; Value.Integer IntegerKind.U32 66969 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66931; Value.Integer IntegerKind.U32 66970 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66932; Value.Integer IntegerKind.U32 66971 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66933; Value.Integer IntegerKind.U32 66972 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66934; Value.Integer IntegerKind.U32 66973 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66935; Value.Integer IntegerKind.U32 66974 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66936; Value.Integer IntegerKind.U32 66975 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66937; Value.Integer IntegerKind.U32 66976 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66938; Value.Integer IntegerKind.U32 66977 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66940; Value.Integer IntegerKind.U32 66979 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66941; Value.Integer IntegerKind.U32 66980 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66942; Value.Integer IntegerKind.U32 66981 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66943; Value.Integer IntegerKind.U32 66982 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66944; Value.Integer IntegerKind.U32 66983 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66945; Value.Integer IntegerKind.U32 66984 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66946; Value.Integer IntegerKind.U32 66985 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66947; Value.Integer IntegerKind.U32 66986 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66948; Value.Integer IntegerKind.U32 66987 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66949; Value.Integer IntegerKind.U32 66988 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66950; Value.Integer IntegerKind.U32 66989 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66951; Value.Integer IntegerKind.U32 66990 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66952; Value.Integer IntegerKind.U32 66991 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66953; Value.Integer IntegerKind.U32 66992 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66954; Value.Integer IntegerKind.U32 66993 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66956; Value.Integer IntegerKind.U32 66995 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66957; Value.Integer IntegerKind.U32 66996 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66958; Value.Integer IntegerKind.U32 66997 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66959; Value.Integer IntegerKind.U32 66998 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66960; Value.Integer IntegerKind.U32 66999 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66961; Value.Integer IntegerKind.U32 67000 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66962; Value.Integer IntegerKind.U32 67001 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66964; Value.Integer IntegerKind.U32 67003 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66965; Value.Integer IntegerKind.U32 67004 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68736; Value.Integer IntegerKind.U32 68800 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68737; Value.Integer IntegerKind.U32 68801 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68738; Value.Integer IntegerKind.U32 68802 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68739; Value.Integer IntegerKind.U32 68803 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68740; Value.Integer IntegerKind.U32 68804 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68741; Value.Integer IntegerKind.U32 68805 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68742; Value.Integer IntegerKind.U32 68806 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68743; Value.Integer IntegerKind.U32 68807 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68744; Value.Integer IntegerKind.U32 68808 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68745; Value.Integer IntegerKind.U32 68809 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68746; Value.Integer IntegerKind.U32 68810 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68747; Value.Integer IntegerKind.U32 68811 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68748; Value.Integer IntegerKind.U32 68812 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68749; Value.Integer IntegerKind.U32 68813 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68750; Value.Integer IntegerKind.U32 68814 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68751; Value.Integer IntegerKind.U32 68815 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68752; Value.Integer IntegerKind.U32 68816 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68753; Value.Integer IntegerKind.U32 68817 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68754; Value.Integer IntegerKind.U32 68818 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68755; Value.Integer IntegerKind.U32 68819 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68756; Value.Integer IntegerKind.U32 68820 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68757; Value.Integer IntegerKind.U32 68821 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68758; Value.Integer IntegerKind.U32 68822 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68759; Value.Integer IntegerKind.U32 68823 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68760; Value.Integer IntegerKind.U32 68824 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68761; Value.Integer IntegerKind.U32 68825 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68762; Value.Integer IntegerKind.U32 68826 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68763; Value.Integer IntegerKind.U32 68827 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68764; Value.Integer IntegerKind.U32 68828 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68765; Value.Integer IntegerKind.U32 68829 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68766; Value.Integer IntegerKind.U32 68830 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68767; Value.Integer IntegerKind.U32 68831 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68768; Value.Integer IntegerKind.U32 68832 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68769; Value.Integer IntegerKind.U32 68833 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68770; Value.Integer IntegerKind.U32 68834 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68771; Value.Integer IntegerKind.U32 68835 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68772; Value.Integer IntegerKind.U32 68836 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68773; Value.Integer IntegerKind.U32 68837 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68774; Value.Integer IntegerKind.U32 68838 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68775; Value.Integer IntegerKind.U32 68839 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68776; Value.Integer IntegerKind.U32 68840 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68777; Value.Integer IntegerKind.U32 68841 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68778; Value.Integer IntegerKind.U32 68842 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68779; Value.Integer IntegerKind.U32 68843 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68780; Value.Integer IntegerKind.U32 68844 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68781; Value.Integer IntegerKind.U32 68845 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68782; Value.Integer IntegerKind.U32 68846 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68783; Value.Integer IntegerKind.U32 68847 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68784; Value.Integer IntegerKind.U32 68848 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68785; Value.Integer IntegerKind.U32 68849 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68786; Value.Integer IntegerKind.U32 68850 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68944; Value.Integer IntegerKind.U32 68976 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68945; Value.Integer IntegerKind.U32 68977 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68946; Value.Integer IntegerKind.U32 68978 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68947; Value.Integer IntegerKind.U32 68979 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68948; Value.Integer IntegerKind.U32 68980 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68949; Value.Integer IntegerKind.U32 68981 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68950; Value.Integer IntegerKind.U32 68982 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68951; Value.Integer IntegerKind.U32 68983 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68952; Value.Integer IntegerKind.U32 68984 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68953; Value.Integer IntegerKind.U32 68985 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68954; Value.Integer IntegerKind.U32 68986 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68955; Value.Integer IntegerKind.U32 68987 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68956; Value.Integer IntegerKind.U32 68988 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68957; Value.Integer IntegerKind.U32 68989 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68958; Value.Integer IntegerKind.U32 68990 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68959; Value.Integer IntegerKind.U32 68991 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68960; Value.Integer IntegerKind.U32 68992 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68961; Value.Integer IntegerKind.U32 68993 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68962; Value.Integer IntegerKind.U32 68994 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68963; Value.Integer IntegerKind.U32 68995 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68964; Value.Integer IntegerKind.U32 68996 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68965; Value.Integer IntegerKind.U32 68997 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71840; Value.Integer IntegerKind.U32 71872 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71841; Value.Integer IntegerKind.U32 71873 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71842; Value.Integer IntegerKind.U32 71874 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71843; Value.Integer IntegerKind.U32 71875 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71844; Value.Integer IntegerKind.U32 71876 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71845; Value.Integer IntegerKind.U32 71877 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71846; Value.Integer IntegerKind.U32 71878 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71847; Value.Integer IntegerKind.U32 71879 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71848; Value.Integer IntegerKind.U32 71880 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71849; Value.Integer IntegerKind.U32 71881 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71850; Value.Integer IntegerKind.U32 71882 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71851; Value.Integer IntegerKind.U32 71883 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71852; Value.Integer IntegerKind.U32 71884 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71853; Value.Integer IntegerKind.U32 71885 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71854; Value.Integer IntegerKind.U32 71886 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71855; Value.Integer IntegerKind.U32 71887 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71856; Value.Integer IntegerKind.U32 71888 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71857; Value.Integer IntegerKind.U32 71889 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71858; Value.Integer IntegerKind.U32 71890 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71859; Value.Integer IntegerKind.U32 71891 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71860; Value.Integer IntegerKind.U32 71892 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71861; Value.Integer IntegerKind.U32 71893 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71862; Value.Integer IntegerKind.U32 71894 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71863; Value.Integer IntegerKind.U32 71895 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71864; Value.Integer IntegerKind.U32 71896 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71865; Value.Integer IntegerKind.U32 71897 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71866; Value.Integer IntegerKind.U32 71898 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71867; Value.Integer IntegerKind.U32 71899 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71868; Value.Integer IntegerKind.U32 71900 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71869; Value.Integer IntegerKind.U32 71901 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71870; Value.Integer IntegerKind.U32 71902 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71871; Value.Integer IntegerKind.U32 71903 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93760; Value.Integer IntegerKind.U32 93792 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93761; Value.Integer IntegerKind.U32 93793 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93762; Value.Integer IntegerKind.U32 93794 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93763; Value.Integer IntegerKind.U32 93795 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93764; Value.Integer IntegerKind.U32 93796 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93765; Value.Integer IntegerKind.U32 93797 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93766; Value.Integer IntegerKind.U32 93798 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93767; Value.Integer IntegerKind.U32 93799 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93768; Value.Integer IntegerKind.U32 93800 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93769; Value.Integer IntegerKind.U32 93801 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93770; Value.Integer IntegerKind.U32 93802 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93771; Value.Integer IntegerKind.U32 93803 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93772; Value.Integer IntegerKind.U32 93804 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93773; Value.Integer IntegerKind.U32 93805 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93774; Value.Integer IntegerKind.U32 93806 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93775; Value.Integer IntegerKind.U32 93807 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93776; Value.Integer IntegerKind.U32 93808 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93777; Value.Integer IntegerKind.U32 93809 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93778; Value.Integer IntegerKind.U32 93810 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93779; Value.Integer IntegerKind.U32 93811 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93780; Value.Integer IntegerKind.U32 93812 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93781; Value.Integer IntegerKind.U32 93813 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93782; Value.Integer IntegerKind.U32 93814 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93783; Value.Integer IntegerKind.U32 93815 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93784; Value.Integer IntegerKind.U32 93816 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93785; Value.Integer IntegerKind.U32 93817 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93786; Value.Integer IntegerKind.U32 93818 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93787; Value.Integer IntegerKind.U32 93819 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93788; Value.Integer IntegerKind.U32 93820 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93789; Value.Integer IntegerKind.U32 93821 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93790; Value.Integer IntegerKind.U32 93822 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93791; Value.Integer IntegerKind.U32 93823 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125184; Value.Integer IntegerKind.U32 125218 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125185; Value.Integer IntegerKind.U32 125219 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125186; Value.Integer IntegerKind.U32 125220 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125187; Value.Integer IntegerKind.U32 125221 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125188; Value.Integer IntegerKind.U32 125222 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125189; Value.Integer IntegerKind.U32 125223 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125190; Value.Integer IntegerKind.U32 125224 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125191; Value.Integer IntegerKind.U32 125225 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125192; Value.Integer IntegerKind.U32 125226 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125193; Value.Integer IntegerKind.U32 125227 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125194; Value.Integer IntegerKind.U32 125228 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125195; Value.Integer IntegerKind.U32 125229 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125196; Value.Integer IntegerKind.U32 125230 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125197; Value.Integer IntegerKind.U32 125231 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125198; Value.Integer IntegerKind.U32 125232 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125199; Value.Integer IntegerKind.U32 125233 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125200; Value.Integer IntegerKind.U32 125234 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125201; Value.Integer IntegerKind.U32 125235 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125202; Value.Integer IntegerKind.U32 125236 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125203; Value.Integer IntegerKind.U32 125237 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125204; Value.Integer IntegerKind.U32 125238 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125205; Value.Integer IntegerKind.U32 125239 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125206; Value.Integer IntegerKind.U32 125240 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125207; Value.Integer IntegerKind.U32 125241 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125208; Value.Integer IntegerKind.U32 125242 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125209; Value.Integer IntegerKind.U32 125243 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125210; Value.Integer IntegerKind.U32 125244 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125211; Value.Integer IntegerKind.U32 125245 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125212; Value.Integer IntegerKind.U32 125246 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125213; Value.Integer IntegerKind.U32 125247 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125214; Value.Integer IntegerKind.U32 125248 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125215; Value.Integer IntegerKind.U32 125249 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125216; Value.Integer IntegerKind.U32 125250 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125217; Value.Integer IntegerKind.U32 125251 ]
+                            ]
+                        |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             |)
           |))).
       
@@ -11966,32 +12045,79 @@ Module unicode.
                         [ Ty.path "char" ]
                     ]
                 ],
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [
                         Ty.apply
                           (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 1 ]
-                          [
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 3 ]
-                              [ Ty.path "char" ]
-                          ],
-                        Value.Array
-                          [
-                            Value.Array
-                              [ Value.UnicodeChar 105; Value.UnicodeChar 775; Value.UnicodeChar 0 ]
-                          ]
+                          [ Value.Integer IntegerKind.Usize 3 ]
+                          [ Ty.path "char" ]
+                      ]
+                  ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 1 ]
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 3 ]
+                            [ Ty.path "char" ]
+                        ]
+                    ])
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 3 ]
+                            [ Ty.path "char" ]
+                        ]
+                    ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 3 ]
+                                [ Ty.path "char" ]
+                            ],
+                          Value.Array
+                            [
+                              Value.Array
+                                [ Value.UnicodeChar 105; Value.UnicodeChar 775; Value.UnicodeChar 0
+                                ]
+                            ]
+                        |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             |)
           |))).
       
@@ -12014,3075 +12140,3099 @@ Module unicode.
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "slice") [] [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ] ],
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 1526 ]
-                          [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ],
-                        Value.Array
-                          [
-                            Value.Tuple
-                              [ Value.UnicodeChar 181; Value.Integer IntegerKind.U32 924 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 223; Value.Integer IntegerKind.U32 4194304 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 224; Value.Integer IntegerKind.U32 192 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 225; Value.Integer IntegerKind.U32 193 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 226; Value.Integer IntegerKind.U32 194 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 227; Value.Integer IntegerKind.U32 195 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 228; Value.Integer IntegerKind.U32 196 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 229; Value.Integer IntegerKind.U32 197 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 230; Value.Integer IntegerKind.U32 198 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 231; Value.Integer IntegerKind.U32 199 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 232; Value.Integer IntegerKind.U32 200 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 233; Value.Integer IntegerKind.U32 201 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 234; Value.Integer IntegerKind.U32 202 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 235; Value.Integer IntegerKind.U32 203 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 236; Value.Integer IntegerKind.U32 204 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 237; Value.Integer IntegerKind.U32 205 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 238; Value.Integer IntegerKind.U32 206 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 239; Value.Integer IntegerKind.U32 207 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 240; Value.Integer IntegerKind.U32 208 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 241; Value.Integer IntegerKind.U32 209 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 242; Value.Integer IntegerKind.U32 210 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 243; Value.Integer IntegerKind.U32 211 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 244; Value.Integer IntegerKind.U32 212 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 245; Value.Integer IntegerKind.U32 213 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 246; Value.Integer IntegerKind.U32 214 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 248; Value.Integer IntegerKind.U32 216 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 249; Value.Integer IntegerKind.U32 217 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 250; Value.Integer IntegerKind.U32 218 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 251; Value.Integer IntegerKind.U32 219 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 252; Value.Integer IntegerKind.U32 220 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 253; Value.Integer IntegerKind.U32 221 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 254; Value.Integer IntegerKind.U32 222 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 255; Value.Integer IntegerKind.U32 376 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 257; Value.Integer IntegerKind.U32 256 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 259; Value.Integer IntegerKind.U32 258 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 261; Value.Integer IntegerKind.U32 260 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 263; Value.Integer IntegerKind.U32 262 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 265; Value.Integer IntegerKind.U32 264 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 267; Value.Integer IntegerKind.U32 266 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 269; Value.Integer IntegerKind.U32 268 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 271; Value.Integer IntegerKind.U32 270 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 273; Value.Integer IntegerKind.U32 272 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 275; Value.Integer IntegerKind.U32 274 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 277; Value.Integer IntegerKind.U32 276 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 279; Value.Integer IntegerKind.U32 278 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 281; Value.Integer IntegerKind.U32 280 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 283; Value.Integer IntegerKind.U32 282 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 285; Value.Integer IntegerKind.U32 284 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 287; Value.Integer IntegerKind.U32 286 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 289; Value.Integer IntegerKind.U32 288 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 291; Value.Integer IntegerKind.U32 290 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 293; Value.Integer IntegerKind.U32 292 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 295; Value.Integer IntegerKind.U32 294 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 297; Value.Integer IntegerKind.U32 296 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 299; Value.Integer IntegerKind.U32 298 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 301; Value.Integer IntegerKind.U32 300 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 303; Value.Integer IntegerKind.U32 302 ];
-                            Value.Tuple [ Value.UnicodeChar 305; Value.Integer IntegerKind.U32 73 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 307; Value.Integer IntegerKind.U32 306 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 309; Value.Integer IntegerKind.U32 308 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 311; Value.Integer IntegerKind.U32 310 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 314; Value.Integer IntegerKind.U32 313 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 316; Value.Integer IntegerKind.U32 315 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 318; Value.Integer IntegerKind.U32 317 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 320; Value.Integer IntegerKind.U32 319 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 322; Value.Integer IntegerKind.U32 321 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 324; Value.Integer IntegerKind.U32 323 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 326; Value.Integer IntegerKind.U32 325 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 328; Value.Integer IntegerKind.U32 327 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 329; Value.Integer IntegerKind.U32 4194305 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 331; Value.Integer IntegerKind.U32 330 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 333; Value.Integer IntegerKind.U32 332 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 335; Value.Integer IntegerKind.U32 334 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 337; Value.Integer IntegerKind.U32 336 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 339; Value.Integer IntegerKind.U32 338 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 341; Value.Integer IntegerKind.U32 340 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 343; Value.Integer IntegerKind.U32 342 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 345; Value.Integer IntegerKind.U32 344 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 347; Value.Integer IntegerKind.U32 346 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 349; Value.Integer IntegerKind.U32 348 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 351; Value.Integer IntegerKind.U32 350 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 353; Value.Integer IntegerKind.U32 352 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 355; Value.Integer IntegerKind.U32 354 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 357; Value.Integer IntegerKind.U32 356 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 359; Value.Integer IntegerKind.U32 358 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 361; Value.Integer IntegerKind.U32 360 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 363; Value.Integer IntegerKind.U32 362 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 365; Value.Integer IntegerKind.U32 364 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 367; Value.Integer IntegerKind.U32 366 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 369; Value.Integer IntegerKind.U32 368 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 371; Value.Integer IntegerKind.U32 370 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 373; Value.Integer IntegerKind.U32 372 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 375; Value.Integer IntegerKind.U32 374 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 378; Value.Integer IntegerKind.U32 377 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 380; Value.Integer IntegerKind.U32 379 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 382; Value.Integer IntegerKind.U32 381 ];
-                            Value.Tuple [ Value.UnicodeChar 383; Value.Integer IntegerKind.U32 83 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 384; Value.Integer IntegerKind.U32 579 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 387; Value.Integer IntegerKind.U32 386 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 389; Value.Integer IntegerKind.U32 388 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 392; Value.Integer IntegerKind.U32 391 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 396; Value.Integer IntegerKind.U32 395 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 402; Value.Integer IntegerKind.U32 401 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 405; Value.Integer IntegerKind.U32 502 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 409; Value.Integer IntegerKind.U32 408 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 410; Value.Integer IntegerKind.U32 573 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 411; Value.Integer IntegerKind.U32 42972 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 414; Value.Integer IntegerKind.U32 544 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 417; Value.Integer IntegerKind.U32 416 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 419; Value.Integer IntegerKind.U32 418 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 421; Value.Integer IntegerKind.U32 420 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 424; Value.Integer IntegerKind.U32 423 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 429; Value.Integer IntegerKind.U32 428 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 432; Value.Integer IntegerKind.U32 431 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 436; Value.Integer IntegerKind.U32 435 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 438; Value.Integer IntegerKind.U32 437 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 441; Value.Integer IntegerKind.U32 440 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 445; Value.Integer IntegerKind.U32 444 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 447; Value.Integer IntegerKind.U32 503 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 453; Value.Integer IntegerKind.U32 452 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 454; Value.Integer IntegerKind.U32 452 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 456; Value.Integer IntegerKind.U32 455 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 457; Value.Integer IntegerKind.U32 455 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 459; Value.Integer IntegerKind.U32 458 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 460; Value.Integer IntegerKind.U32 458 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 462; Value.Integer IntegerKind.U32 461 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 464; Value.Integer IntegerKind.U32 463 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 466; Value.Integer IntegerKind.U32 465 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 468; Value.Integer IntegerKind.U32 467 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 470; Value.Integer IntegerKind.U32 469 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 472; Value.Integer IntegerKind.U32 471 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 474; Value.Integer IntegerKind.U32 473 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 476; Value.Integer IntegerKind.U32 475 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 477; Value.Integer IntegerKind.U32 398 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 479; Value.Integer IntegerKind.U32 478 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 481; Value.Integer IntegerKind.U32 480 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 483; Value.Integer IntegerKind.U32 482 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 485; Value.Integer IntegerKind.U32 484 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 487; Value.Integer IntegerKind.U32 486 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 489; Value.Integer IntegerKind.U32 488 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 491; Value.Integer IntegerKind.U32 490 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 493; Value.Integer IntegerKind.U32 492 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 495; Value.Integer IntegerKind.U32 494 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 496; Value.Integer IntegerKind.U32 4194306 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 498; Value.Integer IntegerKind.U32 497 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 499; Value.Integer IntegerKind.U32 497 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 501; Value.Integer IntegerKind.U32 500 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 505; Value.Integer IntegerKind.U32 504 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 507; Value.Integer IntegerKind.U32 506 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 509; Value.Integer IntegerKind.U32 508 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 511; Value.Integer IntegerKind.U32 510 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 513; Value.Integer IntegerKind.U32 512 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 515; Value.Integer IntegerKind.U32 514 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 517; Value.Integer IntegerKind.U32 516 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 519; Value.Integer IntegerKind.U32 518 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 521; Value.Integer IntegerKind.U32 520 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 523; Value.Integer IntegerKind.U32 522 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 525; Value.Integer IntegerKind.U32 524 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 527; Value.Integer IntegerKind.U32 526 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 529; Value.Integer IntegerKind.U32 528 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 531; Value.Integer IntegerKind.U32 530 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 533; Value.Integer IntegerKind.U32 532 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 535; Value.Integer IntegerKind.U32 534 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 537; Value.Integer IntegerKind.U32 536 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 539; Value.Integer IntegerKind.U32 538 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 541; Value.Integer IntegerKind.U32 540 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 543; Value.Integer IntegerKind.U32 542 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 547; Value.Integer IntegerKind.U32 546 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 549; Value.Integer IntegerKind.U32 548 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 551; Value.Integer IntegerKind.U32 550 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 553; Value.Integer IntegerKind.U32 552 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 555; Value.Integer IntegerKind.U32 554 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 557; Value.Integer IntegerKind.U32 556 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 559; Value.Integer IntegerKind.U32 558 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 561; Value.Integer IntegerKind.U32 560 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 563; Value.Integer IntegerKind.U32 562 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 572; Value.Integer IntegerKind.U32 571 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 575; Value.Integer IntegerKind.U32 11390 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 576; Value.Integer IntegerKind.U32 11391 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 578; Value.Integer IntegerKind.U32 577 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 583; Value.Integer IntegerKind.U32 582 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 585; Value.Integer IntegerKind.U32 584 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 587; Value.Integer IntegerKind.U32 586 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 589; Value.Integer IntegerKind.U32 588 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 591; Value.Integer IntegerKind.U32 590 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 592; Value.Integer IntegerKind.U32 11375 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 593; Value.Integer IntegerKind.U32 11373 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 594; Value.Integer IntegerKind.U32 11376 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 595; Value.Integer IntegerKind.U32 385 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 596; Value.Integer IntegerKind.U32 390 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 598; Value.Integer IntegerKind.U32 393 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 599; Value.Integer IntegerKind.U32 394 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 601; Value.Integer IntegerKind.U32 399 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 603; Value.Integer IntegerKind.U32 400 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 604; Value.Integer IntegerKind.U32 42923 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 608; Value.Integer IntegerKind.U32 403 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 609; Value.Integer IntegerKind.U32 42924 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 611; Value.Integer IntegerKind.U32 404 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 612; Value.Integer IntegerKind.U32 42955 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 613; Value.Integer IntegerKind.U32 42893 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 614; Value.Integer IntegerKind.U32 42922 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 616; Value.Integer IntegerKind.U32 407 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 617; Value.Integer IntegerKind.U32 406 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 618; Value.Integer IntegerKind.U32 42926 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 619; Value.Integer IntegerKind.U32 11362 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 620; Value.Integer IntegerKind.U32 42925 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 623; Value.Integer IntegerKind.U32 412 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 625; Value.Integer IntegerKind.U32 11374 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 626; Value.Integer IntegerKind.U32 413 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 629; Value.Integer IntegerKind.U32 415 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 637; Value.Integer IntegerKind.U32 11364 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 640; Value.Integer IntegerKind.U32 422 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 642; Value.Integer IntegerKind.U32 42949 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 643; Value.Integer IntegerKind.U32 425 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 647; Value.Integer IntegerKind.U32 42929 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 648; Value.Integer IntegerKind.U32 430 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 649; Value.Integer IntegerKind.U32 580 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 650; Value.Integer IntegerKind.U32 433 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 651; Value.Integer IntegerKind.U32 434 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 652; Value.Integer IntegerKind.U32 581 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 658; Value.Integer IntegerKind.U32 439 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 669; Value.Integer IntegerKind.U32 42930 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 670; Value.Integer IntegerKind.U32 42928 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 837; Value.Integer IntegerKind.U32 921 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 881; Value.Integer IntegerKind.U32 880 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 883; Value.Integer IntegerKind.U32 882 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 887; Value.Integer IntegerKind.U32 886 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 891; Value.Integer IntegerKind.U32 1021 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 892; Value.Integer IntegerKind.U32 1022 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 893; Value.Integer IntegerKind.U32 1023 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 912; Value.Integer IntegerKind.U32 4194307 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 940; Value.Integer IntegerKind.U32 902 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 941; Value.Integer IntegerKind.U32 904 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 942; Value.Integer IntegerKind.U32 905 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 943; Value.Integer IntegerKind.U32 906 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 944; Value.Integer IntegerKind.U32 4194308 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 945; Value.Integer IntegerKind.U32 913 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 946; Value.Integer IntegerKind.U32 914 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 947; Value.Integer IntegerKind.U32 915 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 948; Value.Integer IntegerKind.U32 916 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 949; Value.Integer IntegerKind.U32 917 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 950; Value.Integer IntegerKind.U32 918 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 951; Value.Integer IntegerKind.U32 919 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 952; Value.Integer IntegerKind.U32 920 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 953; Value.Integer IntegerKind.U32 921 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 954; Value.Integer IntegerKind.U32 922 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 955; Value.Integer IntegerKind.U32 923 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 956; Value.Integer IntegerKind.U32 924 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 957; Value.Integer IntegerKind.U32 925 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 958; Value.Integer IntegerKind.U32 926 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 959; Value.Integer IntegerKind.U32 927 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 960; Value.Integer IntegerKind.U32 928 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 961; Value.Integer IntegerKind.U32 929 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 962; Value.Integer IntegerKind.U32 931 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 963; Value.Integer IntegerKind.U32 931 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 964; Value.Integer IntegerKind.U32 932 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 965; Value.Integer IntegerKind.U32 933 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 966; Value.Integer IntegerKind.U32 934 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 967; Value.Integer IntegerKind.U32 935 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 968; Value.Integer IntegerKind.U32 936 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 969; Value.Integer IntegerKind.U32 937 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 970; Value.Integer IntegerKind.U32 938 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 971; Value.Integer IntegerKind.U32 939 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 972; Value.Integer IntegerKind.U32 908 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 973; Value.Integer IntegerKind.U32 910 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 974; Value.Integer IntegerKind.U32 911 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 976; Value.Integer IntegerKind.U32 914 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 977; Value.Integer IntegerKind.U32 920 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 981; Value.Integer IntegerKind.U32 934 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 982; Value.Integer IntegerKind.U32 928 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 983; Value.Integer IntegerKind.U32 975 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 985; Value.Integer IntegerKind.U32 984 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 987; Value.Integer IntegerKind.U32 986 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 989; Value.Integer IntegerKind.U32 988 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 991; Value.Integer IntegerKind.U32 990 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 993; Value.Integer IntegerKind.U32 992 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 995; Value.Integer IntegerKind.U32 994 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 997; Value.Integer IntegerKind.U32 996 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 999; Value.Integer IntegerKind.U32 998 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1001; Value.Integer IntegerKind.U32 1000 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1003; Value.Integer IntegerKind.U32 1002 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1005; Value.Integer IntegerKind.U32 1004 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1007; Value.Integer IntegerKind.U32 1006 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1008; Value.Integer IntegerKind.U32 922 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1009; Value.Integer IntegerKind.U32 929 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1010; Value.Integer IntegerKind.U32 1017 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1011; Value.Integer IntegerKind.U32 895 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1013; Value.Integer IntegerKind.U32 917 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1016; Value.Integer IntegerKind.U32 1015 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1019; Value.Integer IntegerKind.U32 1018 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1072; Value.Integer IntegerKind.U32 1040 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1073; Value.Integer IntegerKind.U32 1041 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1074; Value.Integer IntegerKind.U32 1042 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1075; Value.Integer IntegerKind.U32 1043 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1076; Value.Integer IntegerKind.U32 1044 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1077; Value.Integer IntegerKind.U32 1045 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1078; Value.Integer IntegerKind.U32 1046 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1079; Value.Integer IntegerKind.U32 1047 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1080; Value.Integer IntegerKind.U32 1048 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1081; Value.Integer IntegerKind.U32 1049 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1082; Value.Integer IntegerKind.U32 1050 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1083; Value.Integer IntegerKind.U32 1051 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1084; Value.Integer IntegerKind.U32 1052 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1085; Value.Integer IntegerKind.U32 1053 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1086; Value.Integer IntegerKind.U32 1054 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1087; Value.Integer IntegerKind.U32 1055 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1088; Value.Integer IntegerKind.U32 1056 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1089; Value.Integer IntegerKind.U32 1057 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1090; Value.Integer IntegerKind.U32 1058 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1091; Value.Integer IntegerKind.U32 1059 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1092; Value.Integer IntegerKind.U32 1060 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1093; Value.Integer IntegerKind.U32 1061 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1094; Value.Integer IntegerKind.U32 1062 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1095; Value.Integer IntegerKind.U32 1063 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1096; Value.Integer IntegerKind.U32 1064 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1097; Value.Integer IntegerKind.U32 1065 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1098; Value.Integer IntegerKind.U32 1066 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1099; Value.Integer IntegerKind.U32 1067 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1100; Value.Integer IntegerKind.U32 1068 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1101; Value.Integer IntegerKind.U32 1069 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1102; Value.Integer IntegerKind.U32 1070 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1103; Value.Integer IntegerKind.U32 1071 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1104; Value.Integer IntegerKind.U32 1024 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1105; Value.Integer IntegerKind.U32 1025 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1106; Value.Integer IntegerKind.U32 1026 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1107; Value.Integer IntegerKind.U32 1027 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1108; Value.Integer IntegerKind.U32 1028 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1109; Value.Integer IntegerKind.U32 1029 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1110; Value.Integer IntegerKind.U32 1030 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1111; Value.Integer IntegerKind.U32 1031 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1112; Value.Integer IntegerKind.U32 1032 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1113; Value.Integer IntegerKind.U32 1033 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1114; Value.Integer IntegerKind.U32 1034 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1115; Value.Integer IntegerKind.U32 1035 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1116; Value.Integer IntegerKind.U32 1036 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1117; Value.Integer IntegerKind.U32 1037 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1118; Value.Integer IntegerKind.U32 1038 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1119; Value.Integer IntegerKind.U32 1039 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1121; Value.Integer IntegerKind.U32 1120 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1123; Value.Integer IntegerKind.U32 1122 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1125; Value.Integer IntegerKind.U32 1124 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1127; Value.Integer IntegerKind.U32 1126 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1129; Value.Integer IntegerKind.U32 1128 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1131; Value.Integer IntegerKind.U32 1130 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1133; Value.Integer IntegerKind.U32 1132 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1135; Value.Integer IntegerKind.U32 1134 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1137; Value.Integer IntegerKind.U32 1136 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1139; Value.Integer IntegerKind.U32 1138 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1141; Value.Integer IntegerKind.U32 1140 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1143; Value.Integer IntegerKind.U32 1142 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1145; Value.Integer IntegerKind.U32 1144 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1147; Value.Integer IntegerKind.U32 1146 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1149; Value.Integer IntegerKind.U32 1148 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1151; Value.Integer IntegerKind.U32 1150 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1153; Value.Integer IntegerKind.U32 1152 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1163; Value.Integer IntegerKind.U32 1162 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1165; Value.Integer IntegerKind.U32 1164 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1167; Value.Integer IntegerKind.U32 1166 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1169; Value.Integer IntegerKind.U32 1168 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1171; Value.Integer IntegerKind.U32 1170 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1173; Value.Integer IntegerKind.U32 1172 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1175; Value.Integer IntegerKind.U32 1174 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1177; Value.Integer IntegerKind.U32 1176 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1179; Value.Integer IntegerKind.U32 1178 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1181; Value.Integer IntegerKind.U32 1180 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1183; Value.Integer IntegerKind.U32 1182 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1185; Value.Integer IntegerKind.U32 1184 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1187; Value.Integer IntegerKind.U32 1186 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1189; Value.Integer IntegerKind.U32 1188 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1191; Value.Integer IntegerKind.U32 1190 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1193; Value.Integer IntegerKind.U32 1192 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1195; Value.Integer IntegerKind.U32 1194 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1197; Value.Integer IntegerKind.U32 1196 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1199; Value.Integer IntegerKind.U32 1198 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1201; Value.Integer IntegerKind.U32 1200 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1203; Value.Integer IntegerKind.U32 1202 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1205; Value.Integer IntegerKind.U32 1204 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1207; Value.Integer IntegerKind.U32 1206 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1209; Value.Integer IntegerKind.U32 1208 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1211; Value.Integer IntegerKind.U32 1210 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1213; Value.Integer IntegerKind.U32 1212 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1215; Value.Integer IntegerKind.U32 1214 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1218; Value.Integer IntegerKind.U32 1217 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1220; Value.Integer IntegerKind.U32 1219 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1222; Value.Integer IntegerKind.U32 1221 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1224; Value.Integer IntegerKind.U32 1223 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1226; Value.Integer IntegerKind.U32 1225 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1228; Value.Integer IntegerKind.U32 1227 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1230; Value.Integer IntegerKind.U32 1229 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1231; Value.Integer IntegerKind.U32 1216 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1233; Value.Integer IntegerKind.U32 1232 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1235; Value.Integer IntegerKind.U32 1234 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1237; Value.Integer IntegerKind.U32 1236 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1239; Value.Integer IntegerKind.U32 1238 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1241; Value.Integer IntegerKind.U32 1240 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1243; Value.Integer IntegerKind.U32 1242 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1245; Value.Integer IntegerKind.U32 1244 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1247; Value.Integer IntegerKind.U32 1246 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1249; Value.Integer IntegerKind.U32 1248 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1251; Value.Integer IntegerKind.U32 1250 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1253; Value.Integer IntegerKind.U32 1252 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1255; Value.Integer IntegerKind.U32 1254 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1257; Value.Integer IntegerKind.U32 1256 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1259; Value.Integer IntegerKind.U32 1258 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1261; Value.Integer IntegerKind.U32 1260 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1263; Value.Integer IntegerKind.U32 1262 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1265; Value.Integer IntegerKind.U32 1264 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1267; Value.Integer IntegerKind.U32 1266 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1269; Value.Integer IntegerKind.U32 1268 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1271; Value.Integer IntegerKind.U32 1270 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1273; Value.Integer IntegerKind.U32 1272 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1275; Value.Integer IntegerKind.U32 1274 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1277; Value.Integer IntegerKind.U32 1276 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1279; Value.Integer IntegerKind.U32 1278 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1281; Value.Integer IntegerKind.U32 1280 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1283; Value.Integer IntegerKind.U32 1282 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1285; Value.Integer IntegerKind.U32 1284 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1287; Value.Integer IntegerKind.U32 1286 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1289; Value.Integer IntegerKind.U32 1288 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1291; Value.Integer IntegerKind.U32 1290 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1293; Value.Integer IntegerKind.U32 1292 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1295; Value.Integer IntegerKind.U32 1294 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1297; Value.Integer IntegerKind.U32 1296 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1299; Value.Integer IntegerKind.U32 1298 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1301; Value.Integer IntegerKind.U32 1300 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1303; Value.Integer IntegerKind.U32 1302 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1305; Value.Integer IntegerKind.U32 1304 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1307; Value.Integer IntegerKind.U32 1306 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1309; Value.Integer IntegerKind.U32 1308 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1311; Value.Integer IntegerKind.U32 1310 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1313; Value.Integer IntegerKind.U32 1312 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1315; Value.Integer IntegerKind.U32 1314 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1317; Value.Integer IntegerKind.U32 1316 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1319; Value.Integer IntegerKind.U32 1318 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1321; Value.Integer IntegerKind.U32 1320 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1323; Value.Integer IntegerKind.U32 1322 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1325; Value.Integer IntegerKind.U32 1324 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1327; Value.Integer IntegerKind.U32 1326 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1377; Value.Integer IntegerKind.U32 1329 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1378; Value.Integer IntegerKind.U32 1330 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1379; Value.Integer IntegerKind.U32 1331 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1380; Value.Integer IntegerKind.U32 1332 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1381; Value.Integer IntegerKind.U32 1333 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1382; Value.Integer IntegerKind.U32 1334 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1383; Value.Integer IntegerKind.U32 1335 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1384; Value.Integer IntegerKind.U32 1336 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1385; Value.Integer IntegerKind.U32 1337 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1386; Value.Integer IntegerKind.U32 1338 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1387; Value.Integer IntegerKind.U32 1339 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1388; Value.Integer IntegerKind.U32 1340 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1389; Value.Integer IntegerKind.U32 1341 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1390; Value.Integer IntegerKind.U32 1342 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1391; Value.Integer IntegerKind.U32 1343 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1392; Value.Integer IntegerKind.U32 1344 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1393; Value.Integer IntegerKind.U32 1345 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1394; Value.Integer IntegerKind.U32 1346 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1395; Value.Integer IntegerKind.U32 1347 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1396; Value.Integer IntegerKind.U32 1348 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1397; Value.Integer IntegerKind.U32 1349 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1398; Value.Integer IntegerKind.U32 1350 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1399; Value.Integer IntegerKind.U32 1351 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1400; Value.Integer IntegerKind.U32 1352 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1401; Value.Integer IntegerKind.U32 1353 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1402; Value.Integer IntegerKind.U32 1354 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1403; Value.Integer IntegerKind.U32 1355 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1404; Value.Integer IntegerKind.U32 1356 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1405; Value.Integer IntegerKind.U32 1357 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1406; Value.Integer IntegerKind.U32 1358 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1407; Value.Integer IntegerKind.U32 1359 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1408; Value.Integer IntegerKind.U32 1360 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1409; Value.Integer IntegerKind.U32 1361 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1410; Value.Integer IntegerKind.U32 1362 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1411; Value.Integer IntegerKind.U32 1363 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1412; Value.Integer IntegerKind.U32 1364 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1413; Value.Integer IntegerKind.U32 1365 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1414; Value.Integer IntegerKind.U32 1366 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 1415; Value.Integer IntegerKind.U32 4194309 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4304; Value.Integer IntegerKind.U32 7312 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4305; Value.Integer IntegerKind.U32 7313 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4306; Value.Integer IntegerKind.U32 7314 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4307; Value.Integer IntegerKind.U32 7315 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4308; Value.Integer IntegerKind.U32 7316 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4309; Value.Integer IntegerKind.U32 7317 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4310; Value.Integer IntegerKind.U32 7318 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4311; Value.Integer IntegerKind.U32 7319 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4312; Value.Integer IntegerKind.U32 7320 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4313; Value.Integer IntegerKind.U32 7321 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4314; Value.Integer IntegerKind.U32 7322 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4315; Value.Integer IntegerKind.U32 7323 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4316; Value.Integer IntegerKind.U32 7324 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4317; Value.Integer IntegerKind.U32 7325 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4318; Value.Integer IntegerKind.U32 7326 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4319; Value.Integer IntegerKind.U32 7327 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4320; Value.Integer IntegerKind.U32 7328 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4321; Value.Integer IntegerKind.U32 7329 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4322; Value.Integer IntegerKind.U32 7330 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4323; Value.Integer IntegerKind.U32 7331 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4324; Value.Integer IntegerKind.U32 7332 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4325; Value.Integer IntegerKind.U32 7333 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4326; Value.Integer IntegerKind.U32 7334 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4327; Value.Integer IntegerKind.U32 7335 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4328; Value.Integer IntegerKind.U32 7336 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4329; Value.Integer IntegerKind.U32 7337 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4330; Value.Integer IntegerKind.U32 7338 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4331; Value.Integer IntegerKind.U32 7339 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4332; Value.Integer IntegerKind.U32 7340 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4333; Value.Integer IntegerKind.U32 7341 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4334; Value.Integer IntegerKind.U32 7342 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4335; Value.Integer IntegerKind.U32 7343 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4336; Value.Integer IntegerKind.U32 7344 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4337; Value.Integer IntegerKind.U32 7345 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4338; Value.Integer IntegerKind.U32 7346 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4339; Value.Integer IntegerKind.U32 7347 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4340; Value.Integer IntegerKind.U32 7348 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4341; Value.Integer IntegerKind.U32 7349 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4342; Value.Integer IntegerKind.U32 7350 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4343; Value.Integer IntegerKind.U32 7351 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4344; Value.Integer IntegerKind.U32 7352 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4345; Value.Integer IntegerKind.U32 7353 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4346; Value.Integer IntegerKind.U32 7354 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4349; Value.Integer IntegerKind.U32 7357 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4350; Value.Integer IntegerKind.U32 7358 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 4351; Value.Integer IntegerKind.U32 7359 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5112; Value.Integer IntegerKind.U32 5104 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5113; Value.Integer IntegerKind.U32 5105 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5114; Value.Integer IntegerKind.U32 5106 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5115; Value.Integer IntegerKind.U32 5107 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5116; Value.Integer IntegerKind.U32 5108 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 5117; Value.Integer IntegerKind.U32 5109 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7296; Value.Integer IntegerKind.U32 1042 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7297; Value.Integer IntegerKind.U32 1044 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7298; Value.Integer IntegerKind.U32 1054 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7299; Value.Integer IntegerKind.U32 1057 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7300; Value.Integer IntegerKind.U32 1058 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7301; Value.Integer IntegerKind.U32 1058 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7302; Value.Integer IntegerKind.U32 1066 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7303; Value.Integer IntegerKind.U32 1122 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7304; Value.Integer IntegerKind.U32 42570 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7306; Value.Integer IntegerKind.U32 7305 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7545; Value.Integer IntegerKind.U32 42877 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7549; Value.Integer IntegerKind.U32 11363 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7566; Value.Integer IntegerKind.U32 42950 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7681; Value.Integer IntegerKind.U32 7680 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7683; Value.Integer IntegerKind.U32 7682 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7685; Value.Integer IntegerKind.U32 7684 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7687; Value.Integer IntegerKind.U32 7686 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7689; Value.Integer IntegerKind.U32 7688 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7691; Value.Integer IntegerKind.U32 7690 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7693; Value.Integer IntegerKind.U32 7692 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7695; Value.Integer IntegerKind.U32 7694 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7697; Value.Integer IntegerKind.U32 7696 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7699; Value.Integer IntegerKind.U32 7698 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7701; Value.Integer IntegerKind.U32 7700 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7703; Value.Integer IntegerKind.U32 7702 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7705; Value.Integer IntegerKind.U32 7704 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7707; Value.Integer IntegerKind.U32 7706 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7709; Value.Integer IntegerKind.U32 7708 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7711; Value.Integer IntegerKind.U32 7710 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7713; Value.Integer IntegerKind.U32 7712 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7715; Value.Integer IntegerKind.U32 7714 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7717; Value.Integer IntegerKind.U32 7716 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7719; Value.Integer IntegerKind.U32 7718 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7721; Value.Integer IntegerKind.U32 7720 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7723; Value.Integer IntegerKind.U32 7722 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7725; Value.Integer IntegerKind.U32 7724 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7727; Value.Integer IntegerKind.U32 7726 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7729; Value.Integer IntegerKind.U32 7728 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7731; Value.Integer IntegerKind.U32 7730 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7733; Value.Integer IntegerKind.U32 7732 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7735; Value.Integer IntegerKind.U32 7734 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7737; Value.Integer IntegerKind.U32 7736 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7739; Value.Integer IntegerKind.U32 7738 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7741; Value.Integer IntegerKind.U32 7740 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7743; Value.Integer IntegerKind.U32 7742 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7745; Value.Integer IntegerKind.U32 7744 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7747; Value.Integer IntegerKind.U32 7746 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7749; Value.Integer IntegerKind.U32 7748 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7751; Value.Integer IntegerKind.U32 7750 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7753; Value.Integer IntegerKind.U32 7752 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7755; Value.Integer IntegerKind.U32 7754 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7757; Value.Integer IntegerKind.U32 7756 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7759; Value.Integer IntegerKind.U32 7758 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7761; Value.Integer IntegerKind.U32 7760 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7763; Value.Integer IntegerKind.U32 7762 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7765; Value.Integer IntegerKind.U32 7764 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7767; Value.Integer IntegerKind.U32 7766 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7769; Value.Integer IntegerKind.U32 7768 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7771; Value.Integer IntegerKind.U32 7770 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7773; Value.Integer IntegerKind.U32 7772 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7775; Value.Integer IntegerKind.U32 7774 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7777; Value.Integer IntegerKind.U32 7776 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7779; Value.Integer IntegerKind.U32 7778 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7781; Value.Integer IntegerKind.U32 7780 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7783; Value.Integer IntegerKind.U32 7782 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7785; Value.Integer IntegerKind.U32 7784 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7787; Value.Integer IntegerKind.U32 7786 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7789; Value.Integer IntegerKind.U32 7788 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7791; Value.Integer IntegerKind.U32 7790 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7793; Value.Integer IntegerKind.U32 7792 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7795; Value.Integer IntegerKind.U32 7794 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7797; Value.Integer IntegerKind.U32 7796 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7799; Value.Integer IntegerKind.U32 7798 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7801; Value.Integer IntegerKind.U32 7800 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7803; Value.Integer IntegerKind.U32 7802 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7805; Value.Integer IntegerKind.U32 7804 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7807; Value.Integer IntegerKind.U32 7806 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7809; Value.Integer IntegerKind.U32 7808 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7811; Value.Integer IntegerKind.U32 7810 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7813; Value.Integer IntegerKind.U32 7812 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7815; Value.Integer IntegerKind.U32 7814 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7817; Value.Integer IntegerKind.U32 7816 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7819; Value.Integer IntegerKind.U32 7818 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7821; Value.Integer IntegerKind.U32 7820 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7823; Value.Integer IntegerKind.U32 7822 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7825; Value.Integer IntegerKind.U32 7824 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7827; Value.Integer IntegerKind.U32 7826 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7829; Value.Integer IntegerKind.U32 7828 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7830; Value.Integer IntegerKind.U32 4194310 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7831; Value.Integer IntegerKind.U32 4194311 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7832; Value.Integer IntegerKind.U32 4194312 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7833; Value.Integer IntegerKind.U32 4194313 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7834; Value.Integer IntegerKind.U32 4194314 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7835; Value.Integer IntegerKind.U32 7776 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7841; Value.Integer IntegerKind.U32 7840 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7843; Value.Integer IntegerKind.U32 7842 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7845; Value.Integer IntegerKind.U32 7844 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7847; Value.Integer IntegerKind.U32 7846 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7849; Value.Integer IntegerKind.U32 7848 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7851; Value.Integer IntegerKind.U32 7850 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7853; Value.Integer IntegerKind.U32 7852 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7855; Value.Integer IntegerKind.U32 7854 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7857; Value.Integer IntegerKind.U32 7856 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7859; Value.Integer IntegerKind.U32 7858 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7861; Value.Integer IntegerKind.U32 7860 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7863; Value.Integer IntegerKind.U32 7862 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7865; Value.Integer IntegerKind.U32 7864 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7867; Value.Integer IntegerKind.U32 7866 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7869; Value.Integer IntegerKind.U32 7868 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7871; Value.Integer IntegerKind.U32 7870 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7873; Value.Integer IntegerKind.U32 7872 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7875; Value.Integer IntegerKind.U32 7874 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7877; Value.Integer IntegerKind.U32 7876 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7879; Value.Integer IntegerKind.U32 7878 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7881; Value.Integer IntegerKind.U32 7880 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7883; Value.Integer IntegerKind.U32 7882 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7885; Value.Integer IntegerKind.U32 7884 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7887; Value.Integer IntegerKind.U32 7886 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7889; Value.Integer IntegerKind.U32 7888 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7891; Value.Integer IntegerKind.U32 7890 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7893; Value.Integer IntegerKind.U32 7892 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7895; Value.Integer IntegerKind.U32 7894 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7897; Value.Integer IntegerKind.U32 7896 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7899; Value.Integer IntegerKind.U32 7898 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7901; Value.Integer IntegerKind.U32 7900 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7903; Value.Integer IntegerKind.U32 7902 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7905; Value.Integer IntegerKind.U32 7904 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7907; Value.Integer IntegerKind.U32 7906 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7909; Value.Integer IntegerKind.U32 7908 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7911; Value.Integer IntegerKind.U32 7910 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7913; Value.Integer IntegerKind.U32 7912 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7915; Value.Integer IntegerKind.U32 7914 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7917; Value.Integer IntegerKind.U32 7916 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7919; Value.Integer IntegerKind.U32 7918 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7921; Value.Integer IntegerKind.U32 7920 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7923; Value.Integer IntegerKind.U32 7922 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7925; Value.Integer IntegerKind.U32 7924 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7927; Value.Integer IntegerKind.U32 7926 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7929; Value.Integer IntegerKind.U32 7928 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7931; Value.Integer IntegerKind.U32 7930 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7933; Value.Integer IntegerKind.U32 7932 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7935; Value.Integer IntegerKind.U32 7934 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7936; Value.Integer IntegerKind.U32 7944 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7937; Value.Integer IntegerKind.U32 7945 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7938; Value.Integer IntegerKind.U32 7946 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7939; Value.Integer IntegerKind.U32 7947 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7940; Value.Integer IntegerKind.U32 7948 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7941; Value.Integer IntegerKind.U32 7949 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7942; Value.Integer IntegerKind.U32 7950 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7943; Value.Integer IntegerKind.U32 7951 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7952; Value.Integer IntegerKind.U32 7960 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7953; Value.Integer IntegerKind.U32 7961 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7954; Value.Integer IntegerKind.U32 7962 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7955; Value.Integer IntegerKind.U32 7963 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7956; Value.Integer IntegerKind.U32 7964 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7957; Value.Integer IntegerKind.U32 7965 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7968; Value.Integer IntegerKind.U32 7976 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7969; Value.Integer IntegerKind.U32 7977 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7970; Value.Integer IntegerKind.U32 7978 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7971; Value.Integer IntegerKind.U32 7979 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7972; Value.Integer IntegerKind.U32 7980 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7973; Value.Integer IntegerKind.U32 7981 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7974; Value.Integer IntegerKind.U32 7982 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7975; Value.Integer IntegerKind.U32 7983 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7984; Value.Integer IntegerKind.U32 7992 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7985; Value.Integer IntegerKind.U32 7993 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7986; Value.Integer IntegerKind.U32 7994 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7987; Value.Integer IntegerKind.U32 7995 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7988; Value.Integer IntegerKind.U32 7996 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7989; Value.Integer IntegerKind.U32 7997 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7990; Value.Integer IntegerKind.U32 7998 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 7991; Value.Integer IntegerKind.U32 7999 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8000; Value.Integer IntegerKind.U32 8008 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8001; Value.Integer IntegerKind.U32 8009 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8002; Value.Integer IntegerKind.U32 8010 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8003; Value.Integer IntegerKind.U32 8011 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8004; Value.Integer IntegerKind.U32 8012 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8005; Value.Integer IntegerKind.U32 8013 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8016; Value.Integer IntegerKind.U32 4194315 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8017; Value.Integer IntegerKind.U32 8025 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8018; Value.Integer IntegerKind.U32 4194316 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8019; Value.Integer IntegerKind.U32 8027 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8020; Value.Integer IntegerKind.U32 4194317 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8021; Value.Integer IntegerKind.U32 8029 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8022; Value.Integer IntegerKind.U32 4194318 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8023; Value.Integer IntegerKind.U32 8031 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8032; Value.Integer IntegerKind.U32 8040 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8033; Value.Integer IntegerKind.U32 8041 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8034; Value.Integer IntegerKind.U32 8042 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8035; Value.Integer IntegerKind.U32 8043 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8036; Value.Integer IntegerKind.U32 8044 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8037; Value.Integer IntegerKind.U32 8045 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8038; Value.Integer IntegerKind.U32 8046 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8039; Value.Integer IntegerKind.U32 8047 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8048; Value.Integer IntegerKind.U32 8122 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8049; Value.Integer IntegerKind.U32 8123 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8050; Value.Integer IntegerKind.U32 8136 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8051; Value.Integer IntegerKind.U32 8137 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8052; Value.Integer IntegerKind.U32 8138 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8053; Value.Integer IntegerKind.U32 8139 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8054; Value.Integer IntegerKind.U32 8154 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8055; Value.Integer IntegerKind.U32 8155 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8056; Value.Integer IntegerKind.U32 8184 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8057; Value.Integer IntegerKind.U32 8185 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8058; Value.Integer IntegerKind.U32 8170 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8059; Value.Integer IntegerKind.U32 8171 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8060; Value.Integer IntegerKind.U32 8186 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8061; Value.Integer IntegerKind.U32 8187 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8064; Value.Integer IntegerKind.U32 4194319 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8065; Value.Integer IntegerKind.U32 4194320 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8066; Value.Integer IntegerKind.U32 4194321 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8067; Value.Integer IntegerKind.U32 4194322 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8068; Value.Integer IntegerKind.U32 4194323 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8069; Value.Integer IntegerKind.U32 4194324 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8070; Value.Integer IntegerKind.U32 4194325 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8071; Value.Integer IntegerKind.U32 4194326 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8072; Value.Integer IntegerKind.U32 4194327 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8073; Value.Integer IntegerKind.U32 4194328 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8074; Value.Integer IntegerKind.U32 4194329 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8075; Value.Integer IntegerKind.U32 4194330 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8076; Value.Integer IntegerKind.U32 4194331 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8077; Value.Integer IntegerKind.U32 4194332 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8078; Value.Integer IntegerKind.U32 4194333 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8079; Value.Integer IntegerKind.U32 4194334 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8080; Value.Integer IntegerKind.U32 4194335 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8081; Value.Integer IntegerKind.U32 4194336 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8082; Value.Integer IntegerKind.U32 4194337 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8083; Value.Integer IntegerKind.U32 4194338 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8084; Value.Integer IntegerKind.U32 4194339 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8085; Value.Integer IntegerKind.U32 4194340 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8086; Value.Integer IntegerKind.U32 4194341 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8087; Value.Integer IntegerKind.U32 4194342 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8088; Value.Integer IntegerKind.U32 4194343 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8089; Value.Integer IntegerKind.U32 4194344 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8090; Value.Integer IntegerKind.U32 4194345 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8091; Value.Integer IntegerKind.U32 4194346 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8092; Value.Integer IntegerKind.U32 4194347 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8093; Value.Integer IntegerKind.U32 4194348 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8094; Value.Integer IntegerKind.U32 4194349 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8095; Value.Integer IntegerKind.U32 4194350 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8096; Value.Integer IntegerKind.U32 4194351 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8097; Value.Integer IntegerKind.U32 4194352 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8098; Value.Integer IntegerKind.U32 4194353 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8099; Value.Integer IntegerKind.U32 4194354 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8100; Value.Integer IntegerKind.U32 4194355 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8101; Value.Integer IntegerKind.U32 4194356 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8102; Value.Integer IntegerKind.U32 4194357 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8103; Value.Integer IntegerKind.U32 4194358 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8104; Value.Integer IntegerKind.U32 4194359 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8105; Value.Integer IntegerKind.U32 4194360 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8106; Value.Integer IntegerKind.U32 4194361 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8107; Value.Integer IntegerKind.U32 4194362 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8108; Value.Integer IntegerKind.U32 4194363 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8109; Value.Integer IntegerKind.U32 4194364 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8110; Value.Integer IntegerKind.U32 4194365 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8111; Value.Integer IntegerKind.U32 4194366 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8112; Value.Integer IntegerKind.U32 8120 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8113; Value.Integer IntegerKind.U32 8121 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8114; Value.Integer IntegerKind.U32 4194367 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8115; Value.Integer IntegerKind.U32 4194368 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8116; Value.Integer IntegerKind.U32 4194369 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8118; Value.Integer IntegerKind.U32 4194370 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8119; Value.Integer IntegerKind.U32 4194371 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8124; Value.Integer IntegerKind.U32 4194372 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8126; Value.Integer IntegerKind.U32 921 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8130; Value.Integer IntegerKind.U32 4194373 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8131; Value.Integer IntegerKind.U32 4194374 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8132; Value.Integer IntegerKind.U32 4194375 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8134; Value.Integer IntegerKind.U32 4194376 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8135; Value.Integer IntegerKind.U32 4194377 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8140; Value.Integer IntegerKind.U32 4194378 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8144; Value.Integer IntegerKind.U32 8152 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8145; Value.Integer IntegerKind.U32 8153 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8146; Value.Integer IntegerKind.U32 4194379 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8147; Value.Integer IntegerKind.U32 4194380 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8150; Value.Integer IntegerKind.U32 4194381 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8151; Value.Integer IntegerKind.U32 4194382 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8160; Value.Integer IntegerKind.U32 8168 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8161; Value.Integer IntegerKind.U32 8169 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8162; Value.Integer IntegerKind.U32 4194383 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8163; Value.Integer IntegerKind.U32 4194384 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8164; Value.Integer IntegerKind.U32 4194385 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8165; Value.Integer IntegerKind.U32 8172 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8166; Value.Integer IntegerKind.U32 4194386 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8167; Value.Integer IntegerKind.U32 4194387 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8178; Value.Integer IntegerKind.U32 4194388 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8179; Value.Integer IntegerKind.U32 4194389 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8180; Value.Integer IntegerKind.U32 4194390 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8182; Value.Integer IntegerKind.U32 4194391 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8183; Value.Integer IntegerKind.U32 4194392 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8188; Value.Integer IntegerKind.U32 4194393 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8526; Value.Integer IntegerKind.U32 8498 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8560; Value.Integer IntegerKind.U32 8544 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8561; Value.Integer IntegerKind.U32 8545 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8562; Value.Integer IntegerKind.U32 8546 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8563; Value.Integer IntegerKind.U32 8547 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8564; Value.Integer IntegerKind.U32 8548 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8565; Value.Integer IntegerKind.U32 8549 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8566; Value.Integer IntegerKind.U32 8550 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8567; Value.Integer IntegerKind.U32 8551 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8568; Value.Integer IntegerKind.U32 8552 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8569; Value.Integer IntegerKind.U32 8553 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8570; Value.Integer IntegerKind.U32 8554 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8571; Value.Integer IntegerKind.U32 8555 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8572; Value.Integer IntegerKind.U32 8556 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8573; Value.Integer IntegerKind.U32 8557 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8574; Value.Integer IntegerKind.U32 8558 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8575; Value.Integer IntegerKind.U32 8559 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 8580; Value.Integer IntegerKind.U32 8579 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9424; Value.Integer IntegerKind.U32 9398 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9425; Value.Integer IntegerKind.U32 9399 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9426; Value.Integer IntegerKind.U32 9400 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9427; Value.Integer IntegerKind.U32 9401 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9428; Value.Integer IntegerKind.U32 9402 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9429; Value.Integer IntegerKind.U32 9403 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9430; Value.Integer IntegerKind.U32 9404 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9431; Value.Integer IntegerKind.U32 9405 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9432; Value.Integer IntegerKind.U32 9406 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9433; Value.Integer IntegerKind.U32 9407 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9434; Value.Integer IntegerKind.U32 9408 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9435; Value.Integer IntegerKind.U32 9409 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9436; Value.Integer IntegerKind.U32 9410 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9437; Value.Integer IntegerKind.U32 9411 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9438; Value.Integer IntegerKind.U32 9412 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9439; Value.Integer IntegerKind.U32 9413 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9440; Value.Integer IntegerKind.U32 9414 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9441; Value.Integer IntegerKind.U32 9415 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9442; Value.Integer IntegerKind.U32 9416 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9443; Value.Integer IntegerKind.U32 9417 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9444; Value.Integer IntegerKind.U32 9418 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9445; Value.Integer IntegerKind.U32 9419 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9446; Value.Integer IntegerKind.U32 9420 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9447; Value.Integer IntegerKind.U32 9421 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9448; Value.Integer IntegerKind.U32 9422 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 9449; Value.Integer IntegerKind.U32 9423 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11312; Value.Integer IntegerKind.U32 11264 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11313; Value.Integer IntegerKind.U32 11265 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11314; Value.Integer IntegerKind.U32 11266 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11315; Value.Integer IntegerKind.U32 11267 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11316; Value.Integer IntegerKind.U32 11268 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11317; Value.Integer IntegerKind.U32 11269 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11318; Value.Integer IntegerKind.U32 11270 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11319; Value.Integer IntegerKind.U32 11271 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11320; Value.Integer IntegerKind.U32 11272 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11321; Value.Integer IntegerKind.U32 11273 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11322; Value.Integer IntegerKind.U32 11274 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11323; Value.Integer IntegerKind.U32 11275 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11324; Value.Integer IntegerKind.U32 11276 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11325; Value.Integer IntegerKind.U32 11277 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11326; Value.Integer IntegerKind.U32 11278 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11327; Value.Integer IntegerKind.U32 11279 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11328; Value.Integer IntegerKind.U32 11280 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11329; Value.Integer IntegerKind.U32 11281 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11330; Value.Integer IntegerKind.U32 11282 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11331; Value.Integer IntegerKind.U32 11283 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11332; Value.Integer IntegerKind.U32 11284 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11333; Value.Integer IntegerKind.U32 11285 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11334; Value.Integer IntegerKind.U32 11286 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11335; Value.Integer IntegerKind.U32 11287 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11336; Value.Integer IntegerKind.U32 11288 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11337; Value.Integer IntegerKind.U32 11289 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11338; Value.Integer IntegerKind.U32 11290 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11339; Value.Integer IntegerKind.U32 11291 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11340; Value.Integer IntegerKind.U32 11292 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11341; Value.Integer IntegerKind.U32 11293 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11342; Value.Integer IntegerKind.U32 11294 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11343; Value.Integer IntegerKind.U32 11295 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11344; Value.Integer IntegerKind.U32 11296 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11345; Value.Integer IntegerKind.U32 11297 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11346; Value.Integer IntegerKind.U32 11298 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11347; Value.Integer IntegerKind.U32 11299 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11348; Value.Integer IntegerKind.U32 11300 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11349; Value.Integer IntegerKind.U32 11301 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11350; Value.Integer IntegerKind.U32 11302 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11351; Value.Integer IntegerKind.U32 11303 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11352; Value.Integer IntegerKind.U32 11304 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11353; Value.Integer IntegerKind.U32 11305 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11354; Value.Integer IntegerKind.U32 11306 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11355; Value.Integer IntegerKind.U32 11307 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11356; Value.Integer IntegerKind.U32 11308 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11357; Value.Integer IntegerKind.U32 11309 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11358; Value.Integer IntegerKind.U32 11310 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11359; Value.Integer IntegerKind.U32 11311 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11361; Value.Integer IntegerKind.U32 11360 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11365; Value.Integer IntegerKind.U32 570 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11366; Value.Integer IntegerKind.U32 574 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11368; Value.Integer IntegerKind.U32 11367 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11370; Value.Integer IntegerKind.U32 11369 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11372; Value.Integer IntegerKind.U32 11371 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11379; Value.Integer IntegerKind.U32 11378 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11382; Value.Integer IntegerKind.U32 11381 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11393; Value.Integer IntegerKind.U32 11392 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11395; Value.Integer IntegerKind.U32 11394 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11397; Value.Integer IntegerKind.U32 11396 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11399; Value.Integer IntegerKind.U32 11398 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11401; Value.Integer IntegerKind.U32 11400 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11403; Value.Integer IntegerKind.U32 11402 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11405; Value.Integer IntegerKind.U32 11404 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11407; Value.Integer IntegerKind.U32 11406 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11409; Value.Integer IntegerKind.U32 11408 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11411; Value.Integer IntegerKind.U32 11410 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11413; Value.Integer IntegerKind.U32 11412 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11415; Value.Integer IntegerKind.U32 11414 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11417; Value.Integer IntegerKind.U32 11416 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11419; Value.Integer IntegerKind.U32 11418 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11421; Value.Integer IntegerKind.U32 11420 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11423; Value.Integer IntegerKind.U32 11422 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11425; Value.Integer IntegerKind.U32 11424 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11427; Value.Integer IntegerKind.U32 11426 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11429; Value.Integer IntegerKind.U32 11428 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11431; Value.Integer IntegerKind.U32 11430 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11433; Value.Integer IntegerKind.U32 11432 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11435; Value.Integer IntegerKind.U32 11434 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11437; Value.Integer IntegerKind.U32 11436 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11439; Value.Integer IntegerKind.U32 11438 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11441; Value.Integer IntegerKind.U32 11440 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11443; Value.Integer IntegerKind.U32 11442 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11445; Value.Integer IntegerKind.U32 11444 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11447; Value.Integer IntegerKind.U32 11446 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11449; Value.Integer IntegerKind.U32 11448 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11451; Value.Integer IntegerKind.U32 11450 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11453; Value.Integer IntegerKind.U32 11452 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11455; Value.Integer IntegerKind.U32 11454 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11457; Value.Integer IntegerKind.U32 11456 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11459; Value.Integer IntegerKind.U32 11458 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11461; Value.Integer IntegerKind.U32 11460 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11463; Value.Integer IntegerKind.U32 11462 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11465; Value.Integer IntegerKind.U32 11464 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11467; Value.Integer IntegerKind.U32 11466 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11469; Value.Integer IntegerKind.U32 11468 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11471; Value.Integer IntegerKind.U32 11470 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11473; Value.Integer IntegerKind.U32 11472 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11475; Value.Integer IntegerKind.U32 11474 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11477; Value.Integer IntegerKind.U32 11476 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11479; Value.Integer IntegerKind.U32 11478 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11481; Value.Integer IntegerKind.U32 11480 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11483; Value.Integer IntegerKind.U32 11482 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11485; Value.Integer IntegerKind.U32 11484 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11487; Value.Integer IntegerKind.U32 11486 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11489; Value.Integer IntegerKind.U32 11488 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11491; Value.Integer IntegerKind.U32 11490 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11500; Value.Integer IntegerKind.U32 11499 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11502; Value.Integer IntegerKind.U32 11501 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11507; Value.Integer IntegerKind.U32 11506 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11520; Value.Integer IntegerKind.U32 4256 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11521; Value.Integer IntegerKind.U32 4257 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11522; Value.Integer IntegerKind.U32 4258 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11523; Value.Integer IntegerKind.U32 4259 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11524; Value.Integer IntegerKind.U32 4260 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11525; Value.Integer IntegerKind.U32 4261 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11526; Value.Integer IntegerKind.U32 4262 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11527; Value.Integer IntegerKind.U32 4263 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11528; Value.Integer IntegerKind.U32 4264 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11529; Value.Integer IntegerKind.U32 4265 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11530; Value.Integer IntegerKind.U32 4266 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11531; Value.Integer IntegerKind.U32 4267 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11532; Value.Integer IntegerKind.U32 4268 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11533; Value.Integer IntegerKind.U32 4269 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11534; Value.Integer IntegerKind.U32 4270 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11535; Value.Integer IntegerKind.U32 4271 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11536; Value.Integer IntegerKind.U32 4272 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11537; Value.Integer IntegerKind.U32 4273 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11538; Value.Integer IntegerKind.U32 4274 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11539; Value.Integer IntegerKind.U32 4275 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11540; Value.Integer IntegerKind.U32 4276 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11541; Value.Integer IntegerKind.U32 4277 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11542; Value.Integer IntegerKind.U32 4278 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11543; Value.Integer IntegerKind.U32 4279 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11544; Value.Integer IntegerKind.U32 4280 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11545; Value.Integer IntegerKind.U32 4281 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11546; Value.Integer IntegerKind.U32 4282 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11547; Value.Integer IntegerKind.U32 4283 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11548; Value.Integer IntegerKind.U32 4284 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11549; Value.Integer IntegerKind.U32 4285 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11550; Value.Integer IntegerKind.U32 4286 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11551; Value.Integer IntegerKind.U32 4287 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11552; Value.Integer IntegerKind.U32 4288 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11553; Value.Integer IntegerKind.U32 4289 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11554; Value.Integer IntegerKind.U32 4290 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11555; Value.Integer IntegerKind.U32 4291 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11556; Value.Integer IntegerKind.U32 4292 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11557; Value.Integer IntegerKind.U32 4293 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11559; Value.Integer IntegerKind.U32 4295 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 11565; Value.Integer IntegerKind.U32 4301 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42561; Value.Integer IntegerKind.U32 42560 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42563; Value.Integer IntegerKind.U32 42562 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42565; Value.Integer IntegerKind.U32 42564 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42567; Value.Integer IntegerKind.U32 42566 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42569; Value.Integer IntegerKind.U32 42568 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42571; Value.Integer IntegerKind.U32 42570 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42573; Value.Integer IntegerKind.U32 42572 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42575; Value.Integer IntegerKind.U32 42574 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42577; Value.Integer IntegerKind.U32 42576 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42579; Value.Integer IntegerKind.U32 42578 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42581; Value.Integer IntegerKind.U32 42580 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42583; Value.Integer IntegerKind.U32 42582 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42585; Value.Integer IntegerKind.U32 42584 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42587; Value.Integer IntegerKind.U32 42586 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42589; Value.Integer IntegerKind.U32 42588 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42591; Value.Integer IntegerKind.U32 42590 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42593; Value.Integer IntegerKind.U32 42592 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42595; Value.Integer IntegerKind.U32 42594 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42597; Value.Integer IntegerKind.U32 42596 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42599; Value.Integer IntegerKind.U32 42598 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42601; Value.Integer IntegerKind.U32 42600 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42603; Value.Integer IntegerKind.U32 42602 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42605; Value.Integer IntegerKind.U32 42604 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42625; Value.Integer IntegerKind.U32 42624 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42627; Value.Integer IntegerKind.U32 42626 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42629; Value.Integer IntegerKind.U32 42628 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42631; Value.Integer IntegerKind.U32 42630 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42633; Value.Integer IntegerKind.U32 42632 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42635; Value.Integer IntegerKind.U32 42634 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42637; Value.Integer IntegerKind.U32 42636 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42639; Value.Integer IntegerKind.U32 42638 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42641; Value.Integer IntegerKind.U32 42640 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42643; Value.Integer IntegerKind.U32 42642 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42645; Value.Integer IntegerKind.U32 42644 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42647; Value.Integer IntegerKind.U32 42646 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42649; Value.Integer IntegerKind.U32 42648 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42651; Value.Integer IntegerKind.U32 42650 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42787; Value.Integer IntegerKind.U32 42786 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42789; Value.Integer IntegerKind.U32 42788 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42791; Value.Integer IntegerKind.U32 42790 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42793; Value.Integer IntegerKind.U32 42792 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42795; Value.Integer IntegerKind.U32 42794 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42797; Value.Integer IntegerKind.U32 42796 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42799; Value.Integer IntegerKind.U32 42798 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42803; Value.Integer IntegerKind.U32 42802 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42805; Value.Integer IntegerKind.U32 42804 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42807; Value.Integer IntegerKind.U32 42806 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42809; Value.Integer IntegerKind.U32 42808 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42811; Value.Integer IntegerKind.U32 42810 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42813; Value.Integer IntegerKind.U32 42812 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42815; Value.Integer IntegerKind.U32 42814 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42817; Value.Integer IntegerKind.U32 42816 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42819; Value.Integer IntegerKind.U32 42818 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42821; Value.Integer IntegerKind.U32 42820 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42823; Value.Integer IntegerKind.U32 42822 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42825; Value.Integer IntegerKind.U32 42824 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42827; Value.Integer IntegerKind.U32 42826 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42829; Value.Integer IntegerKind.U32 42828 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42831; Value.Integer IntegerKind.U32 42830 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42833; Value.Integer IntegerKind.U32 42832 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42835; Value.Integer IntegerKind.U32 42834 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42837; Value.Integer IntegerKind.U32 42836 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42839; Value.Integer IntegerKind.U32 42838 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42841; Value.Integer IntegerKind.U32 42840 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42843; Value.Integer IntegerKind.U32 42842 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42845; Value.Integer IntegerKind.U32 42844 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42847; Value.Integer IntegerKind.U32 42846 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42849; Value.Integer IntegerKind.U32 42848 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42851; Value.Integer IntegerKind.U32 42850 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42853; Value.Integer IntegerKind.U32 42852 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42855; Value.Integer IntegerKind.U32 42854 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42857; Value.Integer IntegerKind.U32 42856 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42859; Value.Integer IntegerKind.U32 42858 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42861; Value.Integer IntegerKind.U32 42860 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42863; Value.Integer IntegerKind.U32 42862 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42874; Value.Integer IntegerKind.U32 42873 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42876; Value.Integer IntegerKind.U32 42875 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42879; Value.Integer IntegerKind.U32 42878 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42881; Value.Integer IntegerKind.U32 42880 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42883; Value.Integer IntegerKind.U32 42882 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42885; Value.Integer IntegerKind.U32 42884 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42887; Value.Integer IntegerKind.U32 42886 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42892; Value.Integer IntegerKind.U32 42891 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42897; Value.Integer IntegerKind.U32 42896 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42899; Value.Integer IntegerKind.U32 42898 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42900; Value.Integer IntegerKind.U32 42948 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42903; Value.Integer IntegerKind.U32 42902 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42905; Value.Integer IntegerKind.U32 42904 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42907; Value.Integer IntegerKind.U32 42906 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42909; Value.Integer IntegerKind.U32 42908 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42911; Value.Integer IntegerKind.U32 42910 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42913; Value.Integer IntegerKind.U32 42912 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42915; Value.Integer IntegerKind.U32 42914 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42917; Value.Integer IntegerKind.U32 42916 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42919; Value.Integer IntegerKind.U32 42918 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42921; Value.Integer IntegerKind.U32 42920 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42933; Value.Integer IntegerKind.U32 42932 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42935; Value.Integer IntegerKind.U32 42934 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42937; Value.Integer IntegerKind.U32 42936 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42939; Value.Integer IntegerKind.U32 42938 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42941; Value.Integer IntegerKind.U32 42940 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42943; Value.Integer IntegerKind.U32 42942 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42945; Value.Integer IntegerKind.U32 42944 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42947; Value.Integer IntegerKind.U32 42946 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42952; Value.Integer IntegerKind.U32 42951 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42954; Value.Integer IntegerKind.U32 42953 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42957; Value.Integer IntegerKind.U32 42956 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42961; Value.Integer IntegerKind.U32 42960 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42967; Value.Integer IntegerKind.U32 42966 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42969; Value.Integer IntegerKind.U32 42968 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42971; Value.Integer IntegerKind.U32 42970 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 42998; Value.Integer IntegerKind.U32 42997 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43859; Value.Integer IntegerKind.U32 42931 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43888; Value.Integer IntegerKind.U32 5024 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43889; Value.Integer IntegerKind.U32 5025 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43890; Value.Integer IntegerKind.U32 5026 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43891; Value.Integer IntegerKind.U32 5027 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43892; Value.Integer IntegerKind.U32 5028 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43893; Value.Integer IntegerKind.U32 5029 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43894; Value.Integer IntegerKind.U32 5030 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43895; Value.Integer IntegerKind.U32 5031 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43896; Value.Integer IntegerKind.U32 5032 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43897; Value.Integer IntegerKind.U32 5033 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43898; Value.Integer IntegerKind.U32 5034 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43899; Value.Integer IntegerKind.U32 5035 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43900; Value.Integer IntegerKind.U32 5036 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43901; Value.Integer IntegerKind.U32 5037 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43902; Value.Integer IntegerKind.U32 5038 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43903; Value.Integer IntegerKind.U32 5039 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43904; Value.Integer IntegerKind.U32 5040 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43905; Value.Integer IntegerKind.U32 5041 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43906; Value.Integer IntegerKind.U32 5042 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43907; Value.Integer IntegerKind.U32 5043 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43908; Value.Integer IntegerKind.U32 5044 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43909; Value.Integer IntegerKind.U32 5045 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43910; Value.Integer IntegerKind.U32 5046 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43911; Value.Integer IntegerKind.U32 5047 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43912; Value.Integer IntegerKind.U32 5048 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43913; Value.Integer IntegerKind.U32 5049 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43914; Value.Integer IntegerKind.U32 5050 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43915; Value.Integer IntegerKind.U32 5051 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43916; Value.Integer IntegerKind.U32 5052 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43917; Value.Integer IntegerKind.U32 5053 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43918; Value.Integer IntegerKind.U32 5054 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43919; Value.Integer IntegerKind.U32 5055 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43920; Value.Integer IntegerKind.U32 5056 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43921; Value.Integer IntegerKind.U32 5057 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43922; Value.Integer IntegerKind.U32 5058 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43923; Value.Integer IntegerKind.U32 5059 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43924; Value.Integer IntegerKind.U32 5060 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43925; Value.Integer IntegerKind.U32 5061 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43926; Value.Integer IntegerKind.U32 5062 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43927; Value.Integer IntegerKind.U32 5063 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43928; Value.Integer IntegerKind.U32 5064 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43929; Value.Integer IntegerKind.U32 5065 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43930; Value.Integer IntegerKind.U32 5066 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43931; Value.Integer IntegerKind.U32 5067 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43932; Value.Integer IntegerKind.U32 5068 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43933; Value.Integer IntegerKind.U32 5069 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43934; Value.Integer IntegerKind.U32 5070 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43935; Value.Integer IntegerKind.U32 5071 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43936; Value.Integer IntegerKind.U32 5072 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43937; Value.Integer IntegerKind.U32 5073 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43938; Value.Integer IntegerKind.U32 5074 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43939; Value.Integer IntegerKind.U32 5075 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43940; Value.Integer IntegerKind.U32 5076 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43941; Value.Integer IntegerKind.U32 5077 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43942; Value.Integer IntegerKind.U32 5078 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43943; Value.Integer IntegerKind.U32 5079 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43944; Value.Integer IntegerKind.U32 5080 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43945; Value.Integer IntegerKind.U32 5081 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43946; Value.Integer IntegerKind.U32 5082 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43947; Value.Integer IntegerKind.U32 5083 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43948; Value.Integer IntegerKind.U32 5084 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43949; Value.Integer IntegerKind.U32 5085 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43950; Value.Integer IntegerKind.U32 5086 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43951; Value.Integer IntegerKind.U32 5087 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43952; Value.Integer IntegerKind.U32 5088 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43953; Value.Integer IntegerKind.U32 5089 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43954; Value.Integer IntegerKind.U32 5090 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43955; Value.Integer IntegerKind.U32 5091 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43956; Value.Integer IntegerKind.U32 5092 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43957; Value.Integer IntegerKind.U32 5093 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43958; Value.Integer IntegerKind.U32 5094 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43959; Value.Integer IntegerKind.U32 5095 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43960; Value.Integer IntegerKind.U32 5096 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43961; Value.Integer IntegerKind.U32 5097 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43962; Value.Integer IntegerKind.U32 5098 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43963; Value.Integer IntegerKind.U32 5099 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43964; Value.Integer IntegerKind.U32 5100 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43965; Value.Integer IntegerKind.U32 5101 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43966; Value.Integer IntegerKind.U32 5102 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 43967; Value.Integer IntegerKind.U32 5103 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 64256; Value.Integer IntegerKind.U32 4194394 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 64257; Value.Integer IntegerKind.U32 4194395 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 64258; Value.Integer IntegerKind.U32 4194396 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 64259; Value.Integer IntegerKind.U32 4194397 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 64260; Value.Integer IntegerKind.U32 4194398 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 64261; Value.Integer IntegerKind.U32 4194399 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 64262; Value.Integer IntegerKind.U32 4194400 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 64275; Value.Integer IntegerKind.U32 4194401 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 64276; Value.Integer IntegerKind.U32 4194402 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 64277; Value.Integer IntegerKind.U32 4194403 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 64278; Value.Integer IntegerKind.U32 4194404 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 64279; Value.Integer IntegerKind.U32 4194405 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65345; Value.Integer IntegerKind.U32 65313 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65346; Value.Integer IntegerKind.U32 65314 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65347; Value.Integer IntegerKind.U32 65315 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65348; Value.Integer IntegerKind.U32 65316 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65349; Value.Integer IntegerKind.U32 65317 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65350; Value.Integer IntegerKind.U32 65318 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65351; Value.Integer IntegerKind.U32 65319 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65352; Value.Integer IntegerKind.U32 65320 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65353; Value.Integer IntegerKind.U32 65321 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65354; Value.Integer IntegerKind.U32 65322 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65355; Value.Integer IntegerKind.U32 65323 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65356; Value.Integer IntegerKind.U32 65324 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65357; Value.Integer IntegerKind.U32 65325 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65358; Value.Integer IntegerKind.U32 65326 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65359; Value.Integer IntegerKind.U32 65327 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65360; Value.Integer IntegerKind.U32 65328 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65361; Value.Integer IntegerKind.U32 65329 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65362; Value.Integer IntegerKind.U32 65330 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65363; Value.Integer IntegerKind.U32 65331 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65364; Value.Integer IntegerKind.U32 65332 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65365; Value.Integer IntegerKind.U32 65333 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65366; Value.Integer IntegerKind.U32 65334 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65367; Value.Integer IntegerKind.U32 65335 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65368; Value.Integer IntegerKind.U32 65336 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65369; Value.Integer IntegerKind.U32 65337 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 65370; Value.Integer IntegerKind.U32 65338 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66600; Value.Integer IntegerKind.U32 66560 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66601; Value.Integer IntegerKind.U32 66561 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66602; Value.Integer IntegerKind.U32 66562 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66603; Value.Integer IntegerKind.U32 66563 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66604; Value.Integer IntegerKind.U32 66564 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66605; Value.Integer IntegerKind.U32 66565 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66606; Value.Integer IntegerKind.U32 66566 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66607; Value.Integer IntegerKind.U32 66567 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66608; Value.Integer IntegerKind.U32 66568 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66609; Value.Integer IntegerKind.U32 66569 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66610; Value.Integer IntegerKind.U32 66570 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66611; Value.Integer IntegerKind.U32 66571 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66612; Value.Integer IntegerKind.U32 66572 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66613; Value.Integer IntegerKind.U32 66573 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66614; Value.Integer IntegerKind.U32 66574 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66615; Value.Integer IntegerKind.U32 66575 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66616; Value.Integer IntegerKind.U32 66576 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66617; Value.Integer IntegerKind.U32 66577 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66618; Value.Integer IntegerKind.U32 66578 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66619; Value.Integer IntegerKind.U32 66579 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66620; Value.Integer IntegerKind.U32 66580 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66621; Value.Integer IntegerKind.U32 66581 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66622; Value.Integer IntegerKind.U32 66582 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66623; Value.Integer IntegerKind.U32 66583 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66624; Value.Integer IntegerKind.U32 66584 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66625; Value.Integer IntegerKind.U32 66585 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66626; Value.Integer IntegerKind.U32 66586 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66627; Value.Integer IntegerKind.U32 66587 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66628; Value.Integer IntegerKind.U32 66588 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66629; Value.Integer IntegerKind.U32 66589 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66630; Value.Integer IntegerKind.U32 66590 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66631; Value.Integer IntegerKind.U32 66591 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66632; Value.Integer IntegerKind.U32 66592 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66633; Value.Integer IntegerKind.U32 66593 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66634; Value.Integer IntegerKind.U32 66594 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66635; Value.Integer IntegerKind.U32 66595 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66636; Value.Integer IntegerKind.U32 66596 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66637; Value.Integer IntegerKind.U32 66597 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66638; Value.Integer IntegerKind.U32 66598 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66639; Value.Integer IntegerKind.U32 66599 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66776; Value.Integer IntegerKind.U32 66736 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66777; Value.Integer IntegerKind.U32 66737 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66778; Value.Integer IntegerKind.U32 66738 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66779; Value.Integer IntegerKind.U32 66739 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66780; Value.Integer IntegerKind.U32 66740 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66781; Value.Integer IntegerKind.U32 66741 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66782; Value.Integer IntegerKind.U32 66742 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66783; Value.Integer IntegerKind.U32 66743 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66784; Value.Integer IntegerKind.U32 66744 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66785; Value.Integer IntegerKind.U32 66745 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66786; Value.Integer IntegerKind.U32 66746 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66787; Value.Integer IntegerKind.U32 66747 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66788; Value.Integer IntegerKind.U32 66748 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66789; Value.Integer IntegerKind.U32 66749 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66790; Value.Integer IntegerKind.U32 66750 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66791; Value.Integer IntegerKind.U32 66751 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66792; Value.Integer IntegerKind.U32 66752 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66793; Value.Integer IntegerKind.U32 66753 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66794; Value.Integer IntegerKind.U32 66754 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66795; Value.Integer IntegerKind.U32 66755 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66796; Value.Integer IntegerKind.U32 66756 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66797; Value.Integer IntegerKind.U32 66757 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66798; Value.Integer IntegerKind.U32 66758 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66799; Value.Integer IntegerKind.U32 66759 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66800; Value.Integer IntegerKind.U32 66760 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66801; Value.Integer IntegerKind.U32 66761 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66802; Value.Integer IntegerKind.U32 66762 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66803; Value.Integer IntegerKind.U32 66763 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66804; Value.Integer IntegerKind.U32 66764 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66805; Value.Integer IntegerKind.U32 66765 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66806; Value.Integer IntegerKind.U32 66766 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66807; Value.Integer IntegerKind.U32 66767 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66808; Value.Integer IntegerKind.U32 66768 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66809; Value.Integer IntegerKind.U32 66769 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66810; Value.Integer IntegerKind.U32 66770 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66811; Value.Integer IntegerKind.U32 66771 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66967; Value.Integer IntegerKind.U32 66928 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66968; Value.Integer IntegerKind.U32 66929 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66969; Value.Integer IntegerKind.U32 66930 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66970; Value.Integer IntegerKind.U32 66931 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66971; Value.Integer IntegerKind.U32 66932 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66972; Value.Integer IntegerKind.U32 66933 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66973; Value.Integer IntegerKind.U32 66934 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66974; Value.Integer IntegerKind.U32 66935 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66975; Value.Integer IntegerKind.U32 66936 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66976; Value.Integer IntegerKind.U32 66937 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66977; Value.Integer IntegerKind.U32 66938 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66979; Value.Integer IntegerKind.U32 66940 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66980; Value.Integer IntegerKind.U32 66941 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66981; Value.Integer IntegerKind.U32 66942 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66982; Value.Integer IntegerKind.U32 66943 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66983; Value.Integer IntegerKind.U32 66944 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66984; Value.Integer IntegerKind.U32 66945 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66985; Value.Integer IntegerKind.U32 66946 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66986; Value.Integer IntegerKind.U32 66947 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66987; Value.Integer IntegerKind.U32 66948 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66988; Value.Integer IntegerKind.U32 66949 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66989; Value.Integer IntegerKind.U32 66950 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66990; Value.Integer IntegerKind.U32 66951 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66991; Value.Integer IntegerKind.U32 66952 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66992; Value.Integer IntegerKind.U32 66953 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66993; Value.Integer IntegerKind.U32 66954 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66995; Value.Integer IntegerKind.U32 66956 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66996; Value.Integer IntegerKind.U32 66957 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66997; Value.Integer IntegerKind.U32 66958 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66998; Value.Integer IntegerKind.U32 66959 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 66999; Value.Integer IntegerKind.U32 66960 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 67000; Value.Integer IntegerKind.U32 66961 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 67001; Value.Integer IntegerKind.U32 66962 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 67003; Value.Integer IntegerKind.U32 66964 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 67004; Value.Integer IntegerKind.U32 66965 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68800; Value.Integer IntegerKind.U32 68736 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68801; Value.Integer IntegerKind.U32 68737 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68802; Value.Integer IntegerKind.U32 68738 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68803; Value.Integer IntegerKind.U32 68739 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68804; Value.Integer IntegerKind.U32 68740 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68805; Value.Integer IntegerKind.U32 68741 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68806; Value.Integer IntegerKind.U32 68742 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68807; Value.Integer IntegerKind.U32 68743 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68808; Value.Integer IntegerKind.U32 68744 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68809; Value.Integer IntegerKind.U32 68745 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68810; Value.Integer IntegerKind.U32 68746 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68811; Value.Integer IntegerKind.U32 68747 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68812; Value.Integer IntegerKind.U32 68748 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68813; Value.Integer IntegerKind.U32 68749 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68814; Value.Integer IntegerKind.U32 68750 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68815; Value.Integer IntegerKind.U32 68751 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68816; Value.Integer IntegerKind.U32 68752 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68817; Value.Integer IntegerKind.U32 68753 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68818; Value.Integer IntegerKind.U32 68754 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68819; Value.Integer IntegerKind.U32 68755 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68820; Value.Integer IntegerKind.U32 68756 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68821; Value.Integer IntegerKind.U32 68757 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68822; Value.Integer IntegerKind.U32 68758 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68823; Value.Integer IntegerKind.U32 68759 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68824; Value.Integer IntegerKind.U32 68760 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68825; Value.Integer IntegerKind.U32 68761 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68826; Value.Integer IntegerKind.U32 68762 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68827; Value.Integer IntegerKind.U32 68763 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68828; Value.Integer IntegerKind.U32 68764 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68829; Value.Integer IntegerKind.U32 68765 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68830; Value.Integer IntegerKind.U32 68766 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68831; Value.Integer IntegerKind.U32 68767 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68832; Value.Integer IntegerKind.U32 68768 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68833; Value.Integer IntegerKind.U32 68769 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68834; Value.Integer IntegerKind.U32 68770 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68835; Value.Integer IntegerKind.U32 68771 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68836; Value.Integer IntegerKind.U32 68772 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68837; Value.Integer IntegerKind.U32 68773 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68838; Value.Integer IntegerKind.U32 68774 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68839; Value.Integer IntegerKind.U32 68775 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68840; Value.Integer IntegerKind.U32 68776 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68841; Value.Integer IntegerKind.U32 68777 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68842; Value.Integer IntegerKind.U32 68778 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68843; Value.Integer IntegerKind.U32 68779 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68844; Value.Integer IntegerKind.U32 68780 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68845; Value.Integer IntegerKind.U32 68781 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68846; Value.Integer IntegerKind.U32 68782 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68847; Value.Integer IntegerKind.U32 68783 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68848; Value.Integer IntegerKind.U32 68784 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68849; Value.Integer IntegerKind.U32 68785 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68850; Value.Integer IntegerKind.U32 68786 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68976; Value.Integer IntegerKind.U32 68944 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68977; Value.Integer IntegerKind.U32 68945 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68978; Value.Integer IntegerKind.U32 68946 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68979; Value.Integer IntegerKind.U32 68947 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68980; Value.Integer IntegerKind.U32 68948 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68981; Value.Integer IntegerKind.U32 68949 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68982; Value.Integer IntegerKind.U32 68950 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68983; Value.Integer IntegerKind.U32 68951 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68984; Value.Integer IntegerKind.U32 68952 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68985; Value.Integer IntegerKind.U32 68953 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68986; Value.Integer IntegerKind.U32 68954 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68987; Value.Integer IntegerKind.U32 68955 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68988; Value.Integer IntegerKind.U32 68956 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68989; Value.Integer IntegerKind.U32 68957 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68990; Value.Integer IntegerKind.U32 68958 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68991; Value.Integer IntegerKind.U32 68959 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68992; Value.Integer IntegerKind.U32 68960 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68993; Value.Integer IntegerKind.U32 68961 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68994; Value.Integer IntegerKind.U32 68962 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68995; Value.Integer IntegerKind.U32 68963 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68996; Value.Integer IntegerKind.U32 68964 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 68997; Value.Integer IntegerKind.U32 68965 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71872; Value.Integer IntegerKind.U32 71840 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71873; Value.Integer IntegerKind.U32 71841 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71874; Value.Integer IntegerKind.U32 71842 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71875; Value.Integer IntegerKind.U32 71843 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71876; Value.Integer IntegerKind.U32 71844 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71877; Value.Integer IntegerKind.U32 71845 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71878; Value.Integer IntegerKind.U32 71846 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71879; Value.Integer IntegerKind.U32 71847 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71880; Value.Integer IntegerKind.U32 71848 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71881; Value.Integer IntegerKind.U32 71849 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71882; Value.Integer IntegerKind.U32 71850 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71883; Value.Integer IntegerKind.U32 71851 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71884; Value.Integer IntegerKind.U32 71852 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71885; Value.Integer IntegerKind.U32 71853 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71886; Value.Integer IntegerKind.U32 71854 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71887; Value.Integer IntegerKind.U32 71855 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71888; Value.Integer IntegerKind.U32 71856 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71889; Value.Integer IntegerKind.U32 71857 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71890; Value.Integer IntegerKind.U32 71858 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71891; Value.Integer IntegerKind.U32 71859 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71892; Value.Integer IntegerKind.U32 71860 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71893; Value.Integer IntegerKind.U32 71861 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71894; Value.Integer IntegerKind.U32 71862 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71895; Value.Integer IntegerKind.U32 71863 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71896; Value.Integer IntegerKind.U32 71864 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71897; Value.Integer IntegerKind.U32 71865 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71898; Value.Integer IntegerKind.U32 71866 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71899; Value.Integer IntegerKind.U32 71867 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71900; Value.Integer IntegerKind.U32 71868 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71901; Value.Integer IntegerKind.U32 71869 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71902; Value.Integer IntegerKind.U32 71870 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 71903; Value.Integer IntegerKind.U32 71871 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93792; Value.Integer IntegerKind.U32 93760 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93793; Value.Integer IntegerKind.U32 93761 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93794; Value.Integer IntegerKind.U32 93762 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93795; Value.Integer IntegerKind.U32 93763 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93796; Value.Integer IntegerKind.U32 93764 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93797; Value.Integer IntegerKind.U32 93765 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93798; Value.Integer IntegerKind.U32 93766 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93799; Value.Integer IntegerKind.U32 93767 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93800; Value.Integer IntegerKind.U32 93768 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93801; Value.Integer IntegerKind.U32 93769 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93802; Value.Integer IntegerKind.U32 93770 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93803; Value.Integer IntegerKind.U32 93771 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93804; Value.Integer IntegerKind.U32 93772 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93805; Value.Integer IntegerKind.U32 93773 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93806; Value.Integer IntegerKind.U32 93774 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93807; Value.Integer IntegerKind.U32 93775 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93808; Value.Integer IntegerKind.U32 93776 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93809; Value.Integer IntegerKind.U32 93777 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93810; Value.Integer IntegerKind.U32 93778 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93811; Value.Integer IntegerKind.U32 93779 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93812; Value.Integer IntegerKind.U32 93780 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93813; Value.Integer IntegerKind.U32 93781 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93814; Value.Integer IntegerKind.U32 93782 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93815; Value.Integer IntegerKind.U32 93783 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93816; Value.Integer IntegerKind.U32 93784 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93817; Value.Integer IntegerKind.U32 93785 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93818; Value.Integer IntegerKind.U32 93786 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93819; Value.Integer IntegerKind.U32 93787 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93820; Value.Integer IntegerKind.U32 93788 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93821; Value.Integer IntegerKind.U32 93789 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93822; Value.Integer IntegerKind.U32 93790 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 93823; Value.Integer IntegerKind.U32 93791 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125218; Value.Integer IntegerKind.U32 125184 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125219; Value.Integer IntegerKind.U32 125185 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125220; Value.Integer IntegerKind.U32 125186 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125221; Value.Integer IntegerKind.U32 125187 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125222; Value.Integer IntegerKind.U32 125188 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125223; Value.Integer IntegerKind.U32 125189 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125224; Value.Integer IntegerKind.U32 125190 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125225; Value.Integer IntegerKind.U32 125191 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125226; Value.Integer IntegerKind.U32 125192 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125227; Value.Integer IntegerKind.U32 125193 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125228; Value.Integer IntegerKind.U32 125194 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125229; Value.Integer IntegerKind.U32 125195 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125230; Value.Integer IntegerKind.U32 125196 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125231; Value.Integer IntegerKind.U32 125197 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125232; Value.Integer IntegerKind.U32 125198 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125233; Value.Integer IntegerKind.U32 125199 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125234; Value.Integer IntegerKind.U32 125200 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125235; Value.Integer IntegerKind.U32 125201 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125236; Value.Integer IntegerKind.U32 125202 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125237; Value.Integer IntegerKind.U32 125203 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125238; Value.Integer IntegerKind.U32 125204 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125239; Value.Integer IntegerKind.U32 125205 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125240; Value.Integer IntegerKind.U32 125206 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125241; Value.Integer IntegerKind.U32 125207 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125242; Value.Integer IntegerKind.U32 125208 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125243; Value.Integer IntegerKind.U32 125209 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125244; Value.Integer IntegerKind.U32 125210 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125245; Value.Integer IntegerKind.U32 125211 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125246; Value.Integer IntegerKind.U32 125212 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125247; Value.Integer IntegerKind.U32 125213 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125248; Value.Integer IntegerKind.U32 125214 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125249; Value.Integer IntegerKind.U32 125215 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125250; Value.Integer IntegerKind.U32 125216 ];
-                            Value.Tuple
-                              [ Value.UnicodeChar 125251; Value.Integer IntegerKind.U32 125217 ]
-                          ]
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 1526 ]
+                        [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ]
+                    ])
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "slice") [] [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ]
+                    ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1526 ]
+                            [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ],
+                          Value.Array
+                            [
+                              Value.Tuple
+                                [ Value.UnicodeChar 181; Value.Integer IntegerKind.U32 924 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 223; Value.Integer IntegerKind.U32 4194304 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 224; Value.Integer IntegerKind.U32 192 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 225; Value.Integer IntegerKind.U32 193 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 226; Value.Integer IntegerKind.U32 194 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 227; Value.Integer IntegerKind.U32 195 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 228; Value.Integer IntegerKind.U32 196 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 229; Value.Integer IntegerKind.U32 197 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 230; Value.Integer IntegerKind.U32 198 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 231; Value.Integer IntegerKind.U32 199 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 232; Value.Integer IntegerKind.U32 200 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 233; Value.Integer IntegerKind.U32 201 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 234; Value.Integer IntegerKind.U32 202 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 235; Value.Integer IntegerKind.U32 203 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 236; Value.Integer IntegerKind.U32 204 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 237; Value.Integer IntegerKind.U32 205 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 238; Value.Integer IntegerKind.U32 206 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 239; Value.Integer IntegerKind.U32 207 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 240; Value.Integer IntegerKind.U32 208 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 241; Value.Integer IntegerKind.U32 209 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 242; Value.Integer IntegerKind.U32 210 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 243; Value.Integer IntegerKind.U32 211 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 244; Value.Integer IntegerKind.U32 212 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 245; Value.Integer IntegerKind.U32 213 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 246; Value.Integer IntegerKind.U32 214 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 248; Value.Integer IntegerKind.U32 216 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 249; Value.Integer IntegerKind.U32 217 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 250; Value.Integer IntegerKind.U32 218 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 251; Value.Integer IntegerKind.U32 219 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 252; Value.Integer IntegerKind.U32 220 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 253; Value.Integer IntegerKind.U32 221 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 254; Value.Integer IntegerKind.U32 222 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 255; Value.Integer IntegerKind.U32 376 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 257; Value.Integer IntegerKind.U32 256 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 259; Value.Integer IntegerKind.U32 258 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 261; Value.Integer IntegerKind.U32 260 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 263; Value.Integer IntegerKind.U32 262 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 265; Value.Integer IntegerKind.U32 264 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 267; Value.Integer IntegerKind.U32 266 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 269; Value.Integer IntegerKind.U32 268 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 271; Value.Integer IntegerKind.U32 270 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 273; Value.Integer IntegerKind.U32 272 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 275; Value.Integer IntegerKind.U32 274 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 277; Value.Integer IntegerKind.U32 276 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 279; Value.Integer IntegerKind.U32 278 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 281; Value.Integer IntegerKind.U32 280 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 283; Value.Integer IntegerKind.U32 282 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 285; Value.Integer IntegerKind.U32 284 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 287; Value.Integer IntegerKind.U32 286 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 289; Value.Integer IntegerKind.U32 288 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 291; Value.Integer IntegerKind.U32 290 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 293; Value.Integer IntegerKind.U32 292 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 295; Value.Integer IntegerKind.U32 294 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 297; Value.Integer IntegerKind.U32 296 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 299; Value.Integer IntegerKind.U32 298 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 301; Value.Integer IntegerKind.U32 300 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 303; Value.Integer IntegerKind.U32 302 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 305; Value.Integer IntegerKind.U32 73 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 307; Value.Integer IntegerKind.U32 306 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 309; Value.Integer IntegerKind.U32 308 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 311; Value.Integer IntegerKind.U32 310 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 314; Value.Integer IntegerKind.U32 313 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 316; Value.Integer IntegerKind.U32 315 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 318; Value.Integer IntegerKind.U32 317 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 320; Value.Integer IntegerKind.U32 319 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 322; Value.Integer IntegerKind.U32 321 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 324; Value.Integer IntegerKind.U32 323 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 326; Value.Integer IntegerKind.U32 325 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 328; Value.Integer IntegerKind.U32 327 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 329; Value.Integer IntegerKind.U32 4194305 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 331; Value.Integer IntegerKind.U32 330 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 333; Value.Integer IntegerKind.U32 332 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 335; Value.Integer IntegerKind.U32 334 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 337; Value.Integer IntegerKind.U32 336 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 339; Value.Integer IntegerKind.U32 338 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 341; Value.Integer IntegerKind.U32 340 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 343; Value.Integer IntegerKind.U32 342 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 345; Value.Integer IntegerKind.U32 344 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 347; Value.Integer IntegerKind.U32 346 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 349; Value.Integer IntegerKind.U32 348 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 351; Value.Integer IntegerKind.U32 350 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 353; Value.Integer IntegerKind.U32 352 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 355; Value.Integer IntegerKind.U32 354 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 357; Value.Integer IntegerKind.U32 356 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 359; Value.Integer IntegerKind.U32 358 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 361; Value.Integer IntegerKind.U32 360 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 363; Value.Integer IntegerKind.U32 362 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 365; Value.Integer IntegerKind.U32 364 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 367; Value.Integer IntegerKind.U32 366 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 369; Value.Integer IntegerKind.U32 368 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 371; Value.Integer IntegerKind.U32 370 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 373; Value.Integer IntegerKind.U32 372 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 375; Value.Integer IntegerKind.U32 374 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 378; Value.Integer IntegerKind.U32 377 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 380; Value.Integer IntegerKind.U32 379 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 382; Value.Integer IntegerKind.U32 381 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 383; Value.Integer IntegerKind.U32 83 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 384; Value.Integer IntegerKind.U32 579 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 387; Value.Integer IntegerKind.U32 386 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 389; Value.Integer IntegerKind.U32 388 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 392; Value.Integer IntegerKind.U32 391 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 396; Value.Integer IntegerKind.U32 395 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 402; Value.Integer IntegerKind.U32 401 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 405; Value.Integer IntegerKind.U32 502 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 409; Value.Integer IntegerKind.U32 408 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 410; Value.Integer IntegerKind.U32 573 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 411; Value.Integer IntegerKind.U32 42972 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 414; Value.Integer IntegerKind.U32 544 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 417; Value.Integer IntegerKind.U32 416 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 419; Value.Integer IntegerKind.U32 418 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 421; Value.Integer IntegerKind.U32 420 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 424; Value.Integer IntegerKind.U32 423 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 429; Value.Integer IntegerKind.U32 428 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 432; Value.Integer IntegerKind.U32 431 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 436; Value.Integer IntegerKind.U32 435 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 438; Value.Integer IntegerKind.U32 437 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 441; Value.Integer IntegerKind.U32 440 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 445; Value.Integer IntegerKind.U32 444 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 447; Value.Integer IntegerKind.U32 503 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 453; Value.Integer IntegerKind.U32 452 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 454; Value.Integer IntegerKind.U32 452 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 456; Value.Integer IntegerKind.U32 455 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 457; Value.Integer IntegerKind.U32 455 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 459; Value.Integer IntegerKind.U32 458 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 460; Value.Integer IntegerKind.U32 458 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 462; Value.Integer IntegerKind.U32 461 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 464; Value.Integer IntegerKind.U32 463 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 466; Value.Integer IntegerKind.U32 465 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 468; Value.Integer IntegerKind.U32 467 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 470; Value.Integer IntegerKind.U32 469 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 472; Value.Integer IntegerKind.U32 471 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 474; Value.Integer IntegerKind.U32 473 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 476; Value.Integer IntegerKind.U32 475 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 477; Value.Integer IntegerKind.U32 398 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 479; Value.Integer IntegerKind.U32 478 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 481; Value.Integer IntegerKind.U32 480 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 483; Value.Integer IntegerKind.U32 482 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 485; Value.Integer IntegerKind.U32 484 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 487; Value.Integer IntegerKind.U32 486 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 489; Value.Integer IntegerKind.U32 488 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 491; Value.Integer IntegerKind.U32 490 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 493; Value.Integer IntegerKind.U32 492 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 495; Value.Integer IntegerKind.U32 494 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 496; Value.Integer IntegerKind.U32 4194306 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 498; Value.Integer IntegerKind.U32 497 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 499; Value.Integer IntegerKind.U32 497 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 501; Value.Integer IntegerKind.U32 500 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 505; Value.Integer IntegerKind.U32 504 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 507; Value.Integer IntegerKind.U32 506 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 509; Value.Integer IntegerKind.U32 508 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 511; Value.Integer IntegerKind.U32 510 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 513; Value.Integer IntegerKind.U32 512 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 515; Value.Integer IntegerKind.U32 514 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 517; Value.Integer IntegerKind.U32 516 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 519; Value.Integer IntegerKind.U32 518 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 521; Value.Integer IntegerKind.U32 520 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 523; Value.Integer IntegerKind.U32 522 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 525; Value.Integer IntegerKind.U32 524 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 527; Value.Integer IntegerKind.U32 526 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 529; Value.Integer IntegerKind.U32 528 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 531; Value.Integer IntegerKind.U32 530 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 533; Value.Integer IntegerKind.U32 532 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 535; Value.Integer IntegerKind.U32 534 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 537; Value.Integer IntegerKind.U32 536 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 539; Value.Integer IntegerKind.U32 538 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 541; Value.Integer IntegerKind.U32 540 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 543; Value.Integer IntegerKind.U32 542 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 547; Value.Integer IntegerKind.U32 546 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 549; Value.Integer IntegerKind.U32 548 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 551; Value.Integer IntegerKind.U32 550 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 553; Value.Integer IntegerKind.U32 552 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 555; Value.Integer IntegerKind.U32 554 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 557; Value.Integer IntegerKind.U32 556 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 559; Value.Integer IntegerKind.U32 558 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 561; Value.Integer IntegerKind.U32 560 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 563; Value.Integer IntegerKind.U32 562 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 572; Value.Integer IntegerKind.U32 571 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 575; Value.Integer IntegerKind.U32 11390 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 576; Value.Integer IntegerKind.U32 11391 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 578; Value.Integer IntegerKind.U32 577 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 583; Value.Integer IntegerKind.U32 582 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 585; Value.Integer IntegerKind.U32 584 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 587; Value.Integer IntegerKind.U32 586 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 589; Value.Integer IntegerKind.U32 588 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 591; Value.Integer IntegerKind.U32 590 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 592; Value.Integer IntegerKind.U32 11375 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 593; Value.Integer IntegerKind.U32 11373 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 594; Value.Integer IntegerKind.U32 11376 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 595; Value.Integer IntegerKind.U32 385 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 596; Value.Integer IntegerKind.U32 390 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 598; Value.Integer IntegerKind.U32 393 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 599; Value.Integer IntegerKind.U32 394 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 601; Value.Integer IntegerKind.U32 399 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 603; Value.Integer IntegerKind.U32 400 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 604; Value.Integer IntegerKind.U32 42923 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 608; Value.Integer IntegerKind.U32 403 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 609; Value.Integer IntegerKind.U32 42924 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 611; Value.Integer IntegerKind.U32 404 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 612; Value.Integer IntegerKind.U32 42955 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 613; Value.Integer IntegerKind.U32 42893 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 614; Value.Integer IntegerKind.U32 42922 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 616; Value.Integer IntegerKind.U32 407 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 617; Value.Integer IntegerKind.U32 406 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 618; Value.Integer IntegerKind.U32 42926 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 619; Value.Integer IntegerKind.U32 11362 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 620; Value.Integer IntegerKind.U32 42925 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 623; Value.Integer IntegerKind.U32 412 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 625; Value.Integer IntegerKind.U32 11374 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 626; Value.Integer IntegerKind.U32 413 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 629; Value.Integer IntegerKind.U32 415 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 637; Value.Integer IntegerKind.U32 11364 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 640; Value.Integer IntegerKind.U32 422 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 642; Value.Integer IntegerKind.U32 42949 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 643; Value.Integer IntegerKind.U32 425 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 647; Value.Integer IntegerKind.U32 42929 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 648; Value.Integer IntegerKind.U32 430 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 649; Value.Integer IntegerKind.U32 580 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 650; Value.Integer IntegerKind.U32 433 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 651; Value.Integer IntegerKind.U32 434 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 652; Value.Integer IntegerKind.U32 581 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 658; Value.Integer IntegerKind.U32 439 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 669; Value.Integer IntegerKind.U32 42930 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 670; Value.Integer IntegerKind.U32 42928 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 837; Value.Integer IntegerKind.U32 921 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 881; Value.Integer IntegerKind.U32 880 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 883; Value.Integer IntegerKind.U32 882 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 887; Value.Integer IntegerKind.U32 886 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 891; Value.Integer IntegerKind.U32 1021 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 892; Value.Integer IntegerKind.U32 1022 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 893; Value.Integer IntegerKind.U32 1023 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 912; Value.Integer IntegerKind.U32 4194307 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 940; Value.Integer IntegerKind.U32 902 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 941; Value.Integer IntegerKind.U32 904 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 942; Value.Integer IntegerKind.U32 905 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 943; Value.Integer IntegerKind.U32 906 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 944; Value.Integer IntegerKind.U32 4194308 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 945; Value.Integer IntegerKind.U32 913 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 946; Value.Integer IntegerKind.U32 914 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 947; Value.Integer IntegerKind.U32 915 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 948; Value.Integer IntegerKind.U32 916 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 949; Value.Integer IntegerKind.U32 917 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 950; Value.Integer IntegerKind.U32 918 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 951; Value.Integer IntegerKind.U32 919 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 952; Value.Integer IntegerKind.U32 920 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 953; Value.Integer IntegerKind.U32 921 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 954; Value.Integer IntegerKind.U32 922 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 955; Value.Integer IntegerKind.U32 923 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 956; Value.Integer IntegerKind.U32 924 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 957; Value.Integer IntegerKind.U32 925 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 958; Value.Integer IntegerKind.U32 926 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 959; Value.Integer IntegerKind.U32 927 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 960; Value.Integer IntegerKind.U32 928 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 961; Value.Integer IntegerKind.U32 929 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 962; Value.Integer IntegerKind.U32 931 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 963; Value.Integer IntegerKind.U32 931 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 964; Value.Integer IntegerKind.U32 932 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 965; Value.Integer IntegerKind.U32 933 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 966; Value.Integer IntegerKind.U32 934 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 967; Value.Integer IntegerKind.U32 935 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 968; Value.Integer IntegerKind.U32 936 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 969; Value.Integer IntegerKind.U32 937 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 970; Value.Integer IntegerKind.U32 938 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 971; Value.Integer IntegerKind.U32 939 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 972; Value.Integer IntegerKind.U32 908 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 973; Value.Integer IntegerKind.U32 910 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 974; Value.Integer IntegerKind.U32 911 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 976; Value.Integer IntegerKind.U32 914 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 977; Value.Integer IntegerKind.U32 920 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 981; Value.Integer IntegerKind.U32 934 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 982; Value.Integer IntegerKind.U32 928 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 983; Value.Integer IntegerKind.U32 975 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 985; Value.Integer IntegerKind.U32 984 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 987; Value.Integer IntegerKind.U32 986 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 989; Value.Integer IntegerKind.U32 988 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 991; Value.Integer IntegerKind.U32 990 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 993; Value.Integer IntegerKind.U32 992 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 995; Value.Integer IntegerKind.U32 994 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 997; Value.Integer IntegerKind.U32 996 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 999; Value.Integer IntegerKind.U32 998 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1001; Value.Integer IntegerKind.U32 1000 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1003; Value.Integer IntegerKind.U32 1002 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1005; Value.Integer IntegerKind.U32 1004 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1007; Value.Integer IntegerKind.U32 1006 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1008; Value.Integer IntegerKind.U32 922 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1009; Value.Integer IntegerKind.U32 929 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1010; Value.Integer IntegerKind.U32 1017 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1011; Value.Integer IntegerKind.U32 895 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1013; Value.Integer IntegerKind.U32 917 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1016; Value.Integer IntegerKind.U32 1015 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1019; Value.Integer IntegerKind.U32 1018 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1072; Value.Integer IntegerKind.U32 1040 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1073; Value.Integer IntegerKind.U32 1041 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1074; Value.Integer IntegerKind.U32 1042 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1075; Value.Integer IntegerKind.U32 1043 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1076; Value.Integer IntegerKind.U32 1044 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1077; Value.Integer IntegerKind.U32 1045 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1078; Value.Integer IntegerKind.U32 1046 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1079; Value.Integer IntegerKind.U32 1047 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1080; Value.Integer IntegerKind.U32 1048 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1081; Value.Integer IntegerKind.U32 1049 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1082; Value.Integer IntegerKind.U32 1050 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1083; Value.Integer IntegerKind.U32 1051 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1084; Value.Integer IntegerKind.U32 1052 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1085; Value.Integer IntegerKind.U32 1053 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1086; Value.Integer IntegerKind.U32 1054 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1087; Value.Integer IntegerKind.U32 1055 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1088; Value.Integer IntegerKind.U32 1056 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1089; Value.Integer IntegerKind.U32 1057 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1090; Value.Integer IntegerKind.U32 1058 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1091; Value.Integer IntegerKind.U32 1059 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1092; Value.Integer IntegerKind.U32 1060 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1093; Value.Integer IntegerKind.U32 1061 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1094; Value.Integer IntegerKind.U32 1062 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1095; Value.Integer IntegerKind.U32 1063 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1096; Value.Integer IntegerKind.U32 1064 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1097; Value.Integer IntegerKind.U32 1065 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1098; Value.Integer IntegerKind.U32 1066 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1099; Value.Integer IntegerKind.U32 1067 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1100; Value.Integer IntegerKind.U32 1068 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1101; Value.Integer IntegerKind.U32 1069 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1102; Value.Integer IntegerKind.U32 1070 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1103; Value.Integer IntegerKind.U32 1071 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1104; Value.Integer IntegerKind.U32 1024 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1105; Value.Integer IntegerKind.U32 1025 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1106; Value.Integer IntegerKind.U32 1026 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1107; Value.Integer IntegerKind.U32 1027 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1108; Value.Integer IntegerKind.U32 1028 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1109; Value.Integer IntegerKind.U32 1029 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1110; Value.Integer IntegerKind.U32 1030 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1111; Value.Integer IntegerKind.U32 1031 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1112; Value.Integer IntegerKind.U32 1032 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1113; Value.Integer IntegerKind.U32 1033 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1114; Value.Integer IntegerKind.U32 1034 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1115; Value.Integer IntegerKind.U32 1035 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1116; Value.Integer IntegerKind.U32 1036 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1117; Value.Integer IntegerKind.U32 1037 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1118; Value.Integer IntegerKind.U32 1038 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1119; Value.Integer IntegerKind.U32 1039 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1121; Value.Integer IntegerKind.U32 1120 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1123; Value.Integer IntegerKind.U32 1122 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1125; Value.Integer IntegerKind.U32 1124 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1127; Value.Integer IntegerKind.U32 1126 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1129; Value.Integer IntegerKind.U32 1128 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1131; Value.Integer IntegerKind.U32 1130 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1133; Value.Integer IntegerKind.U32 1132 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1135; Value.Integer IntegerKind.U32 1134 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1137; Value.Integer IntegerKind.U32 1136 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1139; Value.Integer IntegerKind.U32 1138 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1141; Value.Integer IntegerKind.U32 1140 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1143; Value.Integer IntegerKind.U32 1142 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1145; Value.Integer IntegerKind.U32 1144 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1147; Value.Integer IntegerKind.U32 1146 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1149; Value.Integer IntegerKind.U32 1148 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1151; Value.Integer IntegerKind.U32 1150 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1153; Value.Integer IntegerKind.U32 1152 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1163; Value.Integer IntegerKind.U32 1162 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1165; Value.Integer IntegerKind.U32 1164 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1167; Value.Integer IntegerKind.U32 1166 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1169; Value.Integer IntegerKind.U32 1168 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1171; Value.Integer IntegerKind.U32 1170 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1173; Value.Integer IntegerKind.U32 1172 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1175; Value.Integer IntegerKind.U32 1174 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1177; Value.Integer IntegerKind.U32 1176 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1179; Value.Integer IntegerKind.U32 1178 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1181; Value.Integer IntegerKind.U32 1180 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1183; Value.Integer IntegerKind.U32 1182 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1185; Value.Integer IntegerKind.U32 1184 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1187; Value.Integer IntegerKind.U32 1186 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1189; Value.Integer IntegerKind.U32 1188 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1191; Value.Integer IntegerKind.U32 1190 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1193; Value.Integer IntegerKind.U32 1192 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1195; Value.Integer IntegerKind.U32 1194 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1197; Value.Integer IntegerKind.U32 1196 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1199; Value.Integer IntegerKind.U32 1198 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1201; Value.Integer IntegerKind.U32 1200 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1203; Value.Integer IntegerKind.U32 1202 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1205; Value.Integer IntegerKind.U32 1204 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1207; Value.Integer IntegerKind.U32 1206 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1209; Value.Integer IntegerKind.U32 1208 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1211; Value.Integer IntegerKind.U32 1210 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1213; Value.Integer IntegerKind.U32 1212 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1215; Value.Integer IntegerKind.U32 1214 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1218; Value.Integer IntegerKind.U32 1217 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1220; Value.Integer IntegerKind.U32 1219 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1222; Value.Integer IntegerKind.U32 1221 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1224; Value.Integer IntegerKind.U32 1223 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1226; Value.Integer IntegerKind.U32 1225 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1228; Value.Integer IntegerKind.U32 1227 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1230; Value.Integer IntegerKind.U32 1229 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1231; Value.Integer IntegerKind.U32 1216 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1233; Value.Integer IntegerKind.U32 1232 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1235; Value.Integer IntegerKind.U32 1234 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1237; Value.Integer IntegerKind.U32 1236 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1239; Value.Integer IntegerKind.U32 1238 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1241; Value.Integer IntegerKind.U32 1240 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1243; Value.Integer IntegerKind.U32 1242 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1245; Value.Integer IntegerKind.U32 1244 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1247; Value.Integer IntegerKind.U32 1246 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1249; Value.Integer IntegerKind.U32 1248 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1251; Value.Integer IntegerKind.U32 1250 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1253; Value.Integer IntegerKind.U32 1252 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1255; Value.Integer IntegerKind.U32 1254 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1257; Value.Integer IntegerKind.U32 1256 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1259; Value.Integer IntegerKind.U32 1258 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1261; Value.Integer IntegerKind.U32 1260 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1263; Value.Integer IntegerKind.U32 1262 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1265; Value.Integer IntegerKind.U32 1264 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1267; Value.Integer IntegerKind.U32 1266 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1269; Value.Integer IntegerKind.U32 1268 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1271; Value.Integer IntegerKind.U32 1270 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1273; Value.Integer IntegerKind.U32 1272 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1275; Value.Integer IntegerKind.U32 1274 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1277; Value.Integer IntegerKind.U32 1276 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1279; Value.Integer IntegerKind.U32 1278 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1281; Value.Integer IntegerKind.U32 1280 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1283; Value.Integer IntegerKind.U32 1282 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1285; Value.Integer IntegerKind.U32 1284 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1287; Value.Integer IntegerKind.U32 1286 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1289; Value.Integer IntegerKind.U32 1288 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1291; Value.Integer IntegerKind.U32 1290 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1293; Value.Integer IntegerKind.U32 1292 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1295; Value.Integer IntegerKind.U32 1294 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1297; Value.Integer IntegerKind.U32 1296 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1299; Value.Integer IntegerKind.U32 1298 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1301; Value.Integer IntegerKind.U32 1300 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1303; Value.Integer IntegerKind.U32 1302 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1305; Value.Integer IntegerKind.U32 1304 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1307; Value.Integer IntegerKind.U32 1306 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1309; Value.Integer IntegerKind.U32 1308 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1311; Value.Integer IntegerKind.U32 1310 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1313; Value.Integer IntegerKind.U32 1312 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1315; Value.Integer IntegerKind.U32 1314 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1317; Value.Integer IntegerKind.U32 1316 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1319; Value.Integer IntegerKind.U32 1318 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1321; Value.Integer IntegerKind.U32 1320 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1323; Value.Integer IntegerKind.U32 1322 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1325; Value.Integer IntegerKind.U32 1324 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1327; Value.Integer IntegerKind.U32 1326 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1377; Value.Integer IntegerKind.U32 1329 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1378; Value.Integer IntegerKind.U32 1330 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1379; Value.Integer IntegerKind.U32 1331 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1380; Value.Integer IntegerKind.U32 1332 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1381; Value.Integer IntegerKind.U32 1333 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1382; Value.Integer IntegerKind.U32 1334 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1383; Value.Integer IntegerKind.U32 1335 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1384; Value.Integer IntegerKind.U32 1336 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1385; Value.Integer IntegerKind.U32 1337 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1386; Value.Integer IntegerKind.U32 1338 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1387; Value.Integer IntegerKind.U32 1339 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1388; Value.Integer IntegerKind.U32 1340 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1389; Value.Integer IntegerKind.U32 1341 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1390; Value.Integer IntegerKind.U32 1342 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1391; Value.Integer IntegerKind.U32 1343 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1392; Value.Integer IntegerKind.U32 1344 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1393; Value.Integer IntegerKind.U32 1345 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1394; Value.Integer IntegerKind.U32 1346 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1395; Value.Integer IntegerKind.U32 1347 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1396; Value.Integer IntegerKind.U32 1348 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1397; Value.Integer IntegerKind.U32 1349 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1398; Value.Integer IntegerKind.U32 1350 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1399; Value.Integer IntegerKind.U32 1351 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1400; Value.Integer IntegerKind.U32 1352 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1401; Value.Integer IntegerKind.U32 1353 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1402; Value.Integer IntegerKind.U32 1354 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1403; Value.Integer IntegerKind.U32 1355 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1404; Value.Integer IntegerKind.U32 1356 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1405; Value.Integer IntegerKind.U32 1357 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1406; Value.Integer IntegerKind.U32 1358 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1407; Value.Integer IntegerKind.U32 1359 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1408; Value.Integer IntegerKind.U32 1360 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1409; Value.Integer IntegerKind.U32 1361 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1410; Value.Integer IntegerKind.U32 1362 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1411; Value.Integer IntegerKind.U32 1363 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1412; Value.Integer IntegerKind.U32 1364 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1413; Value.Integer IntegerKind.U32 1365 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1414; Value.Integer IntegerKind.U32 1366 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 1415; Value.Integer IntegerKind.U32 4194309 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4304; Value.Integer IntegerKind.U32 7312 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4305; Value.Integer IntegerKind.U32 7313 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4306; Value.Integer IntegerKind.U32 7314 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4307; Value.Integer IntegerKind.U32 7315 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4308; Value.Integer IntegerKind.U32 7316 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4309; Value.Integer IntegerKind.U32 7317 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4310; Value.Integer IntegerKind.U32 7318 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4311; Value.Integer IntegerKind.U32 7319 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4312; Value.Integer IntegerKind.U32 7320 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4313; Value.Integer IntegerKind.U32 7321 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4314; Value.Integer IntegerKind.U32 7322 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4315; Value.Integer IntegerKind.U32 7323 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4316; Value.Integer IntegerKind.U32 7324 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4317; Value.Integer IntegerKind.U32 7325 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4318; Value.Integer IntegerKind.U32 7326 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4319; Value.Integer IntegerKind.U32 7327 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4320; Value.Integer IntegerKind.U32 7328 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4321; Value.Integer IntegerKind.U32 7329 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4322; Value.Integer IntegerKind.U32 7330 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4323; Value.Integer IntegerKind.U32 7331 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4324; Value.Integer IntegerKind.U32 7332 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4325; Value.Integer IntegerKind.U32 7333 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4326; Value.Integer IntegerKind.U32 7334 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4327; Value.Integer IntegerKind.U32 7335 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4328; Value.Integer IntegerKind.U32 7336 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4329; Value.Integer IntegerKind.U32 7337 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4330; Value.Integer IntegerKind.U32 7338 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4331; Value.Integer IntegerKind.U32 7339 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4332; Value.Integer IntegerKind.U32 7340 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4333; Value.Integer IntegerKind.U32 7341 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4334; Value.Integer IntegerKind.U32 7342 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4335; Value.Integer IntegerKind.U32 7343 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4336; Value.Integer IntegerKind.U32 7344 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4337; Value.Integer IntegerKind.U32 7345 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4338; Value.Integer IntegerKind.U32 7346 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4339; Value.Integer IntegerKind.U32 7347 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4340; Value.Integer IntegerKind.U32 7348 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4341; Value.Integer IntegerKind.U32 7349 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4342; Value.Integer IntegerKind.U32 7350 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4343; Value.Integer IntegerKind.U32 7351 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4344; Value.Integer IntegerKind.U32 7352 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4345; Value.Integer IntegerKind.U32 7353 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4346; Value.Integer IntegerKind.U32 7354 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4349; Value.Integer IntegerKind.U32 7357 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4350; Value.Integer IntegerKind.U32 7358 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 4351; Value.Integer IntegerKind.U32 7359 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5112; Value.Integer IntegerKind.U32 5104 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5113; Value.Integer IntegerKind.U32 5105 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5114; Value.Integer IntegerKind.U32 5106 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5115; Value.Integer IntegerKind.U32 5107 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5116; Value.Integer IntegerKind.U32 5108 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 5117; Value.Integer IntegerKind.U32 5109 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7296; Value.Integer IntegerKind.U32 1042 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7297; Value.Integer IntegerKind.U32 1044 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7298; Value.Integer IntegerKind.U32 1054 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7299; Value.Integer IntegerKind.U32 1057 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7300; Value.Integer IntegerKind.U32 1058 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7301; Value.Integer IntegerKind.U32 1058 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7302; Value.Integer IntegerKind.U32 1066 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7303; Value.Integer IntegerKind.U32 1122 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7304; Value.Integer IntegerKind.U32 42570 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7306; Value.Integer IntegerKind.U32 7305 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7545; Value.Integer IntegerKind.U32 42877 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7549; Value.Integer IntegerKind.U32 11363 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7566; Value.Integer IntegerKind.U32 42950 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7681; Value.Integer IntegerKind.U32 7680 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7683; Value.Integer IntegerKind.U32 7682 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7685; Value.Integer IntegerKind.U32 7684 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7687; Value.Integer IntegerKind.U32 7686 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7689; Value.Integer IntegerKind.U32 7688 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7691; Value.Integer IntegerKind.U32 7690 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7693; Value.Integer IntegerKind.U32 7692 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7695; Value.Integer IntegerKind.U32 7694 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7697; Value.Integer IntegerKind.U32 7696 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7699; Value.Integer IntegerKind.U32 7698 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7701; Value.Integer IntegerKind.U32 7700 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7703; Value.Integer IntegerKind.U32 7702 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7705; Value.Integer IntegerKind.U32 7704 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7707; Value.Integer IntegerKind.U32 7706 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7709; Value.Integer IntegerKind.U32 7708 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7711; Value.Integer IntegerKind.U32 7710 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7713; Value.Integer IntegerKind.U32 7712 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7715; Value.Integer IntegerKind.U32 7714 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7717; Value.Integer IntegerKind.U32 7716 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7719; Value.Integer IntegerKind.U32 7718 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7721; Value.Integer IntegerKind.U32 7720 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7723; Value.Integer IntegerKind.U32 7722 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7725; Value.Integer IntegerKind.U32 7724 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7727; Value.Integer IntegerKind.U32 7726 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7729; Value.Integer IntegerKind.U32 7728 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7731; Value.Integer IntegerKind.U32 7730 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7733; Value.Integer IntegerKind.U32 7732 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7735; Value.Integer IntegerKind.U32 7734 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7737; Value.Integer IntegerKind.U32 7736 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7739; Value.Integer IntegerKind.U32 7738 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7741; Value.Integer IntegerKind.U32 7740 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7743; Value.Integer IntegerKind.U32 7742 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7745; Value.Integer IntegerKind.U32 7744 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7747; Value.Integer IntegerKind.U32 7746 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7749; Value.Integer IntegerKind.U32 7748 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7751; Value.Integer IntegerKind.U32 7750 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7753; Value.Integer IntegerKind.U32 7752 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7755; Value.Integer IntegerKind.U32 7754 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7757; Value.Integer IntegerKind.U32 7756 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7759; Value.Integer IntegerKind.U32 7758 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7761; Value.Integer IntegerKind.U32 7760 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7763; Value.Integer IntegerKind.U32 7762 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7765; Value.Integer IntegerKind.U32 7764 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7767; Value.Integer IntegerKind.U32 7766 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7769; Value.Integer IntegerKind.U32 7768 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7771; Value.Integer IntegerKind.U32 7770 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7773; Value.Integer IntegerKind.U32 7772 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7775; Value.Integer IntegerKind.U32 7774 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7777; Value.Integer IntegerKind.U32 7776 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7779; Value.Integer IntegerKind.U32 7778 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7781; Value.Integer IntegerKind.U32 7780 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7783; Value.Integer IntegerKind.U32 7782 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7785; Value.Integer IntegerKind.U32 7784 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7787; Value.Integer IntegerKind.U32 7786 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7789; Value.Integer IntegerKind.U32 7788 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7791; Value.Integer IntegerKind.U32 7790 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7793; Value.Integer IntegerKind.U32 7792 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7795; Value.Integer IntegerKind.U32 7794 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7797; Value.Integer IntegerKind.U32 7796 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7799; Value.Integer IntegerKind.U32 7798 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7801; Value.Integer IntegerKind.U32 7800 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7803; Value.Integer IntegerKind.U32 7802 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7805; Value.Integer IntegerKind.U32 7804 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7807; Value.Integer IntegerKind.U32 7806 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7809; Value.Integer IntegerKind.U32 7808 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7811; Value.Integer IntegerKind.U32 7810 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7813; Value.Integer IntegerKind.U32 7812 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7815; Value.Integer IntegerKind.U32 7814 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7817; Value.Integer IntegerKind.U32 7816 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7819; Value.Integer IntegerKind.U32 7818 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7821; Value.Integer IntegerKind.U32 7820 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7823; Value.Integer IntegerKind.U32 7822 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7825; Value.Integer IntegerKind.U32 7824 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7827; Value.Integer IntegerKind.U32 7826 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7829; Value.Integer IntegerKind.U32 7828 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7830; Value.Integer IntegerKind.U32 4194310 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7831; Value.Integer IntegerKind.U32 4194311 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7832; Value.Integer IntegerKind.U32 4194312 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7833; Value.Integer IntegerKind.U32 4194313 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7834; Value.Integer IntegerKind.U32 4194314 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7835; Value.Integer IntegerKind.U32 7776 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7841; Value.Integer IntegerKind.U32 7840 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7843; Value.Integer IntegerKind.U32 7842 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7845; Value.Integer IntegerKind.U32 7844 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7847; Value.Integer IntegerKind.U32 7846 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7849; Value.Integer IntegerKind.U32 7848 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7851; Value.Integer IntegerKind.U32 7850 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7853; Value.Integer IntegerKind.U32 7852 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7855; Value.Integer IntegerKind.U32 7854 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7857; Value.Integer IntegerKind.U32 7856 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7859; Value.Integer IntegerKind.U32 7858 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7861; Value.Integer IntegerKind.U32 7860 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7863; Value.Integer IntegerKind.U32 7862 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7865; Value.Integer IntegerKind.U32 7864 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7867; Value.Integer IntegerKind.U32 7866 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7869; Value.Integer IntegerKind.U32 7868 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7871; Value.Integer IntegerKind.U32 7870 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7873; Value.Integer IntegerKind.U32 7872 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7875; Value.Integer IntegerKind.U32 7874 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7877; Value.Integer IntegerKind.U32 7876 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7879; Value.Integer IntegerKind.U32 7878 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7881; Value.Integer IntegerKind.U32 7880 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7883; Value.Integer IntegerKind.U32 7882 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7885; Value.Integer IntegerKind.U32 7884 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7887; Value.Integer IntegerKind.U32 7886 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7889; Value.Integer IntegerKind.U32 7888 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7891; Value.Integer IntegerKind.U32 7890 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7893; Value.Integer IntegerKind.U32 7892 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7895; Value.Integer IntegerKind.U32 7894 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7897; Value.Integer IntegerKind.U32 7896 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7899; Value.Integer IntegerKind.U32 7898 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7901; Value.Integer IntegerKind.U32 7900 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7903; Value.Integer IntegerKind.U32 7902 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7905; Value.Integer IntegerKind.U32 7904 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7907; Value.Integer IntegerKind.U32 7906 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7909; Value.Integer IntegerKind.U32 7908 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7911; Value.Integer IntegerKind.U32 7910 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7913; Value.Integer IntegerKind.U32 7912 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7915; Value.Integer IntegerKind.U32 7914 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7917; Value.Integer IntegerKind.U32 7916 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7919; Value.Integer IntegerKind.U32 7918 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7921; Value.Integer IntegerKind.U32 7920 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7923; Value.Integer IntegerKind.U32 7922 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7925; Value.Integer IntegerKind.U32 7924 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7927; Value.Integer IntegerKind.U32 7926 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7929; Value.Integer IntegerKind.U32 7928 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7931; Value.Integer IntegerKind.U32 7930 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7933; Value.Integer IntegerKind.U32 7932 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7935; Value.Integer IntegerKind.U32 7934 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7936; Value.Integer IntegerKind.U32 7944 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7937; Value.Integer IntegerKind.U32 7945 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7938; Value.Integer IntegerKind.U32 7946 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7939; Value.Integer IntegerKind.U32 7947 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7940; Value.Integer IntegerKind.U32 7948 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7941; Value.Integer IntegerKind.U32 7949 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7942; Value.Integer IntegerKind.U32 7950 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7943; Value.Integer IntegerKind.U32 7951 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7952; Value.Integer IntegerKind.U32 7960 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7953; Value.Integer IntegerKind.U32 7961 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7954; Value.Integer IntegerKind.U32 7962 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7955; Value.Integer IntegerKind.U32 7963 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7956; Value.Integer IntegerKind.U32 7964 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7957; Value.Integer IntegerKind.U32 7965 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7968; Value.Integer IntegerKind.U32 7976 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7969; Value.Integer IntegerKind.U32 7977 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7970; Value.Integer IntegerKind.U32 7978 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7971; Value.Integer IntegerKind.U32 7979 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7972; Value.Integer IntegerKind.U32 7980 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7973; Value.Integer IntegerKind.U32 7981 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7974; Value.Integer IntegerKind.U32 7982 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7975; Value.Integer IntegerKind.U32 7983 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7984; Value.Integer IntegerKind.U32 7992 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7985; Value.Integer IntegerKind.U32 7993 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7986; Value.Integer IntegerKind.U32 7994 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7987; Value.Integer IntegerKind.U32 7995 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7988; Value.Integer IntegerKind.U32 7996 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7989; Value.Integer IntegerKind.U32 7997 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7990; Value.Integer IntegerKind.U32 7998 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 7991; Value.Integer IntegerKind.U32 7999 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8000; Value.Integer IntegerKind.U32 8008 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8001; Value.Integer IntegerKind.U32 8009 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8002; Value.Integer IntegerKind.U32 8010 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8003; Value.Integer IntegerKind.U32 8011 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8004; Value.Integer IntegerKind.U32 8012 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8005; Value.Integer IntegerKind.U32 8013 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8016; Value.Integer IntegerKind.U32 4194315 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8017; Value.Integer IntegerKind.U32 8025 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8018; Value.Integer IntegerKind.U32 4194316 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8019; Value.Integer IntegerKind.U32 8027 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8020; Value.Integer IntegerKind.U32 4194317 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8021; Value.Integer IntegerKind.U32 8029 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8022; Value.Integer IntegerKind.U32 4194318 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8023; Value.Integer IntegerKind.U32 8031 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8032; Value.Integer IntegerKind.U32 8040 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8033; Value.Integer IntegerKind.U32 8041 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8034; Value.Integer IntegerKind.U32 8042 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8035; Value.Integer IntegerKind.U32 8043 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8036; Value.Integer IntegerKind.U32 8044 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8037; Value.Integer IntegerKind.U32 8045 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8038; Value.Integer IntegerKind.U32 8046 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8039; Value.Integer IntegerKind.U32 8047 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8048; Value.Integer IntegerKind.U32 8122 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8049; Value.Integer IntegerKind.U32 8123 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8050; Value.Integer IntegerKind.U32 8136 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8051; Value.Integer IntegerKind.U32 8137 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8052; Value.Integer IntegerKind.U32 8138 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8053; Value.Integer IntegerKind.U32 8139 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8054; Value.Integer IntegerKind.U32 8154 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8055; Value.Integer IntegerKind.U32 8155 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8056; Value.Integer IntegerKind.U32 8184 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8057; Value.Integer IntegerKind.U32 8185 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8058; Value.Integer IntegerKind.U32 8170 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8059; Value.Integer IntegerKind.U32 8171 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8060; Value.Integer IntegerKind.U32 8186 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8061; Value.Integer IntegerKind.U32 8187 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8064; Value.Integer IntegerKind.U32 4194319 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8065; Value.Integer IntegerKind.U32 4194320 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8066; Value.Integer IntegerKind.U32 4194321 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8067; Value.Integer IntegerKind.U32 4194322 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8068; Value.Integer IntegerKind.U32 4194323 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8069; Value.Integer IntegerKind.U32 4194324 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8070; Value.Integer IntegerKind.U32 4194325 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8071; Value.Integer IntegerKind.U32 4194326 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8072; Value.Integer IntegerKind.U32 4194327 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8073; Value.Integer IntegerKind.U32 4194328 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8074; Value.Integer IntegerKind.U32 4194329 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8075; Value.Integer IntegerKind.U32 4194330 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8076; Value.Integer IntegerKind.U32 4194331 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8077; Value.Integer IntegerKind.U32 4194332 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8078; Value.Integer IntegerKind.U32 4194333 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8079; Value.Integer IntegerKind.U32 4194334 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8080; Value.Integer IntegerKind.U32 4194335 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8081; Value.Integer IntegerKind.U32 4194336 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8082; Value.Integer IntegerKind.U32 4194337 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8083; Value.Integer IntegerKind.U32 4194338 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8084; Value.Integer IntegerKind.U32 4194339 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8085; Value.Integer IntegerKind.U32 4194340 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8086; Value.Integer IntegerKind.U32 4194341 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8087; Value.Integer IntegerKind.U32 4194342 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8088; Value.Integer IntegerKind.U32 4194343 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8089; Value.Integer IntegerKind.U32 4194344 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8090; Value.Integer IntegerKind.U32 4194345 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8091; Value.Integer IntegerKind.U32 4194346 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8092; Value.Integer IntegerKind.U32 4194347 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8093; Value.Integer IntegerKind.U32 4194348 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8094; Value.Integer IntegerKind.U32 4194349 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8095; Value.Integer IntegerKind.U32 4194350 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8096; Value.Integer IntegerKind.U32 4194351 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8097; Value.Integer IntegerKind.U32 4194352 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8098; Value.Integer IntegerKind.U32 4194353 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8099; Value.Integer IntegerKind.U32 4194354 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8100; Value.Integer IntegerKind.U32 4194355 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8101; Value.Integer IntegerKind.U32 4194356 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8102; Value.Integer IntegerKind.U32 4194357 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8103; Value.Integer IntegerKind.U32 4194358 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8104; Value.Integer IntegerKind.U32 4194359 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8105; Value.Integer IntegerKind.U32 4194360 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8106; Value.Integer IntegerKind.U32 4194361 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8107; Value.Integer IntegerKind.U32 4194362 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8108; Value.Integer IntegerKind.U32 4194363 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8109; Value.Integer IntegerKind.U32 4194364 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8110; Value.Integer IntegerKind.U32 4194365 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8111; Value.Integer IntegerKind.U32 4194366 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8112; Value.Integer IntegerKind.U32 8120 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8113; Value.Integer IntegerKind.U32 8121 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8114; Value.Integer IntegerKind.U32 4194367 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8115; Value.Integer IntegerKind.U32 4194368 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8116; Value.Integer IntegerKind.U32 4194369 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8118; Value.Integer IntegerKind.U32 4194370 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8119; Value.Integer IntegerKind.U32 4194371 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8124; Value.Integer IntegerKind.U32 4194372 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8126; Value.Integer IntegerKind.U32 921 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8130; Value.Integer IntegerKind.U32 4194373 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8131; Value.Integer IntegerKind.U32 4194374 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8132; Value.Integer IntegerKind.U32 4194375 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8134; Value.Integer IntegerKind.U32 4194376 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8135; Value.Integer IntegerKind.U32 4194377 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8140; Value.Integer IntegerKind.U32 4194378 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8144; Value.Integer IntegerKind.U32 8152 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8145; Value.Integer IntegerKind.U32 8153 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8146; Value.Integer IntegerKind.U32 4194379 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8147; Value.Integer IntegerKind.U32 4194380 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8150; Value.Integer IntegerKind.U32 4194381 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8151; Value.Integer IntegerKind.U32 4194382 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8160; Value.Integer IntegerKind.U32 8168 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8161; Value.Integer IntegerKind.U32 8169 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8162; Value.Integer IntegerKind.U32 4194383 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8163; Value.Integer IntegerKind.U32 4194384 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8164; Value.Integer IntegerKind.U32 4194385 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8165; Value.Integer IntegerKind.U32 8172 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8166; Value.Integer IntegerKind.U32 4194386 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8167; Value.Integer IntegerKind.U32 4194387 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8178; Value.Integer IntegerKind.U32 4194388 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8179; Value.Integer IntegerKind.U32 4194389 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8180; Value.Integer IntegerKind.U32 4194390 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8182; Value.Integer IntegerKind.U32 4194391 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8183; Value.Integer IntegerKind.U32 4194392 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8188; Value.Integer IntegerKind.U32 4194393 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8526; Value.Integer IntegerKind.U32 8498 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8560; Value.Integer IntegerKind.U32 8544 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8561; Value.Integer IntegerKind.U32 8545 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8562; Value.Integer IntegerKind.U32 8546 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8563; Value.Integer IntegerKind.U32 8547 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8564; Value.Integer IntegerKind.U32 8548 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8565; Value.Integer IntegerKind.U32 8549 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8566; Value.Integer IntegerKind.U32 8550 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8567; Value.Integer IntegerKind.U32 8551 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8568; Value.Integer IntegerKind.U32 8552 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8569; Value.Integer IntegerKind.U32 8553 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8570; Value.Integer IntegerKind.U32 8554 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8571; Value.Integer IntegerKind.U32 8555 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8572; Value.Integer IntegerKind.U32 8556 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8573; Value.Integer IntegerKind.U32 8557 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8574; Value.Integer IntegerKind.U32 8558 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8575; Value.Integer IntegerKind.U32 8559 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 8580; Value.Integer IntegerKind.U32 8579 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9424; Value.Integer IntegerKind.U32 9398 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9425; Value.Integer IntegerKind.U32 9399 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9426; Value.Integer IntegerKind.U32 9400 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9427; Value.Integer IntegerKind.U32 9401 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9428; Value.Integer IntegerKind.U32 9402 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9429; Value.Integer IntegerKind.U32 9403 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9430; Value.Integer IntegerKind.U32 9404 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9431; Value.Integer IntegerKind.U32 9405 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9432; Value.Integer IntegerKind.U32 9406 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9433; Value.Integer IntegerKind.U32 9407 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9434; Value.Integer IntegerKind.U32 9408 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9435; Value.Integer IntegerKind.U32 9409 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9436; Value.Integer IntegerKind.U32 9410 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9437; Value.Integer IntegerKind.U32 9411 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9438; Value.Integer IntegerKind.U32 9412 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9439; Value.Integer IntegerKind.U32 9413 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9440; Value.Integer IntegerKind.U32 9414 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9441; Value.Integer IntegerKind.U32 9415 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9442; Value.Integer IntegerKind.U32 9416 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9443; Value.Integer IntegerKind.U32 9417 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9444; Value.Integer IntegerKind.U32 9418 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9445; Value.Integer IntegerKind.U32 9419 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9446; Value.Integer IntegerKind.U32 9420 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9447; Value.Integer IntegerKind.U32 9421 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9448; Value.Integer IntegerKind.U32 9422 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 9449; Value.Integer IntegerKind.U32 9423 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11312; Value.Integer IntegerKind.U32 11264 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11313; Value.Integer IntegerKind.U32 11265 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11314; Value.Integer IntegerKind.U32 11266 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11315; Value.Integer IntegerKind.U32 11267 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11316; Value.Integer IntegerKind.U32 11268 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11317; Value.Integer IntegerKind.U32 11269 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11318; Value.Integer IntegerKind.U32 11270 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11319; Value.Integer IntegerKind.U32 11271 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11320; Value.Integer IntegerKind.U32 11272 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11321; Value.Integer IntegerKind.U32 11273 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11322; Value.Integer IntegerKind.U32 11274 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11323; Value.Integer IntegerKind.U32 11275 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11324; Value.Integer IntegerKind.U32 11276 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11325; Value.Integer IntegerKind.U32 11277 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11326; Value.Integer IntegerKind.U32 11278 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11327; Value.Integer IntegerKind.U32 11279 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11328; Value.Integer IntegerKind.U32 11280 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11329; Value.Integer IntegerKind.U32 11281 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11330; Value.Integer IntegerKind.U32 11282 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11331; Value.Integer IntegerKind.U32 11283 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11332; Value.Integer IntegerKind.U32 11284 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11333; Value.Integer IntegerKind.U32 11285 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11334; Value.Integer IntegerKind.U32 11286 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11335; Value.Integer IntegerKind.U32 11287 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11336; Value.Integer IntegerKind.U32 11288 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11337; Value.Integer IntegerKind.U32 11289 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11338; Value.Integer IntegerKind.U32 11290 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11339; Value.Integer IntegerKind.U32 11291 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11340; Value.Integer IntegerKind.U32 11292 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11341; Value.Integer IntegerKind.U32 11293 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11342; Value.Integer IntegerKind.U32 11294 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11343; Value.Integer IntegerKind.U32 11295 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11344; Value.Integer IntegerKind.U32 11296 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11345; Value.Integer IntegerKind.U32 11297 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11346; Value.Integer IntegerKind.U32 11298 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11347; Value.Integer IntegerKind.U32 11299 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11348; Value.Integer IntegerKind.U32 11300 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11349; Value.Integer IntegerKind.U32 11301 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11350; Value.Integer IntegerKind.U32 11302 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11351; Value.Integer IntegerKind.U32 11303 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11352; Value.Integer IntegerKind.U32 11304 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11353; Value.Integer IntegerKind.U32 11305 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11354; Value.Integer IntegerKind.U32 11306 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11355; Value.Integer IntegerKind.U32 11307 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11356; Value.Integer IntegerKind.U32 11308 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11357; Value.Integer IntegerKind.U32 11309 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11358; Value.Integer IntegerKind.U32 11310 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11359; Value.Integer IntegerKind.U32 11311 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11361; Value.Integer IntegerKind.U32 11360 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11365; Value.Integer IntegerKind.U32 570 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11366; Value.Integer IntegerKind.U32 574 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11368; Value.Integer IntegerKind.U32 11367 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11370; Value.Integer IntegerKind.U32 11369 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11372; Value.Integer IntegerKind.U32 11371 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11379; Value.Integer IntegerKind.U32 11378 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11382; Value.Integer IntegerKind.U32 11381 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11393; Value.Integer IntegerKind.U32 11392 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11395; Value.Integer IntegerKind.U32 11394 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11397; Value.Integer IntegerKind.U32 11396 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11399; Value.Integer IntegerKind.U32 11398 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11401; Value.Integer IntegerKind.U32 11400 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11403; Value.Integer IntegerKind.U32 11402 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11405; Value.Integer IntegerKind.U32 11404 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11407; Value.Integer IntegerKind.U32 11406 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11409; Value.Integer IntegerKind.U32 11408 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11411; Value.Integer IntegerKind.U32 11410 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11413; Value.Integer IntegerKind.U32 11412 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11415; Value.Integer IntegerKind.U32 11414 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11417; Value.Integer IntegerKind.U32 11416 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11419; Value.Integer IntegerKind.U32 11418 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11421; Value.Integer IntegerKind.U32 11420 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11423; Value.Integer IntegerKind.U32 11422 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11425; Value.Integer IntegerKind.U32 11424 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11427; Value.Integer IntegerKind.U32 11426 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11429; Value.Integer IntegerKind.U32 11428 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11431; Value.Integer IntegerKind.U32 11430 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11433; Value.Integer IntegerKind.U32 11432 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11435; Value.Integer IntegerKind.U32 11434 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11437; Value.Integer IntegerKind.U32 11436 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11439; Value.Integer IntegerKind.U32 11438 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11441; Value.Integer IntegerKind.U32 11440 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11443; Value.Integer IntegerKind.U32 11442 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11445; Value.Integer IntegerKind.U32 11444 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11447; Value.Integer IntegerKind.U32 11446 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11449; Value.Integer IntegerKind.U32 11448 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11451; Value.Integer IntegerKind.U32 11450 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11453; Value.Integer IntegerKind.U32 11452 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11455; Value.Integer IntegerKind.U32 11454 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11457; Value.Integer IntegerKind.U32 11456 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11459; Value.Integer IntegerKind.U32 11458 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11461; Value.Integer IntegerKind.U32 11460 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11463; Value.Integer IntegerKind.U32 11462 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11465; Value.Integer IntegerKind.U32 11464 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11467; Value.Integer IntegerKind.U32 11466 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11469; Value.Integer IntegerKind.U32 11468 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11471; Value.Integer IntegerKind.U32 11470 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11473; Value.Integer IntegerKind.U32 11472 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11475; Value.Integer IntegerKind.U32 11474 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11477; Value.Integer IntegerKind.U32 11476 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11479; Value.Integer IntegerKind.U32 11478 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11481; Value.Integer IntegerKind.U32 11480 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11483; Value.Integer IntegerKind.U32 11482 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11485; Value.Integer IntegerKind.U32 11484 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11487; Value.Integer IntegerKind.U32 11486 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11489; Value.Integer IntegerKind.U32 11488 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11491; Value.Integer IntegerKind.U32 11490 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11500; Value.Integer IntegerKind.U32 11499 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11502; Value.Integer IntegerKind.U32 11501 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11507; Value.Integer IntegerKind.U32 11506 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11520; Value.Integer IntegerKind.U32 4256 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11521; Value.Integer IntegerKind.U32 4257 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11522; Value.Integer IntegerKind.U32 4258 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11523; Value.Integer IntegerKind.U32 4259 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11524; Value.Integer IntegerKind.U32 4260 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11525; Value.Integer IntegerKind.U32 4261 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11526; Value.Integer IntegerKind.U32 4262 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11527; Value.Integer IntegerKind.U32 4263 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11528; Value.Integer IntegerKind.U32 4264 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11529; Value.Integer IntegerKind.U32 4265 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11530; Value.Integer IntegerKind.U32 4266 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11531; Value.Integer IntegerKind.U32 4267 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11532; Value.Integer IntegerKind.U32 4268 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11533; Value.Integer IntegerKind.U32 4269 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11534; Value.Integer IntegerKind.U32 4270 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11535; Value.Integer IntegerKind.U32 4271 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11536; Value.Integer IntegerKind.U32 4272 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11537; Value.Integer IntegerKind.U32 4273 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11538; Value.Integer IntegerKind.U32 4274 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11539; Value.Integer IntegerKind.U32 4275 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11540; Value.Integer IntegerKind.U32 4276 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11541; Value.Integer IntegerKind.U32 4277 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11542; Value.Integer IntegerKind.U32 4278 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11543; Value.Integer IntegerKind.U32 4279 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11544; Value.Integer IntegerKind.U32 4280 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11545; Value.Integer IntegerKind.U32 4281 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11546; Value.Integer IntegerKind.U32 4282 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11547; Value.Integer IntegerKind.U32 4283 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11548; Value.Integer IntegerKind.U32 4284 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11549; Value.Integer IntegerKind.U32 4285 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11550; Value.Integer IntegerKind.U32 4286 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11551; Value.Integer IntegerKind.U32 4287 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11552; Value.Integer IntegerKind.U32 4288 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11553; Value.Integer IntegerKind.U32 4289 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11554; Value.Integer IntegerKind.U32 4290 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11555; Value.Integer IntegerKind.U32 4291 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11556; Value.Integer IntegerKind.U32 4292 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11557; Value.Integer IntegerKind.U32 4293 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11559; Value.Integer IntegerKind.U32 4295 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 11565; Value.Integer IntegerKind.U32 4301 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42561; Value.Integer IntegerKind.U32 42560 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42563; Value.Integer IntegerKind.U32 42562 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42565; Value.Integer IntegerKind.U32 42564 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42567; Value.Integer IntegerKind.U32 42566 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42569; Value.Integer IntegerKind.U32 42568 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42571; Value.Integer IntegerKind.U32 42570 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42573; Value.Integer IntegerKind.U32 42572 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42575; Value.Integer IntegerKind.U32 42574 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42577; Value.Integer IntegerKind.U32 42576 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42579; Value.Integer IntegerKind.U32 42578 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42581; Value.Integer IntegerKind.U32 42580 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42583; Value.Integer IntegerKind.U32 42582 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42585; Value.Integer IntegerKind.U32 42584 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42587; Value.Integer IntegerKind.U32 42586 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42589; Value.Integer IntegerKind.U32 42588 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42591; Value.Integer IntegerKind.U32 42590 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42593; Value.Integer IntegerKind.U32 42592 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42595; Value.Integer IntegerKind.U32 42594 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42597; Value.Integer IntegerKind.U32 42596 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42599; Value.Integer IntegerKind.U32 42598 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42601; Value.Integer IntegerKind.U32 42600 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42603; Value.Integer IntegerKind.U32 42602 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42605; Value.Integer IntegerKind.U32 42604 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42625; Value.Integer IntegerKind.U32 42624 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42627; Value.Integer IntegerKind.U32 42626 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42629; Value.Integer IntegerKind.U32 42628 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42631; Value.Integer IntegerKind.U32 42630 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42633; Value.Integer IntegerKind.U32 42632 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42635; Value.Integer IntegerKind.U32 42634 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42637; Value.Integer IntegerKind.U32 42636 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42639; Value.Integer IntegerKind.U32 42638 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42641; Value.Integer IntegerKind.U32 42640 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42643; Value.Integer IntegerKind.U32 42642 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42645; Value.Integer IntegerKind.U32 42644 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42647; Value.Integer IntegerKind.U32 42646 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42649; Value.Integer IntegerKind.U32 42648 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42651; Value.Integer IntegerKind.U32 42650 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42787; Value.Integer IntegerKind.U32 42786 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42789; Value.Integer IntegerKind.U32 42788 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42791; Value.Integer IntegerKind.U32 42790 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42793; Value.Integer IntegerKind.U32 42792 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42795; Value.Integer IntegerKind.U32 42794 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42797; Value.Integer IntegerKind.U32 42796 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42799; Value.Integer IntegerKind.U32 42798 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42803; Value.Integer IntegerKind.U32 42802 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42805; Value.Integer IntegerKind.U32 42804 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42807; Value.Integer IntegerKind.U32 42806 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42809; Value.Integer IntegerKind.U32 42808 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42811; Value.Integer IntegerKind.U32 42810 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42813; Value.Integer IntegerKind.U32 42812 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42815; Value.Integer IntegerKind.U32 42814 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42817; Value.Integer IntegerKind.U32 42816 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42819; Value.Integer IntegerKind.U32 42818 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42821; Value.Integer IntegerKind.U32 42820 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42823; Value.Integer IntegerKind.U32 42822 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42825; Value.Integer IntegerKind.U32 42824 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42827; Value.Integer IntegerKind.U32 42826 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42829; Value.Integer IntegerKind.U32 42828 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42831; Value.Integer IntegerKind.U32 42830 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42833; Value.Integer IntegerKind.U32 42832 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42835; Value.Integer IntegerKind.U32 42834 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42837; Value.Integer IntegerKind.U32 42836 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42839; Value.Integer IntegerKind.U32 42838 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42841; Value.Integer IntegerKind.U32 42840 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42843; Value.Integer IntegerKind.U32 42842 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42845; Value.Integer IntegerKind.U32 42844 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42847; Value.Integer IntegerKind.U32 42846 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42849; Value.Integer IntegerKind.U32 42848 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42851; Value.Integer IntegerKind.U32 42850 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42853; Value.Integer IntegerKind.U32 42852 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42855; Value.Integer IntegerKind.U32 42854 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42857; Value.Integer IntegerKind.U32 42856 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42859; Value.Integer IntegerKind.U32 42858 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42861; Value.Integer IntegerKind.U32 42860 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42863; Value.Integer IntegerKind.U32 42862 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42874; Value.Integer IntegerKind.U32 42873 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42876; Value.Integer IntegerKind.U32 42875 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42879; Value.Integer IntegerKind.U32 42878 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42881; Value.Integer IntegerKind.U32 42880 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42883; Value.Integer IntegerKind.U32 42882 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42885; Value.Integer IntegerKind.U32 42884 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42887; Value.Integer IntegerKind.U32 42886 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42892; Value.Integer IntegerKind.U32 42891 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42897; Value.Integer IntegerKind.U32 42896 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42899; Value.Integer IntegerKind.U32 42898 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42900; Value.Integer IntegerKind.U32 42948 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42903; Value.Integer IntegerKind.U32 42902 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42905; Value.Integer IntegerKind.U32 42904 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42907; Value.Integer IntegerKind.U32 42906 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42909; Value.Integer IntegerKind.U32 42908 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42911; Value.Integer IntegerKind.U32 42910 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42913; Value.Integer IntegerKind.U32 42912 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42915; Value.Integer IntegerKind.U32 42914 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42917; Value.Integer IntegerKind.U32 42916 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42919; Value.Integer IntegerKind.U32 42918 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42921; Value.Integer IntegerKind.U32 42920 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42933; Value.Integer IntegerKind.U32 42932 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42935; Value.Integer IntegerKind.U32 42934 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42937; Value.Integer IntegerKind.U32 42936 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42939; Value.Integer IntegerKind.U32 42938 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42941; Value.Integer IntegerKind.U32 42940 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42943; Value.Integer IntegerKind.U32 42942 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42945; Value.Integer IntegerKind.U32 42944 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42947; Value.Integer IntegerKind.U32 42946 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42952; Value.Integer IntegerKind.U32 42951 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42954; Value.Integer IntegerKind.U32 42953 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42957; Value.Integer IntegerKind.U32 42956 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42961; Value.Integer IntegerKind.U32 42960 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42967; Value.Integer IntegerKind.U32 42966 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42969; Value.Integer IntegerKind.U32 42968 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42971; Value.Integer IntegerKind.U32 42970 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 42998; Value.Integer IntegerKind.U32 42997 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43859; Value.Integer IntegerKind.U32 42931 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43888; Value.Integer IntegerKind.U32 5024 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43889; Value.Integer IntegerKind.U32 5025 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43890; Value.Integer IntegerKind.U32 5026 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43891; Value.Integer IntegerKind.U32 5027 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43892; Value.Integer IntegerKind.U32 5028 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43893; Value.Integer IntegerKind.U32 5029 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43894; Value.Integer IntegerKind.U32 5030 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43895; Value.Integer IntegerKind.U32 5031 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43896; Value.Integer IntegerKind.U32 5032 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43897; Value.Integer IntegerKind.U32 5033 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43898; Value.Integer IntegerKind.U32 5034 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43899; Value.Integer IntegerKind.U32 5035 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43900; Value.Integer IntegerKind.U32 5036 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43901; Value.Integer IntegerKind.U32 5037 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43902; Value.Integer IntegerKind.U32 5038 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43903; Value.Integer IntegerKind.U32 5039 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43904; Value.Integer IntegerKind.U32 5040 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43905; Value.Integer IntegerKind.U32 5041 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43906; Value.Integer IntegerKind.U32 5042 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43907; Value.Integer IntegerKind.U32 5043 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43908; Value.Integer IntegerKind.U32 5044 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43909; Value.Integer IntegerKind.U32 5045 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43910; Value.Integer IntegerKind.U32 5046 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43911; Value.Integer IntegerKind.U32 5047 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43912; Value.Integer IntegerKind.U32 5048 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43913; Value.Integer IntegerKind.U32 5049 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43914; Value.Integer IntegerKind.U32 5050 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43915; Value.Integer IntegerKind.U32 5051 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43916; Value.Integer IntegerKind.U32 5052 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43917; Value.Integer IntegerKind.U32 5053 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43918; Value.Integer IntegerKind.U32 5054 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43919; Value.Integer IntegerKind.U32 5055 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43920; Value.Integer IntegerKind.U32 5056 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43921; Value.Integer IntegerKind.U32 5057 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43922; Value.Integer IntegerKind.U32 5058 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43923; Value.Integer IntegerKind.U32 5059 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43924; Value.Integer IntegerKind.U32 5060 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43925; Value.Integer IntegerKind.U32 5061 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43926; Value.Integer IntegerKind.U32 5062 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43927; Value.Integer IntegerKind.U32 5063 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43928; Value.Integer IntegerKind.U32 5064 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43929; Value.Integer IntegerKind.U32 5065 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43930; Value.Integer IntegerKind.U32 5066 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43931; Value.Integer IntegerKind.U32 5067 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43932; Value.Integer IntegerKind.U32 5068 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43933; Value.Integer IntegerKind.U32 5069 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43934; Value.Integer IntegerKind.U32 5070 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43935; Value.Integer IntegerKind.U32 5071 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43936; Value.Integer IntegerKind.U32 5072 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43937; Value.Integer IntegerKind.U32 5073 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43938; Value.Integer IntegerKind.U32 5074 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43939; Value.Integer IntegerKind.U32 5075 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43940; Value.Integer IntegerKind.U32 5076 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43941; Value.Integer IntegerKind.U32 5077 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43942; Value.Integer IntegerKind.U32 5078 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43943; Value.Integer IntegerKind.U32 5079 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43944; Value.Integer IntegerKind.U32 5080 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43945; Value.Integer IntegerKind.U32 5081 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43946; Value.Integer IntegerKind.U32 5082 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43947; Value.Integer IntegerKind.U32 5083 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43948; Value.Integer IntegerKind.U32 5084 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43949; Value.Integer IntegerKind.U32 5085 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43950; Value.Integer IntegerKind.U32 5086 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43951; Value.Integer IntegerKind.U32 5087 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43952; Value.Integer IntegerKind.U32 5088 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43953; Value.Integer IntegerKind.U32 5089 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43954; Value.Integer IntegerKind.U32 5090 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43955; Value.Integer IntegerKind.U32 5091 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43956; Value.Integer IntegerKind.U32 5092 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43957; Value.Integer IntegerKind.U32 5093 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43958; Value.Integer IntegerKind.U32 5094 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43959; Value.Integer IntegerKind.U32 5095 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43960; Value.Integer IntegerKind.U32 5096 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43961; Value.Integer IntegerKind.U32 5097 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43962; Value.Integer IntegerKind.U32 5098 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43963; Value.Integer IntegerKind.U32 5099 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43964; Value.Integer IntegerKind.U32 5100 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43965; Value.Integer IntegerKind.U32 5101 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43966; Value.Integer IntegerKind.U32 5102 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 43967; Value.Integer IntegerKind.U32 5103 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 64256; Value.Integer IntegerKind.U32 4194394 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 64257; Value.Integer IntegerKind.U32 4194395 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 64258; Value.Integer IntegerKind.U32 4194396 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 64259; Value.Integer IntegerKind.U32 4194397 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 64260; Value.Integer IntegerKind.U32 4194398 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 64261; Value.Integer IntegerKind.U32 4194399 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 64262; Value.Integer IntegerKind.U32 4194400 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 64275; Value.Integer IntegerKind.U32 4194401 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 64276; Value.Integer IntegerKind.U32 4194402 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 64277; Value.Integer IntegerKind.U32 4194403 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 64278; Value.Integer IntegerKind.U32 4194404 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 64279; Value.Integer IntegerKind.U32 4194405 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65345; Value.Integer IntegerKind.U32 65313 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65346; Value.Integer IntegerKind.U32 65314 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65347; Value.Integer IntegerKind.U32 65315 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65348; Value.Integer IntegerKind.U32 65316 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65349; Value.Integer IntegerKind.U32 65317 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65350; Value.Integer IntegerKind.U32 65318 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65351; Value.Integer IntegerKind.U32 65319 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65352; Value.Integer IntegerKind.U32 65320 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65353; Value.Integer IntegerKind.U32 65321 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65354; Value.Integer IntegerKind.U32 65322 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65355; Value.Integer IntegerKind.U32 65323 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65356; Value.Integer IntegerKind.U32 65324 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65357; Value.Integer IntegerKind.U32 65325 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65358; Value.Integer IntegerKind.U32 65326 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65359; Value.Integer IntegerKind.U32 65327 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65360; Value.Integer IntegerKind.U32 65328 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65361; Value.Integer IntegerKind.U32 65329 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65362; Value.Integer IntegerKind.U32 65330 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65363; Value.Integer IntegerKind.U32 65331 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65364; Value.Integer IntegerKind.U32 65332 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65365; Value.Integer IntegerKind.U32 65333 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65366; Value.Integer IntegerKind.U32 65334 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65367; Value.Integer IntegerKind.U32 65335 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65368; Value.Integer IntegerKind.U32 65336 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65369; Value.Integer IntegerKind.U32 65337 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 65370; Value.Integer IntegerKind.U32 65338 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66600; Value.Integer IntegerKind.U32 66560 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66601; Value.Integer IntegerKind.U32 66561 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66602; Value.Integer IntegerKind.U32 66562 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66603; Value.Integer IntegerKind.U32 66563 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66604; Value.Integer IntegerKind.U32 66564 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66605; Value.Integer IntegerKind.U32 66565 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66606; Value.Integer IntegerKind.U32 66566 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66607; Value.Integer IntegerKind.U32 66567 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66608; Value.Integer IntegerKind.U32 66568 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66609; Value.Integer IntegerKind.U32 66569 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66610; Value.Integer IntegerKind.U32 66570 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66611; Value.Integer IntegerKind.U32 66571 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66612; Value.Integer IntegerKind.U32 66572 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66613; Value.Integer IntegerKind.U32 66573 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66614; Value.Integer IntegerKind.U32 66574 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66615; Value.Integer IntegerKind.U32 66575 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66616; Value.Integer IntegerKind.U32 66576 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66617; Value.Integer IntegerKind.U32 66577 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66618; Value.Integer IntegerKind.U32 66578 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66619; Value.Integer IntegerKind.U32 66579 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66620; Value.Integer IntegerKind.U32 66580 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66621; Value.Integer IntegerKind.U32 66581 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66622; Value.Integer IntegerKind.U32 66582 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66623; Value.Integer IntegerKind.U32 66583 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66624; Value.Integer IntegerKind.U32 66584 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66625; Value.Integer IntegerKind.U32 66585 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66626; Value.Integer IntegerKind.U32 66586 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66627; Value.Integer IntegerKind.U32 66587 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66628; Value.Integer IntegerKind.U32 66588 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66629; Value.Integer IntegerKind.U32 66589 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66630; Value.Integer IntegerKind.U32 66590 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66631; Value.Integer IntegerKind.U32 66591 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66632; Value.Integer IntegerKind.U32 66592 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66633; Value.Integer IntegerKind.U32 66593 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66634; Value.Integer IntegerKind.U32 66594 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66635; Value.Integer IntegerKind.U32 66595 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66636; Value.Integer IntegerKind.U32 66596 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66637; Value.Integer IntegerKind.U32 66597 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66638; Value.Integer IntegerKind.U32 66598 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66639; Value.Integer IntegerKind.U32 66599 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66776; Value.Integer IntegerKind.U32 66736 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66777; Value.Integer IntegerKind.U32 66737 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66778; Value.Integer IntegerKind.U32 66738 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66779; Value.Integer IntegerKind.U32 66739 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66780; Value.Integer IntegerKind.U32 66740 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66781; Value.Integer IntegerKind.U32 66741 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66782; Value.Integer IntegerKind.U32 66742 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66783; Value.Integer IntegerKind.U32 66743 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66784; Value.Integer IntegerKind.U32 66744 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66785; Value.Integer IntegerKind.U32 66745 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66786; Value.Integer IntegerKind.U32 66746 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66787; Value.Integer IntegerKind.U32 66747 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66788; Value.Integer IntegerKind.U32 66748 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66789; Value.Integer IntegerKind.U32 66749 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66790; Value.Integer IntegerKind.U32 66750 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66791; Value.Integer IntegerKind.U32 66751 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66792; Value.Integer IntegerKind.U32 66752 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66793; Value.Integer IntegerKind.U32 66753 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66794; Value.Integer IntegerKind.U32 66754 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66795; Value.Integer IntegerKind.U32 66755 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66796; Value.Integer IntegerKind.U32 66756 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66797; Value.Integer IntegerKind.U32 66757 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66798; Value.Integer IntegerKind.U32 66758 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66799; Value.Integer IntegerKind.U32 66759 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66800; Value.Integer IntegerKind.U32 66760 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66801; Value.Integer IntegerKind.U32 66761 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66802; Value.Integer IntegerKind.U32 66762 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66803; Value.Integer IntegerKind.U32 66763 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66804; Value.Integer IntegerKind.U32 66764 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66805; Value.Integer IntegerKind.U32 66765 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66806; Value.Integer IntegerKind.U32 66766 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66807; Value.Integer IntegerKind.U32 66767 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66808; Value.Integer IntegerKind.U32 66768 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66809; Value.Integer IntegerKind.U32 66769 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66810; Value.Integer IntegerKind.U32 66770 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66811; Value.Integer IntegerKind.U32 66771 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66967; Value.Integer IntegerKind.U32 66928 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66968; Value.Integer IntegerKind.U32 66929 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66969; Value.Integer IntegerKind.U32 66930 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66970; Value.Integer IntegerKind.U32 66931 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66971; Value.Integer IntegerKind.U32 66932 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66972; Value.Integer IntegerKind.U32 66933 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66973; Value.Integer IntegerKind.U32 66934 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66974; Value.Integer IntegerKind.U32 66935 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66975; Value.Integer IntegerKind.U32 66936 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66976; Value.Integer IntegerKind.U32 66937 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66977; Value.Integer IntegerKind.U32 66938 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66979; Value.Integer IntegerKind.U32 66940 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66980; Value.Integer IntegerKind.U32 66941 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66981; Value.Integer IntegerKind.U32 66942 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66982; Value.Integer IntegerKind.U32 66943 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66983; Value.Integer IntegerKind.U32 66944 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66984; Value.Integer IntegerKind.U32 66945 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66985; Value.Integer IntegerKind.U32 66946 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66986; Value.Integer IntegerKind.U32 66947 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66987; Value.Integer IntegerKind.U32 66948 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66988; Value.Integer IntegerKind.U32 66949 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66989; Value.Integer IntegerKind.U32 66950 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66990; Value.Integer IntegerKind.U32 66951 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66991; Value.Integer IntegerKind.U32 66952 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66992; Value.Integer IntegerKind.U32 66953 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66993; Value.Integer IntegerKind.U32 66954 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66995; Value.Integer IntegerKind.U32 66956 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66996; Value.Integer IntegerKind.U32 66957 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66997; Value.Integer IntegerKind.U32 66958 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66998; Value.Integer IntegerKind.U32 66959 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 66999; Value.Integer IntegerKind.U32 66960 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 67000; Value.Integer IntegerKind.U32 66961 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 67001; Value.Integer IntegerKind.U32 66962 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 67003; Value.Integer IntegerKind.U32 66964 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 67004; Value.Integer IntegerKind.U32 66965 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68800; Value.Integer IntegerKind.U32 68736 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68801; Value.Integer IntegerKind.U32 68737 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68802; Value.Integer IntegerKind.U32 68738 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68803; Value.Integer IntegerKind.U32 68739 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68804; Value.Integer IntegerKind.U32 68740 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68805; Value.Integer IntegerKind.U32 68741 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68806; Value.Integer IntegerKind.U32 68742 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68807; Value.Integer IntegerKind.U32 68743 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68808; Value.Integer IntegerKind.U32 68744 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68809; Value.Integer IntegerKind.U32 68745 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68810; Value.Integer IntegerKind.U32 68746 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68811; Value.Integer IntegerKind.U32 68747 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68812; Value.Integer IntegerKind.U32 68748 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68813; Value.Integer IntegerKind.U32 68749 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68814; Value.Integer IntegerKind.U32 68750 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68815; Value.Integer IntegerKind.U32 68751 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68816; Value.Integer IntegerKind.U32 68752 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68817; Value.Integer IntegerKind.U32 68753 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68818; Value.Integer IntegerKind.U32 68754 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68819; Value.Integer IntegerKind.U32 68755 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68820; Value.Integer IntegerKind.U32 68756 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68821; Value.Integer IntegerKind.U32 68757 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68822; Value.Integer IntegerKind.U32 68758 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68823; Value.Integer IntegerKind.U32 68759 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68824; Value.Integer IntegerKind.U32 68760 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68825; Value.Integer IntegerKind.U32 68761 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68826; Value.Integer IntegerKind.U32 68762 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68827; Value.Integer IntegerKind.U32 68763 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68828; Value.Integer IntegerKind.U32 68764 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68829; Value.Integer IntegerKind.U32 68765 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68830; Value.Integer IntegerKind.U32 68766 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68831; Value.Integer IntegerKind.U32 68767 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68832; Value.Integer IntegerKind.U32 68768 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68833; Value.Integer IntegerKind.U32 68769 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68834; Value.Integer IntegerKind.U32 68770 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68835; Value.Integer IntegerKind.U32 68771 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68836; Value.Integer IntegerKind.U32 68772 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68837; Value.Integer IntegerKind.U32 68773 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68838; Value.Integer IntegerKind.U32 68774 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68839; Value.Integer IntegerKind.U32 68775 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68840; Value.Integer IntegerKind.U32 68776 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68841; Value.Integer IntegerKind.U32 68777 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68842; Value.Integer IntegerKind.U32 68778 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68843; Value.Integer IntegerKind.U32 68779 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68844; Value.Integer IntegerKind.U32 68780 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68845; Value.Integer IntegerKind.U32 68781 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68846; Value.Integer IntegerKind.U32 68782 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68847; Value.Integer IntegerKind.U32 68783 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68848; Value.Integer IntegerKind.U32 68784 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68849; Value.Integer IntegerKind.U32 68785 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68850; Value.Integer IntegerKind.U32 68786 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68976; Value.Integer IntegerKind.U32 68944 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68977; Value.Integer IntegerKind.U32 68945 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68978; Value.Integer IntegerKind.U32 68946 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68979; Value.Integer IntegerKind.U32 68947 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68980; Value.Integer IntegerKind.U32 68948 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68981; Value.Integer IntegerKind.U32 68949 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68982; Value.Integer IntegerKind.U32 68950 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68983; Value.Integer IntegerKind.U32 68951 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68984; Value.Integer IntegerKind.U32 68952 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68985; Value.Integer IntegerKind.U32 68953 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68986; Value.Integer IntegerKind.U32 68954 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68987; Value.Integer IntegerKind.U32 68955 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68988; Value.Integer IntegerKind.U32 68956 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68989; Value.Integer IntegerKind.U32 68957 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68990; Value.Integer IntegerKind.U32 68958 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68991; Value.Integer IntegerKind.U32 68959 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68992; Value.Integer IntegerKind.U32 68960 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68993; Value.Integer IntegerKind.U32 68961 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68994; Value.Integer IntegerKind.U32 68962 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68995; Value.Integer IntegerKind.U32 68963 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68996; Value.Integer IntegerKind.U32 68964 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 68997; Value.Integer IntegerKind.U32 68965 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71872; Value.Integer IntegerKind.U32 71840 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71873; Value.Integer IntegerKind.U32 71841 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71874; Value.Integer IntegerKind.U32 71842 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71875; Value.Integer IntegerKind.U32 71843 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71876; Value.Integer IntegerKind.U32 71844 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71877; Value.Integer IntegerKind.U32 71845 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71878; Value.Integer IntegerKind.U32 71846 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71879; Value.Integer IntegerKind.U32 71847 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71880; Value.Integer IntegerKind.U32 71848 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71881; Value.Integer IntegerKind.U32 71849 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71882; Value.Integer IntegerKind.U32 71850 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71883; Value.Integer IntegerKind.U32 71851 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71884; Value.Integer IntegerKind.U32 71852 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71885; Value.Integer IntegerKind.U32 71853 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71886; Value.Integer IntegerKind.U32 71854 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71887; Value.Integer IntegerKind.U32 71855 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71888; Value.Integer IntegerKind.U32 71856 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71889; Value.Integer IntegerKind.U32 71857 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71890; Value.Integer IntegerKind.U32 71858 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71891; Value.Integer IntegerKind.U32 71859 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71892; Value.Integer IntegerKind.U32 71860 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71893; Value.Integer IntegerKind.U32 71861 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71894; Value.Integer IntegerKind.U32 71862 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71895; Value.Integer IntegerKind.U32 71863 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71896; Value.Integer IntegerKind.U32 71864 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71897; Value.Integer IntegerKind.U32 71865 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71898; Value.Integer IntegerKind.U32 71866 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71899; Value.Integer IntegerKind.U32 71867 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71900; Value.Integer IntegerKind.U32 71868 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71901; Value.Integer IntegerKind.U32 71869 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71902; Value.Integer IntegerKind.U32 71870 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 71903; Value.Integer IntegerKind.U32 71871 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93792; Value.Integer IntegerKind.U32 93760 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93793; Value.Integer IntegerKind.U32 93761 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93794; Value.Integer IntegerKind.U32 93762 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93795; Value.Integer IntegerKind.U32 93763 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93796; Value.Integer IntegerKind.U32 93764 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93797; Value.Integer IntegerKind.U32 93765 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93798; Value.Integer IntegerKind.U32 93766 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93799; Value.Integer IntegerKind.U32 93767 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93800; Value.Integer IntegerKind.U32 93768 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93801; Value.Integer IntegerKind.U32 93769 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93802; Value.Integer IntegerKind.U32 93770 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93803; Value.Integer IntegerKind.U32 93771 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93804; Value.Integer IntegerKind.U32 93772 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93805; Value.Integer IntegerKind.U32 93773 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93806; Value.Integer IntegerKind.U32 93774 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93807; Value.Integer IntegerKind.U32 93775 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93808; Value.Integer IntegerKind.U32 93776 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93809; Value.Integer IntegerKind.U32 93777 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93810; Value.Integer IntegerKind.U32 93778 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93811; Value.Integer IntegerKind.U32 93779 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93812; Value.Integer IntegerKind.U32 93780 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93813; Value.Integer IntegerKind.U32 93781 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93814; Value.Integer IntegerKind.U32 93782 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93815; Value.Integer IntegerKind.U32 93783 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93816; Value.Integer IntegerKind.U32 93784 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93817; Value.Integer IntegerKind.U32 93785 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93818; Value.Integer IntegerKind.U32 93786 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93819; Value.Integer IntegerKind.U32 93787 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93820; Value.Integer IntegerKind.U32 93788 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93821; Value.Integer IntegerKind.U32 93789 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93822; Value.Integer IntegerKind.U32 93790 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 93823; Value.Integer IntegerKind.U32 93791 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125218; Value.Integer IntegerKind.U32 125184 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125219; Value.Integer IntegerKind.U32 125185 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125220; Value.Integer IntegerKind.U32 125186 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125221; Value.Integer IntegerKind.U32 125187 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125222; Value.Integer IntegerKind.U32 125188 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125223; Value.Integer IntegerKind.U32 125189 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125224; Value.Integer IntegerKind.U32 125190 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125225; Value.Integer IntegerKind.U32 125191 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125226; Value.Integer IntegerKind.U32 125192 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125227; Value.Integer IntegerKind.U32 125193 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125228; Value.Integer IntegerKind.U32 125194 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125229; Value.Integer IntegerKind.U32 125195 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125230; Value.Integer IntegerKind.U32 125196 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125231; Value.Integer IntegerKind.U32 125197 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125232; Value.Integer IntegerKind.U32 125198 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125233; Value.Integer IntegerKind.U32 125199 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125234; Value.Integer IntegerKind.U32 125200 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125235; Value.Integer IntegerKind.U32 125201 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125236; Value.Integer IntegerKind.U32 125202 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125237; Value.Integer IntegerKind.U32 125203 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125238; Value.Integer IntegerKind.U32 125204 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125239; Value.Integer IntegerKind.U32 125205 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125240; Value.Integer IntegerKind.U32 125206 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125241; Value.Integer IntegerKind.U32 125207 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125242; Value.Integer IntegerKind.U32 125208 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125243; Value.Integer IntegerKind.U32 125209 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125244; Value.Integer IntegerKind.U32 125210 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125245; Value.Integer IntegerKind.U32 125211 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125246; Value.Integer IntegerKind.U32 125212 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125247; Value.Integer IntegerKind.U32 125213 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125248; Value.Integer IntegerKind.U32 125214 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125249; Value.Integer IntegerKind.U32 125215 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125250; Value.Integer IntegerKind.U32 125216 ];
+                              Value.Tuple
+                                [ Value.UnicodeChar 125251; Value.Integer IntegerKind.U32 125217 ]
+                            ]
+                        |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             |)
           |))).
       
@@ -15129,305 +15279,436 @@ Module unicode.
                         [ Ty.path "char" ]
                     ]
                 ],
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [
                         Ty.apply
                           (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 102 ]
-                          [
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 3 ]
-                              [ Ty.path "char" ]
-                          ],
-                        Value.Array
-                          [
-                            Value.Array
-                              [ Value.UnicodeChar 83; Value.UnicodeChar 83; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 700; Value.UnicodeChar 78; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 74; Value.UnicodeChar 780; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 921; Value.UnicodeChar 776; Value.UnicodeChar 769
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 933; Value.UnicodeChar 776; Value.UnicodeChar 769
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 1333; Value.UnicodeChar 1362; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 72; Value.UnicodeChar 817; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 84; Value.UnicodeChar 776; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 87; Value.UnicodeChar 778; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 89; Value.UnicodeChar 778; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 65; Value.UnicodeChar 702; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 933; Value.UnicodeChar 787; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 933; Value.UnicodeChar 787; Value.UnicodeChar 768
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 933; Value.UnicodeChar 787; Value.UnicodeChar 769
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 933; Value.UnicodeChar 787; Value.UnicodeChar 834
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7944; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7945; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7946; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7947; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7948; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7949; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7950; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7951; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7944; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7945; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7946; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7947; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7948; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7949; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7950; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7951; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7976; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7977; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7978; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7979; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7980; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7981; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7982; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7983; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7976; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7977; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7978; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7979; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7980; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7981; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7982; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 7983; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 8040; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 8041; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 8042; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 8043; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 8044; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 8045; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 8046; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 8047; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 8040; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 8041; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 8042; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 8043; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 8044; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 8045; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 8046; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 8047; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 8122; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 913; Value.UnicodeChar 921; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 902; Value.UnicodeChar 921; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 913; Value.UnicodeChar 834; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 913; Value.UnicodeChar 834; Value.UnicodeChar 921
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 913; Value.UnicodeChar 921; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 8138; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 919; Value.UnicodeChar 921; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 905; Value.UnicodeChar 921; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 919; Value.UnicodeChar 834; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 919; Value.UnicodeChar 834; Value.UnicodeChar 921
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 919; Value.UnicodeChar 921; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 921; Value.UnicodeChar 776; Value.UnicodeChar 768
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 921; Value.UnicodeChar 776; Value.UnicodeChar 769
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 921; Value.UnicodeChar 834; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 921; Value.UnicodeChar 776; Value.UnicodeChar 834
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 933; Value.UnicodeChar 776; Value.UnicodeChar 768
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 933; Value.UnicodeChar 776; Value.UnicodeChar 769
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 929; Value.UnicodeChar 787; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 933; Value.UnicodeChar 834; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 933; Value.UnicodeChar 776; Value.UnicodeChar 834
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 8186; Value.UnicodeChar 921; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 937; Value.UnicodeChar 921; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 911; Value.UnicodeChar 921; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 937; Value.UnicodeChar 834; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 937; Value.UnicodeChar 834; Value.UnicodeChar 921
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 937; Value.UnicodeChar 921; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 70; Value.UnicodeChar 70; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 70; Value.UnicodeChar 73; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 70; Value.UnicodeChar 76; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 70; Value.UnicodeChar 70; Value.UnicodeChar 73 ];
-                            Value.Array
-                              [ Value.UnicodeChar 70; Value.UnicodeChar 70; Value.UnicodeChar 76 ];
-                            Value.Array
-                              [ Value.UnicodeChar 83; Value.UnicodeChar 84; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 83; Value.UnicodeChar 84; Value.UnicodeChar 0 ];
-                            Value.Array
-                              [ Value.UnicodeChar 1348; Value.UnicodeChar 1350; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 1348; Value.UnicodeChar 1333; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 1348; Value.UnicodeChar 1339; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 1358; Value.UnicodeChar 1350; Value.UnicodeChar 0
-                              ];
-                            Value.Array
-                              [ Value.UnicodeChar 1348; Value.UnicodeChar 1341; Value.UnicodeChar 0
-                              ]
-                          ]
+                          [ Value.Integer IntegerKind.Usize 3 ]
+                          [ Ty.path "char" ]
+                      ]
+                  ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 102 ]
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 3 ]
+                            [ Ty.path "char" ]
+                        ]
+                    ])
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 3 ]
+                            [ Ty.path "char" ]
+                        ]
+                    ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 102 ]
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 3 ]
+                                [ Ty.path "char" ]
+                            ],
+                          Value.Array
+                            [
+                              Value.Array
+                                [ Value.UnicodeChar 83; Value.UnicodeChar 83; Value.UnicodeChar 0 ];
+                              Value.Array
+                                [ Value.UnicodeChar 700; Value.UnicodeChar 78; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 74; Value.UnicodeChar 780; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [
+                                  Value.UnicodeChar 921;
+                                  Value.UnicodeChar 776;
+                                  Value.UnicodeChar 769
+                                ];
+                              Value.Array
+                                [
+                                  Value.UnicodeChar 933;
+                                  Value.UnicodeChar 776;
+                                  Value.UnicodeChar 769
+                                ];
+                              Value.Array
+                                [
+                                  Value.UnicodeChar 1333;
+                                  Value.UnicodeChar 1362;
+                                  Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 72; Value.UnicodeChar 817; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 84; Value.UnicodeChar 776; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 87; Value.UnicodeChar 778; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 89; Value.UnicodeChar 778; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 65; Value.UnicodeChar 702; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 933; Value.UnicodeChar 787; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [
+                                  Value.UnicodeChar 933;
+                                  Value.UnicodeChar 787;
+                                  Value.UnicodeChar 768
+                                ];
+                              Value.Array
+                                [
+                                  Value.UnicodeChar 933;
+                                  Value.UnicodeChar 787;
+                                  Value.UnicodeChar 769
+                                ];
+                              Value.Array
+                                [
+                                  Value.UnicodeChar 933;
+                                  Value.UnicodeChar 787;
+                                  Value.UnicodeChar 834
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7944; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7945; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7946; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7947; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7948; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7949; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7950; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7951; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7944; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7945; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7946; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7947; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7948; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7949; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7950; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7951; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7976; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7977; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7978; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7979; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7980; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7981; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7982; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7983; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7976; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7977; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7978; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7979; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7980; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7981; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7982; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 7983; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 8040; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 8041; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 8042; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 8043; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 8044; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 8045; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 8046; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 8047; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 8040; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 8041; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 8042; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 8043; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 8044; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 8045; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 8046; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 8047; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 8122; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 913; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 902; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 913; Value.UnicodeChar 834; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [
+                                  Value.UnicodeChar 913;
+                                  Value.UnicodeChar 834;
+                                  Value.UnicodeChar 921
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 913; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 8138; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 919; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 905; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 919; Value.UnicodeChar 834; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [
+                                  Value.UnicodeChar 919;
+                                  Value.UnicodeChar 834;
+                                  Value.UnicodeChar 921
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 919; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [
+                                  Value.UnicodeChar 921;
+                                  Value.UnicodeChar 776;
+                                  Value.UnicodeChar 768
+                                ];
+                              Value.Array
+                                [
+                                  Value.UnicodeChar 921;
+                                  Value.UnicodeChar 776;
+                                  Value.UnicodeChar 769
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 921; Value.UnicodeChar 834; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [
+                                  Value.UnicodeChar 921;
+                                  Value.UnicodeChar 776;
+                                  Value.UnicodeChar 834
+                                ];
+                              Value.Array
+                                [
+                                  Value.UnicodeChar 933;
+                                  Value.UnicodeChar 776;
+                                  Value.UnicodeChar 768
+                                ];
+                              Value.Array
+                                [
+                                  Value.UnicodeChar 933;
+                                  Value.UnicodeChar 776;
+                                  Value.UnicodeChar 769
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 929; Value.UnicodeChar 787; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 933; Value.UnicodeChar 834; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [
+                                  Value.UnicodeChar 933;
+                                  Value.UnicodeChar 776;
+                                  Value.UnicodeChar 834
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 8186; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 937; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 911; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 937; Value.UnicodeChar 834; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [
+                                  Value.UnicodeChar 937;
+                                  Value.UnicodeChar 834;
+                                  Value.UnicodeChar 921
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 937; Value.UnicodeChar 921; Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 70; Value.UnicodeChar 70; Value.UnicodeChar 0 ];
+                              Value.Array
+                                [ Value.UnicodeChar 70; Value.UnicodeChar 73; Value.UnicodeChar 0 ];
+                              Value.Array
+                                [ Value.UnicodeChar 70; Value.UnicodeChar 76; Value.UnicodeChar 0 ];
+                              Value.Array
+                                [ Value.UnicodeChar 70; Value.UnicodeChar 70; Value.UnicodeChar 73
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 70; Value.UnicodeChar 70; Value.UnicodeChar 76
+                                ];
+                              Value.Array
+                                [ Value.UnicodeChar 83; Value.UnicodeChar 84; Value.UnicodeChar 0 ];
+                              Value.Array
+                                [ Value.UnicodeChar 83; Value.UnicodeChar 84; Value.UnicodeChar 0 ];
+                              Value.Array
+                                [
+                                  Value.UnicodeChar 1348;
+                                  Value.UnicodeChar 1350;
+                                  Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [
+                                  Value.UnicodeChar 1348;
+                                  Value.UnicodeChar 1333;
+                                  Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [
+                                  Value.UnicodeChar 1348;
+                                  Value.UnicodeChar 1339;
+                                  Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [
+                                  Value.UnicodeChar 1358;
+                                  Value.UnicodeChar 1350;
+                                  Value.UnicodeChar 0
+                                ];
+                              Value.Array
+                                [
+                                  Value.UnicodeChar 1348;
+                                  Value.UnicodeChar 1341;
+                                  Value.UnicodeChar 0
+                                ]
+                            ]
+                        |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             |)
           |))).
       

@@ -17,9 +17,47 @@ Module kzg_point_evaluation.
                 Ty.path "alloy_primitives::bits::address::Address"
               |)
             |);
-            (* ReifyFnPointer *)
-            M.pointer_coercion
-              (M.get_function (| "revm_precompile::kzg_point_evaluation::run", [], [] |))
+            M.call_closure (|
+              Ty.function
+                [
+                  Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                  Ty.path "u64"
+                ]
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                  ]),
+              M.pointer_coercion
+                M.PointerCoercion.ReifyFnPointer
+                (Ty.function
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                    Ty.path "u64"
+                  ]
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                    ]))
+                (Ty.function
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                    Ty.path "u64"
+                  ]
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                    ])),
+              [ M.get_function (| "revm_precompile::kzg_point_evaluation::run", [], [] |) ]
+            |)
           ]
       |))).
   
@@ -1377,31 +1415,56 @@ Module kzg_point_evaluation.
                         []
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.call_closure (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
                                 Ty.apply
-                                  (Ty.path "&")
-                                  []
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 32 ]
+                                  [ Ty.path "u8" ]
+                              ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 32 ]
+                                        [ Ty.path "u8" ]
+                                    ],
+                                  M.get_function (|
+                                    "revm_precompile::kzg_point_evaluation::as_array",
+                                    [ Value.Integer IntegerKind.Usize 32 ],
+                                    []
+                                  |),
                                   [
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 32 ]
-                                      [ Ty.path "u8" ]
-                                  ],
-                                M.get_function (|
-                                  "revm_precompile::kzg_point_evaluation::as_array",
-                                  [ Value.Integer IntegerKind.Usize 32 ],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |)
-                                ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| bytes |) |)
+                                    |)
+                                  ]
+                                |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   ]
@@ -1457,31 +1520,56 @@ Module kzg_point_evaluation.
                         []
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.call_closure (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
                                 Ty.apply
-                                  (Ty.path "&")
-                                  []
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 48 ]
+                                  [ Ty.path "u8" ]
+                              ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 48 ]
+                                        [ Ty.path "u8" ]
+                                    ],
+                                  M.get_function (|
+                                    "revm_precompile::kzg_point_evaluation::as_array",
+                                    [ Value.Integer IntegerKind.Usize 48 ],
+                                    []
+                                  |),
                                   [
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 48 ]
-                                      [ Ty.path "u8" ]
-                                  ],
-                                M.get_function (|
-                                  "revm_precompile::kzg_point_evaluation::as_array",
-                                  [ Value.Integer IntegerKind.Usize 48 ],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |)
-                                ]
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| bytes |) |)
+                                    |)
+                                  ]
+                                |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   ]
