@@ -1,8 +1,10 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import core.links.cmp.
 Require Import pinocchio.links.pubkey.
 Require Import pinocchio.account_info.
 
+Import core.links.cmp.PartialEq.
 Import account_info.Impl_pinocchio_account_info_AccountInfo.
 
 Module Account.
@@ -200,7 +202,7 @@ End Account.
 
 Module AccountInfo.
     Record t : Set := {
-      raw : Ref.t Pointer.Kind.Ref Account.t;
+      raw : Ref.t Pointer.Kind.MutRef Account.t;
     }.
   
     Global Instance IsLink : Link t := {
@@ -215,7 +217,7 @@ Module AccountInfo.
     Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
     Smpl Add apply of_ty : of_ty.
   
-    Lemma of_value_with (raw : Ref.t Pointer.Kind.Ref Account.t) (raw' : Value.t) :
+    Lemma of_value_with (raw : Ref.t Pointer.Kind.MutRef Account.t) (raw' : Value.t) :
       raw' = φ raw ->
       Value.StructRecord "pinocchio::account_info::AccountInfo" [] [] [
         ("raw", raw')
@@ -223,7 +225,7 @@ Module AccountInfo.
     Proof. intros; subst; reflexivity. Qed.
     Smpl Add apply of_value_with : of_value.
   
-    Definition of_value (raw : Ref.t Pointer.Kind.Ref Account.t) (raw' : Value.t) :
+    Definition of_value (raw : Ref.t Pointer.Kind.MutRef Account.t) (raw' : Value.t) :
       raw' = φ raw ->
       OfValue.t (
         Value.StructRecord "pinocchio::account_info::AccountInfo" [] [] [
@@ -250,15 +252,105 @@ Module AccountInfo.
   Module Impl_AccountInfo.
     Definition Self : Set := AccountInfo.t.
     Instance run_key 
-        (self : Ref.t Pointer.Kind.MutRef Self) :
+        (self : Ref.t Pointer.Kind.Ref Self) :
       Run.Trait
         key [] [] [φ self]
-        (Ref.t Pointer.Kind.MutRef Pubkey.t).
+        (Ref.t Pointer.Kind.Ref Pubkey.t).
     Proof.
       constructor.
       run_symbolic.
-      - admit.
-      - admit.
-    Admitted.
+    Defined.
+    
+    Instance run_is_signer 
+        (self : Ref.t Pointer.Kind.Ref Self) :
+      Run.Trait
+        is_signer [] [] [φ self]
+        bool.
+    Proof.
+      constructor.
+      run_symbolic.
+    Defined.
+
+    Instance run_owner
+        (self : Ref.t Pointer.Kind.Ref Self) :
+      Run.Trait
+        owner [] [] [φ self]
+        (Ref.t Pointer.Kind.Ref Pubkey.t).
+    Proof.
+      constructor.
+      run_symbolic.
+    Defined. 
+
+    Instance run_is_writable
+        (self : Ref.t Pointer.Kind.Ref Self) :
+      Run.Trait
+        is_writable [] [] [φ self]
+        bool.
+    Proof.
+      constructor.
+      run_symbolic.
+    Defined.
+
+    Instance run_executable
+        (self : Ref.t Pointer.Kind.Ref Self) :
+      Run.Trait
+        executable [] [] [φ self]
+        bool.
+    Proof.
+      constructor.
+      run_symbolic.
+    Defined.
+
+    Instance run_data_len
+        (self : Ref.t Pointer.Kind.Ref Self) :
+      Run.Trait
+        data_len [] [] [φ self]
+        Usize.t.
+    Proof.
+      constructor.
+      run_symbolic.
+    Defined.
+
+    Instance run_lamports
+        (self : Ref.t Pointer.Kind.Ref Self) :
+      Run.Trait
+        lamports [] [] [φ self]
+        U64.t.
+    Proof.
+      constructor.
+      run_symbolic.
+    Defined.
+
+    Instance run_data_is_empty
+        (self : Ref.t Pointer.Kind.Ref Self) :
+      Run.Trait
+        data_is_empty [] [] [φ self]
+        bool.
+    Proof.
+      constructor.
+      run_symbolic.
+    Defined.
+
+    (*Instance run_is_owned_by
+        (self : Ref.t Pointer.Kind.Ref Self) 
+        (program : Ref.t Pointer.Kind.Ref Pubkey.t):
+      Run.Trait
+        is_owned_by [] [] [φ self; φ program]
+        bool.
+    Proof.
+      constructor.
+      run_symbolic.
+    Defined.*)
+
+  (*Instance run_assign
+    (self : Ref.t Pointer.Kind.Ref Self) 
+    (new_owner : Ref.t Pointer.Kind.Ref Pubkey.t):
+  Run.Trait
+    assign [] [] [φ self; φ new_owner]
+    unit.
+Proof.
+  constructor.
+  run_symbolic.*)
+
   End Impl_AccountInfo.
   
