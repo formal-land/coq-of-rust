@@ -231,16 +231,16 @@ jobs:
             touch maybe-rayon/src/lib.rs
             touch util/src/lib.rs
             cargo coq-of-rust
-            rsync -rcv ./air/src/ ../../CoqOfRust/plonky3/air --include='*/' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./blake3-air/src/ ../../CoqOfRust/plonky3/blake3_air --include='*/' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./field/src/ ../../CoqOfRust/plonky3/field --include='*/' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./keccak-air/src/ ../../CoqOfRust/plonky3/keccak_air --include='*/' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./matrix/src/ ../../CoqOfRust/plonky3/matrix --include='*/' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./maybe-rayon/src/ ../../CoqOfRust/plonky3/maybe-rayon --include='*/' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./util/src/ ../../CoqOfRust/plonky3/util --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            rsync -rcv ./air/src/ ../../CoqOfRust/plonky3/commit_539bbc84/air --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            rsync -rcv ./blake3-air/src/ ../../CoqOfRust/plonky3/commit_539bbc84/blake3_air --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            rsync -rcv ./field/src/ ../../CoqOfRust/plonky3/commit_539bbc84/field --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            rsync -rcv ./keccak-air/src/ ../../CoqOfRust/plonky3/commit_539bbc84/keccak_air --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            rsync -rcv ./matrix/src/ ../../CoqOfRust/plonky3/commit_539bbc84/matrix --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            rsync -rcv ./maybe-rayon/src/ ../../CoqOfRust/plonky3/commit_539bbc84/maybe-rayon --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            rsync -rcv ./util/src/ ../../CoqOfRust/plonky3/commit_539bbc84/util --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ../..
             # As there are differences on this file depending on the CPU features that are available
-            rm CoqOfRust/plonky3/field/integers.v
+            rm CoqOfRust/plonky3/commit_539bbc84/field/integers.v
           endGroup
           startGroup "Generate Rocq files from Python"
             cd CoqOfRust
