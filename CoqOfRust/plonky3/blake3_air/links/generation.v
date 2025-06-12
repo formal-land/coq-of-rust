@@ -1,6 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import plonky3.blake3_air.air.generation.
+Require Import plonky3.blake3_air.generation.
 Require Import plonky3.field.links.field.
 Require Import plonky3.matrix.links.dense.
 
