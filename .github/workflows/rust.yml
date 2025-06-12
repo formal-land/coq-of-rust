@@ -242,6 +242,15 @@ jobs:
             # As there are differences on this file depending on the CPU features that are available
             rm CoqOfRust/plonky3/commit_539bbc84/field/integers.v
           endGroup
+          startGroup "Translate OpenVM"
+            cd third-party/openvm
+            cp ../../rust-toolchain ./
+            cargo coq-of-rust
+            touch extensions/rv32im/circuit/src/lib.rs
+            cargo coq-of-rust
+            rsync -rcv ./extensions/rv32im/circuit/src/ ../../CoqOfRust/openvm/version_v1.2.0/extensions/rv32im/circuit --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            cd ../..
+          endGroup
           startGroup "Generate Rocq files from Python"
             cd CoqOfRust
             make generate
