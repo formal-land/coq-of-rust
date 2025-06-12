@@ -3,9 +3,70 @@ Require Import CoqOfRust.links.M.
 Require Import core.links.array.
 Require Import core.convert.links.mod.
 Require Import core.ops.links.arith.
+Require Import core.links.option.
 Require Import plonky3.air.air.
 Require Import plonky3.field.links.field.
+Require Import plonky3.matrix.links.dense.
 Require Import plonky3.matrix.links.lib.
+
+(* 
+pub trait BaseAir<F>: Sync {
+    /// The number of columns (a.k.a. registers) in this AIR.
+    fn width(&self) -> usize;
+
+    fn preprocessed_trace(&self) -> Option<RowMajorMatrix<F>> {
+        None
+    }
+}
+*)
+Module BaseAir.
+  Module AssociatedTypes.
+    Record t : Type := {
+      F : Set;
+    }.
+
+    Class AreLinks (types : t) : Set := {
+      H_F : Link types.(F);
+    }.
+
+    Global Instance IsLinkF (types : t) (H : AreLinks types) : Link types.(F) :=
+      H.(H_F _).
+  End AssociatedTypes.
+
+  Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
+    ("p3_air::air::BaseAir", [], [], Φ Self).
+
+  (* fn width(&self) -> usize; *)
+  Definition Run_width
+    (Self : Set) `{Link Self} 
+    (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
+    Set :=
+  TraitMethod.C (trait Self) "width" (fun method =>
+    forall (self : Ref.t Pointer.Kind.Ref Self),
+    Run.Trait method [] [] [ φ self ] Usize.t
+  ).
+
+  (* fn preprocessed_trace(&self) -> Option<RowMajorMatrix<F>> *)
+  Definition Run_preprocessed_trace
+    (Self : Set) `{Link Self} 
+    (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
+    Set :=
+  TraitMethod.C (trait Self) "preprocessed_trace" (fun method =>
+    forall (self : Ref.t Pointer.Kind.Ref Self),
+    Run.Trait method [] [] [ φ self ] (option (RowMajorMatrix.t types.(AssociatedTypes.F)))
+  ).
+
+  Class Run (Self : Set) `{Link Self} 
+  (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} : Set := {
+    (* Note: F : Sync is ignored *)
+    F_IsAssociated :
+      IsTraitAssociatedType
+        "p3_air::air::AirBuilder" [] [] (Φ Self)
+        "F" (Φ types.(AssociatedTypes.F));
+    width : Run_width Self types;
+    preprocessed_trace : Run_preprocessed_trace Self types;
+  }.
+End BaseAir.
 
 (*
 pub struct FilteredAirBuilder<'a, AB: AirBuilder> {
@@ -49,28 +110,6 @@ pub trait AirBuilder: Sized {
         + Mul<Self::Var, Output = Self::Expr>
         + Mul<Self::Expr, Output = Self::Expr>;
     type M: Matrix<Self::Var>;
-
-    fn main(&self) -> Self::M;
-    fn is_first_row(&self) -> Self::Expr;
-    fn is_last_row(&self) -> Self::Expr;
-    fn is_transition(&self) -> Self::Expr;
-    fn is_transition_window(&self, size: usize) -> Self::Expr;
-    fn when<I: Into<Self::Expr>>(&mut self, condition: I) -> FilteredAirBuilder<'_, Self>;
-    fn when_ne<I1: Into<Self::Expr>, I2: Into<Self::Expr>>(
-        &mut self,
-        x: I1,
-        y: I2,
-    ) -> FilteredAirBuilder<'_, Self>;
-    fn when_first_row(&mut self) -> FilteredAirBuilder<'_, Self>;
-    fn when_last_row(&mut self) -> FilteredAirBuilder<'_, Self>;
-    fn when_transition(&mut self) -> FilteredAirBuilder<'_, Self>;
-    fn when_transition_window(&mut self, size: usize) -> FilteredAirBuilder<'_, Self>;
-    fn assert_zero<I: Into<Self::Expr>>(&mut self, x: I);
-    fn assert_zeros<const N: usize, I: Into<Self::Expr>>(&mut self, array: [I; N]);
-    fn assert_bools<const N: usize, I: Into<Self::Expr>>(&mut self, array: [I; N]);
-    fn assert_one<I: Into<Self::Expr>>(&mut self, x: I);
-    fn assert_eq<I1: Into<Self::Expr>, I2: Into<Self::Expr>>(&mut self, x: I1, y: I2);
-    fn assert_bool<I: Into<Self::Expr>>(&mut self, x: I);
 }
 *)
 Module AirBuilder.
@@ -107,6 +146,7 @@ Module AirBuilder.
       H.(H_M_types _).
   End AssociatedTypes.
 
+  (* fn main(&self) -> Self::M; *)
   Definition Run_main
       (Self : Set) `{Link Self}
       (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
@@ -116,6 +156,7 @@ Module AirBuilder.
       Run.Trait method [] [] [ φ self ] types.(AssociatedTypes.M)
     ).
 
+  (* fn is_first_row(&self) -> Self::Expr; *)
   Definition Run_is_first_row
       (Self : Set) `{Link Self}
       (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
@@ -125,6 +166,7 @@ Module AirBuilder.
       Run.Trait method [] [] [ φ self ] types.(AssociatedTypes.Expr)
     ).
 
+  (* fn is_last_row(&self) -> Self::Expr; *)
   Definition Run_is_last_row
       (Self : Set) `{Link Self}
       (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
@@ -134,6 +176,7 @@ Module AirBuilder.
       Run.Trait method [] [] [ φ self ] types.(AssociatedTypes.Expr)
     ).
 
+  (* fn is_transition(&self) -> Self::Expr; *)
   Definition Run_is_transition
       (Self : Set) `{Link Self}
       (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
@@ -143,6 +186,7 @@ Module AirBuilder.
       Run.Trait method [] [] [ φ self ] types.(AssociatedTypes.Expr)
     ).
 
+  (* fn is_transition_window(&self, size: usize) -> Self::Expr; *)
   Definition Run_is_transition_window
       (Self : Set) `{Link Self}
       (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
@@ -152,6 +196,7 @@ Module AirBuilder.
       Run.Trait method [] [] [ φ self; φ size ] types.(AssociatedTypes.Expr)
     ).
 
+  (* fn when<I: Into<Self::Expr>>(&mut self, condition: I) -> FilteredAirBuilder<'_, Self>; *)
   Definition Run_when
       (Self : Set) `{Link Self}
       (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
@@ -166,6 +211,13 @@ Module AirBuilder.
         (FilteredAirBuilder.t Self types.(AssociatedTypes.Expr))
     ).
 
+  (* 
+  fn when_ne<I1: Into<Self::Expr>, I2: Into<Self::Expr>>(
+      &mut self,
+      x: I1,
+      y: I2,
+  ) -> FilteredAirBuilder<'_, Self>;
+  *)
   Definition Run_when_ne
       (Self : Set) `{Link Self}
       (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
@@ -181,6 +233,7 @@ Module AirBuilder.
         (FilteredAirBuilder.t Self types.(AssociatedTypes.Expr))
     ).
 
+  (* fn when_first_row(&mut self) -> FilteredAirBuilder<'_, Self>; *)
   Definition Run_when_first_row
       (Self : Set) `{Link Self}
       (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
@@ -190,6 +243,7 @@ Module AirBuilder.
       Run.Trait method [] [] [ φ self ] (FilteredAirBuilder.t Self types.(AssociatedTypes.Expr))
     ).
 
+  (* fn when_last_row(&mut self) -> FilteredAirBuilder<'_, Self>; *)
   Definition Run_when_last_row
       (Self : Set) `{Link Self}
       (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
@@ -199,6 +253,7 @@ Module AirBuilder.
       Run.Trait method [] [] [ φ self ] (FilteredAirBuilder.t Self types.(AssociatedTypes.Expr))
     ).
 
+  (* fn when_transition(&mut self) -> FilteredAirBuilder<'_, Self>; *)
   Definition Run_when_transition
       (Self : Set) `{Link Self}
       (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
@@ -208,6 +263,7 @@ Module AirBuilder.
       Run.Trait method [] [] [ φ self ] (FilteredAirBuilder.t Self types.(AssociatedTypes.Expr))
     ).
 
+  (* fn when_transition_window(&mut self, size: usize) -> FilteredAirBuilder<'_, Self>;0 *)
   Definition Run_when_transition_window
       (Self : Set) `{Link Self}
       (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
@@ -218,6 +274,7 @@ Module AirBuilder.
         (FilteredAirBuilder.t Self types.(AssociatedTypes.Expr))
     ).
 
+  (* fn assert_zero<I: Into<Self::Expr>>(&mut self, x: I); *)
   Definition Run_assert_zero
       (Self : Set) `{Link Self}
       (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
@@ -231,6 +288,7 @@ Module AirBuilder.
       Run.Trait method [] [Φ I] [ φ self; φ x ] unit
     ).
 
+  (* fn assert_zeros<const N: usize, I: Into<Self::Expr>>(&mut self, array: [I; N]); *)
   Definition Run_assert_zeros
       (Self : Set) `{Link Self}
       (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
@@ -245,6 +303,7 @@ Module AirBuilder.
       Run.Trait method [φ N] [Φ I] [ φ self; φ array ] unit
     ).
 
+  (* fn assert_bools<const N: usize, I: Into<Self::Expr>>(&mut self, array: [I; N]); *)
   Definition Run_assert_bools
       (Self : Set) `{Link Self}
       (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
@@ -259,6 +318,7 @@ Module AirBuilder.
       Run.Trait method [φ N] [Φ I] [ φ self; φ array ] unit
     ).
 
+  (* fn assert_one<I: Into<Self::Expr>>(&mut self, x: I); *)
   Definition Run_assert_one
       (Self : Set) `{Link Self}
       (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
@@ -272,6 +332,7 @@ Module AirBuilder.
       Run.Trait method [] [Φ I] [ φ self; φ x ] unit
     ).
 
+  (* fn assert_eq<I1: Into<Self::Expr>, I2: Into<Self::Expr>>(&mut self, x: I1, y: I2); *)
   Definition Run_assert_eq
       (Self : Set) `{Link Self}
       (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
@@ -286,6 +347,7 @@ Module AirBuilder.
       Run.Trait method [] [Φ I1; Φ I2] [ φ self; φ x; φ y ] unit
     ).
 
+  (* fn assert_bool<I: Into<Self::Expr>>(&mut self, x: I); *)
   Definition Run_assert_bool
       (Self : Set) `{Link Self}
       (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
@@ -397,3 +459,59 @@ Module Impl_AirBuilder_for_FilteredAirBuilder.
   Admitted.
 End Impl_AirBuilder_for_FilteredAirBuilder.
 Export Impl_AirBuilder_for_FilteredAirBuilder.
+
+(* 
+pub trait Air<AB: AirBuilder> : BaseAir<AB::F> {
+    fn eval(&self, builder: &mut AB);
+}
+*)
+Module Air.
+  Module AssociatedTypes.
+    Record t : Type := {
+      AB : Set;
+      ABTypes : AirBuilder.AssociatedTypes.t;
+      BaseAirTypes : BaseAir.AssociatedTypes.t;
+    }.
+
+    Class AreLinks (types : t) : Set := {
+      H_AB : Link types.(AB);
+      H_ABTypes : AirBuilder.AssociatedTypes.AreLinks types.(ABTypes);
+      H_BaseAirTypes : BaseAir.AssociatedTypes.AreLinks types.(BaseAirTypes);
+    }.
+
+    Global Instance AreLinksBaseAirTypes (types : t) (H : AreLinks types) :
+      BaseAir.AssociatedTypes.AreLinks types.(BaseAirTypes) :=
+      H.(H_BaseAirTypes _).
+
+    Global Instance IsLinkAirBuilder (types : t) (H : AreLinks types) : Link types.(AB) :=
+      H.(H_AB _).
+
+    Global Instance AreLinksAirBuilderTypes (types : t) (H : AreLinks types) :
+      AirBuilder.AssociatedTypes.AreLinks types.(ABTypes) :=
+      H.(H_ABTypes _).
+  End AssociatedTypes.
+
+  Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
+  ("p3_air::air::Air", [], [], Φ Self).
+
+  (* fn eval(&self, builder: &mut AB); *)
+  Definition Run_eval
+    (Self : Set) `{Link Self}
+    (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
+    Set :=
+      TraitMethod.C (trait Self) "eval" (fun method =>
+        forall (self : Ref.t Pointer.Kind.Ref Self) (builder : Ref.t Pointer.Kind.MutRef types.(AssociatedTypes.AB)),
+        Run.Trait method [] [] [ φ self; φ builder ] unit
+  ).
+
+  Class Run (Self : Set) `{Link Self} 
+    (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} : Set := {
+    run_BaseAir_for_Air : BaseAir.Run Self types.(AssociatedTypes.BaseAirTypes);
+    AB_IsAssociated :
+      IsTraitAssociatedType
+        "p3_air::air::AirBuilder" [] [] (Φ Self)
+        "AB" (Φ types.(AssociatedTypes.AB));
+    run_AirBuilder_for_AB : AirBuilder.Run types.(AssociatedTypes.AB) types.(AssociatedTypes.ABTypes);
+    eval : Run_eval Self types;
+  }.
+End Air.
