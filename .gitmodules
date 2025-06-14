@@ -25,3 +25,6 @@
 [submodule "third-party/openvm"]
 	path = third-party/openvm
 	url = https://github.com/openvm-org/openvm.git
+[submodule "third-party/stark-backend"]
+	path = third-party/stark-backend
+	url = https://github.com/openvm-org/stark-backend.git

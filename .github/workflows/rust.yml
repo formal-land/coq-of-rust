@@ -246,9 +246,20 @@ jobs:
             cd third-party/openvm
             cp ../../rust-toolchain ./
             cargo coq-of-rust
+            touch crates/vm/src/lib.rs
             touch extensions/rv32im/circuit/src/lib.rs
             cargo coq-of-rust
-            rsync -rcv ./extensions/rv32im/circuit/src/ ../../CoqOfRust/openvm/version_v1.2.0/extensions/rv32im/circuit --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            rsync -rcv ./crates/vm/src/ ../../CoqOfRust/openvm/version_v1_2_0/crates/vm --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            rsync -rcv ./extensions/rv32im/circuit/src/ ../../CoqOfRust/openvm/version_v1_2_0/extensions/rv32im/circuit --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            cd ../..
+          endGroup
+          startGroup "Translate StackBackend of OpenVM"
+            cd third-party/stark-backend
+            cp ../../rust-toolchain ./
+            cargo coq-of-rust
+            touch crates/stark-backend/src/lib.rs
+            cargo coq-of-rust
+            rsync -rcv ./crates/stark-backend/src/ ../../CoqOfRust/openvm_stack_backend/version_v1_1_0/crates/stark_backend --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ../..
           endGroup
           startGroup "Generate Rocq files from Python"

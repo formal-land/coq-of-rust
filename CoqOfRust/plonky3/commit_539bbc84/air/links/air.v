@@ -2,6 +2,7 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.convert.links.mod.
 Require Import core.links.array.
+Require Import core.links.marker.
 Require Import core.links.option.
 Require Import core.ops.links.arith.
 Require Import plonky3.commit_539bbc84.air.air.
@@ -20,51 +21,28 @@ pub trait BaseAir<F>: Sync {
 }
 *)
 Module BaseAir.
-  Module AssociatedTypes.
-    Record t : Type := {
-      F : Set;
-    }.
-
-    Class AreLinks (types : t) : Set := {
-      H_F : Link types.(F);
-    }.
-
-    Global Instance IsLinkF (types : t) (H : AreLinks types) : Link types.(F) :=
-      H.(H_F _).
-  End AssociatedTypes.
-
-  Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
-    ("p3_air::air::BaseAir", [], [], Φ Self).
+  Definition trait (Self F : Set) `{Link Self} `{Link F} : TraitMethod.Header.t :=
+    ("p3_air::air::BaseAir", [], [Φ F], Φ Self).
 
   (* fn width(&self) -> usize; *)
-  Definition Run_width
-    (Self : Set) `{Link Self} 
-    (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
-    Set :=
-  TraitMethod.C (trait Self) "width" (fun method =>
+  Definition Run_width (Self F : Set) `{Link Self} `{Link F} : Set :=
+  TraitMethod.C (trait Self F) "width" (fun method =>
     forall (self : Ref.t Pointer.Kind.Ref Self),
     Run.Trait method [] [] [ φ self ] Usize.t
   ).
 
   (* fn preprocessed_trace(&self) -> Option<RowMajorMatrix<F>> *)
   Definition Run_preprocessed_trace
-    (Self : Set) `{Link Self} 
-    (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
-    Set :=
-  TraitMethod.C (trait Self) "preprocessed_trace" (fun method =>
+    (Self F : Set) `{Link Self} `{Link F} : Set :=
+  TraitMethod.C (trait Self F) "preprocessed_trace" (fun method =>
     forall (self : Ref.t Pointer.Kind.Ref Self),
-    Run.Trait method [] [] [ φ self ] (option (RowMajorMatrix.t types.(AssociatedTypes.F)))
+    Run.Trait method [] [] [ φ self ] (option (RowMajorMatrix.t F))
   ).
 
-  Class Run (Self : Set) `{Link Self} 
-  (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} : Set := {
-    (* Note: F : Sync is ignored *)
-    F_IsAssociated :
-      IsTraitAssociatedType
-        "p3_air::air::AirBuilder" [] [] (Φ Self)
-        "F" (Φ types.(AssociatedTypes.F));
-    width : Run_width Self types;
-    preprocessed_trace : Run_preprocessed_trace Self types;
+  (** Note: we ignore [Sync] *)
+  Class Run (Self F : Set) `{Link Self} `{Link F} : Set := {
+    width : Run_width Self F;
+    preprocessed_trace : Run_preprocessed_trace Self F;
   }.
 End BaseAir.
 
@@ -95,7 +73,16 @@ End FilteredAirBuilder.
 (*
 pub trait AirBuilder: Sized {
     type F: Field;
-    type Expr: Algebra<Self::F> + Algebra<Self::Var>;
+
+    type Expr: FieldAlgebra
+        + From<Self::F>
+        + Add<Self::Var, Output = Self::Expr>
+        + Add<Self::F, Output = Self::Expr>
+        + Sub<Self::Var, Output = Self::Expr>
+        + Sub<Self::F, Output = Self::Expr>
+        + Mul<Self::Var, Output = Self::Expr>
+        + Mul<Self::F, Output = Self::Expr>;
+
     type Var: Into<Self::Expr>
         + Copy
         + Send
@@ -109,6 +96,7 @@ pub trait AirBuilder: Sized {
         + Mul<Self::F, Output = Self::Expr>
         + Mul<Self::Var, Output = Self::Expr>
         + Mul<Self::Expr, Output = Self::Expr>;
+
     type M: Matrix<Self::Var>;
 }
 *)
@@ -365,49 +353,68 @@ Module AirBuilder.
       (Self : Set) `{Link Self}
       (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
       Set := {
+    (* F*)
     F_IsAssociated :
       IsTraitAssociatedType
         "p3_air::air::AirBuilder" [] [] (Φ Self)
         "F" (Φ types.(AssociatedTypes.F));
     run_Field_for_F : Field.Run types.(AssociatedTypes.F);
+    (* Expr *)
     Expr_IsAssociated :
       IsTraitAssociatedType
         "p3_air::air::AirBuilder" [] [] (Φ Self)
         "Expr" (Φ types.(AssociatedTypes.Expr));
-    run_Algebra_for_Expr :
-      Algebra.Run types.(AssociatedTypes.Expr) types.(AssociatedTypes.F);
-    run_Algebra_for_Var :
-      Algebra.Run types.(AssociatedTypes.Var) types.(AssociatedTypes.F);
+    run_FieldAlgebra_for_Expr :
+      FieldAlgebra.Run types.(AssociatedTypes.Expr) types.(AssociatedTypes.F);
+    run_From_for_Expr :
+      From.Run types.(AssociatedTypes.Expr) types.(AssociatedTypes.F);
+    run_Add_Var_for_Expr :
+      Add.Run types.(AssociatedTypes.Expr) types.(AssociatedTypes.Var) types.(AssociatedTypes.Expr);
+    run_Add_F_for_Expr :
+      Add.Run types.(AssociatedTypes.Expr) types.(AssociatedTypes.F) types.(AssociatedTypes.Expr);
+    run_Sub_Var_for_Expr :
+      Sub.Run types.(AssociatedTypes.Expr) types.(AssociatedTypes.Var) types.(AssociatedTypes.Expr);
+    run_Sub_F_for_Expr :
+      Sub.Run types.(AssociatedTypes.Expr) types.(AssociatedTypes.F) types.(AssociatedTypes.Expr);
+    run_Mul_Var_for_Expr :
+      Mul.Run types.(AssociatedTypes.Expr) types.(AssociatedTypes.Var) types.(AssociatedTypes.Expr);
+    run_Mul_F_for_Expr :
+      Mul.Run types.(AssociatedTypes.Expr) types.(AssociatedTypes.F) types.(AssociatedTypes.Expr);
+    (* Var *)
     Var_IsAssociated :
       IsTraitAssociatedType
         "p3_air::air::AirBuilder" [] [] (Φ Self)
         "Var" (Φ types.(AssociatedTypes.Var));
     run_Into_for_Var :
       Into.Run types.(AssociatedTypes.Var) types.(AssociatedTypes.Expr);
+    run_Copy_for_Var :
+      Copy.Run types.(AssociatedTypes.Var);
     run_Add_F_for_Var :
       Add.Run types.(AssociatedTypes.Var) types.(AssociatedTypes.F) types.(AssociatedTypes.Expr);
-    run_Add_Var_for_Expr :
-      Add.Run types.(AssociatedTypes.Expr) types.(AssociatedTypes.Var) types.(AssociatedTypes.Expr);
-    run_Add_Expr_for_Expr :
-      Add.Run types.(AssociatedTypes.Expr) types.(AssociatedTypes.Expr) types.(AssociatedTypes.Expr);
+    run_Add_Var_for_Var :
+      Add.Run types.(AssociatedTypes.Var) types.(AssociatedTypes.Var) types.(AssociatedTypes.Expr);
+    run_Add_Expr_for_Var :
+      Add.Run types.(AssociatedTypes.Var) types.(AssociatedTypes.Expr) types.(AssociatedTypes.Expr);
     run_Sub_F_for_Var :
       Sub.Run types.(AssociatedTypes.Var) types.(AssociatedTypes.F) types.(AssociatedTypes.Expr);
-    run_Sub_Var_for_Expr :
-      Sub.Run types.(AssociatedTypes.Expr) types.(AssociatedTypes.Var) types.(AssociatedTypes.Expr);
-    run_Sub_Expr_for_Expr :
-      Sub.Run types.(AssociatedTypes.Expr) types.(AssociatedTypes.Expr) types.(AssociatedTypes.Expr);
+    run_Sub_Var_for_Var :
+      Sub.Run types.(AssociatedTypes.Var) types.(AssociatedTypes.Var) types.(AssociatedTypes.Expr);
+    run_Sub_Expr_for_Var :
+      Sub.Run types.(AssociatedTypes.Var) types.(AssociatedTypes.Expr) types.(AssociatedTypes.Expr);
     run_Mul_F_for_Var :
       Mul.Run types.(AssociatedTypes.Var) types.(AssociatedTypes.F) types.(AssociatedTypes.Expr);
-    run_Mul_Var_for_Expr :
-      Mul.Run types.(AssociatedTypes.Expr) types.(AssociatedTypes.Var) types.(AssociatedTypes.Expr);
-    run_Mul_Expr_for_Expr :
-      Mul.Run types.(AssociatedTypes.Expr) types.(AssociatedTypes.Expr) types.(AssociatedTypes.Expr);
+    run_Mul_Var_for_Var :
+      Mul.Run types.(AssociatedTypes.Var) types.(AssociatedTypes.Var) types.(AssociatedTypes.Expr);
+    run_Mul_Expr_for_Var :
+      Mul.Run types.(AssociatedTypes.Var) types.(AssociatedTypes.Expr) types.(AssociatedTypes.Expr);
+    (* M *)
     M_IsAssociated :
       IsTraitAssociatedType
         "p3_air::air::AirBuilder" [] [] (Φ Self)
         "M" (Φ types.(AssociatedTypes.M));
     run_Matrix_for_M :
       Matrix.Run types.(AssociatedTypes.M) types.(AssociatedTypes.Var) types.(AssociatedTypes.M_types);
+    (* Methods *)
     main : Run_main Self types;
     is_first_row : Run_is_first_row Self types;
     is_last_row : Run_is_last_row Self types;
@@ -460,58 +467,32 @@ Module Impl_AirBuilder_for_FilteredAirBuilder.
 End Impl_AirBuilder_for_FilteredAirBuilder.
 Export Impl_AirBuilder_for_FilteredAirBuilder.
 
-(* 
+(*
 pub trait Air<AB: AirBuilder> : BaseAir<AB::F> {
     fn eval(&self, builder: &mut AB);
 }
 *)
 Module Air.
-  Module AssociatedTypes.
-    Record t : Type := {
-      AB : Set;
-      ABTypes : AirBuilder.AssociatedTypes.t;
-      BaseAirTypes : BaseAir.AssociatedTypes.t;
-    }.
-
-    Class AreLinks (types : t) : Set := {
-      H_AB : Link types.(AB);
-      H_ABTypes : AirBuilder.AssociatedTypes.AreLinks types.(ABTypes);
-      H_BaseAirTypes : BaseAir.AssociatedTypes.AreLinks types.(BaseAirTypes);
-    }.
-
-    Global Instance AreLinksBaseAirTypes (types : t) (H : AreLinks types) :
-      BaseAir.AssociatedTypes.AreLinks types.(BaseAirTypes) :=
-      H.(H_BaseAirTypes _).
-
-    Global Instance IsLinkAirBuilder (types : t) (H : AreLinks types) : Link types.(AB) :=
-      H.(H_AB _).
-
-    Global Instance AreLinksAirBuilderTypes (types : t) (H : AreLinks types) :
-      AirBuilder.AssociatedTypes.AreLinks types.(ABTypes) :=
-      H.(H_ABTypes _).
-  End AssociatedTypes.
-
-  Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
-  ("p3_air::air::Air", [], [], Φ Self).
+  Definition trait (Self AB: Set) `{Link Self} `{Link AB} : TraitMethod.Header.t :=
+    ("p3_air::air::Air", [], [Φ AB], Φ Self).
 
   (* fn eval(&self, builder: &mut AB); *)
   Definition Run_eval
-    (Self : Set) `{Link Self}
-    (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} :
-    Set :=
-      TraitMethod.C (trait Self) "eval" (fun method =>
-        forall (self : Ref.t Pointer.Kind.Ref Self) (builder : Ref.t Pointer.Kind.MutRef types.(AssociatedTypes.AB)),
-        Run.Trait method [] [] [ φ self; φ builder ] unit
+      (Self AB : Set) `{Link Self} `{Link AB} :
+      Set :=
+    TraitMethod.C (trait Self AB) "eval" (fun method =>
+      forall
+        (self : Ref.t Pointer.Kind.Ref Self)
+        (builder : Ref.t Pointer.Kind.MutRef AB),
+      Run.Trait method [] [] [ φ self; φ builder ] unit
   ).
 
-  Class Run (Self : Set) `{Link Self} 
-    (types : AssociatedTypes.t) `{AssociatedTypes.AreLinks types} : Set := {
-    run_BaseAir_for_Air : BaseAir.Run Self types.(AssociatedTypes.BaseAirTypes);
-    AB_IsAssociated :
-      IsTraitAssociatedType
-        "p3_air::air::AirBuilder" [] [] (Φ Self)
-        "AB" (Φ types.(AssociatedTypes.AB));
-    run_AirBuilder_for_AB : AirBuilder.Run types.(AssociatedTypes.AB) types.(AssociatedTypes.ABTypes);
-    eval : Run_eval Self types;
+  Class Run
+      (Self AB : Set) `{Link Self} `{Link AB}
+      (types : AirBuilder.AssociatedTypes.t) `{AirBuilder.AssociatedTypes.AreLinks types} :
+      Set := {
+    run_BaseAir_for_Self : BaseAir.Run Self types.(AirBuilder.AssociatedTypes.F);
+    run_AirBuilder_for_AB : AirBuilder.Run AB types;
+    eval : Run_eval Self AB;
   }.
 End Air.

@@ -202,9 +202,26 @@ Module Iterator.
        where Self: Sized,
              F: FnMut(Self::Item) -> R,
              R: Try<Output = ()> { ... }
-    fn fold<B, F>(self, init: B, f: F) -> B
-       where Self: Sized,
-             F: FnMut(B, Self::Item) -> B { ... }
+   *)
+
+   (*
+   fn fold<B, F>(self, init: B, f: F) -> B
+      where Self: Sized,
+            F: FnMut(B, Self::Item) -> B { ... }
+   *)
+   Definition Run_fold
+      (Self : Set) `{Link Self}
+      (Item : Set) `{Link Item} :
+      Set :=
+     TraitMethod.C (trait Self) "fold" (fun method =>
+      forall (B F : Set) `(Link B) `(Link F)
+        (self : Self)
+        (init : B)
+        (f : F),
+      Run.Trait method [] [Φ B; Φ F] [φ self; φ init; φ f] B
+    ).
+
+   (*
     fn reduce<F>(self, f: F) -> Option<Self::Item>
        where Self: Sized,
              F: FnMut(Self::Item, Self::Item) -> Self::Item { ... }
@@ -369,6 +386,7 @@ Module Iterator.
     advance_by : Run_advance_by Self;
     map : Run_map Self Item;
     collect : Run_collect Self Item;
+    fold : Run_fold Self Item;
     any : Run_any Self Item;
   }.
 End Iterator.

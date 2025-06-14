@@ -34,6 +34,16 @@ Module PartialEq.
   }.
 End PartialEq.
 
+(* pub trait Eq: PartialEq { } *)
+Module Eq.
+  Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
+    ("core::cmp::Eq", [], [], Φ Self).
+
+  Class Run (Self : Set) `{Link Self} : Set := {
+    run_PartialEq_for_Eq : PartialEq.Run Self Self;
+  }.
+End Eq.
+
 (*
     pub fn max_by<T, F: FnOnce(&T, &T) -> Ordering>(v1: T, v2: T, compare: F) -> T {
         match compare(&v1, &v2) {

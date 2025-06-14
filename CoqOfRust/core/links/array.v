@@ -44,6 +44,32 @@ Proof.
 Defined.
 Smpl Add unshelve eapply of_value_1 : of_value.
 
+Lemma of_value_with_2 {A : Set} `{Link A}
+  (value1' : Value.t) (value1 : A)
+  (value2' : Value.t) (value2 : A) :
+  value1' = φ value1 ->
+  value2' = φ value2 ->
+  Value.Array [value1'; value2'] =
+  φ ({| value := [value1; value2] |} : t A {| Integer.value := 2 |}).
+Proof.
+  now intros; subst.
+Qed.
+Smpl Add unshelve eapply of_value_with_2 : of_value.
+
+Definition of_value_2
+  (value1' : Value.t)
+  (H_value1' : OfValue.t value1')
+  (value2' : Value.t) (value2 : OfValue.get_Set H_value1') :
+  value2' = φ value2 ->
+  OfValue.t (Value.Array [value1'; value2']).
+Proof.
+  intros.
+  destruct H_value1' as [A].
+  eapply OfValue.Make with (A := t A {| Integer.value := 2 |}).
+  apply of_value_with_2; eassumption.
+Defined.
+Smpl Add unshelve eapply of_value_2 : of_value.
+
 Lemma of_value_with_4 {A : Set} `{Link A}
   (value1' : Value.t) (value1 : A)
   (value2' : Value.t) (value2 : A)
@@ -184,9 +210,11 @@ Module SubPointer.
 End SubPointer.
 
 (** The pointer coercions are intrinsic functions, so we need to admit them here. *)
-Instance run_pointer_coercion_unsize_mut_ref_array_to_slice {T : Set} `{Link T} {N : Usize.t} :
-  let Source : Set := Ref.t Pointer.Kind.MutRef (array.t T N) in
-  let Target : Set := Ref.t Pointer.Kind.MutRef (list T) in
+Instance run_pointer_coercion_unsize_array_to_slice
+    (T : Set) `{Link T} (N : Usize.t)
+    (pointer_kind : Pointer.Kind.t) :
+  let Source : Set := Ref.t pointer_kind (array.t T N) in
+  let Target : Set := Ref.t pointer_kind (list T) in
   forall (source : Source),
   Run.Trait (M.pointer_coercion_intrinsic PointerCoercion.Unsize)
     []

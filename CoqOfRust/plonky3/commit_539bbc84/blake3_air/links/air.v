@@ -165,28 +165,22 @@ End Impl_Blake3Air.
 
 (* impl<F> BaseAir<F> for Blake3Air { *)
 Module Impl_BaseAir_for_Blake3Air.
-  Definition Self := Blake3Air.t.
+  Definition Self : Set :=
+    Blake3Air.t.
 
-  (* fn width(&self) -> usize { *)
-  Definition Run_width (F_types : BaseAir.AssociatedTypes.t) 
-    `{BaseAir.AssociatedTypes.AreLinks F_types}
-    : BaseAir.Run_width Self F_types. Admitted.
-
-  Instance run (F : Set) `{Link F} (F_types : BaseAir.AssociatedTypes.t) 
-    `{BaseAir.AssociatedTypes.AreLinks F_types}
-    : BaseAir.Run Self F_types. Admitted.
+  Instance run (F : Set) `{Link F} : BaseAir.Run Self F.
+  Admitted.
 End Impl_BaseAir_for_Blake3Air.
 Export Impl_BaseAir_for_Blake3Air.
 
 (* impl<AB: AirBuilder> Air<AB> for Blake3Air { *)
 Module Impl_Air_for_Blake3Air.
-  Definition Self := Blake3Air.t.
+  Definition Self : Set :=
+    Blake3Air.t.
 
-  (* fn eval(&self, builder: &mut AB) *)
-  Definition Run_eval (Air_types : Air.AssociatedTypes.t) `{Air.AssociatedTypes.AreLinks Air_types}
-    : Air.Run_eval Self Air_types. Admitted.
-
-  Instance run (Air_types : Air.AssociatedTypes.t) `{Air.AssociatedTypes.AreLinks Air_types} 
-    : Air.Run Self Air_types. Admitted.
+  Instance run (AB : Set) `{Link AB}
+    (AB_types : AirBuilder.AssociatedTypes.t) `{AirBuilder.AssociatedTypes.AreLinks AB_types}
+    : Air.Run Self AB AB_types.
+  Admitted.
 End Impl_Air_for_Blake3Air.
 Export Impl_Air_for_Blake3Air.
