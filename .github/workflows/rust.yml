@@ -239,8 +239,6 @@ jobs:
             rsync -rcv ./maybe-rayon/src/ ../../CoqOfRust/plonky3/commit_539bbc84/maybe-rayon --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             rsync -rcv ./util/src/ ../../CoqOfRust/plonky3/commit_539bbc84/util --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ../..
-            # As there are differences on this file depending on the CPU features that are available
-            rm CoqOfRust/plonky3/commit_539bbc84/field/integers.v
           endGroup
           startGroup "Translate OpenVM"
             cd third-party/openvm
