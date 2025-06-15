@@ -268,6 +268,16 @@ jobs:
           startGroup "Check that the diff is empty (excluding submodules)"
             git -c color.ui=always diff --exit-code --ignore-submodules=dirty
           endGroup
+          startGroup "Save space again"
+            cd third-party
+            for dir in */ ; do
+              cd "$dir"
+              echo "Cleaning $dir"
+              cargo clean
+              cd ..
+            done
+            cd ..
+          endGroup
           startGroup "Compile Coq translations"
             cd CoqOfRust
             python ./make_and_detect_warnings.py
