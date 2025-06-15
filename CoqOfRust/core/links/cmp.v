@@ -5,6 +5,7 @@ Require Import core.intrinsics.links.mod.
 Require Import core.links.option.
 Require Import core.ops.links.function.
 Require Export core.links.cmpOrdering.
+Require Import core.links.array.
 
 (*
 pub trait PartialEq<Rhs: ?Sized = Self> {
@@ -350,4 +351,32 @@ Module Impl_PartialEq_for_Ordering.
   Instance run : PartialEq.Run Self Self.
   Admitted.
 End Impl_PartialEq_for_Ordering.
-Export Impl_PartialEq_for_Ordering.
+
+Module Impl_PartialEq_for_U8.
+  Definition Self : Set := U8.t.
+
+  Instance run : PartialEq.Run Self Self.
+  Admitted.
+End Impl_PartialEq_for_U8.
+
+Module Impl_PartialEq_for_Array.
+  Definition Self (T U : Set) (N : Usize.t) `{Link T} `{Link U} : Set :=
+    array.t T N.
+
+  Instance run
+    (T U : Set) (N : Usize.t) `{Link T} `{Link U} `{PartialEq.Run T U}
+    : PartialEq.Run (array.t T N) (array.t U N).
+  Admitted.
+End Impl_PartialEq_for_Array.
+
+Module Impl_PartialEq_for_Ref.
+  Definition Self (A B : Set) `{Link A} `{Link B} : Set :=  
+  Ref.t Pointer.Kind.Ref A.
+
+  Instance run 
+    (A B : Set) `{Link A} `{Link B} `{PartialEq.Run A B}
+    : PartialEq.Run (Ref.t Pointer.Kind.Ref B) (Ref.t Pointer.Kind.Ref A).
+  Admitted.
+End Impl_PartialEq_for_Ref.
+
+Export Impl_PartialEq_for_Ref.
