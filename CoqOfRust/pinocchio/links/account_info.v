@@ -5,7 +5,56 @@ Require Import pinocchio.links.pubkey.
 Require Import pinocchio.account_info.
 
 Import core.links.cmp.PartialEq.
+Import core.links.cmp.
+
 Import account_info.Impl_pinocchio_account_info_AccountInfo.
+
+Module BorrowState.
+  
+  Inductive t : Set :=
+  | Borrowed
+  | MutablyBorrowed.
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "pinocchio::account_info::BorrowState";
+    φ x :=
+      match x with
+      | Borrowed => Value.StructTuple "pinocchio::account_info::BorrowState::Borrowed" [] [] []
+      | MutablyBorrowed => Value.StructTuple "pinocchio::account_info::BorrowState::MutablyBorrowed" [] [] []
+      end;
+  }.
+
+  Definition of_ty : OfTy.t (Ty.path "pinocchio::account_info::BorrowState").
+  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+  Smpl Add apply of_ty : of_ty.
+
+  Lemma of_value_with_Borrowed :
+    Value.StructTuple "pinocchio::account_info::BorrowState::Borrowed" [] [] [] = φ Borrowed.
+  Proof. reflexivity. Qed.
+  Smpl Add apply of_value_with_Borrowed : of_value.
+
+  Lemma of_value_with_MutablyBorrowed :
+    Value.StructTuple "pinocchio::account_info::BorrowState::MutablyBorrowed" [] [] [] = φ MutablyBorrowed.
+  Proof. reflexivity. Qed.
+  Smpl Add apply of_value_with_MutablyBorrowed : of_value.
+
+  Definition of_value_Borrowed :
+    OfValue.t (Value.StructTuple "pinocchio::account_info::BorrowState::Borrowed" [] [] []).
+  Proof.
+    econstructor.
+    apply of_value_with_Borrowed.
+  Defined.
+  Smpl Add apply of_value_Borrowed : of_value.
+
+  Definition of_value_MutablyBorrowed :
+    OfValue.t (Value.StructTuple "pinocchio::account_info::BorrowState::MutablyBorrowed" [] [] []).
+  Proof.
+    econstructor.
+    apply of_value_with_MutablyBorrowed.
+  Defined.
+  Smpl Add apply of_value_MutablyBorrowed : of_value.
+
+End BorrowState.
 
 Module Account.
     Record t : Set := {
@@ -330,8 +379,8 @@ Module AccountInfo.
       constructor.
       run_symbolic.
     Defined.
-
-    (*Instance run_is_owned_by
+    
+    Instance run_is_owned_by
         (self : Ref.t Pointer.Kind.Ref Self) 
         (program : Ref.t Pointer.Kind.Ref Pubkey.t):
       Run.Trait
@@ -340,7 +389,8 @@ Module AccountInfo.
     Proof.
       constructor.
       run_symbolic.
-    Defined.*)
+      admit.
+    Admitted.
 
   (*Instance run_assign
     (self : Ref.t Pointer.Kind.Ref Self) 
@@ -351,6 +401,17 @@ Module AccountInfo.
 Proof.
   constructor.
   run_symbolic.*)
+
+  (*Instance run_is_borrowed
+        (self : Ref.t Pointer.Kind.Ref Self) 
+        (state : BorrowState.t):
+    Run.Trait
+      is_borrowed [] [] [φ self; φ state]
+        bool.
+    Proof.
+      constructor.
+      run_symbolic.
+    Defined.*)
 
   End Impl_AccountInfo.
   
