@@ -239,8 +239,6 @@ jobs:
             rsync -rcv ./maybe-rayon/src/ ../../CoqOfRust/plonky3/commit_539bbc84/maybe-rayon --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             rsync -rcv ./util/src/ ../../CoqOfRust/plonky3/commit_539bbc84/util --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ../..
-            # As there are differences on this file depending on the CPU features that are available
-            rm CoqOfRust/plonky3/commit_539bbc84/field/integers.v
           endGroup
           startGroup "Translate OpenVM"
             cd third-party/openvm
@@ -269,6 +267,16 @@ jobs:
           endGroup
           startGroup "Check that the diff is empty (excluding submodules)"
             git -c color.ui=always diff --exit-code --ignore-submodules=dirty
+          endGroup
+          startGroup "Save space again"
+            cd third-party
+            for dir in */ ; do
+              cd "$dir"
+              echo "Cleaning $dir"
+              cargo clean
+              cd ..
+            done
+            cd ..
           endGroup
           startGroup "Compile Coq translations"
             cd CoqOfRust
