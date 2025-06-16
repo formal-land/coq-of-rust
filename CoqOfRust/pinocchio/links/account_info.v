@@ -3,7 +3,7 @@ Require Import CoqOfRust.links.M.
 Require Import core.links.cmp.
 Require Import pinocchio.links.pubkey.
 Require Import pinocchio.account_info.
-
+Require Import core.links.array.
 Import core.links.cmp.PartialEq.
 Import core.links.cmp.
 
@@ -389,8 +389,9 @@ Module AccountInfo.
     Proof.
       constructor.
       run_symbolic.
-      admit.
-    Admitted.
+      destruct (core.links.cmp.Impl_PartialEq_for_Ref.run (array.t U8.t {| Integer.value := 32 |}) (array.t U8.t {| Integer.value := 32 |})).
+      run_symbolic.
+    Defined.
 
   (*Instance run_assign
     (self : Ref.t Pointer.Kind.Ref Self) 
