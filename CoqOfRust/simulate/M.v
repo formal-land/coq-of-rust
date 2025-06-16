@@ -284,7 +284,7 @@ End StackM.
 Module Run.
   Reserved Notation "{{ e 🌲 value }}".
 
-  Inductive t {A : Set} (value : A) : StackM.t A -> Set :=
+  Inductive t {A : Set} (value : A) : StackM.t A -> Prop :=
   | Pure :
     {{ StackM.Pure value 🌲 value }}
   | GetCanAccess {B : Set} `{Link B}
