@@ -364,8 +364,8 @@ Module Impl_PartialEq_for_Ref.
   Ref.t Pointer.Kind.Ref A.
 
   Instance run 
-    (A B : Set) `{Link A} `{Link B} `{PartialEq.Run A B}
-    : PartialEq.Run (Ref.t Pointer.Kind.Ref B) (Ref.t Pointer.Kind.Ref A).
+    (A B : Set) `{Link A} `{Link B} 
+    : PartialEq.Run (Ref.t Pointer.Kind.Ref A) (Ref.t Pointer.Kind.Ref B).
   Admitted.
 End Impl_PartialEq_for_Ref.
 
