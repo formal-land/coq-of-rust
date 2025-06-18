@@ -5,104 +5,65 @@ Module Stack.
   Definition t : Type :=
     list Set.
 
-  Fixpoint to_Set_aux (A : Set) (Stack : t) : Set :=
-    match Stack with
-    | [] => A
-    | B :: Stack => A * to_Set_aux B Stack
-    end.
-
-  Definition to_Set (Stack : t) : Set :=
+  Fixpoint to_Set (Stack : t) : Set :=
     match Stack with
     | [] => unit
-    | A :: Stack => to_Set_aux A Stack
+    | A :: Stack => A * to_Set Stack
     end.
 
   Definition nth (Stack : t) (index : nat) : Set :=
     List.nth index Stack unit.
 
-  Fixpoint read_aux {A : Set} {Stack : t}
-    (stack : to_Set_aux A Stack)
-    (index : nat)
-    {struct Stack} :
-    nth (A :: Stack) index.
-  Proof.
-    destruct Stack as [|B Stack], index as [|index]; cbn in *.
-    { exact stack. }
-    { destruct index; exact tt. }
-    { exact (fst stack). }
-    { exact (read_aux _ _ (snd stack) index). }
-  Defined.
-
-  Definition read {Stack : t} (stack : to_Set Stack) (index : nat) : nth Stack index.
-  Proof.
-    destruct Stack; cbn in *.
-    { destruct index; exact tt. }
-    { apply (read_aux stack). }
-  Defined.
-
-  Fixpoint write_aux {A : Set} {Stack : t}
-    (stack : to_Set_aux A Stack)
-    (index : nat)
-    (value : nth (A :: Stack) index)
-    {struct Stack} :
-    to_Set_aux A Stack.
-  Proof.
-    destruct Stack as [|B Stack], index as [|index]; cbn in *.
-    { exact value. }
-    { exact stack. }
-    { exact (value, snd stack). }
-    { exact (fst stack, write_aux _ _ (snd stack) index value). }
-  Defined.
-
-  Definition write {Stack : t}
+  Fixpoint read {Stack : t}
     (stack : to_Set Stack)
     (index : nat)
-    (value : nth Stack index) :
+    {struct Stack} :
+    nth Stack index.
+  Proof.
+    destruct Stack as [|A Stack], index as [|index]; cbn in *.
+    { exact tt. }
+    { exact tt. }
+    { exact (fst stack). }
+    { exact (read _ (snd stack) index). }
+  Defined.
+
+  Fixpoint write {Stack : t}
+    (stack : to_Set Stack)
+    (index : nat)
+    (value : nth Stack index)
+    {struct Stack} :
     to_Set Stack.
   Proof.
-    destruct Stack; cbn in *.
+    destruct Stack as [|A Stack], index as [|index]; cbn in *.
     { exact tt. }
-    { apply (write_aux stack index value). }
+    { exact tt. }
+    { exact (value, snd stack). }
+    { exact (fst stack, write _ (snd stack) index value). }
   Defined.
 
-  Fixpoint alloc_aux {A : Set} {Stack : t} {B : Set}
-    (stack : to_Set_aux A Stack)
-    (value : B)
+  Fixpoint alloc {Stack : t} {A : Set}
+    (stack : to_Set Stack)
+    (value : A)
     {struct Stack} :
-    to_Set_aux A (Stack ++ [B]).
-  Proof.
-    destruct Stack as [|A' Stack]; cbn in *.
-    { exact (stack, value). }
-    { exact (fst stack, alloc_aux _ _ _ (snd stack) value). }
-  Defined.
-
-  Definition alloc {Stack : t} {A : Set} (stack : to_Set Stack) (value : A) :
     to_Set (Stack ++ [A]).
   Proof.
-    destruct Stack; cbn in *.
-    { exact value. }
-    { apply (alloc_aux stack value). }
+    destruct Stack as [|A' Stack]; cbn in *.
+    { exact (value, tt). }
+    { exact (fst stack, alloc _ _ (snd stack) value). }
   Defined.
 
-  Fixpoint dealloc_aux {A : Set} {Stack : t} {B : Set}
-    (stack : to_Set_aux A (Stack ++ [B]))
+  Fixpoint dealloc {Stack : t} {A : Set}
+    (stack : to_Set (Stack ++ [A]))
     {struct Stack} :
-    to_Set_aux A Stack * B.
+    to_Set Stack * A.
   Proof.
     destruct Stack as [|A' Stack]; cbn in *.
-    { exact stack. }
+    { exact (tt, fst stack). }
     { exact (
-        let '(stack', value) := dealloc_aux _ _ _ (snd stack) in
+        let '(stack', value) := dealloc _ _ (snd stack) in
         ((fst stack, stack'), value)
       ).
     }
-  Defined.
-
-  Definition dealloc {Stack : t} {A : Set} (stack : to_Set (Stack ++ [A])) : to_Set Stack * A.
-  Proof.
-    destruct Stack; cbn in *.
-    { exact (tt, stack). }
-    { exact (dealloc_aux stack). }
   Defined.
 
   Module CanAccess.
@@ -310,6 +271,7 @@ Export Run.
 
 Ltac get_can_access :=
   unshelve eapply Run.GetCanAccess; [
+    cbn;
     match goal with
     | |- Stack.CanAccess.t ?Stack (Ref.Core.Mutable ?index _ _ _ ?injection) =>
       apply (Stack.CanAccess.Mutable Stack index _ _ _ injection)
