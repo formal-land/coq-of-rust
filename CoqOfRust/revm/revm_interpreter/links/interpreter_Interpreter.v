@@ -73,165 +73,167 @@ Module Interpreter.
   Defined.
   Smpl Add (unshelve eapply of_ty; [smpl of_ty | auto]) : of_ty.
 
-  Definition get_bytecode
-      {WIRE : Set} `{Link WIRE}
-      {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
-    SubPointer.Runner.t
-      (t WIRE WIRE_types)
-      (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "bytecode") :=
-    {|
-      SubPointer.Runner.projection x := Some x.(bytecode);
-      SubPointer.Runner.injection x y := Some (x <| bytecode := y |>);
-    |}.
+  Module SubPointer.
+    Definition get_bytecode
+        {WIRE : Set} `{Link WIRE}
+        {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
+      SubPointer.Runner.t
+        (t WIRE WIRE_types)
+        (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "bytecode") :=
+      {|
+        SubPointer.Runner.projection x := Some x.(bytecode);
+        SubPointer.Runner.injection x y := Some (x <| bytecode := y |>);
+      |}.
 
-  Lemma get_bytecode_is_valid
-      {WIRE : Set} `{Link WIRE}
-      {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
-    SubPointer.Runner.Valid.t get_bytecode.
-  Proof. now constructor. Qed.
-  Smpl Add apply get_bytecode_is_valid : run_sub_pointer.
+    Lemma get_bytecode_is_valid
+        {WIRE : Set} `{Link WIRE}
+        {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
+      SubPointer.Runner.Valid.t get_bytecode.
+    Proof. now constructor. Qed.
+    Smpl Add apply get_bytecode_is_valid : run_sub_pointer.
 
-  Definition get_stack
-      {WIRE : Set} `{Link WIRE}
-      {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
-    SubPointer.Runner.t
-      (t WIRE WIRE_types)
-      (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "stack") :=
-    {|
-      SubPointer.Runner.projection x := Some x.(stack);
-      SubPointer.Runner.injection x y := Some (x <| stack := y |>);
-    |}.
+    Definition get_stack
+        {WIRE : Set} `{Link WIRE}
+        {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
+      SubPointer.Runner.t
+        (t WIRE WIRE_types)
+        (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "stack") :=
+      {|
+        SubPointer.Runner.projection x := Some x.(stack);
+        SubPointer.Runner.injection x y := Some (x <| stack := y |>);
+      |}.
 
-  Lemma get_stack_is_valid
-      {WIRE : Set} `{Link WIRE}
-      {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
-    SubPointer.Runner.Valid.t get_stack.
-  Proof. now constructor. Qed.
-  Smpl Add apply get_stack_is_valid : run_sub_pointer.
+    Lemma get_stack_is_valid
+        {WIRE : Set} `{Link WIRE}
+        {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
+      SubPointer.Runner.Valid.t get_stack.
+    Proof. now constructor. Qed.
+    Smpl Add apply get_stack_is_valid : run_sub_pointer.
 
-  Definition get_return_data
-      {WIRE : Set} `{Link WIRE}
-      {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
-    SubPointer.Runner.t
-      (t WIRE WIRE_types)
-      (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "return_data") :=
-    {|
-      SubPointer.Runner.projection x := Some x.(return_data);
-      SubPointer.Runner.injection x y := Some (x <| return_data := y |>);
-    |}.
+    Definition get_return_data
+        {WIRE : Set} `{Link WIRE}
+        {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
+      SubPointer.Runner.t
+        (t WIRE WIRE_types)
+        (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "return_data") :=
+      {|
+        SubPointer.Runner.projection x := Some x.(return_data);
+        SubPointer.Runner.injection x y := Some (x <| return_data := y |>);
+      |}.
 
-  Lemma get_return_data_is_valid
-      {WIRE : Set} `{Link WIRE}
-      {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
-    SubPointer.Runner.Valid.t get_return_data.
-  Proof. now constructor. Qed.
-  Smpl Add apply get_return_data_is_valid : run_sub_pointer.
+    Lemma get_return_data_is_valid
+        {WIRE : Set} `{Link WIRE}
+        {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
+      SubPointer.Runner.Valid.t get_return_data.
+    Proof. now constructor. Qed.
+    Smpl Add apply get_return_data_is_valid : run_sub_pointer.
 
-  Definition get_memory
-      {WIRE : Set} `{Link WIRE}
-      {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
-    SubPointer.Runner.t
-      (t WIRE WIRE_types)
-      (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "memory") :=
-    {|
-      SubPointer.Runner.projection x := Some x.(memory);
-      SubPointer.Runner.injection x y := Some (x <| memory := y |>);
-    |}.
+    Definition get_memory
+        {WIRE : Set} `{Link WIRE}
+        {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
+      SubPointer.Runner.t
+        (t WIRE WIRE_types)
+        (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "memory") :=
+      {|
+        SubPointer.Runner.projection x := Some x.(memory);
+        SubPointer.Runner.injection x y := Some (x <| memory := y |>);
+      |}.
 
-  Lemma get_memory_is_valid
-      {WIRE : Set} `{Link WIRE}
-      {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
-    SubPointer.Runner.Valid.t get_memory.
-  Proof. now constructor. Qed.
-  Smpl Add apply get_memory_is_valid : run_sub_pointer.
+    Lemma get_memory_is_valid
+        {WIRE : Set} `{Link WIRE}
+        {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
+      SubPointer.Runner.Valid.t get_memory.
+    Proof. now constructor. Qed.
+    Smpl Add apply get_memory_is_valid : run_sub_pointer.
 
-  Definition get_input
-      {WIRE : Set} `{Link WIRE}
-      {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
-    SubPointer.Runner.t
-      (t WIRE WIRE_types)
-      (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "input") :=
-    {|
-      SubPointer.Runner.projection x := Some x.(input);
-      SubPointer.Runner.injection x y := Some (x <| input := y |>);
-    |}.
+    Definition get_input
+        {WIRE : Set} `{Link WIRE}
+        {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
+      SubPointer.Runner.t
+        (t WIRE WIRE_types)
+        (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "input") :=
+      {|
+        SubPointer.Runner.projection x := Some x.(input);
+        SubPointer.Runner.injection x y := Some (x <| input := y |>);
+      |}.
 
-  Lemma get_input_is_valid
-      {WIRE : Set} `{Link WIRE}
-      {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
-    SubPointer.Runner.Valid.t get_input.
-  Proof. now constructor. Qed.
-  Smpl Add apply get_input_is_valid : run_sub_pointer.
+    Lemma get_input_is_valid
+        {WIRE : Set} `{Link WIRE}
+        {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
+      SubPointer.Runner.Valid.t get_input.
+    Proof. now constructor. Qed.
+    Smpl Add apply get_input_is_valid : run_sub_pointer.
 
-  Definition get_sub_routine
-      {WIRE : Set} `{Link WIRE}
-      {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
-    SubPointer.Runner.t
-      (t WIRE WIRE_types)
-      (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "sub_routine") :=
-    {|
-      SubPointer.Runner.projection x := Some x.(sub_routine);
-      SubPointer.Runner.injection x y := Some (x <| sub_routine := y |>);
-    |}.
+    Definition get_sub_routine
+        {WIRE : Set} `{Link WIRE}
+        {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
+      SubPointer.Runner.t
+        (t WIRE WIRE_types)
+        (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "sub_routine") :=
+      {|
+        SubPointer.Runner.projection x := Some x.(sub_routine);
+        SubPointer.Runner.injection x y := Some (x <| sub_routine := y |>);
+      |}.
 
-  Lemma get_sub_routine_is_valid
-      {WIRE : Set} `{Link WIRE}
-      {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
-    SubPointer.Runner.Valid.t get_sub_routine.
-  Proof. now constructor. Qed.
-  Smpl Add apply get_sub_routine_is_valid : run_sub_pointer.
+    Lemma get_sub_routine_is_valid
+        {WIRE : Set} `{Link WIRE}
+        {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
+      SubPointer.Runner.Valid.t get_sub_routine.
+    Proof. now constructor. Qed.
+    Smpl Add apply get_sub_routine_is_valid : run_sub_pointer.
 
-  Definition get_control
-      {WIRE : Set} `{Link WIRE}
-      {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
-    SubPointer.Runner.t
-      (t WIRE WIRE_types)
-      (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "control") :=
-    {|
-      SubPointer.Runner.projection x := Some x.(control);
-      SubPointer.Runner.injection x y := Some (x <| control := y |>);
-    |}.
+    Definition get_control
+        {WIRE : Set} `{Link WIRE}
+        {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
+      SubPointer.Runner.t
+        (t WIRE WIRE_types)
+        (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "control") :=
+      {|
+        SubPointer.Runner.projection x := Some x.(control);
+        SubPointer.Runner.injection x y := Some (x <| control := y |>);
+      |}.
 
-  Lemma get_control_is_valid
-      {WIRE : Set} `{Link WIRE}
-      {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
-    SubPointer.Runner.Valid.t get_control.
-  Proof. now constructor. Qed.
-  Smpl Add apply get_control_is_valid : run_sub_pointer.
+    Lemma get_control_is_valid
+        {WIRE : Set} `{Link WIRE}
+        {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
+      SubPointer.Runner.Valid.t get_control.
+    Proof. now constructor. Qed.
+    Smpl Add apply get_control_is_valid : run_sub_pointer.
 
-  Definition get_runtime_flag
-      {WIRE : Set} `{Link WIRE}
-      {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
-    SubPointer.Runner.t
-      (t WIRE WIRE_types)
-      (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "runtime_flag") :=
-    {|
-      SubPointer.Runner.projection x := Some x.(runtime_flag);
-      SubPointer.Runner.injection x y := Some (x <| runtime_flag := y |>);
-    |}.
+    Definition get_runtime_flag
+        {WIRE : Set} `{Link WIRE}
+        {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
+      SubPointer.Runner.t
+        (t WIRE WIRE_types)
+        (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "runtime_flag") :=
+      {|
+        SubPointer.Runner.projection x := Some x.(runtime_flag);
+        SubPointer.Runner.injection x y := Some (x <| runtime_flag := y |>);
+      |}.
 
-  Lemma get_runtime_flag_is_valid
-      {WIRE : Set} `{Link WIRE}
-      {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
-    SubPointer.Runner.Valid.t get_runtime_flag.
-  Proof. now constructor. Qed.
-  Smpl Add apply get_runtime_flag_is_valid : run_sub_pointer.
+    Lemma get_runtime_flag_is_valid
+        {WIRE : Set} `{Link WIRE}
+        {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
+      SubPointer.Runner.Valid.t get_runtime_flag.
+    Proof. now constructor. Qed.
+    Smpl Add apply get_runtime_flag_is_valid : run_sub_pointer.
 
-  Definition get_extend
-      {WIRE : Set} `{Link WIRE}
-      {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
-    SubPointer.Runner.t
-      (t WIRE WIRE_types)
-      (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "extend") :=
-    {|
-      SubPointer.Runner.projection x := Some x.(extend);
-      SubPointer.Runner.injection x y := Some (x <| extend := y |>);
-    |}.
+    Definition get_extend
+        {WIRE : Set} `{Link WIRE}
+        {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
+      SubPointer.Runner.t
+        (t WIRE WIRE_types)
+        (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "extend") :=
+      {|
+        SubPointer.Runner.projection x := Some x.(extend);
+        SubPointer.Runner.injection x y := Some (x <| extend := y |>);
+      |}.
 
-  Lemma get_extend_is_valid
-      {WIRE : Set} `{Link WIRE}
-      {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
-    SubPointer.Runner.Valid.t get_extend.
-  Proof. now constructor. Qed.
-  Smpl Add apply get_extend_is_valid : run_sub_pointer.
+    Lemma get_extend_is_valid
+        {WIRE : Set} `{Link WIRE}
+        {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types} :
+      SubPointer.Runner.Valid.t get_extend.
+    Proof. now constructor. Qed.
+    Smpl Add apply get_extend_is_valid : run_sub_pointer.
+  End SubPointer.
 End Interpreter.
