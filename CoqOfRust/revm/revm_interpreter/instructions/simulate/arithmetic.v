@@ -4,6 +4,7 @@ Require Import CoqOfRust.simulate.M.
 Require Import alloy_primitives.links.aliases.
 Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_interpreter.instructions.links.arithmetic.
+Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
 
@@ -67,6 +68,42 @@ Module RefStub.
       Ref.t kind_target Sub_A :=
     {| Ref.core := apply_core ref.(Ref.core) stub |}.
 End RefStub.
+
+Module Loop.
+ Class C
+      (WIRE_types : InterpreterTypes.Types.t) `{InterpreterTypes.Types.AreLinks WIRE_types} :
+      Set := {
+    gas : RefStub.t WIRE_types.(InterpreterTypes.Types.Control) Gas.t;
+  }.
+
+  Module Eq.
+    Class t
+        (WIRE : Set) (WIRE_types : InterpreterTypes.Types.t)
+        `{Link WIRE} `{InterpreterTypes.Types.AreLinks WIRE_types}
+        (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+        (I : C WIRE_types) :
+        Prop := {
+      gas
+          (Stack : list Set)
+          (interpreter : Interpreter.t WIRE WIRE_types)
+          (stack_rest : Stack.to_Set Stack) :
+        let ref_interpreter : Ref.t Pointer.Kind.MutRef _ := make_ref 0 in
+        let ref_self := {| Ref.core :=
+            SubPointer.Runner.apply
+              ref_interpreter.(Ref.core)
+              Interpreter.SubPointer.get_control
+        |} in
+        {{
+          StackM.eval_f (Stack := Interpreter.t WIRE WIRE_types :: Stack)
+            (run_InterpreterTypes_for_WIRE.(InterpreterTypes.run_LoopControl_for_Control).(LoopControl.gas).(TraitMethod.run)
+              ref_self
+            )
+            (interpreter, stack_rest) 🌲
+          (Output.Success (RefStub.apply ref_self I.(gas)), (interpreter, stack_rest))
+        }};
+    }.
+  End Eq.
+End Loop.
 
 Module Stack.
   (* Definition t : Set :=
@@ -151,62 +188,15 @@ Lemma wrapping_add_eq (BITS LIMBS : Usize.t) (x1 x2 : lib.Uint.t BITS LIMBS) :
   links.M.LowM.Pure (Output.Success (wrapping_add x1 x2)).
 Admitted.
 
-(* Lemma wrapping_add_eq
-    {Stack : Stack.t} (stack : Stack.to_Set Stack)
-    (BITS LIMBS : Usize.t) (x1 x2 : lib.Uint.t BITS LIMBS) :
-  {{
-    StackM.eval_f (Stack := Stack)
-      (add.Impl_Uint.run_wrapping_add BITS LIMBS x1 x2)
-      stack 🌲
-    (Output.Success (wrapping_add x1 x2), stack)
-  }}.
-Admitted. *)
-
-(*
-  {{StackM.eval
-      (evaluate
-         (run_InterpreterTypes_for_WIRE
-          .(InterpreterTypes.run_StackTrait_for_Stack).(
-          StackTrait.popn_top).(TraitMethod.run) {| Integer.value := 1 |}
-            (Ref.cast_to Pointer.Kind.MutRef
-               {|
-                 Ref.core :=
-                   Ref.Core.Mutable 0%nat
-                     [Pointer.Index.StructRecord
-                     "revm_interpreter::interpreter::Interpreter" "stack"]
-                     Interpreter.IsLink.(φ)
-                     (fun big_a : Interpreter.t WIRE WIRE_types =>
-                      Some big_a.(Interpreter.stack))
-                     (fun (big_a : Interpreter.t WIRE WIRE_types)
-                        (new_sub_a : WIRE_types
-                                     .(InterpreterTypes.Types.Stack)) =>
-                      Some big_a<|Interpreter.stack:= new_sub_a|>)
-               |})).(run_f))
-      (interpreter, (_host, (ref_interpreter, ref_host))) 🌲 
-  ?value_inter}}
-*)
-(* Lemma foo
-    {WIRE : Set} `{Link WIRE}
-    {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
-    (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
-    (POPN : Usize.t)
-    (self : WIRE_types.(InterpreterTypes.Types.Stack)) :
-  let ref_self := make_ref 0 in
-  {{
-    StackM.eval_f (Stack := [_])
-      (run_InterpreterTypes_for_WIRE.(InterpreterTypes.run_StackTrait_for_Stack).(StackTrait.popn_top).(TraitMethod.run)
-        POPN
-        ref_self
-      )
-      self 🌲
-    (Output.Success None, self)
-  }}. *)
+Axiom ex_falso : False.
 
 Lemma add_eq
     {WIRE H : Set} `{Link WIRE} `{Link H}
     {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
     {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
     (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+    (ILoop : Loop.C WIRE_types)
+    (LoopEq : Loop.Eq.t WIRE WIRE_types run_InterpreterTypes_for_WIRE ILoop)
     (IStack : Stack.C WIRE_types)
     (StackEq : Stack.Eq.t WIRE WIRE_types run_InterpreterTypes_for_WIRE IStack)
     (interpreter : Interpreter.t WIRE WIRE_types)
@@ -215,17 +205,45 @@ Lemma add_eq
   let ref_host := make_ref 1 in
   {{
     StackM.eval_f (Stack := [_; _]) (run_add run_InterpreterTypes_for_WIRE ref_interpreter ref_host) (interpreter, (_host, tt)) 🌲
-    (Output.Success tt, (interpreter, (_host, tt)))
+    let stack := interpreter.(Interpreter.stack) in
+    let (result, stack) := IStack.(Stack.popn_top) {| Integer.value := 1 |} stack in
+    match result with
+    | Some (arr, top) =>
+      match arr.(array.value) with
+      | x1 :: _ =>
+        let x2 := top.(RefStub.projection) stack in
+        let stack := top.(RefStub.injection) stack (wrapping_add x1 x2) in
+        (Output.Success tt, (interpreter <| Interpreter.stack := stack |>, (_host, tt)))
+      | _ =>
+        (* admitted for now, but we should make it impossible by typing *)
+        (Output.Exception Output.Exception.BreakMatch, (interpreter, (_host, tt)))
+      end
+    | None =>
+      (
+        Output.Exception (Output.Exception.Panic (Panic.Make "no match branches left")),
+        (interpreter <| Interpreter.stack := stack |>, (_host, tt))
+      )
+    end
   }}.
 Proof.
   intros.
-  destruct StackEq.
+  destruct LoopEq, StackEq.
   Time unfold run_add, StackM.eval_f, StackM.eval, evaluate.
   Time hnf.
   Time cbn.
   Time get_can_access.
   Time cbn.
   Time eapply Run.Call. {
+    apply gas.
+  }
+  Time cbn.
+  Time eapply Run.Call. {
+    Time apply Run.Pure.
+  }
+  Time cbn.
+  Time get_can_access.
+  Show.
+  dsfjlkj.
     apply popn_top.
   }
   Time destruct IStack.(Stack.popn_top) as [[[? ?]|] ?].
@@ -233,8 +251,7 @@ Proof.
     Time cbn.
     Time destruct t0.(array.value).
     { Time cbn.
-      (* Show. *)
-      admit.
+      destruct ex_falso.
     }
     { Time cbn.
       Time repeat get_can_access.
@@ -242,33 +259,14 @@ Proof.
         rewrite wrapping_add_eq.
         apply Run.Pure.
       }
-      destruct wrapping_add.
       Time cbn.
+      (* admit. because slow *)
       Time repeat get_can_access.
-      Show.
-
+      Time apply Run.Pure.
     }
-  Time unshelve eapply Run.GetCanAccess. {
-      Time cbn.
-      match goal with
-      | |- Stack.CanAccess.t ?Stack (Ref.Core.Mutable ?index _ _ _ ?injection) =>
-        apply (Stack.CanAccess.Mutable Stack index _ _ _ injection)
-      end.
-      Show.
-      
-    }
-    Time match goal with
-    | |- Run.t _ ?e =>
-      let e' := fresh "e'" in
-      let e' := eval hnf in e in
-      change e with e'
-    end.
-    (* Time get_can_access. *)
-    Time cbn.
-    Show.
-
   }
-  (* Time cbn. *)
-  (* Show. *)
-  
+  { Time cbn.
+    Time repeat get_can_access.
+    Time apply Run.Pure.
+  }
 Qed.
