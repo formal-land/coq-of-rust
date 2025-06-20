@@ -4,8 +4,10 @@ Require Import core.links.cmp.
 Require Import pinocchio.links.pubkey.
 Require Import pinocchio.account_info.
 Require Import core.links.array.
+
 Import core.links.cmp.PartialEq.
 Import core.links.cmp.
+Require Import core.links.ptr.
 
 Import account_info.Impl_pinocchio_account_info_AccountInfo.
 
@@ -393,7 +395,7 @@ Module AccountInfo.
       run_symbolic.
     Defined.
 
-  (*Instance run_assign
+  Instance run_assign
     (self : Ref.t Pointer.Kind.Ref Self) 
     (new_owner : Ref.t Pointer.Kind.Ref Pubkey.t):
   Run.Trait
@@ -401,7 +403,14 @@ Module AccountInfo.
     unit.
 Proof.
   constructor.
-  run_symbolic.*)
+  run_symbolic.
+  destruct (core.links.ptr.run_write_volatile
+            (array.t U8.t {| Integer.value := 32 |})
+            (Ref.cast_to Pointer.Kind.MutRef sub_ref0) (* fix here *)
+            value3).
+  run_symbolic.
+
+Defined.
 
   (*Instance run_is_borrowed
         (self : Ref.t Pointer.Kind.Ref Self) 
