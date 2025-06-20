@@ -61,10 +61,12 @@ Module Impl_Gas.
     self.(Gas.limit).
 
   Lemma limit_eq (self : Self) :
-    let ref_self := {| Ref.core := Ref.Core.Mutable (A := Self) 0%nat [] φ Some (fun _ => Some) |} in
+    let ref_self := {|
+      Ref.core := Ref.Core.Mutable (A := Self) 0%nat [] φ Some (fun _ => Some)
+    |} in
     {{
-      StackM.eval_f (Stack := [_]) (Impl_Gas.run_limit ref_self) self 🌲
-      (Output.Success (limit self), self)
+      StackM.eval_f (Stack := [_]) (Impl_Gas.run_limit ref_self) (self, tt) 🌲
+      (Output.Success (limit self), (self, tt))
     }}.
   Proof.
     cbn.
@@ -91,10 +93,12 @@ Module Impl_Gas.
     |}.
 
   Lemma erase_cost_eq (self : Self) (returned : U64.t) :
-    let ref_self := {| Ref.core := Ref.Core.Mutable (A := Self) 0%nat [] φ Some (fun _ => Some) |} in
+    let ref_self := {|
+      Ref.core := Ref.Core.Mutable (A := Self) 0%nat [] φ Some (fun _ => Some)
+    |} in
     {{
-      StackM.eval_f (Stack := [_]) (Impl_Gas.run_erase_cost ref_self returned) self 🌲
-      (Output.Success tt, erase_cost self returned)
+      StackM.eval_f (Stack := [_]) (Impl_Gas.run_erase_cost ref_self returned) (self, tt) 🌲
+      (Output.Success tt, (erase_cost self returned, tt))
     }}.
   Proof.
     cbn.
@@ -136,11 +140,13 @@ Module Impl_Gas.
       (false, self).
 
   Lemma record_cost_eq (self : Self) (cost : U64.t) :
-    let ref_self := {| Ref.core := Ref.Core.Mutable (A := Self) 0%nat [] φ Some (fun _ => Some) |} in
+    let ref_self := {|
+      Ref.core := Ref.Core.Mutable (A := Self) 0%nat [] φ Some (fun _ => Some)
+    |} in
     let '(success, self') := record_cost self cost in
     {{
-      StackM.eval_f (Stack := [_]) (Impl_Gas.run_record_cost ref_self cost) self 🌲
-      (Output.Success success, self')
+      StackM.eval_f (Stack := [_]) (Impl_Gas.run_record_cost ref_self cost) (self, tt) 🌲
+      (Output.Success success, (self', tt))
     }}.
   Proof.
     intros.

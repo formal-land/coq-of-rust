@@ -37,8 +37,8 @@ Lemma apply_duplicate_eq (numbers : Numbers.t) :
   let ref_numbers :=
     {| Ref.core := Ref.Core.Mutable (A := Numbers.t) 0%nat [] φ Some (fun _ => Some) |} in
   {{
-    StackM.eval_f (Stack := [_]) (run_apply_duplicate ref_numbers) numbers 🌲
-    (Output.Success tt, apply_duplicate numbers)
+    StackM.eval_f (Stack := [_]) (run_apply_duplicate ref_numbers) (numbers, tt) 🌲
+    (Output.Success tt, (apply_duplicate numbers, tt))
   }}.
 Proof.
   repeat (
@@ -54,8 +54,8 @@ Lemma duplicate_eq (a b c : U64.t) :
   let ref_b := {| Ref.core := Ref.Core.Mutable (A := U64.t) 1%nat [] φ Some (fun _ => Some) |} in
   let ref_c := {| Ref.core := Ref.Core.Mutable (A := U64.t) 2%nat [] φ Some (fun _ => Some) |} in
   {{
-    StackM.eval_f (Stack := [_; _; _]) (run_duplicate ref_a ref_b ref_c) (a, (b, c)) 🌲
-    (Output.Success tt, (a, (a, a)))
+    StackM.eval_f (Stack := [_; _; _]) (run_duplicate ref_a ref_b ref_c) (a, (b, (c, tt))) 🌲
+    (Output.Success tt, (a, (a, (a, tt))))
   }}.
 Proof.
   repeat (
