@@ -17,7 +17,7 @@ Module log.
     match ε, τ, α with
     | [], [], [ message ] =>
       ltac:(M.monadic
-        (let message := M.alloc (| message |) in
+        (let message := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], message |) in
         M.read (|
           let~ _ : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
             M.call_closure (|
@@ -29,7 +29,7 @@ Module log.
               |),
               [ M.read (| message |) ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -53,11 +53,11 @@ Module log.
     match ε, τ, α with
     | [], [], [ arg1; arg2; arg3; arg4; arg5 ] =>
       ltac:(M.monadic
-        (let arg1 := M.alloc (| arg1 |) in
-        let arg2 := M.alloc (| arg2 |) in
-        let arg3 := M.alloc (| arg3 |) in
-        let arg4 := M.alloc (| arg4 |) in
-        let arg5 := M.alloc (| arg5 |) in
+        (let arg1 := M.alloc (| Ty.path "u64", arg1 |) in
+        let arg2 := M.alloc (| Ty.path "u64", arg2 |) in
+        let arg3 := M.alloc (| Ty.path "u64", arg3 |) in
+        let arg4 := M.alloc (| Ty.path "u64", arg4 |) in
+        let arg5 := M.alloc (| Ty.path "u64", arg5 |) in
         M.read (|
           let~ _ :
               Ty.tuple
@@ -84,7 +84,7 @@ Module log.
                   ]
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -109,7 +109,19 @@ Module log.
     match ε, τ, α with
     | [], [], [ data ] =>
       ltac:(M.monadic
-        (let data := M.alloc (| data |) in
+        (let data :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "slice")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ]
+              ],
+            data
+          |) in
         M.read (|
           let~ _ :
               Ty.apply
@@ -153,7 +165,7 @@ Module log.
               |),
               [ M.read (| data |) ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -174,73 +186,89 @@ Module log.
     match ε, τ, α with
     | [], [], [ slice ] =>
       ltac:(M.monadic
-        (let slice := M.alloc (| slice |) in
+        (let slice :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+            slice
+          |) in
         M.read (|
           M.use
-            (M.match_operator (|
+            (M.alloc (|
               Ty.tuple [],
-              M.alloc (|
-                M.call_closure (|
+              M.match_operator (|
+                Ty.tuple [],
+                M.alloc (|
                   Ty.apply
                     (Ty.path "core::iter::adapters::enumerate::Enumerate")
                     []
                     [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
-                  M.get_trait_method (|
-                    "core::iter::traits::collect::IntoIterator",
+                  M.call_closure (|
                     Ty.apply
                       (Ty.path "core::iter::adapters::enumerate::Enumerate")
                       []
                       [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
-                    [],
-                    [],
-                    "into_iter",
-                    [],
-                    []
-                  |),
-                  [
-                    M.call_closure (|
+                    M.get_trait_method (|
+                      "core::iter::traits::collect::IntoIterator",
                       Ty.apply
                         (Ty.path "core::iter::adapters::enumerate::Enumerate")
                         []
                         [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
-                      M.get_trait_method (|
-                        "core::iter::traits::iterator::Iterator",
-                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
-                        [],
-                        [],
-                        "enumerate",
-                        [],
-                        []
-                      |),
-                      [
-                        M.call_closure (|
+                      [],
+                      [],
+                      "into_iter",
+                      [],
+                      []
+                    |),
+                    [
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                          []
+                          [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
+                        M.get_trait_method (|
+                          "core::iter::traits::iterator::Iterator",
                           Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                            "iter",
-                            [],
+                          [],
+                          [],
+                          "enumerate",
+                          [],
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                              "iter",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
+                          |)
+                        ]
+                      |)
+                    ]
+                  |)
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let iter :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
                             []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
-                        |)
-                      ]
-                    |)
-                  ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let iter := M.copy (| γ |) in
-                    M.loop (|
-                      Ty.tuple [],
-                      ltac:(M.monadic
-                        (let~ _ : Ty.tuple [] :=
-                          M.read (|
-                            M.match_operator (|
-                              Ty.tuple [],
-                              M.alloc (|
-                                M.call_closure (|
+                            [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ],
+                          γ
+                        |) in
+                      M.read (|
+                        M.loop (|
+                          Ty.tuple [],
+                          ltac:(M.monadic
+                            (let~ _ : Ty.tuple [] :=
+                              M.match_operator (|
+                                Ty.tuple [],
+                                M.alloc (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")
                                     []
@@ -251,70 +279,92 @@ Module log.
                                           Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
                                         ]
                                     ],
-                                  M.get_trait_method (|
-                                    "core::iter::traits::iterator::Iterator",
+                                  M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                      (Ty.path "core::option::Option")
                                       []
                                       [
-                                        Ty.apply
-                                          (Ty.path "core::slice::iter::Iter")
-                                          []
-                                          [ Ty.path "u8" ]
+                                        Ty.tuple
+                                          [
+                                            Ty.path "usize";
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
+                                          ]
                                       ],
-                                    [],
-                                    [],
-                                    "next",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.MutRef,
-                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                    |)
-                                  ]
-                                |)
-                              |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let _ :=
-                                      M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                    M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::option::Option::Some",
-                                        0
-                                      |) in
-                                    let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
-                                    let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                    let i := M.copy (| γ1_0 |) in
-                                    let s := M.copy (| γ1_1 |) in
-                                    let~ _ : Ty.tuple [] :=
-                                      M.call_closure (|
-                                        Ty.tuple [],
-                                        M.get_function (| "pinocchio::log::sol_log_64", [], [] |),
+                                    M.get_trait_method (|
+                                      "core::iter::traits::iterator::Iterator",
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                        []
                                         [
-                                          Value.Integer IntegerKind.U64 0;
-                                          Value.Integer IntegerKind.U64 0;
-                                          Value.Integer IntegerKind.U64 0;
-                                          M.cast (Ty.path "u64") (M.read (| i |));
-                                          M.cast
-                                            (Ty.path "u64")
-                                            (M.read (| M.deref (| M.read (| s |) |) |))
-                                        ]
-                                      |) in
-                                    M.alloc (| Value.Tuple [] |)))
-                              ]
-                            |)
-                          |) in
-                        M.alloc (| Value.Tuple [] |)))
-                    |)))
-              ]
+                                          Ty.apply
+                                            (Ty.path "core::slice::iter::Iter")
+                                            []
+                                            [ Ty.path "u8" ]
+                                        ],
+                                      [],
+                                      [],
+                                      "next",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      M.never_to_any (| M.read (| M.break (||) |) |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::option::Option::Some",
+                                          0
+                                        |) in
+                                      let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                      let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
+                                      let i := M.copy (| Ty.path "usize", γ1_0 |) in
+                                      let s :=
+                                        M.copy (|
+                                          Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                          γ1_1
+                                        |) in
+                                      M.read (|
+                                        let~ _ : Ty.tuple [] :=
+                                          M.call_closure (|
+                                            Ty.tuple [],
+                                            M.get_function (|
+                                              "pinocchio::log::sol_log_64",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              Value.Integer IntegerKind.U64 0;
+                                              Value.Integer IntegerKind.U64 0;
+                                              Value.Integer IntegerKind.U64 0;
+                                              M.cast (Ty.path "u64") (M.read (| i |));
+                                              M.cast
+                                                (Ty.path "u64")
+                                                (M.read (| M.deref (| M.read (| s |) |) |))
+                                            ]
+                                          |) in
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                      |)))
+                                ]
+                              |) in
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
+                        |)
+                      |)))
+                ]
+              |)
             |))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -350,16 +400,28 @@ Module log.
     match ε, τ, α with
     | [], [], [ accounts; data ] =>
       ltac:(M.monadic
-        (let accounts := M.alloc (| accounts |) in
-        let data := M.alloc (| data |) in
+        (let accounts :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "slice") [] [ Ty.path "pinocchio::account_info::AccountInfo" ] ],
+            accounts
+          |) in
+        let data :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+            data
+          |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.use
-                (M.match_operator (|
+                (M.alloc (|
                   Ty.tuple [],
-                  M.alloc (|
-                    M.call_closure (|
+                  M.match_operator (|
+                    Ty.tuple [],
+                    M.alloc (|
                       Ty.apply
                         (Ty.path "core::iter::adapters::enumerate::Enumerate")
                         []
@@ -369,8 +431,7 @@ Module log.
                             []
                             [ Ty.path "pinocchio::account_info::AccountInfo" ]
                         ],
-                      M.get_trait_method (|
-                        "core::iter::traits::collect::IntoIterator",
+                      M.call_closure (|
                         Ty.apply
                           (Ty.path "core::iter::adapters::enumerate::Enumerate")
                           []
@@ -380,14 +441,8 @@ Module log.
                               []
                               [ Ty.path "pinocchio::account_info::AccountInfo" ]
                           ],
-                        [],
-                        [],
-                        "into_iter",
-                        [],
-                        []
-                      |),
-                      [
-                        M.call_closure (|
+                        M.get_trait_method (|
+                          "core::iter::traits::collect::IntoIterator",
                           Ty.apply
                             (Ty.path "core::iter::adapters::enumerate::Enumerate")
                             []
@@ -397,54 +452,86 @@ Module log.
                                 []
                                 [ Ty.path "pinocchio::account_info::AccountInfo" ]
                             ],
-                          M.get_trait_method (|
-                            "core::iter::traits::iterator::Iterator",
+                          [],
+                          [],
+                          "into_iter",
+                          [],
+                          []
+                        |),
+                        [
+                          M.call_closure (|
                             Ty.apply
-                              (Ty.path "core::slice::iter::Iter")
+                              (Ty.path "core::iter::adapters::enumerate::Enumerate")
                               []
-                              [ Ty.path "pinocchio::account_info::AccountInfo" ],
-                            [],
-                            [],
-                            "enumerate",
-                            [],
-                            []
-                          |),
-                          [
-                            M.call_closure (|
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "pinocchio::account_info::AccountInfo" ]
+                              ],
+                            M.get_trait_method (|
+                              "core::iter::traits::iterator::Iterator",
                               Ty.apply
                                 (Ty.path "core::slice::iter::Iter")
                                 []
                                 [ Ty.path "pinocchio::account_info::AccountInfo" ],
-                              M.get_associated_function (|
+                              [],
+                              [],
+                              "enumerate",
+                              [],
+                              []
+                            |),
+                            [
+                              M.call_closure (|
                                 Ty.apply
-                                  (Ty.path "slice")
+                                  (Ty.path "core::slice::iter::Iter")
                                   []
                                   [ Ty.path "pinocchio::account_info::AccountInfo" ],
-                                "iter",
-                                [],
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.path "pinocchio::account_info::AccountInfo" ],
+                                  "iter",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| accounts |) |)
+                                  |)
+                                ]
+                              |)
+                            ]
+                          |)
+                        ]
+                      |)
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let iter :=
+                            M.copy (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
                                 []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| accounts |) |) |)
-                              ]
-                            |)
-                          ]
-                        |)
-                      ]
-                    |)
-                  |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let iter := M.copy (| γ |) in
-                        M.loop (|
-                          Ty.tuple [],
-                          ltac:(M.monadic
-                            (let~ _ : Ty.tuple [] :=
-                              M.read (|
-                                M.match_operator (|
-                                  Ty.tuple [],
-                                  M.alloc (|
-                                    M.call_closure (|
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "pinocchio::account_info::AccountInfo" ]
+                                ],
+                              γ
+                            |) in
+                          M.read (|
+                            M.loop (|
+                              Ty.tuple [],
+                              ltac:(M.monadic
+                                (let~ _ : Ty.tuple [] :=
+                                  M.match_operator (|
+                                    Ty.tuple [],
+                                    M.alloc (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
                                         []
@@ -458,285 +545,242 @@ Module log.
                                                 [ Ty.path "pinocchio::account_info::AccountInfo" ]
                                             ]
                                         ],
-                                      M.get_trait_method (|
-                                        "core::iter::traits::iterator::Iterator",
+                                      M.call_closure (|
                                         Ty.apply
-                                          (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                          (Ty.path "core::option::Option")
                                           []
                                           [
-                                            Ty.apply
-                                              (Ty.path "core::slice::iter::Iter")
-                                              []
-                                              [ Ty.path "pinocchio::account_info::AccountInfo" ]
+                                            Ty.tuple
+                                              [
+                                                Ty.path "usize";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.path "pinocchio::account_info::AccountInfo" ]
+                                              ]
                                           ],
-                                        [],
-                                        [],
-                                        "next",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.MutRef,
-                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                        |)
-                                      ]
-                                    |)
-                                  |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let _ :=
-                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                        M.alloc (|
-                                          M.never_to_any (| M.read (| M.break (||) |) |)
-                                        |)));
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ0_0 :=
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            γ,
-                                            "core::option::Option::Some",
-                                            0
-                                          |) in
-                                        let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
-                                        let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                        let i := M.copy (| γ1_0 |) in
-                                        let account := M.copy (| γ1_1 |) in
-                                        let~ _ : Ty.tuple [] :=
-                                          M.call_closure (|
-                                            Ty.tuple [],
-                                            M.get_function (| "pinocchio::log::sol_log", [], [] |),
+                                        M.get_trait_method (|
+                                          "core::iter::traits::iterator::Iterator",
+                                          Ty.apply
+                                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                            []
                                             [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| mk_str (| "AccountInfo" |) |)
-                                              |)
-                                            ]
-                                          |) in
-                                        let~ _ : Ty.tuple [] :=
-                                          M.call_closure (|
-                                            Ty.tuple [],
-                                            M.get_function (|
-                                              "pinocchio::log::sol_log_64",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              Value.Integer IntegerKind.U64 0;
-                                              Value.Integer IntegerKind.U64 0;
-                                              Value.Integer IntegerKind.U64 0;
-                                              Value.Integer IntegerKind.U64 0;
-                                              M.cast (Ty.path "u64") (M.read (| i |))
-                                            ]
-                                          |) in
-                                        let~ _ : Ty.tuple [] :=
-                                          M.call_closure (|
-                                            Ty.tuple [],
-                                            M.get_function (| "pinocchio::log::sol_log", [], [] |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| mk_str (| "- Is signer" |) |)
-                                              |)
-                                            ]
-                                          |) in
-                                        let~ _ : Ty.tuple [] :=
-                                          M.call_closure (|
-                                            Ty.tuple [],
-                                            M.get_function (|
-                                              "pinocchio::log::sol_log_64",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              Value.Integer IntegerKind.U64 0;
-                                              Value.Integer IntegerKind.U64 0;
-                                              Value.Integer IntegerKind.U64 0;
-                                              Value.Integer IntegerKind.U64 0;
-                                              M.cast
-                                                (Ty.path "u64")
-                                                (M.call_closure (|
-                                                  Ty.path "bool",
-                                                  M.get_associated_function (|
-                                                    Ty.path "pinocchio::account_info::AccountInfo",
-                                                    "is_signer",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (| M.read (| account |) |)
-                                                    |)
-                                                  ]
-                                                |))
-                                            ]
-                                          |) in
-                                        let~ _ : Ty.tuple [] :=
-                                          M.call_closure (|
-                                            Ty.tuple [],
-                                            M.get_function (| "pinocchio::log::sol_log", [], [] |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| mk_str (| "- Key" |) |)
-                                              |)
-                                            ]
-                                          |) in
-                                        let~ _ : Ty.tuple [] :=
-                                          M.call_closure (|
-                                            Ty.tuple [],
-                                            M.get_function (| "pinocchio::pubkey::log", [], [] |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.call_closure (|
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "array")
-                                                          [ Value.Integer IntegerKind.Usize 32 ]
-                                                          [ Ty.path "u8" ]
-                                                      ],
-                                                    M.get_associated_function (|
-                                                      Ty.path
-                                                        "pinocchio::account_info::AccountInfo",
-                                                      "key",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (| M.read (| account |) |)
-                                                      |)
-                                                    ]
-                                                  |)
-                                                |)
-                                              |)
-                                            ]
-                                          |) in
-                                        let~ _ : Ty.tuple [] :=
-                                          M.call_closure (|
-                                            Ty.tuple [],
-                                            M.get_function (| "pinocchio::log::sol_log", [], [] |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| mk_str (| "- Lamports" |) |)
-                                              |)
-                                            ]
-                                          |) in
-                                        let~ _ : Ty.tuple [] :=
-                                          M.call_closure (|
-                                            Ty.tuple [],
-                                            M.get_function (|
-                                              "pinocchio::log::sol_log_64",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              Value.Integer IntegerKind.U64 0;
-                                              Value.Integer IntegerKind.U64 0;
-                                              Value.Integer IntegerKind.U64 0;
-                                              Value.Integer IntegerKind.U64 0;
+                                              Ty.apply
+                                                (Ty.path "core::slice::iter::Iter")
+                                                []
+                                                [ Ty.path "pinocchio::account_info::AccountInfo" ]
+                                            ],
+                                          [],
+                                          [],
+                                          "next",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let _ :=
+                                            M.is_struct_tuple (|
+                                              γ,
+                                              "core::option::Option::None"
+                                            |) in
+                                          M.never_to_any (| M.read (| M.break (||) |) |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::option::Option::Some",
+                                              0
+                                            |) in
+                                          let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                          let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
+                                          let i := M.copy (| Ty.path "usize", γ1_0 |) in
+                                          let account :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.path "pinocchio::account_info::AccountInfo" ],
+                                              γ1_1
+                                            |) in
+                                          M.read (|
+                                            let~ _ : Ty.tuple [] :=
                                               M.call_closure (|
-                                                Ty.path "u64",
-                                                M.get_associated_function (|
-                                                  Ty.path "pinocchio::account_info::AccountInfo",
-                                                  "lamports",
+                                                Ty.tuple [],
+                                                M.get_function (|
+                                                  "pinocchio::log::sol_log",
                                                   [],
                                                   []
                                                 |),
                                                 [
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| account |) |)
+                                                    M.deref (| mk_str (| "AccountInfo" |) |)
                                                   |)
                                                 ]
-                                              |)
-                                            ]
-                                          |) in
-                                        let~ _ : Ty.tuple [] :=
-                                          M.call_closure (|
-                                            Ty.tuple [],
-                                            M.get_function (| "pinocchio::log::sol_log", [], [] |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| mk_str (| "- Account data length" |) |)
-                                              |)
-                                            ]
-                                          |) in
-                                        let~ _ : Ty.tuple [] :=
-                                          M.call_closure (|
-                                            Ty.tuple [],
-                                            M.get_function (|
-                                              "pinocchio::log::sol_log_64",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              Value.Integer IntegerKind.U64 0;
-                                              Value.Integer IntegerKind.U64 0;
-                                              Value.Integer IntegerKind.U64 0;
-                                              Value.Integer IntegerKind.U64 0;
-                                              M.cast
-                                                (Ty.path "u64")
-                                                (M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_associated_function (|
-                                                    Ty.path "pinocchio::account_info::AccountInfo",
-                                                    "data_len",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (| M.read (| account |) |)
-                                                    |)
-                                                  ]
-                                                |))
-                                            ]
-                                          |) in
-                                        let~ _ : Ty.tuple [] :=
-                                          M.call_closure (|
-                                            Ty.tuple [],
-                                            M.get_function (| "pinocchio::log::sol_log", [], [] |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| mk_str (| "- Owner" |) |)
-                                              |)
-                                            ]
-                                          |) in
-                                        let~ _ : Ty.tuple [] :=
-                                          M.call_closure (|
-                                            Ty.tuple [],
-                                            M.get_function (| "pinocchio::pubkey::log", [], [] |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.call_closure (|
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
+                                              |) in
+                                            let~ _ : Ty.tuple [] :=
+                                              M.call_closure (|
+                                                Ty.tuple [],
+                                                M.get_function (|
+                                                  "pinocchio::log::sol_log_64",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  Value.Integer IntegerKind.U64 0;
+                                                  Value.Integer IntegerKind.U64 0;
+                                                  Value.Integer IntegerKind.U64 0;
+                                                  Value.Integer IntegerKind.U64 0;
+                                                  M.cast (Ty.path "u64") (M.read (| i |))
+                                                ]
+                                              |) in
+                                            let~ _ : Ty.tuple [] :=
+                                              M.call_closure (|
+                                                Ty.tuple [],
+                                                M.get_function (|
+                                                  "pinocchio::log::sol_log",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| mk_str (| "- Is signer" |) |)
+                                                  |)
+                                                ]
+                                              |) in
+                                            let~ _ : Ty.tuple [] :=
+                                              M.call_closure (|
+                                                Ty.tuple [],
+                                                M.get_function (|
+                                                  "pinocchio::log::sol_log_64",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  Value.Integer IntegerKind.U64 0;
+                                                  Value.Integer IntegerKind.U64 0;
+                                                  Value.Integer IntegerKind.U64 0;
+                                                  Value.Integer IntegerKind.U64 0;
+                                                  M.cast
+                                                    (Ty.path "u64")
+                                                    (M.call_closure (|
+                                                      Ty.path "bool",
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "pinocchio::account_info::AccountInfo",
+                                                        "is_signer",
+                                                        [],
+                                                        []
+                                                      |),
                                                       [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| account |) |)
+                                                        |)
+                                                      ]
+                                                    |))
+                                                ]
+                                              |) in
+                                            let~ _ : Ty.tuple [] :=
+                                              M.call_closure (|
+                                                Ty.tuple [],
+                                                M.get_function (|
+                                                  "pinocchio::log::sol_log",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| mk_str (| "- Key" |) |)
+                                                  |)
+                                                ]
+                                              |) in
+                                            let~ _ : Ty.tuple [] :=
+                                              M.call_closure (|
+                                                Ty.tuple [],
+                                                M.get_function (|
+                                                  "pinocchio::pubkey::log",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.call_closure (|
                                                         Ty.apply
-                                                          (Ty.path "array")
-                                                          [ Value.Integer IntegerKind.Usize 32 ]
-                                                          [ Ty.path "u8" ]
-                                                      ],
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "array")
+                                                              [ Value.Integer IntegerKind.Usize 32 ]
+                                                              [ Ty.path "u8" ]
+                                                          ],
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "pinocchio::account_info::AccountInfo",
+                                                          "key",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| account |) |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |) in
+                                            let~ _ : Ty.tuple [] :=
+                                              M.call_closure (|
+                                                Ty.tuple [],
+                                                M.get_function (|
+                                                  "pinocchio::log::sol_log",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| mk_str (| "- Lamports" |) |)
+                                                  |)
+                                                ]
+                                              |) in
+                                            let~ _ : Ty.tuple [] :=
+                                              M.call_closure (|
+                                                Ty.tuple [],
+                                                M.get_function (|
+                                                  "pinocchio::log::sol_log_64",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  Value.Integer IntegerKind.U64 0;
+                                                  Value.Integer IntegerKind.U64 0;
+                                                  Value.Integer IntegerKind.U64 0;
+                                                  Value.Integer IntegerKind.U64 0;
+                                                  M.call_closure (|
+                                                    Ty.path "u64",
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "pinocchio::account_info::AccountInfo",
-                                                      "owner",
+                                                      "lamports",
                                                       [],
                                                       []
                                                     |),
@@ -747,17 +791,122 @@ Module log.
                                                       |)
                                                     ]
                                                   |)
-                                                |)
-                                              |)
-                                            ]
-                                          |) in
-                                        M.alloc (| Value.Tuple [] |)))
-                                  ]
-                                |)
-                              |) in
-                            M.alloc (| Value.Tuple [] |)))
-                        |)))
-                  ]
+                                                ]
+                                              |) in
+                                            let~ _ : Ty.tuple [] :=
+                                              M.call_closure (|
+                                                Ty.tuple [],
+                                                M.get_function (|
+                                                  "pinocchio::log::sol_log",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      mk_str (| "- Account data length" |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |) in
+                                            let~ _ : Ty.tuple [] :=
+                                              M.call_closure (|
+                                                Ty.tuple [],
+                                                M.get_function (|
+                                                  "pinocchio::log::sol_log_64",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  Value.Integer IntegerKind.U64 0;
+                                                  Value.Integer IntegerKind.U64 0;
+                                                  Value.Integer IntegerKind.U64 0;
+                                                  Value.Integer IntegerKind.U64 0;
+                                                  M.cast
+                                                    (Ty.path "u64")
+                                                    (M.call_closure (|
+                                                      Ty.path "usize",
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "pinocchio::account_info::AccountInfo",
+                                                        "data_len",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| account |) |)
+                                                        |)
+                                                      ]
+                                                    |))
+                                                ]
+                                              |) in
+                                            let~ _ : Ty.tuple [] :=
+                                              M.call_closure (|
+                                                Ty.tuple [],
+                                                M.get_function (|
+                                                  "pinocchio::log::sol_log",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| mk_str (| "- Owner" |) |)
+                                                  |)
+                                                ]
+                                              |) in
+                                            let~ _ : Ty.tuple [] :=
+                                              M.call_closure (|
+                                                Ty.tuple [],
+                                                M.get_function (|
+                                                  "pinocchio::pubkey::log",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "array")
+                                                              [ Value.Integer IntegerKind.Usize 32 ]
+                                                              [ Ty.path "u8" ]
+                                                          ],
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "pinocchio::account_info::AccountInfo",
+                                                          "owner",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| account |) |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |) in
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                          |)))
+                                    ]
+                                  |) in
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
+                            |)
+                          |)))
+                    ]
+                  |)
                 |))
             |) in
           let~ _ : Ty.tuple [] :=
@@ -772,7 +921,7 @@ Module log.
               M.get_function (| "pinocchio::log::sol_log_slice", [], [] |),
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

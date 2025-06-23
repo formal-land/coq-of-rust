@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module cpi.
   Definition value_MAX_CPI_ACCOUNTS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 64 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 64 |))).
   
   Global Instance Instance_IsConstant_value_MAX_CPI_ACCOUNTS :
     M.IsFunction.C "pinocchio::cpi::MAX_CPI_ACCOUNTS" value_MAX_CPI_ACCOUNTS.
@@ -15,15 +15,31 @@ Module cpi.
       instruction: &Instruction,
       account_infos: &[&AccountInfo; ACCOUNTS],
   ) -> ProgramResult {
-      invoke_signed(instruction, account_infos, &[])
+      invoke_signed::<ACCOUNTS>(instruction, account_infos, &[])
   }
   *)
   Definition invoke (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
     | [ ACCOUNTS ], [], [ instruction; account_infos ] =>
       ltac:(M.monadic
-        (let instruction := M.alloc (| instruction |) in
-        let account_infos := M.alloc (| account_infos |) in
+        (let instruction :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::instruction::Instruction" ],
+            instruction
+          |) in
+        let account_infos :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "array")
+                  [ ACCOUNTS ]
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::account_info::AccountInfo" ] ]
+              ],
+            account_infos
+          |) in
         M.call_closure (|
           Ty.apply
             (Ty.path "core::result::Result")
@@ -33,12 +49,44 @@ Module cpi.
           [
             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| instruction |) |) |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| account_infos |) |) |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [] |) |) |)
-              |))
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "slice") [] [ Ty.path "pinocchio::instruction::Signer" ] ],
+              M.pointer_coercion
+                M.PointerCoercion.Unsize
+                (Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 0 ]
+                      [ Ty.path "pinocchio::instruction::Signer" ]
+                  ])
+                (Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "pinocchio::instruction::Signer" ] ]),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 0 ]
+                          [ Ty.path "pinocchio::instruction::Signer" ],
+                        Value.Array []
+                      |)
+                    |)
+                  |)
+                |)
+              ]
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -49,6 +97,93 @@ Module cpi.
   Global Typeclasses Opaque invoke.
   
   (*
+  pub fn invoke_with_bounds<const MAX_ACCOUNTS: usize>(
+      instruction: &Instruction,
+      account_infos: &[&AccountInfo],
+  ) -> ProgramResult {
+      invoke_signed_with_bounds::<MAX_ACCOUNTS>(instruction, account_infos, &[])
+  }
+  *)
+  Definition invoke_with_bounds (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ MAX_ACCOUNTS ], [], [ instruction; account_infos ] =>
+      ltac:(M.monadic
+        (let instruction :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::instruction::Instruction" ],
+            instruction
+          |) in
+        let account_infos :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "slice")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::account_info::AccountInfo" ] ]
+              ],
+            account_infos
+          |) in
+        M.call_closure (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError" ],
+          M.get_function (| "pinocchio::cpi::invoke_signed_with_bounds", [ MAX_ACCOUNTS ], [] |),
+          [
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| instruction |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| account_infos |) |) |);
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "slice") [] [ Ty.path "pinocchio::instruction::Signer" ] ],
+              M.pointer_coercion
+                M.PointerCoercion.Unsize
+                (Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 0 ]
+                      [ Ty.path "pinocchio::instruction::Signer" ]
+                  ])
+                (Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "pinocchio::instruction::Signer" ] ]),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 0 ]
+                          [ Ty.path "pinocchio::instruction::Signer" ],
+                        Value.Array []
+                      |)
+                    |)
+                  |)
+                |)
+              ]
+            |)
+          ]
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
+  
+  Global Instance Instance_IsFunction_invoke_with_bounds :
+    M.IsFunction.C "pinocchio::cpi::invoke_with_bounds" invoke_with_bounds.
+  Admitted.
+  Global Typeclasses Opaque invoke_with_bounds.
+  
+  (*
   pub fn slice_invoke(instruction: &Instruction, account_infos: &[&AccountInfo]) -> ProgramResult {
       slice_invoke_signed(instruction, account_infos, &[])
   }
@@ -57,8 +192,24 @@ Module cpi.
     match ε, τ, α with
     | [], [], [ instruction; account_infos ] =>
       ltac:(M.monadic
-        (let instruction := M.alloc (| instruction |) in
-        let account_infos := M.alloc (| account_infos |) in
+        (let instruction :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::instruction::Instruction" ],
+            instruction
+          |) in
+        let account_infos :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "slice")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::account_info::AccountInfo" ] ]
+              ],
+            account_infos
+          |) in
         M.call_closure (|
           Ty.apply
             (Ty.path "core::result::Result")
@@ -68,12 +219,44 @@ Module cpi.
           [
             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| instruction |) |) |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| account_infos |) |) |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [] |) |) |)
-              |))
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "slice") [] [ Ty.path "pinocchio::instruction::Signer" ] ],
+              M.pointer_coercion
+                M.PointerCoercion.Unsize
+                (Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 0 ]
+                      [ Ty.path "pinocchio::instruction::Signer" ]
+                  ])
+                (Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "pinocchio::instruction::Signer" ] ]),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 0 ]
+                          [ Ty.path "pinocchio::instruction::Signer" ],
+                        Value.Array []
+                      |)
+                    |)
+                  |)
+                |)
+              ]
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -90,38 +273,484 @@ Module cpi.
       account_infos: &[&AccountInfo; ACCOUNTS],
       signers_seeds: &[Signer],
   ) -> ProgramResult {
-      if instruction.accounts.len() < ACCOUNTS {
+      // SAFETY: The array of `AccountInfo`s will be checked to ensure that it has
+      // the same number of accounts as the instruction – this indirectly validates
+      // that the stack allocated account storage `ACCOUNTS` is sufficient for the
+      // number of accounts expected by the instruction.
+      unsafe {
+          inner_invoke_signed_with_bounds::<ACCOUNTS>(instruction, account_infos, signers_seeds)
+      }
+  }
+  *)
+  Definition invoke_signed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ ACCOUNTS ], [], [ instruction; account_infos; signers_seeds ] =>
+      ltac:(M.monadic
+        (let instruction :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::instruction::Instruction" ],
+            instruction
+          |) in
+        let account_infos :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "array")
+                  [ ACCOUNTS ]
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::account_info::AccountInfo" ] ]
+              ],
+            account_infos
+          |) in
+        let signers_seeds :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "slice") [] [ Ty.path "pinocchio::instruction::Signer" ] ],
+            signers_seeds
+          |) in
+        M.call_closure (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError" ],
+          M.get_function (| "pinocchio::cpi::inner_invoke_signed_with_bounds", [ ACCOUNTS ], [] |),
+          [
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| instruction |) |) |);
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::account_info::AccountInfo" ] ]
+                ],
+              M.pointer_coercion
+                M.PointerCoercion.Unsize
+                (Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ ACCOUNTS ]
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::account_info::AccountInfo" ]
+                      ]
+                  ])
+                (Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::account_info::AccountInfo" ]
+                      ]
+                  ]),
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| account_infos |) |) |) ]
+            |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| signers_seeds |) |) |)
+          ]
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
+  
+  Global Instance Instance_IsFunction_invoke_signed :
+    M.IsFunction.C "pinocchio::cpi::invoke_signed" invoke_signed.
+  Admitted.
+  Global Typeclasses Opaque invoke_signed.
+  
+  (*
+  pub fn invoke_signed_with_bounds<const MAX_ACCOUNTS: usize>(
+      instruction: &Instruction,
+      account_infos: &[&AccountInfo],
+      signers_seeds: &[Signer],
+  ) -> ProgramResult {
+      // Check that the stack allocated account storage `MAX_ACCOUNTS` is sufficient
+      // for the number of accounts expected by the instruction.
+      //
+      // The check for the slice of `AccountInfo`s not being less than the
+      // number of accounts expected by the instruction is done in
+      // `invoke_signed_with_bounds`.
+      if MAX_ACCOUNTS < instruction.accounts.len() {
+          return Err(ProgramError::InvalidArgument);
+      }
+  
+      // SAFETY: The stack allocated account storage `MAX_ACCOUNTS` was validated.
+      unsafe {
+          inner_invoke_signed_with_bounds::<MAX_ACCOUNTS>(instruction, account_infos, signers_seeds)
+      }
+  }
+  *)
+  Definition invoke_signed_with_bounds (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ MAX_ACCOUNTS ], [], [ instruction; account_infos; signers_seeds ] =>
+      ltac:(M.monadic
+        (let instruction :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::instruction::Instruction" ],
+            instruction
+          |) in
+        let account_infos :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "slice")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::account_info::AccountInfo" ] ]
+              ],
+            account_infos
+          |) in
+        let signers_seeds :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "slice") [] [ Ty.path "pinocchio::instruction::Signer" ] ],
+            signers_seeds
+          |) in
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError" ]) (|
+          ltac:(M.monadic
+            (M.read (|
+              let~ _ : Ty.tuple [] :=
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              Ty.path "bool",
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [
+                                  MAX_ACCOUNTS;
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [ Ty.path "pinocchio::instruction::AccountMeta" ],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| instruction |) |),
+                                              "pinocchio::instruction::Instruction",
+                                              "accounts"
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.never_to_any (|
+                          M.read (|
+                            M.return_ (|
+                              Value.StructTuple
+                                "core::result::Result::Err"
+                                []
+                                [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError" ]
+                                [
+                                  Value.StructTuple
+                                    "pinocchio::program_error::ProgramError::InvalidArgument"
+                                    []
+                                    []
+                                    []
+                                ]
+                            |)
+                          |)
+                        |)));
+                    fun γ => ltac:(M.monadic (Value.Tuple []))
+                  ]
+                |) in
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError" ],
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError" ],
+                  M.get_function (|
+                    "pinocchio::cpi::inner_invoke_signed_with_bounds",
+                    [ MAX_ACCOUNTS ],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| instruction |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| account_infos |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| signers_seeds |) |) |)
+                  ]
+                |)
+              |)
+            |)))
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
+  
+  Global Instance Instance_IsFunction_invoke_signed_with_bounds :
+    M.IsFunction.C "pinocchio::cpi::invoke_signed_with_bounds" invoke_signed_with_bounds.
+  Admitted.
+  Global Typeclasses Opaque invoke_signed_with_bounds.
+  
+  (*
+  pub fn slice_invoke_signed(
+      instruction: &Instruction,
+      account_infos: &[&AccountInfo],
+      signers_seeds: &[Signer],
+  ) -> ProgramResult {
+      // Check that the stack allocated account storage `MAX_CPI_ACCOUNTS` is
+      // sufficient for the number of accounts expected by the instruction.
+      //
+      // The check for the slice of `AccountInfo`s not being less than the
+      // number of accounts expected by the instruction is done in
+      // `invoke_signed_with_bounds`.
+      if MAX_CPI_ACCOUNTS < instruction.accounts.len() {
+          return Err(ProgramError::InvalidArgument);
+      }
+  
+      // SAFETY: The stack allocated account storage `MAX_CPI_ACCOUNTS` was validated.
+      unsafe {
+          inner_invoke_signed_with_bounds::<MAX_CPI_ACCOUNTS>(
+              instruction,
+              account_infos,
+              signers_seeds,
+          )
+      }
+  }
+  *)
+  Definition slice_invoke_signed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ instruction; account_infos; signers_seeds ] =>
+      ltac:(M.monadic
+        (let instruction :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::instruction::Instruction" ],
+            instruction
+          |) in
+        let account_infos :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "slice")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::account_info::AccountInfo" ] ]
+              ],
+            account_infos
+          |) in
+        let signers_seeds :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "slice") [] [ Ty.path "pinocchio::instruction::Signer" ] ],
+            signers_seeds
+          |) in
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError" ]) (|
+          ltac:(M.monadic
+            (M.read (|
+              let~ _ : Ty.tuple [] :=
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              Ty.path "bool",
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [
+                                  M.read (|
+                                    get_constant (|
+                                      "pinocchio::cpi::MAX_CPI_ACCOUNTS",
+                                      Ty.path "usize"
+                                    |)
+                                  |);
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [ Ty.path "pinocchio::instruction::AccountMeta" ],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| instruction |) |),
+                                              "pinocchio::instruction::Instruction",
+                                              "accounts"
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.never_to_any (|
+                          M.read (|
+                            M.return_ (|
+                              Value.StructTuple
+                                "core::result::Result::Err"
+                                []
+                                [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError" ]
+                                [
+                                  Value.StructTuple
+                                    "pinocchio::program_error::ProgramError::InvalidArgument"
+                                    []
+                                    []
+                                    []
+                                ]
+                            |)
+                          |)
+                        |)));
+                    fun γ => ltac:(M.monadic (Value.Tuple []))
+                  ]
+                |) in
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError" ],
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError" ],
+                  M.get_function (|
+                    "pinocchio::cpi::inner_invoke_signed_with_bounds",
+                    [ Value.Integer IntegerKind.Usize 64 ],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| instruction |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| account_infos |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| signers_seeds |) |) |)
+                  ]
+                |)
+              |)
+            |)))
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
+  
+  Global Instance Instance_IsFunction_slice_invoke_signed :
+    M.IsFunction.C "pinocchio::cpi::slice_invoke_signed" slice_invoke_signed.
+  Admitted.
+  Global Typeclasses Opaque slice_invoke_signed.
+  
+  (*
+  unsafe fn inner_invoke_signed_with_bounds<const MAX_ACCOUNTS: usize>(
+      instruction: &Instruction,
+      account_infos: &[&AccountInfo],
+      signers_seeds: &[Signer],
+  ) -> ProgramResult {
+      // Check that the number of `MAX_ACCOUNTS` provided is not greater than
+      // the maximum number of accounts allowed.
+      const {
+          assert!(
+              MAX_ACCOUNTS <= MAX_CPI_ACCOUNTS,
+              "MAX_ACCOUNTS is greater than allowed MAX_CPI_ACCOUNTS"
+          );
+      }
+  
+      // Check that the number of accounts provided is not less than
+      // the number of accounts expected by the instruction.
+      if account_infos.len() < instruction.accounts.len() {
           return Err(ProgramError::NotEnoughAccountKeys);
       }
   
       const UNINIT: MaybeUninit<Account> = MaybeUninit::<Account>::uninit();
-      let mut accounts = [UNINIT; ACCOUNTS];
+      let mut accounts = [UNINIT; MAX_ACCOUNTS];
   
-      for index in 0..ACCOUNTS {
-          let account_info = account_infos[index];
-          let account_meta = &instruction.accounts[index];
+      account_infos
+          .iter()
+          .zip(instruction.accounts.iter())
+          .zip(accounts.iter_mut())
+          .try_for_each(|((account_info, account_meta), account)| {
+              // In order to check whether the borrow state is compatible
+              // with the invocation, we need to check that we have the
+              // correct account info and meta pair.
+              if account_info.key() != account_meta.pubkey {
+                  return Err(ProgramError::InvalidArgument);
+              }
   
-          if account_info.key() != account_meta.pubkey {
-              return Err(ProgramError::InvalidArgument);
-          }
+              // Determines the borrow state that would be invalid according
+              // to their mutability on the instruction.
+              let invalid_state = if account_meta.is_writable {
+                  // If the account is required to be writable, it cannot
+                  //  be currently borrowed.
+                  BorrowState::Borrowed
+              } else {
+                  // If the account is required to be read-only, it cannot
+                  // be currently mutably borrowed.
+                  BorrowState::MutablyBorrowed
+              };
   
-          let state = if account_meta.is_writable {
-              BorrowState::Borrowed
-          } else {
-              BorrowState::MutablyBorrowed
-          };
+              if account_info.is_borrowed(invalid_state) {
+                  return Err(ProgramError::AccountBorrowFailed);
+              }
   
-          if account_info.is_borrowed(state) {
-              return Err(ProgramError::AccountBorrowFailed);
-          }
+              account.write(Account::from( *account_info));
   
-          accounts[index].write(Account::from(account_infos[index]));
-      }
+              Ok(())
+          })?;
   
+      // SAFETY: At this point it is guaranteed that account infos are borrowable
+      // according to their mutability on the instruction.
       unsafe {
           invoke_signed_unchecked(
               instruction,
-              core::slice::from_raw_parts(accounts.as_ptr() as _, ACCOUNTS),
+              from_raw_parts(accounts.as_ptr() as _, instruction.accounts.len()),
               signers_seeds,
           );
       }
@@ -129,45 +758,484 @@ Module cpi.
       Ok(())
   }
   *)
-  Definition invoke_signed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition inner_invoke_signed_with_bounds
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
     match ε, τ, α with
-    | [ ACCOUNTS ], [], [ instruction; account_infos; signers_seeds ] =>
+    | [ MAX_ACCOUNTS ], [], [ instruction; account_infos; signers_seeds ] =>
       ltac:(M.monadic
-        (let instruction := M.alloc (| instruction |) in
-        let account_infos := M.alloc (| account_infos |) in
-        let signers_seeds := M.alloc (| signers_seeds |) in
-        M.read (|
-          M.catch_return
-            (Ty.apply
-              (Ty.path "core::result::Result")
+        (let instruction :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::instruction::Instruction" ],
+            instruction
+          |) in
+        let account_infos :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
               []
-              [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError" ]) (|
-            ltac:(M.monadic
-              (M.alloc (|
+              [
+                Ty.apply
+                  (Ty.path "slice")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::account_info::AccountInfo" ] ]
+              ],
+            account_infos
+          |) in
+        let signers_seeds :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "slice") [] [ Ty.path "pinocchio::instruction::Signer" ] ],
+            signers_seeds
+          |) in
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError" ]) (|
+          ltac:(M.monadic
+            (M.read (|
+              let~ _ : Ty.tuple [] :=
                 M.read (|
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.match_operator (|
-                        Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                  get_constant (|
+                    "pinocchio::cpi::inner_invoke_signed_with_bounds_discriminant",
+                    Ty.tuple []
+                  |)
+                |) in
+              let~ _ : Ty.tuple [] :=
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              Ty.path "bool",
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "pinocchio::account_info::AccountInfo" ]
+                                        ],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| account_infos |) |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [ Ty.path "pinocchio::instruction::AccountMeta" ],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| instruction |) |),
+                                              "pinocchio::instruction::Instruction",
+                                              "accounts"
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.never_to_any (|
+                          M.read (|
+                            M.return_ (|
+                              Value.StructTuple
+                                "core::result::Result::Err"
+                                []
+                                [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError" ]
+                                [
+                                  Value.StructTuple
+                                    "pinocchio::program_error::ProgramError::NotEnoughAccountKeys"
+                                    []
+                                    []
+                                    []
+                                ]
+                            |)
+                          |)
+                        |)));
+                    fun γ => ltac:(M.monadic (Value.Tuple []))
+                  ]
+                |) in
+              let~ accounts :
+                  Ty.apply
+                    (Ty.path "array")
+                    [ MAX_ACCOUNTS ]
+                    [
+                      Ty.apply
+                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                        []
+                        [ Ty.path "pinocchio::instruction::Account" ]
+                    ] :=
+                lib.repeat (|
+                  M.read (|
+                    get_constant (|
+                      "pinocchio::cpi::inner_invoke_signed_with_bounds::UNINIT",
+                      Ty.apply
+                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                        []
+                        [ Ty.path "pinocchio::instruction::Account" ]
+                    |)
+                  |),
+                  MAX_ACCOUNTS
+                |) in
+              let~ _ : Ty.tuple [] :=
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::ops::control_flow::ControlFlow")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "core::convert::Infallible";
+                            Ty.path "pinocchio::program_error::ProgramError"
+                          ];
+                        Ty.tuple []
+                      ],
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
                         [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "core::convert::Infallible";
+                              Ty.path "pinocchio::program_error::ProgramError"
+                            ];
+                          Ty.tuple []
+                        ],
+                      M.get_trait_method (|
+                        "core::ops::try_trait::Try",
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError" ],
+                        [],
+                        [],
+                        "branch",
+                        [],
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError" ],
+                          M.get_trait_method (|
+                            "core::iter::traits::iterator::Iterator",
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::zip::Zip")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::zip::Zip")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "pinocchio::account_info::AccountInfo" ]
+                                      ];
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [ Ty.path "pinocchio::instruction::AccountMeta" ]
+                                  ];
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::IterMut")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ Ty.path "pinocchio::instruction::Account" ]
+                                  ]
+                              ],
+                            [],
+                            [],
+                            "try_for_each",
+                            [],
+                            [
+                              Ty.function
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.tuple
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.path "pinocchio::account_info::AccountInfo" ]
+                                            ];
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "pinocchio::instruction::AccountMeta" ]
+                                        ];
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ Ty.path "pinocchio::instruction::Account" ]
+                                        ]
+                                    ]
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError"
+                                  ]);
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError" ]
+                            ]
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::zip::Zip")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::zip::Zip")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "pinocchio::account_info::AccountInfo" ]
+                                          ];
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          []
+                                          [ Ty.path "pinocchio::instruction::AccountMeta" ]
+                                      ];
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::IterMut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ Ty.path "pinocchio::instruction::Account" ]
+                                      ]
+                                  ],
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::iter::adapters::zip::Zip")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::zip::Zip")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::slice::iter::Iter")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.path "pinocchio::account_info::AccountInfo" ]
+                                            ];
+                                          Ty.apply
+                                            (Ty.path "core::slice::iter::Iter")
+                                            []
+                                            [ Ty.path "pinocchio::instruction::AccountMeta" ]
+                                        ];
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::IterMut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ Ty.path "pinocchio::instruction::Account" ]
+                                        ]
+                                    ],
+                                  M.get_trait_method (|
+                                    "core::iter::traits::iterator::Iterator",
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::zip::Zip")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "pinocchio::account_info::AccountInfo" ]
+                                          ];
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          []
+                                          [ Ty.path "pinocchio::instruction::AccountMeta" ]
+                                      ],
+                                    [],
+                                    [],
+                                    "zip",
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::IterMut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ Ty.path "pinocchio::instruction::Account" ]
+                                        ]
+                                    ]
+                                  |),
+                                  [
                                     M.call_closure (|
-                                      Ty.path "bool",
-                                      BinOp.lt,
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::zip::Zip")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::slice::iter::Iter")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.path "pinocchio::account_info::AccountInfo" ]
+                                            ];
+                                          Ty.apply
+                                            (Ty.path "core::slice::iter::Iter")
+                                            []
+                                            [ Ty.path "pinocchio::instruction::AccountMeta" ]
+                                        ],
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "pinocchio::account_info::AccountInfo" ]
+                                          ],
+                                        [],
+                                        [],
+                                        "zip",
+                                        [],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::slice::iter::Iter")
+                                            []
+                                            [ Ty.path "pinocchio::instruction::AccountMeta" ]
+                                        ]
+                                      |),
                                       [
                                         M.call_closure (|
-                                          Ty.path "usize",
+                                          Ty.apply
+                                            (Ty.path "core::slice::iter::Iter")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.path "pinocchio::account_info::AccountInfo" ]
+                                            ],
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.path "pinocchio::account_info::AccountInfo" ]
+                                              ],
+                                            "iter",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| account_infos |) |)
+                                            |)
+                                          ]
+                                        |);
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::slice::iter::Iter")
+                                            []
+                                            [ Ty.path "pinocchio::instruction::AccountMeta" ],
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "slice")
                                               []
                                               [ Ty.path "pinocchio::instruction::AccountMeta" ],
-                                            "len",
+                                            "iter",
                                             [],
                                             []
                                           |),
@@ -185,199 +1253,219 @@ Module cpi.
                                               |)
                                             |)
                                           ]
-                                        |);
-                                        ACCOUNTS
+                                        |)
                                       ]
-                                    |)
-                                  |)) in
-                              let _ :=
-                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
+                                    |);
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::IterMut")
                                         []
                                         [
-                                          Ty.tuple [];
-                                          Ty.path "pinocchio::program_error::ProgramError"
-                                        ]
-                                        [
-                                          Value.StructTuple
-                                            "pinocchio::program_error::ProgramError::NotEnoughAccountKeys"
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                             []
-                                            []
-                                            []
-                                        ]
-                                    |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                        ]
-                      |)
-                    |) in
-                  let~ accounts :
-                      Ty.apply
-                        (Ty.path "array")
-                        [ ACCOUNTS ]
-                        [
-                          Ty.apply
-                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                            []
-                            [ Ty.path "pinocchio::instruction::Account" ]
-                        ] :=
-                    repeat (|
-                      M.read (|
-                        get_constant (|
-                          "pinocchio::cpi::invoke_signed::UNINIT",
-                          Ty.apply
-                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                            []
-                            [ Ty.path "pinocchio::instruction::Account" ]
-                        |)
-                      |),
-                      ACCOUNTS
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.use
-                        (M.match_operator (|
-                          Ty.tuple [],
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                              M.get_trait_method (|
-                                "core::iter::traits::collect::IntoIterator",
-                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                                [],
-                                [],
-                                "into_iter",
-                                [],
-                                []
-                              |),
-                              [
-                                Value.StructRecord
-                                  "core::ops::range::Range"
-                                  []
-                                  [ Ty.path "usize" ]
-                                  [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", ACCOUNTS)
-                                  ]
-                              ]
-                            |)
-                          |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let iter := M.copy (| γ |) in
-                                M.loop (|
-                                  Ty.tuple [],
-                                  ltac:(M.monadic
-                                    (let~ _ : Ty.tuple [] :=
-                                      M.read (|
-                                        M.match_operator (|
-                                          Ty.tuple [],
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "core::option::Option")
-                                                []
-                                                [ Ty.path "usize" ],
-                                              M.get_trait_method (|
-                                                "core::iter::traits::iterator::Iterator",
-                                                Ty.apply
-                                                  (Ty.path "core::ops::range::Range")
-                                                  []
-                                                  [ Ty.path "usize" ],
-                                                [],
-                                                [],
-                                                "next",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.MutRef,
-                                                  M.deref (|
-                                                    M.borrow (| Pointer.Kind.MutRef, iter |)
-                                                  |)
-                                                |)
-                                              ]
-                                            |)
-                                          |),
+                                            [ Ty.path "pinocchio::instruction::Account" ]
+                                        ],
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
                                           [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let _ :=
-                                                  M.is_struct_tuple (|
-                                                    γ,
-                                                    "core::option::Option::None"
-                                                  |) in
-                                                M.alloc (|
-                                                  M.never_to_any (| M.read (| M.break (||) |) |)
-                                                |)));
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::option::Option::Some",
-                                                    0
-                                                  |) in
-                                                let index := M.copy (| γ0_0 |) in
-                                                let~ account_info :
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ Ty.path "pinocchio::instruction::Account" ]
+                                          ],
+                                        "iter_mut",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&mut")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    []
+                                                    [ Ty.path "pinocchio::instruction::Account" ]
+                                                ]
+                                            ],
+                                          M.pointer_coercion
+                                            M.PointerCoercion.Unsize
+                                            (Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ MAX_ACCOUNTS ]
+                                                  [
                                                     Ty.apply
-                                                      (Ty.path "&")
+                                                      (Ty.path
+                                                        "core::mem::maybe_uninit::MaybeUninit")
                                                       []
-                                                      [
-                                                        Ty.path
-                                                          "pinocchio::account_info::AccountInfo"
-                                                      ] :=
-                                                  M.read (|
-                                                    M.SubPointer.get_array_field (|
-                                                      M.deref (| M.read (| account_infos |) |),
-                                                      M.read (| index |)
-                                                    |)
-                                                  |) in
-                                                let~ account_meta :
+                                                      [ Ty.path "pinocchio::instruction::Account" ]
+                                                  ]
+                                              ])
+                                            (Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
                                                     Ty.apply
-                                                      (Ty.path "&")
+                                                      (Ty.path
+                                                        "core::mem::maybe_uninit::MaybeUninit")
                                                       []
-                                                      [
-                                                        Ty.path
-                                                          "pinocchio::instruction::AccountMeta"
-                                                      ] :=
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.SubPointer.get_array_field (|
-                                                      M.deref (|
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.deref (| M.read (| instruction |) |),
-                                                            "pinocchio::instruction::Instruction",
-                                                            "accounts"
-                                                          |)
-                                                        |)
-                                                      |),
-                                                      M.read (| index |)
-                                                    |)
-                                                  |) in
+                                                      [ Ty.path "pinocchio::instruction::Account" ]
+                                                  ]
+                                              ]),
+                                          [ M.borrow (| Pointer.Kind.MutRef, accounts |) ]
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                                |)
+                              |)
+                            |);
+                            M.closure
+                              (fun γ =>
+                                ltac:(M.monadic
+                                  match γ with
+                                  | [ α0 ] =>
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.tuple [];
+                                            Ty.path "pinocchio::program_error::ProgramError"
+                                          ],
+                                        M.alloc (|
+                                          Ty.tuple
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "pinocchio::account_info::AccountInfo"
+                                                        ]
+                                                    ];
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.path "pinocchio::instruction::AccountMeta"
+                                                    ]
+                                                ];
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    []
+                                                    [ Ty.path "pinocchio::instruction::Account" ]
+                                                ]
+                                            ],
+                                          α0
+                                        |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                              let γ1_0 :=
+                                                M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                              let γ1_1 :=
+                                                M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
+                                              let account_info :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "pinocchio::account_info::AccountInfo"
+                                                        ]
+                                                    ],
+                                                  γ1_0
+                                                |) in
+                                              let account_meta :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.path "pinocchio::instruction::AccountMeta"
+                                                    ],
+                                                  γ1_1
+                                                |) in
+                                              let account :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "&mut")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::mem::maybe_uninit::MaybeUninit")
+                                                        []
+                                                        [ Ty.path "pinocchio::instruction::Account"
+                                                        ]
+                                                    ],
+                                                  γ0_1
+                                                |) in
+                                              M.read (|
                                                 let~ _ : Ty.tuple [] :=
-                                                  M.read (|
-                                                    M.match_operator (|
-                                                      Ty.tuple [],
-                                                      M.alloc (| Value.Tuple [] |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ :=
-                                                              M.use
-                                                                (M.alloc (|
-                                                                  M.call_closure (|
-                                                                    Ty.path "bool",
-                                                                    M.get_trait_method (|
-                                                                      "core::cmp::PartialEq",
+                                                  M.match_operator (|
+                                                    Ty.tuple [],
+                                                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ :=
+                                                            M.use
+                                                              (M.alloc (|
+                                                                Ty.path "bool",
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  M.get_trait_method (|
+                                                                    "core::cmp::PartialEq",
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              32
+                                                                          ]
+                                                                          [ Ty.path "u8" ]
+                                                                      ],
+                                                                    [],
+                                                                    [
                                                                       Ty.apply
                                                                         (Ty.path "&")
                                                                         []
@@ -390,9 +1478,16 @@ Module cpi.
                                                                                 32
                                                                             ]
                                                                             [ Ty.path "u8" ]
-                                                                        ],
-                                                                      [],
-                                                                      [
+                                                                        ]
+                                                                    ],
+                                                                    "ne",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.alloc (|
                                                                         Ty.apply
                                                                           (Ty.path "&")
                                                                           []
@@ -405,207 +1500,189 @@ Module cpi.
                                                                                   32
                                                                               ]
                                                                               [ Ty.path "u8" ]
-                                                                          ]
-                                                                      ],
-                                                                      "ne",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        M.alloc (|
-                                                                          M.call_closure (|
-                                                                            Ty.apply
-                                                                              (Ty.path "&")
-                                                                              []
-                                                                              [
-                                                                                Ty.apply
-                                                                                  (Ty.path "array")
-                                                                                  [
-                                                                                    Value.Integer
-                                                                                      IntegerKind.Usize
-                                                                                      32
-                                                                                  ]
-                                                                                  [ Ty.path "u8" ]
-                                                                              ],
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "pinocchio::account_info::AccountInfo",
-                                                                              "key",
-                                                                              [],
-                                                                              []
-                                                                            |),
+                                                                          ],
+                                                                        M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
                                                                             [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.read (|
-                                                                                    account_info
+                                                                              Ty.apply
+                                                                                (Ty.path "array")
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    32
+                                                                                ]
+                                                                                [ Ty.path "u8" ]
+                                                                            ],
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "pinocchio::account_info::AccountInfo",
+                                                                            "key",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      account_info
+                                                                                    |)
                                                                                   |)
                                                                                 |)
                                                                               |)
-                                                                            ]
-                                                                          |)
-                                                                        |)
-                                                                      |);
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        M.SubPointer.get_struct_record_field (|
-                                                                          M.deref (|
-                                                                            M.read (|
-                                                                              account_meta
                                                                             |)
-                                                                          |),
-                                                                          "pinocchio::instruction::AccountMeta",
-                                                                          "pubkey"
+                                                                          ]
                                                                         |)
                                                                       |)
-                                                                    ]
-                                                                  |)
-                                                                |)) in
-                                                            let _ :=
-                                                              is_constant_or_break_match (|
-                                                                M.read (| γ |),
-                                                                Value.Bool true
-                                                              |) in
-                                                            M.alloc (|
-                                                              M.never_to_any (|
-                                                                M.read (|
-                                                                  M.return_ (|
-                                                                    Value.StructTuple
-                                                                      "core::result::Result::Err"
-                                                                      []
-                                                                      [
-                                                                        Ty.tuple [];
-                                                                        Ty.path
-                                                                          "pinocchio::program_error::ProgramError"
-                                                                      ]
-                                                                      [
-                                                                        Value.StructTuple
-                                                                          "pinocchio::program_error::ProgramError::InvalidArgument"
-                                                                          []
-                                                                          []
-                                                                          []
-                                                                      ]
-                                                                  |)
+                                                                    |);
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        M.deref (|
+                                                                          M.read (| account_meta |)
+                                                                        |),
+                                                                        "pinocchio::instruction::AccountMeta",
+                                                                        "pubkey"
+                                                                      |)
+                                                                    |)
+                                                                  ]
                                                                 |)
+                                                              |)) in
+                                                          let _ :=
+                                                            is_constant_or_break_match (|
+                                                              M.read (| γ |),
+                                                              Value.Bool true
+                                                            |) in
+                                                          M.never_to_any (|
+                                                            M.read (|
+                                                              M.return_ (|
+                                                                Value.StructTuple
+                                                                  "core::result::Result::Err"
+                                                                  []
+                                                                  [
+                                                                    Ty.tuple [];
+                                                                    Ty.path
+                                                                      "pinocchio::program_error::ProgramError"
+                                                                  ]
+                                                                  [
+                                                                    Value.StructTuple
+                                                                      "pinocchio::program_error::ProgramError::InvalidArgument"
+                                                                      []
+                                                                      []
+                                                                      []
+                                                                  ]
                                                               |)
-                                                            |)));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (M.alloc (| Value.Tuple [] |)))
-                                                      ]
-                                                    |)
+                                                            |)
+                                                          |)));
+                                                      fun γ => ltac:(M.monadic (Value.Tuple []))
+                                                    ]
                                                   |) in
-                                                let~ state :
+                                                let~ invalid_state :
                                                     Ty.path
                                                       "pinocchio::account_info::BorrowState" :=
-                                                  M.read (|
-                                                    M.match_operator (|
-                                                      Ty.path
-                                                        "pinocchio::account_info::BorrowState",
-                                                      M.alloc (| Value.Tuple [] |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ :=
-                                                              M.use
-                                                                (M.SubPointer.get_struct_record_field (|
-                                                                  M.deref (|
-                                                                    M.read (| account_meta |)
-                                                                  |),
-                                                                  "pinocchio::instruction::AccountMeta",
-                                                                  "is_writable"
-                                                                |)) in
-                                                            let _ :=
-                                                              is_constant_or_break_match (|
-                                                                M.read (| γ |),
-                                                                Value.Bool true
-                                                              |) in
-                                                            M.alloc (|
-                                                              Value.StructTuple
-                                                                "pinocchio::account_info::BorrowState::Borrowed"
-                                                                []
-                                                                []
-                                                                []
-                                                            |)));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (M.alloc (|
-                                                              Value.StructTuple
-                                                                "pinocchio::account_info::BorrowState::MutablyBorrowed"
-                                                                []
-                                                                []
-                                                                []
-                                                            |)))
-                                                      ]
-                                                    |)
+                                                  M.match_operator (|
+                                                    Ty.path "pinocchio::account_info::BorrowState",
+                                                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ :=
+                                                            M.use
+                                                              (M.SubPointer.get_struct_record_field (|
+                                                                M.deref (|
+                                                                  M.read (| account_meta |)
+                                                                |),
+                                                                "pinocchio::instruction::AccountMeta",
+                                                                "is_writable"
+                                                              |)) in
+                                                          let _ :=
+                                                            is_constant_or_break_match (|
+                                                              M.read (| γ |),
+                                                              Value.Bool true
+                                                            |) in
+                                                          Value.StructTuple
+                                                            "pinocchio::account_info::BorrowState::Borrowed"
+                                                            []
+                                                            []
+                                                            []));
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (Value.StructTuple
+                                                            "pinocchio::account_info::BorrowState::MutablyBorrowed"
+                                                            []
+                                                            []
+                                                            []))
+                                                    ]
                                                   |) in
                                                 let~ _ : Ty.tuple [] :=
-                                                  M.read (|
-                                                    M.match_operator (|
-                                                      Ty.tuple [],
-                                                      M.alloc (| Value.Tuple [] |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ :=
-                                                              M.use
-                                                                (M.alloc (|
-                                                                  M.call_closure (|
-                                                                    Ty.path "bool",
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "pinocchio::account_info::AccountInfo",
-                                                                      "is_borrowed",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        M.deref (|
-                                                                          M.read (| account_info |)
+                                                  M.match_operator (|
+                                                    Ty.tuple [],
+                                                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ :=
+                                                            M.use
+                                                              (M.alloc (|
+                                                                Ty.path "bool",
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "pinocchio::account_info::AccountInfo",
+                                                                    "is_borrowed",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (|
+                                                                          M.deref (|
+                                                                            M.read (|
+                                                                              account_info
+                                                                            |)
+                                                                          |)
                                                                         |)
-                                                                      |);
-                                                                      M.read (| state |)
-                                                                    ]
-                                                                  |)
-                                                                |)) in
-                                                            let _ :=
-                                                              is_constant_or_break_match (|
-                                                                M.read (| γ |),
-                                                                Value.Bool true
-                                                              |) in
-                                                            M.alloc (|
-                                                              M.never_to_any (|
-                                                                M.read (|
-                                                                  M.return_ (|
-                                                                    Value.StructTuple
-                                                                      "core::result::Result::Err"
-                                                                      []
-                                                                      [
-                                                                        Ty.tuple [];
-                                                                        Ty.path
-                                                                          "pinocchio::program_error::ProgramError"
-                                                                      ]
-                                                                      [
-                                                                        Value.StructTuple
-                                                                          "pinocchio::program_error::ProgramError::AccountBorrowFailed"
-                                                                          []
-                                                                          []
-                                                                          []
-                                                                      ]
-                                                                  |)
+                                                                      |)
+                                                                    |);
+                                                                    M.read (| invalid_state |)
+                                                                  ]
                                                                 |)
+                                                              |)) in
+                                                          let _ :=
+                                                            is_constant_or_break_match (|
+                                                              M.read (| γ |),
+                                                              Value.Bool true
+                                                            |) in
+                                                          M.never_to_any (|
+                                                            M.read (|
+                                                              M.return_ (|
+                                                                Value.StructTuple
+                                                                  "core::result::Result::Err"
+                                                                  []
+                                                                  [
+                                                                    Ty.tuple [];
+                                                                    Ty.path
+                                                                      "pinocchio::program_error::ProgramError"
+                                                                  ]
+                                                                  [
+                                                                    Value.StructTuple
+                                                                      "pinocchio::program_error::ProgramError::AccountBorrowFailed"
+                                                                      []
+                                                                      []
+                                                                      []
+                                                                  ]
                                                               |)
-                                                            |)));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (M.alloc (| Value.Tuple [] |)))
-                                                      ]
-                                                    |)
+                                                            |)
+                                                          |)));
+                                                      fun γ => ltac:(M.monadic (Value.Tuple []))
+                                                    ]
                                                   |) in
                                                 let~ _ :
                                                     Ty.apply
@@ -632,10 +1709,7 @@ Module cpi.
                                                     [
                                                       M.borrow (|
                                                         Pointer.Kind.MutRef,
-                                                        M.SubPointer.get_array_field (|
-                                                          accounts,
-                                                          M.read (| index |)
-                                                        |)
+                                                        M.deref (| M.read (| account |) |)
                                                       |);
                                                       M.call_closure (|
                                                         Ty.path "pinocchio::instruction::Account",
@@ -658,1164 +1732,279 @@ Module cpi.
                                                         |),
                                                         [
                                                           M.read (|
-                                                            M.SubPointer.get_array_field (|
-                                                              M.deref (|
-                                                                M.read (| account_infos |)
-                                                              |),
-                                                              M.read (| index |)
-                                                            |)
+                                                            M.deref (| M.read (| account_info |) |)
                                                           |)
                                                         ]
                                                       |)
                                                     ]
                                                   |) in
-                                                M.alloc (| Value.Tuple [] |)))
-                                          ]
-                                        |)
-                                      |) in
-                                    M.alloc (| Value.Tuple [] |)))
-                                |)))
-                          ]
-                        |))
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      let~ _ : Ty.tuple [] :=
-                        M.call_closure (|
-                          Ty.tuple [],
-                          M.get_function (| "pinocchio::cpi::invoke_signed_unchecked", [], [] |),
-                          [
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| instruction |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "slice")
-                                        []
-                                        [ Ty.path "pinocchio::instruction::Account" ]
-                                    ],
-                                  M.get_function (|
-                                    "core::slice::raw::from_raw_parts",
-                                    [],
-                                    [ Ty.path "pinocchio::instruction::Account" ]
-                                  |),
-                                  [
-                                    M.cast
-                                      (Ty.apply
-                                        (Ty.path "*const")
-                                        []
-                                        [ Ty.path "pinocchio::instruction::Account" ])
-                                      (M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "*const")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                              []
-                                              [ Ty.path "pinocchio::instruction::Account" ]
-                                          ],
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "slice")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                                []
-                                                [ Ty.path "pinocchio::instruction::Account" ]
-                                            ],
-                                          "as_ptr",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.borrow (| Pointer.Kind.Ref, accounts |))
+                                                M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.tuple [];
+                                                      Ty.path
+                                                        "pinocchio::program_error::ProgramError"
+                                                    ],
+                                                  Value.StructTuple
+                                                    "core::result::Result::Ok"
+                                                    []
+                                                    [
+                                                      Ty.tuple [];
+                                                      Ty.path
+                                                        "pinocchio::program_error::ProgramError"
+                                                    ]
+                                                    [ Value.Tuple [] ]
+                                                |)
+                                              |)))
                                         ]
-                                      |));
-                                    ACCOUNTS
-                                  ]
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| signers_seeds |) |)
-                            |)
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
+                                  end))
                           ]
-                        |) in
-                      M.alloc (| Value.Tuple [] |)
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Ok"
-                      []
-                      [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError" ]
-                      [ Value.Tuple [] ]
-                  |)
-                |)
-              |)))
-          |)
-        |)))
-    | _, _, _ => M.impossible "wrong number of arguments"
-    end.
-  
-  Global Instance Instance_IsFunction_invoke_signed :
-    M.IsFunction.C "pinocchio::cpi::invoke_signed" invoke_signed.
-  Admitted.
-  Global Typeclasses Opaque invoke_signed.
-  
-  Module invoke_signed.
-    Definition value_UNINIT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic
-        (M.alloc (|
-          M.call_closure (|
-            Ty.apply
-              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-              []
-              [ Ty.path "pinocchio::instruction::Account" ],
-            M.get_associated_function (|
-              Ty.apply
-                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                []
-                [ Ty.path "pinocchio::instruction::Account" ],
-              "uninit",
-              [],
-              []
-            |),
-            []
-          |)
-        |))).
-    
-    Global Instance Instance_IsConstant_value_UNINIT :
-      M.IsFunction.C "pinocchio::cpi::invoke_signed::UNINIT" value_UNINIT.
-    Admitted.
-    Global Typeclasses Opaque value_UNINIT.
-  End invoke_signed.
-  
-  (*
-  pub fn slice_invoke_signed(
-      instruction: &Instruction,
-      account_infos: &[&AccountInfo],
-      signers_seeds: &[Signer],
-  ) -> ProgramResult {
-      if instruction.accounts.len() < account_infos.len() {
-          return Err(ProgramError::NotEnoughAccountKeys);
-      }
-  
-      if account_infos.len() > MAX_CPI_ACCOUNTS {
-          return Err(ProgramError::InvalidArgument);
-      }
-  
-      const UNINIT: MaybeUninit<Account> = MaybeUninit::<Account>::uninit();
-      let mut accounts = [UNINIT; MAX_CPI_ACCOUNTS];
-      let mut len = 0;
-  
-      for (account_info, account_meta) in account_infos.iter().zip(instruction.accounts.iter()) {
-          if account_info.key() != account_meta.pubkey {
-              return Err(ProgramError::InvalidArgument);
-          }
-  
-          let state = if account_meta.is_writable {
-              BorrowState::Borrowed
-          } else {
-              BorrowState::MutablyBorrowed
-          };
-  
-          if account_info.is_borrowed(state) {
-              return Err(ProgramError::AccountBorrowFailed);
-          }
-  
-          // SAFETY: The number of accounts has been validated to be less than
-          // `MAX_CPI_ACCOUNTS`.
-          unsafe {
-              accounts
-                  .get_unchecked_mut(len)
-                  .write(Account::from( *account_info));
-          }
-  
-          len += 1;
-      }
-      // SAFETY: The accounts have been validated.
-      unsafe {
-          invoke_signed_unchecked(
-              instruction,
-              core::slice::from_raw_parts(accounts.as_ptr() as _, len),
-              signers_seeds,
-          );
-      }
-  
-      Ok(())
-  }
-  *)
-  Definition slice_invoke_signed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    match ε, τ, α with
-    | [], [], [ instruction; account_infos; signers_seeds ] =>
-      ltac:(M.monadic
-        (let instruction := M.alloc (| instruction |) in
-        let account_infos := M.alloc (| account_infos |) in
-        let signers_seeds := M.alloc (| signers_seeds |) in
-        M.read (|
-          M.catch_return
-            (Ty.apply
-              (Ty.path "core::result::Result")
-              []
-              [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError" ]) (|
-            ltac:(M.monadic
-              (M.alloc (|
+                        |)
+                      ]
+                    |)
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Break",
+                            0
+                          |) in
+                        let residual :=
+                          M.copy (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "pinocchio::program_error::ProgramError"
+                              ],
+                            γ0_0
+                          |) in
+                        M.never_to_any (|
+                          M.read (|
+                            M.return_ (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError" ],
+                                M.get_trait_method (|
+                                  "core::ops::try_trait::FromResidual",
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError"
+                                    ],
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "pinocchio::program_error::ProgramError"
+                                      ]
+                                  ],
+                                  "from_residual",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| residual |) ]
+                              |)
+                            |)
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Continue",
+                            0
+                          |) in
+                        let val := M.copy (| Ty.tuple [], γ0_0 |) in
+                        M.read (| val |)))
+                  ]
+                |) in
+              let~ _ : Ty.tuple [] :=
                 M.read (|
                   let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.match_operator (|
-                        Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      BinOp.lt,
-                                      [
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "slice")
-                                              []
-                                              [ Ty.path "pinocchio::instruction::AccountMeta" ],
-                                            "len",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.deref (| M.read (| instruction |) |),
-                                                    "pinocchio::instruction::Instruction",
-                                                    "accounts"
-                                                  |)
-                                                |)
-                                              |)
-                                            |)
-                                          ]
-                                        |);
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "slice")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [ Ty.path "pinocchio::account_info::AccountInfo" ]
-                                              ],
-                                            "len",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| account_infos |) |)
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                    |)
-                                  |)) in
-                              let _ :=
-                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        []
-                                        [
-                                          Ty.tuple [];
-                                          Ty.path "pinocchio::program_error::ProgramError"
-                                        ]
-                                        [
-                                          Value.StructTuple
-                                            "pinocchio::program_error::ProgramError::NotEnoughAccountKeys"
-                                            []
-                                            []
-                                            []
-                                        ]
-                                    |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                        ]
-                      |)
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.match_operator (|
-                        Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      BinOp.gt,
-                                      [
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "slice")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [ Ty.path "pinocchio::account_info::AccountInfo" ]
-                                              ],
-                                            "len",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| account_infos |) |)
-                                            |)
-                                          ]
-                                        |);
-                                        M.read (|
-                                          get_constant (|
-                                            "pinocchio::cpi::MAX_CPI_ACCOUNTS",
-                                            Ty.path "usize"
-                                          |)
-                                        |)
-                                      ]
-                                    |)
-                                  |)) in
-                              let _ :=
-                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        []
-                                        [
-                                          Ty.tuple [];
-                                          Ty.path "pinocchio::program_error::ProgramError"
-                                        ]
-                                        [
-                                          Value.StructTuple
-                                            "pinocchio::program_error::ProgramError::InvalidArgument"
-                                            []
-                                            []
-                                            []
-                                        ]
-                                    |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                        ]
-                      |)
-                    |) in
-                  let~ accounts :
-                      Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 64 ]
-                        [
-                          Ty.apply
-                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                            []
-                            [ Ty.path "pinocchio::instruction::Account" ]
-                        ] :=
-                    repeat (|
-                      M.read (|
-                        get_constant (|
-                          "pinocchio::cpi::slice_invoke_signed::UNINIT",
-                          Ty.apply
-                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                            []
-                            [ Ty.path "pinocchio::instruction::Account" ]
-                        |)
-                      |),
-                      Value.Integer IntegerKind.Usize 64
-                    |) in
-                  let~ len : Ty.path "usize" := Value.Integer IntegerKind.Usize 0 in
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.use
-                        (M.match_operator (|
-                          Ty.tuple [],
-                          M.alloc (|
+                    M.call_closure (|
+                      Ty.tuple [],
+                      M.get_function (| "pinocchio::cpi::invoke_signed_unchecked", [], [] |),
+                      [
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| instruction |) |) |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
                             M.call_closure (|
                               Ty.apply
-                                (Ty.path "core::iter::adapters::zip::Zip")
+                                (Ty.path "&")
                                 []
                                 [
                                   Ty.apply
-                                    (Ty.path "core::slice::iter::Iter")
+                                    (Ty.path "slice")
                                     []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "pinocchio::account_info::AccountInfo" ]
-                                    ];
-                                  Ty.apply
-                                    (Ty.path "core::slice::iter::Iter")
-                                    []
-                                    [ Ty.path "pinocchio::instruction::AccountMeta" ]
+                                    [ Ty.path "pinocchio::instruction::Account" ]
                                 ],
-                              M.get_trait_method (|
-                                "core::iter::traits::collect::IntoIterator",
-                                Ty.apply
-                                  (Ty.path "core::iter::adapters::zip::Zip")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::slice::iter::Iter")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "pinocchio::account_info::AccountInfo" ]
-                                      ];
-                                    Ty.apply
-                                      (Ty.path "core::slice::iter::Iter")
-                                      []
-                                      [ Ty.path "pinocchio::instruction::AccountMeta" ]
-                                  ],
+                              M.get_function (|
+                                "core::slice::raw::from_raw_parts",
                                 [],
-                                [],
-                                "into_iter",
-                                [],
-                                []
+                                [ Ty.path "pinocchio::instruction::Account" ]
                               |),
                               [
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "core::iter::adapters::zip::Zip")
+                                M.cast
+                                  (Ty.apply
+                                    (Ty.path "*const")
                                     []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::slice::iter::Iter")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.path "pinocchio::account_info::AccountInfo" ]
-                                        ];
-                                      Ty.apply
-                                        (Ty.path "core::slice::iter::Iter")
-                                        []
-                                        [ Ty.path "pinocchio::instruction::AccountMeta" ]
-                                    ],
-                                  M.get_trait_method (|
-                                    "core::iter::traits::iterator::Iterator",
+                                    [ Ty.path "pinocchio::instruction::Account" ])
+                                  (M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::slice::iter::Iter")
+                                      (Ty.path "*const")
                                       []
                                       [
                                         Ty.apply
-                                          (Ty.path "&")
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                           []
-                                          [ Ty.path "pinocchio::account_info::AccountInfo" ]
+                                          [ Ty.path "pinocchio::instruction::Account" ]
                                       ],
-                                    [],
-                                    [],
-                                    "zip",
-                                    [],
-                                    [
+                                    M.get_associated_function (|
                                       Ty.apply
-                                        (Ty.path "core::slice::iter::Iter")
-                                        []
-                                        [ Ty.path "pinocchio::instruction::AccountMeta" ]
-                                    ]
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "core::slice::iter::Iter")
+                                        (Ty.path "slice")
                                         []
                                         [
                                           Ty.apply
-                                            (Ty.path "&")
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                             []
-                                            [ Ty.path "pinocchio::account_info::AccountInfo" ]
+                                            [ Ty.path "pinocchio::instruction::Account" ]
                                         ],
-                                      M.get_associated_function (|
+                                      "as_ptr",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.call_closure (|
                                         Ty.apply
-                                          (Ty.path "slice")
+                                          (Ty.path "&")
                                           []
                                           [
                                             Ty.apply
-                                              (Ty.path "&")
+                                              (Ty.path "slice")
                                               []
-                                              [ Ty.path "pinocchio::account_info::AccountInfo" ]
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
+                                                  [ Ty.path "pinocchio::instruction::Account" ]
+                                              ]
                                           ],
-                                        "iter",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| account_infos |) |)
-                                        |)
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "core::slice::iter::Iter")
-                                        []
-                                        [ Ty.path "pinocchio::instruction::AccountMeta" ],
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
-                                          [ Ty.path "pinocchio::instruction::AccountMeta" ],
-                                        "iter",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| instruction |) |),
-                                                "pinocchio::instruction::Instruction",
-                                                "accounts"
-                                              |)
-                                            |)
+                                        M.pointer_coercion
+                                          M.PointerCoercion.Unsize
+                                          (Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ MAX_ACCOUNTS ]
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    []
+                                                    [ Ty.path "pinocchio::instruction::Account" ]
+                                                ]
+                                            ])
+                                          (Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    []
+                                                    [ Ty.path "pinocchio::instruction::Account" ]
+                                                ]
+                                            ]),
+                                        [ M.borrow (| Pointer.Kind.Ref, accounts |) ]
+                                      |)
+                                    ]
+                                  |));
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [ Ty.path "pinocchio::instruction::AccountMeta" ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| instruction |) |),
+                                            "pinocchio::instruction::Instruction",
+                                            "accounts"
                                           |)
                                         |)
-                                      ]
+                                      |)
                                     |)
                                   ]
                                 |)
                               ]
                             |)
-                          |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let iter := M.copy (| γ |) in
-                                M.loop (|
-                                  Ty.tuple [],
-                                  ltac:(M.monadic
-                                    (let~ _ : Ty.tuple [] :=
-                                      M.read (|
-                                        M.match_operator (|
-                                          Ty.tuple [],
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "core::option::Option")
-                                                []
-                                                [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [
-                                                              Ty.path
-                                                                "pinocchio::account_info::AccountInfo"
-                                                            ]
-                                                        ];
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "pinocchio::instruction::AccountMeta"
-                                                        ]
-                                                    ]
-                                                ],
-                                              M.get_trait_method (|
-                                                "core::iter::traits::iterator::Iterator",
-                                                Ty.apply
-                                                  (Ty.path "core::iter::adapters::zip::Zip")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::slice::iter::Iter")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "pinocchio::account_info::AccountInfo"
-                                                          ]
-                                                      ];
-                                                    Ty.apply
-                                                      (Ty.path "core::slice::iter::Iter")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "pinocchio::instruction::AccountMeta"
-                                                      ]
-                                                  ],
-                                                [],
-                                                [],
-                                                "next",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.MutRef,
-                                                  M.deref (|
-                                                    M.borrow (| Pointer.Kind.MutRef, iter |)
-                                                  |)
-                                                |)
-                                              ]
-                                            |)
-                                          |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let _ :=
-                                                  M.is_struct_tuple (|
-                                                    γ,
-                                                    "core::option::Option::None"
-                                                  |) in
-                                                M.alloc (|
-                                                  M.never_to_any (| M.read (| M.break (||) |) |)
-                                                |)));
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::option::Option::Some",
-                                                    0
-                                                  |) in
-                                                let γ1_0 :=
-                                                  M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
-                                                let γ1_1 :=
-                                                  M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                                let account_info := M.copy (| γ1_0 |) in
-                                                let account_meta := M.copy (| γ1_1 |) in
-                                                let~ _ : Ty.tuple [] :=
-                                                  M.read (|
-                                                    M.match_operator (|
-                                                      Ty.tuple [],
-                                                      M.alloc (| Value.Tuple [] |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ :=
-                                                              M.use
-                                                                (M.alloc (|
-                                                                  M.call_closure (|
-                                                                    Ty.path "bool",
-                                                                    M.get_trait_method (|
-                                                                      "core::cmp::PartialEq",
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        []
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path "array")
-                                                                            [
-                                                                              Value.Integer
-                                                                                IntegerKind.Usize
-                                                                                32
-                                                                            ]
-                                                                            [ Ty.path "u8" ]
-                                                                        ],
-                                                                      [],
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [
-                                                                            Ty.apply
-                                                                              (Ty.path "array")
-                                                                              [
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  32
-                                                                              ]
-                                                                              [ Ty.path "u8" ]
-                                                                          ]
-                                                                      ],
-                                                                      "ne",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        M.alloc (|
-                                                                          M.call_closure (|
-                                                                            Ty.apply
-                                                                              (Ty.path "&")
-                                                                              []
-                                                                              [
-                                                                                Ty.apply
-                                                                                  (Ty.path "array")
-                                                                                  [
-                                                                                    Value.Integer
-                                                                                      IntegerKind.Usize
-                                                                                      32
-                                                                                  ]
-                                                                                  [ Ty.path "u8" ]
-                                                                              ],
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "pinocchio::account_info::AccountInfo",
-                                                                              "key",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.read (|
-                                                                                    M.deref (|
-                                                                                      M.read (|
-                                                                                        account_info
-                                                                                      |)
-                                                                                    |)
-                                                                                  |)
-                                                                                |)
-                                                                              |)
-                                                                            ]
-                                                                          |)
-                                                                        |)
-                                                                      |);
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        M.SubPointer.get_struct_record_field (|
-                                                                          M.deref (|
-                                                                            M.read (|
-                                                                              account_meta
-                                                                            |)
-                                                                          |),
-                                                                          "pinocchio::instruction::AccountMeta",
-                                                                          "pubkey"
-                                                                        |)
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                |)) in
-                                                            let _ :=
-                                                              is_constant_or_break_match (|
-                                                                M.read (| γ |),
-                                                                Value.Bool true
-                                                              |) in
-                                                            M.alloc (|
-                                                              M.never_to_any (|
-                                                                M.read (|
-                                                                  M.return_ (|
-                                                                    Value.StructTuple
-                                                                      "core::result::Result::Err"
-                                                                      []
-                                                                      [
-                                                                        Ty.tuple [];
-                                                                        Ty.path
-                                                                          "pinocchio::program_error::ProgramError"
-                                                                      ]
-                                                                      [
-                                                                        Value.StructTuple
-                                                                          "pinocchio::program_error::ProgramError::InvalidArgument"
-                                                                          []
-                                                                          []
-                                                                          []
-                                                                      ]
-                                                                  |)
-                                                                |)
-                                                              |)
-                                                            |)));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (M.alloc (| Value.Tuple [] |)))
-                                                      ]
-                                                    |)
-                                                  |) in
-                                                let~ state :
-                                                    Ty.path
-                                                      "pinocchio::account_info::BorrowState" :=
-                                                  M.read (|
-                                                    M.match_operator (|
-                                                      Ty.path
-                                                        "pinocchio::account_info::BorrowState",
-                                                      M.alloc (| Value.Tuple [] |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ :=
-                                                              M.use
-                                                                (M.SubPointer.get_struct_record_field (|
-                                                                  M.deref (|
-                                                                    M.read (| account_meta |)
-                                                                  |),
-                                                                  "pinocchio::instruction::AccountMeta",
-                                                                  "is_writable"
-                                                                |)) in
-                                                            let _ :=
-                                                              is_constant_or_break_match (|
-                                                                M.read (| γ |),
-                                                                Value.Bool true
-                                                              |) in
-                                                            M.alloc (|
-                                                              Value.StructTuple
-                                                                "pinocchio::account_info::BorrowState::Borrowed"
-                                                                []
-                                                                []
-                                                                []
-                                                            |)));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (M.alloc (|
-                                                              Value.StructTuple
-                                                                "pinocchio::account_info::BorrowState::MutablyBorrowed"
-                                                                []
-                                                                []
-                                                                []
-                                                            |)))
-                                                      ]
-                                                    |)
-                                                  |) in
-                                                let~ _ : Ty.tuple [] :=
-                                                  M.read (|
-                                                    M.match_operator (|
-                                                      Ty.tuple [],
-                                                      M.alloc (| Value.Tuple [] |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ :=
-                                                              M.use
-                                                                (M.alloc (|
-                                                                  M.call_closure (|
-                                                                    Ty.path "bool",
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "pinocchio::account_info::AccountInfo",
-                                                                      "is_borrowed",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        M.deref (|
-                                                                          M.read (|
-                                                                            M.deref (|
-                                                                              M.read (|
-                                                                                account_info
-                                                                              |)
-                                                                            |)
-                                                                          |)
-                                                                        |)
-                                                                      |);
-                                                                      M.read (| state |)
-                                                                    ]
-                                                                  |)
-                                                                |)) in
-                                                            let _ :=
-                                                              is_constant_or_break_match (|
-                                                                M.read (| γ |),
-                                                                Value.Bool true
-                                                              |) in
-                                                            M.alloc (|
-                                                              M.never_to_any (|
-                                                                M.read (|
-                                                                  M.return_ (|
-                                                                    Value.StructTuple
-                                                                      "core::result::Result::Err"
-                                                                      []
-                                                                      [
-                                                                        Ty.tuple [];
-                                                                        Ty.path
-                                                                          "pinocchio::program_error::ProgramError"
-                                                                      ]
-                                                                      [
-                                                                        Value.StructTuple
-                                                                          "pinocchio::program_error::ProgramError::AccountBorrowFailed"
-                                                                          []
-                                                                          []
-                                                                          []
-                                                                      ]
-                                                                  |)
-                                                                |)
-                                                              |)
-                                                            |)));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (M.alloc (| Value.Tuple [] |)))
-                                                      ]
-                                                    |)
-                                                  |) in
-                                                let~ _ : Ty.tuple [] :=
-                                                  M.read (|
-                                                    let~ _ :
-                                                        Ty.apply
-                                                          (Ty.path "&mut")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "pinocchio::instruction::Account"
-                                                          ] :=
-                                                      M.call_closure (|
-                                                        Ty.apply
-                                                          (Ty.path "&mut")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "pinocchio::instruction::Account"
-                                                          ],
-                                                        M.get_associated_function (|
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "core::mem::maybe_uninit::MaybeUninit")
-                                                            []
-                                                            [
-                                                              Ty.path
-                                                                "pinocchio::instruction::Account"
-                                                            ],
-                                                          "write",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.borrow (|
-                                                            Pointer.Kind.MutRef,
-                                                            M.deref (|
-                                                              M.call_closure (|
-                                                                Ty.apply
-                                                                  (Ty.path "&mut")
-                                                                  []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "core::mem::maybe_uninit::MaybeUninit")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "pinocchio::instruction::Account"
-                                                                      ]
-                                                                  ],
-                                                                M.get_associated_function (|
-                                                                  Ty.apply
-                                                                    (Ty.path "slice")
-                                                                    []
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::mem::maybe_uninit::MaybeUninit")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "pinocchio::instruction::Account"
-                                                                        ]
-                                                                    ],
-                                                                  "get_unchecked_mut",
-                                                                  [],
-                                                                  [ Ty.path "usize" ]
-                                                                |),
-                                                                [
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.borrow (|
-                                                                      Pointer.Kind.MutRef,
-                                                                      accounts
-                                                                    |));
-                                                                  M.read (| len |)
-                                                                ]
-                                                              |)
-                                                            |)
-                                                          |);
-                                                          M.call_closure (|
-                                                            Ty.path
-                                                              "pinocchio::instruction::Account",
-                                                            M.get_trait_method (|
-                                                              "core::convert::From",
-                                                              Ty.path
-                                                                "pinocchio::instruction::Account",
-                                                              [],
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "pinocchio::account_info::AccountInfo"
-                                                                  ]
-                                                              ],
-                                                              "from",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (|
-                                                                M.deref (|
-                                                                  M.read (| account_info |)
-                                                                |)
-                                                              |)
-                                                            ]
-                                                          |)
-                                                        ]
-                                                      |) in
-                                                    M.alloc (| Value.Tuple [] |)
-                                                  |) in
-                                                let~ _ : Ty.tuple [] :=
-                                                  let β := len in
-                                                  M.write (|
-                                                    β,
-                                                    M.call_closure (|
-                                                      Ty.path "usize",
-                                                      BinOp.Wrap.add,
-                                                      [
-                                                        M.read (| β |);
-                                                        Value.Integer IntegerKind.Usize 1
-                                                      ]
-                                                    |)
-                                                  |) in
-                                                M.alloc (| Value.Tuple [] |)))
-                                          ]
-                                        |)
-                                      |) in
-                                    M.alloc (| Value.Tuple [] |)))
-                                |)))
-                          ]
-                        |))
+                          |)
+                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| signers_seeds |) |) |)
+                      ]
                     |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      let~ _ : Ty.tuple [] :=
-                        M.call_closure (|
-                          Ty.tuple [],
-                          M.get_function (| "pinocchio::cpi::invoke_signed_unchecked", [], [] |),
-                          [
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| instruction |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "slice")
-                                        []
-                                        [ Ty.path "pinocchio::instruction::Account" ]
-                                    ],
-                                  M.get_function (|
-                                    "core::slice::raw::from_raw_parts",
-                                    [],
-                                    [ Ty.path "pinocchio::instruction::Account" ]
-                                  |),
-                                  [
-                                    M.cast
-                                      (Ty.apply
-                                        (Ty.path "*const")
-                                        []
-                                        [ Ty.path "pinocchio::instruction::Account" ])
-                                      (M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "*const")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                              []
-                                              [ Ty.path "pinocchio::instruction::Account" ]
-                                          ],
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "slice")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                                []
-                                                [ Ty.path "pinocchio::instruction::Account" ]
-                                            ],
-                                          "as_ptr",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.borrow (| Pointer.Kind.Ref, accounts |))
-                                        ]
-                                      |));
-                                    M.read (| len |)
-                                  ]
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| signers_seeds |) |)
-                            |)
-                          ]
-                        |) in
-                      M.alloc (| Value.Tuple [] |)
-                    |) in
-                  M.alloc (|
-                    Value.StructTuple
-                      "core::result::Result::Ok"
-                      []
-                      [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError" ]
-                      [ Value.Tuple [] ]
-                  |)
-                |)
-              |)))
-          |)
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                |) in
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError" ],
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "pinocchio::program_error::ProgramError" ]
+                  [ Value.Tuple [] ]
+              |)
+            |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_slice_invoke_signed :
-    M.IsFunction.C "pinocchio::cpi::slice_invoke_signed" slice_invoke_signed.
+  Global Instance Instance_IsFunction_inner_invoke_signed_with_bounds :
+    M.IsFunction.C
+      "pinocchio::cpi::inner_invoke_signed_with_bounds"
+      inner_invoke_signed_with_bounds.
   Admitted.
-  Global Typeclasses Opaque slice_invoke_signed.
+  Global Typeclasses Opaque inner_invoke_signed_with_bounds.
   
-  Module slice_invoke_signed.
+  Module inner_invoke_signed_with_bounds.
     Definition value_UNINIT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
+          Ty.apply
+            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+            []
+            [ Ty.path "pinocchio::instruction::Account" ],
           M.call_closure (|
             Ty.apply
               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -1835,10 +2024,10 @@ Module cpi.
         |))).
     
     Global Instance Instance_IsConstant_value_UNINIT :
-      M.IsFunction.C "pinocchio::cpi::slice_invoke_signed::UNINIT" value_UNINIT.
+      M.IsFunction.C "pinocchio::cpi::inner_invoke_signed_with_bounds::UNINIT" value_UNINIT.
     Admitted.
     Global Typeclasses Opaque value_UNINIT.
-  End slice_invoke_signed.
+  End inner_invoke_signed_with_bounds.
   
   (*
   pub unsafe fn invoke_unchecked(instruction: &Instruction, accounts: &[Account]) {
@@ -1849,20 +2038,63 @@ Module cpi.
     match ε, τ, α with
     | [], [], [ instruction; accounts ] =>
       ltac:(M.monadic
-        (let instruction := M.alloc (| instruction |) in
-        let accounts := M.alloc (| accounts |) in
+        (let instruction :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::instruction::Instruction" ],
+            instruction
+          |) in
+        let accounts :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "slice") [] [ Ty.path "pinocchio::instruction::Account" ] ],
+            accounts
+          |) in
         M.call_closure (|
           Ty.tuple [],
           M.get_function (| "pinocchio::cpi::invoke_signed_unchecked", [], [] |),
           [
             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| instruction |) |) |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| accounts |) |) |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [] |) |) |)
-              |))
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "slice") [] [ Ty.path "pinocchio::instruction::Signer" ] ],
+              M.pointer_coercion
+                M.PointerCoercion.Unsize
+                (Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 0 ]
+                      [ Ty.path "pinocchio::instruction::Signer" ]
+                  ])
+                (Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "pinocchio::instruction::Signer" ] ]),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 0 ]
+                          [ Ty.path "pinocchio::instruction::Signer" ],
+                        Value.Array []
+                      |)
+                    |)
+                  |)
+                |)
+              ]
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1935,9 +2167,27 @@ Module cpi.
     match ε, τ, α with
     | [], [], [ instruction; accounts; signers_seeds ] =>
       ltac:(M.monadic
-        (let instruction := M.alloc (| instruction |) in
-        let accounts := M.alloc (| accounts |) in
-        let signers_seeds := M.alloc (| signers_seeds |) in
+        (let instruction :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::instruction::Instruction" ],
+            instruction
+          |) in
+        let accounts :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "slice") [] [ Ty.path "pinocchio::instruction::Account" ] ],
+            accounts
+          |) in
+        let signers_seeds :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "slice") [] [ Ty.path "pinocchio::instruction::Signer" ] ],
+            signers_seeds
+          |) in
         M.read (|
           let~ _ :
               Ty.tuple
@@ -1994,7 +2244,7 @@ Module cpi.
                   [ M.read (| instruction |); M.read (| accounts |); M.read (| signers_seeds |) ]
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -2005,7 +2255,7 @@ Module cpi.
   Global Typeclasses Opaque invoke_signed_unchecked.
   
   Definition value_MAX_RETURN_DATA (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 1024 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 1024 |))).
   
   Global Instance Instance_IsConstant_value_MAX_RETURN_DATA :
     M.IsFunction.C "pinocchio::cpi::MAX_RETURN_DATA" value_MAX_RETURN_DATA.
@@ -2027,7 +2277,11 @@ Module cpi.
     match ε, τ, α with
     | [], [], [ data ] =>
       ltac:(M.monadic
-        (let data := M.alloc (| data |) in
+        (let data :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+            data
+          |) in
         M.read (|
           let~ _ : Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
             M.call_closure (|
@@ -2039,7 +2293,7 @@ Module cpi.
               |),
               [ M.read (| data |) ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -2141,7 +2395,11 @@ Module cpi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::cpi::ReturnData" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -2165,14 +2423,18 @@ Module cpi.
     
     (*
         pub fn as_slice(&self) -> &[u8] {
-            unsafe { core::slice::from_raw_parts(self.data.as_ptr() as _, self.size) }
+            unsafe { from_raw_parts(self.data.as_ptr() as _, self.size) }
         }
     *)
     Definition as_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::cpi::ReturnData" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -2207,16 +2469,62 @@ Module cpi.
                         []
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "pinocchio::cpi::ReturnData",
-                              "data"
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [ Ty.path "u8" ]
+                                ]
+                            ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1024 ]
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ Ty.path "u8" ]
+                                  ]
+                              ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ Ty.path "u8" ]
+                                  ]
+                              ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "pinocchio::cpi::ReturnData",
+                                "data"
+                              |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |));
                   M.read (|
@@ -2253,7 +2561,11 @@ Module cpi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::cpi::ReturnData" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|

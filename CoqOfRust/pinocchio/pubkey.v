@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module pubkey.
   Definition value_PUBKEY_BYTES (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 32 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 32 |))).
   
   Global Instance Instance_IsConstant_value_PUBKEY_BYTES :
     M.IsFunction.C "pinocchio::pubkey::PUBKEY_BYTES" value_PUBKEY_BYTES.
@@ -11,7 +11,7 @@ Module pubkey.
   Global Typeclasses Opaque value_PUBKEY_BYTES.
   
   Definition value_MAX_SEED_LEN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 32 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 32 |))).
   
   Global Instance Instance_IsConstant_value_MAX_SEED_LEN :
     M.IsFunction.C "pinocchio::pubkey::MAX_SEED_LEN" value_MAX_SEED_LEN.
@@ -19,7 +19,7 @@ Module pubkey.
   Global Typeclasses Opaque value_MAX_SEED_LEN.
   
   Definition value_MAX_SEEDS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 16 |))).
   
   Global Instance Instance_IsConstant_value_MAX_SEEDS :
     M.IsFunction.C "pinocchio::pubkey::MAX_SEEDS" value_MAX_SEEDS.
@@ -48,7 +48,19 @@ Module pubkey.
     match ε, τ, α with
     | [], [], [ pubkey ] =>
       ltac:(M.monadic
-        (let pubkey := M.alloc (| pubkey |) in
+        (let pubkey :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "array")
+                  [ M.unevaluated_const (mk_str (| "pinocchio_pubkey_Pubkey_discriminant" |)) ]
+                  [ Ty.path "u8" ]
+              ],
+            pubkey
+          |) in
         M.read (|
           let~ _ :
               Ty.apply
@@ -79,7 +91,7 @@ Module pubkey.
               |),
               [ M.read (| pubkey |) ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -98,8 +110,32 @@ Module pubkey.
     match ε, τ, α with
     | [], [], [ seeds; program_id ] =>
       ltac:(M.monadic
-        (let seeds := M.alloc (| seeds |) in
-        let program_id := M.alloc (| program_id |) in
+        (let seeds :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "slice")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ]
+              ],
+            seeds
+          |) in
+        let program_id :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "array")
+                  [ M.unevaluated_const (mk_str (| "pinocchio_pubkey_Pubkey_discriminant" |)) ]
+                  [ Ty.path "u8" ]
+              ],
+            program_id
+          |) in
         M.call_closure (|
           Ty.tuple
             [
@@ -124,7 +160,7 @@ Module pubkey.
             [],
             [
               Ty.function
-                [ Ty.tuple [] ]
+                []
                 (Ty.tuple
                   [
                     Ty.apply
@@ -163,17 +199,15 @@ Module pubkey.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function
-                          [ Ty.tuple [] ]
-                          (Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 32 ]
-                                [ Ty.path "u8" ];
-                              Ty.path "u8"
-                            ]),
-                        M.alloc (| α0 |),
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 32 ]
+                              [ Ty.path "u8" ];
+                            Ty.path "u8"
+                          ],
+                        M.alloc (| Ty.tuple [], α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -197,6 +231,10 @@ Module pubkey.
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                                 Value.Array
                                                   [
                                                     mk_str (|
@@ -260,8 +298,32 @@ Module pubkey.
     match ε, τ, α with
     | [], [], [ seeds; program_id ] =>
       ltac:(M.monadic
-        (let seeds := M.alloc (| seeds |) in
-        let program_id := M.alloc (| program_id |) in
+        (let seeds :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "slice")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ]
+              ],
+            seeds
+          |) in
+        let program_id :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "array")
+                  [ M.unevaluated_const (mk_str (| "pinocchio_pubkey_Pubkey_discriminant" |)) ]
+                  [ Ty.path "u8" ]
+              ],
+            program_id
+          |) in
         M.read (|
           let~ _ :
               Ty.tuple
@@ -352,6 +414,19 @@ Module pubkey.
               [ Value.Tuple [ M.read (| seeds |); M.read (| program_id |) ] ]
             |) in
           M.alloc (|
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [
+                Ty.tuple
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 32 ]
+                      [ Ty.path "u8" ];
+                    Ty.path "u8"
+                  ]
+              ],
             Value.StructTuple
               "core::option::Option::None"
               []
@@ -413,8 +488,32 @@ Module pubkey.
     match ε, τ, α with
     | [], [], [ seeds; program_id ] =>
       ltac:(M.monadic
-        (let seeds := M.alloc (| seeds |) in
-        let program_id := M.alloc (| program_id |) in
+        (let seeds :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "slice")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ]
+              ],
+            seeds
+          |) in
+        let program_id :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "array")
+                  [ M.unevaluated_const (mk_str (| "pinocchio_pubkey_Pubkey_discriminant" |)) ]
+                  [ Ty.path "u8" ]
+              ],
+            program_id
+          |) in
         M.read (|
           let~ _ :
               Ty.tuple
@@ -505,6 +604,13 @@ Module pubkey.
               [ Value.Tuple [ M.read (| seeds |); M.read (| program_id |) ] ]
             |) in
           M.alloc (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ];
+                Ty.path "pinocchio::program_error::ProgramError"
+              ],
             M.never_to_any (|
               M.call_closure (|
                 Ty.path "never",
@@ -525,6 +631,10 @@ Module pubkey.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [
                                   mk_str (|
@@ -573,116 +683,177 @@ Module pubkey.
     match ε, τ, α with
     | [], [], [ seeds; program_id ] =>
       ltac:(M.monadic
-        (let seeds := M.alloc (| seeds |) in
-        let program_id := M.alloc (| program_id |) in
-        M.read (|
-          M.catch_return
-            (Ty.apply
-              (Ty.path "core::result::Result")
+        (let seeds :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "slice")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ]
+              ],
+            seeds
+          |) in
+        let program_id :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
               []
               [
                 Ty.apply
                   (Ty.path "array")
                   [ M.unevaluated_const (mk_str (| "pinocchio_pubkey_Pubkey_discriminant" |)) ]
-                  [ Ty.path "u8" ];
-                Ty.path "pinocchio::program_error::ProgramError"
-              ]) (|
-            ltac:(M.monadic
-              (M.alloc (|
-                M.read (|
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.match_operator (|
-                        Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      BinOp.gt,
-                                      [
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "slice")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                              ],
-                                            "len",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| seeds |) |)
-                                            |)
-                                          ]
-                                        |);
-                                        M.read (|
-                                          get_constant (|
-                                            "pinocchio::pubkey::MAX_SEEDS",
-                                            Ty.path "usize"
-                                          |)
-                                        |)
-                                      ]
-                                    |)
-                                  |)) in
-                              let _ :=
-                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
+                  [ Ty.path "u8" ]
+              ],
+            program_id
+          |) in
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.apply
+                (Ty.path "array")
+                [ M.unevaluated_const (mk_str (| "pinocchio_pubkey_Pubkey_discriminant" |)) ]
+                [ Ty.path "u8" ];
+              Ty.path "pinocchio::program_error::ProgramError"
+            ]) (|
+          ltac:(M.monadic
+            (M.read (|
+              let~ _ : Ty.tuple [] :=
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              Ty.path "bool",
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "slice")
                                         []
                                         [
                                           Ty.apply
-                                            (Ty.path "array")
-                                            [ Value.Integer IntegerKind.Usize 32 ]
-                                            [ Ty.path "u8" ];
-                                          Ty.path "pinocchio::program_error::ProgramError"
-                                        ]
-                                        [
-                                          Value.StructTuple
-                                            "pinocchio::program_error::ProgramError::MaxSeedLengthExceeded"
+                                            (Ty.path "&")
                                             []
-                                            []
-                                            []
-                                        ]
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                        ],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| seeds |) |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.read (|
+                                    get_constant (|
+                                      "pinocchio::pubkey::MAX_SEEDS",
+                                      Ty.path "usize"
                                     |)
                                   |)
-                                |)
-                              |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                        ]
-                      |)
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.match_operator (|
-                        Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_trait_method (|
-                                        "core::iter::traits::iterator::Iterator",
+                                ]
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.never_to_any (|
+                          M.read (|
+                            M.return_ (|
+                              Value.StructTuple
+                                "core::result::Result::Err"
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 32 ]
+                                    [ Ty.path "u8" ];
+                                  Ty.path "pinocchio::program_error::ProgramError"
+                                ]
+                                [
+                                  Value.StructTuple
+                                    "pinocchio::program_error::ProgramError::MaxSeedLengthExceeded"
+                                    []
+                                    []
+                                    []
+                                ]
+                            |)
+                          |)
+                        |)));
+                    fun γ => ltac:(M.monadic (Value.Tuple []))
+                  ]
+                |) in
+              let~ _ : Ty.tuple [] :=
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              Ty.path "bool",
+                              M.call_closure (|
+                                Ty.path "bool",
+                                M.get_trait_method (|
+                                  "core::iter::traits::iterator::Iterator",
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                    ],
+                                  [],
+                                  [],
+                                  "any",
+                                  [],
+                                  [
+                                    Ty.function
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                          ]
+                                      ]
+                                      (Ty.path "bool")
+                                  ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::Iter")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                        ],
+                                      M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::slice::iter::Iter")
                                           []
@@ -692,52 +863,40 @@ Module pubkey.
                                               []
                                               [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                           ],
-                                        [],
-                                        [],
-                                        "any",
-                                        [],
-                                        [
-                                          Ty.function
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
                                             [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "slice")
-                                                            []
-                                                            [ Ty.path "u8" ]
-                                                        ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "bool")
-                                        ]
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.MutRef,
-                                          M.alloc (|
-                                            M.call_closure (|
                                               Ty.apply
-                                                (Ty.path "core::slice::iter::Iter")
+                                                (Ty.path "&")
                                                 []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ],
-                                              M.get_associated_function (|
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                            ],
+                                          "iter",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| seeds |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    |)
+                                  |);
+                                  M.closure
+                                    (fun γ =>
+                                      ltac:(M.monadic
+                                        match γ with
+                                        | [ α0 ] =>
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              Ty.path "bool",
+                                              M.alloc (|
                                                 Ty.apply
-                                                  (Ty.path "slice")
+                                                  (Ty.path "&")
                                                   []
                                                   [
                                                     Ty.apply
@@ -750,148 +909,127 @@ Module pubkey.
                                                           [ Ty.path "u8" ]
                                                       ]
                                                   ],
-                                                "iter",
-                                                [],
-                                                []
+                                                α0
                                               |),
                                               [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| seeds |) |)
-                                                |)
-                                              ]
-                                            |)
-                                          |)
-                                        |);
-                                        M.closure
-                                          (fun γ =>
-                                            ltac:(M.monadic
-                                              match γ with
-                                              | [ α0 ] =>
-                                                ltac:(M.monadic
-                                                  (M.match_operator (|
-                                                    Ty.function
-                                                      [
-                                                        Ty.tuple
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let seed :=
+                                                      M.copy (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "&")
                                                               []
                                                               [
                                                                 Ty.apply
-                                                                  (Ty.path "&")
+                                                                  (Ty.path "slice")
                                                                   []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "slice")
-                                                                      []
-                                                                      [ Ty.path "u8" ]
-                                                                  ]
+                                                                  [ Ty.path "u8" ]
                                                               ]
-                                                          ]
-                                                      ]
-                                                      (Ty.path "bool"),
-                                                    M.alloc (| α0 |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let seed := M.copy (| γ |) in
-                                                          M.call_closure (|
-                                                            Ty.path "bool",
-                                                            BinOp.gt,
-                                                            [
-                                                              M.call_closure (|
-                                                                Ty.path "usize",
-                                                                M.get_associated_function (|
-                                                                  Ty.apply
-                                                                    (Ty.path "slice")
-                                                                    []
-                                                                    [ Ty.path "u8" ],
-                                                                  "len",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.read (|
-                                                                        M.deref (|
-                                                                          M.read (| seed |)
-                                                                        |)
-                                                                      |)
-                                                                    |)
-                                                                  |)
-                                                                ]
-                                                              |);
-                                                              M.read (|
-                                                                get_constant (|
-                                                                  "pinocchio::pubkey::MAX_SEED_LEN",
-                                                                  Ty.path "usize"
+                                                          ],
+                                                        γ
+                                                      |) in
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.gt,
+                                                      [
+                                                        M.call_closure (|
+                                                          Ty.path "usize",
+                                                          M.get_associated_function (|
+                                                            Ty.apply
+                                                              (Ty.path "slice")
+                                                              []
+                                                              [ Ty.path "u8" ],
+                                                            "len",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.read (|
+                                                                  M.deref (| M.read (| seed |) |)
                                                                 |)
                                                               |)
-                                                            ]
-                                                          |)))
-                                                    ]
-                                                  |)))
-                                              | _ => M.impossible "wrong number of arguments"
-                                              end))
-                                      ]
-                                    |)
-                                  |)) in
-                              let _ :=
-                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "array")
-                                            [ Value.Integer IntegerKind.Usize 32 ]
-                                            [ Ty.path "u8" ];
-                                          Ty.path "pinocchio::program_error::ProgramError"
-                                        ]
-                                        [
-                                          Value.StructTuple
-                                            "pinocchio::program_error::ProgramError::MaxSeedLengthExceeded"
-                                            []
-                                            []
-                                            []
-                                        ]
-                                    |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                        ]
-                      |)
-                    |) in
-                  M.alloc (|
-                    M.call_closure (|
+                                                            |)
+                                                          ]
+                                                        |);
+                                                        M.read (|
+                                                          get_constant (|
+                                                            "pinocchio::pubkey::MAX_SEED_LEN",
+                                                            Ty.path "usize"
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |)))
+                                              ]
+                                            |)))
+                                        | _ => M.impossible "wrong number of arguments"
+                                        end))
+                                ]
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.never_to_any (|
+                          M.read (|
+                            M.return_ (|
+                              Value.StructTuple
+                                "core::result::Result::Err"
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 32 ]
+                                    [ Ty.path "u8" ];
+                                  Ty.path "pinocchio::program_error::ProgramError"
+                                ]
+                                [
+                                  Value.StructTuple
+                                    "pinocchio::program_error::ProgramError::MaxSeedLengthExceeded"
+                                    []
+                                    []
+                                    []
+                                ]
+                            |)
+                          |)
+                        |)));
+                    fun γ => ltac:(M.monadic (Value.Tuple []))
+                  ]
+                |) in
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 32 ]
+                      [ Ty.path "u8" ];
+                    Ty.path "pinocchio::program_error::ProgramError"
+                  ],
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
                       Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "array")
-                            [ Value.Integer IntegerKind.Usize 32 ]
-                            [ Ty.path "u8" ];
-                          Ty.path "pinocchio::program_error::ProgramError"
-                        ],
-                      M.get_function (| "pinocchio::pubkey::create_program_address", [], [] |),
-                      [
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| seeds |) |) |);
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| program_id |) |) |)
-                      ]
-                    |)
-                  |)
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [ Ty.path "u8" ];
+                      Ty.path "pinocchio::program_error::ProgramError"
+                    ],
+                  M.get_function (| "pinocchio::pubkey::create_program_address", [], [] |),
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| seeds |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| program_id |) |) |)
+                  ]
                 |)
-              |)))
-          |)
+              |)
+            |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

@@ -182,416 +182,366 @@ Module program_error.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            M.match_operator (|
-              Ty.path "pinocchio::program_error::ProgramError",
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::Custom",
-                        0
-                      |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::Custom"
-                        []
-                        []
-                        [
-                          M.call_closure (|
-                            Ty.path "u32",
-                            M.get_trait_method (|
-                              "core::clone::Clone",
-                              Ty.path "u32",
-                              [],
-                              [],
-                              "clone",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidArgument"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::InvalidArgument"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidInstructionData"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::InvalidInstructionData"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidAccountData"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::InvalidAccountData"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::AccountDataTooSmall"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::AccountDataTooSmall"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InsufficientFunds"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::InsufficientFunds"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::IncorrectProgramId"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::IncorrectProgramId"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::MissingRequiredSignature"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::MissingRequiredSignature"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::AccountAlreadyInitialized"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::AccountAlreadyInitialized"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::UninitializedAccount"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::UninitializedAccount"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::NotEnoughAccountKeys"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::NotEnoughAccountKeys"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::AccountBorrowFailed"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::AccountBorrowFailed"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::MaxSeedLengthExceeded"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::MaxSeedLengthExceeded"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidSeeds"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::InvalidSeeds"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::BorshIoError"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::BorshIoError"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::AccountNotRentExempt"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::AccountNotRentExempt"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::UnsupportedSysvar"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::UnsupportedSysvar"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::IllegalOwner"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::IllegalOwner"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::MaxAccountsDataAllocationsExceeded"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::MaxAccountsDataAllocationsExceeded"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidRealloc"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::InvalidRealloc"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::MaxInstructionTraceLengthExceeded"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::MaxInstructionTraceLengthExceeded"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::BuiltinProgramsMustConsumeComputeUnits"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::BuiltinProgramsMustConsumeComputeUnits"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidAccountOwner"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::InvalidAccountOwner"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::ArithmeticOverflow"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::ArithmeticOverflow"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::Immutable"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple "pinocchio::program_error::ProgramError::Immutable" [] [] []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::IncorrectAuthority"
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::IncorrectAuthority"
-                        []
-                        []
-                        []
-                    |)))
-              ]
-            |)
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::program_error::ProgramError" ],
+              self
+            |) in
+          M.match_operator (|
+            Ty.path "pinocchio::program_error::ProgramError",
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::Custom",
+                      0
+                    |) in
+                  let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], γ1_0 |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::Custom"
+                    []
+                    []
+                    [
+                      M.call_closure (|
+                        Ty.path "u32",
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "u32",
+                          [],
+                          [],
+                          "clone",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                      |)
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidArgument"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::InvalidArgument"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidInstructionData"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::InvalidInstructionData"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidAccountData"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::InvalidAccountData"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::AccountDataTooSmall"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::AccountDataTooSmall"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InsufficientFunds"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::InsufficientFunds"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::IncorrectProgramId"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::IncorrectProgramId"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::MissingRequiredSignature"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::MissingRequiredSignature"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::AccountAlreadyInitialized"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::AccountAlreadyInitialized"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::UninitializedAccount"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::UninitializedAccount"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::NotEnoughAccountKeys"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::NotEnoughAccountKeys"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::AccountBorrowFailed"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::AccountBorrowFailed"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::MaxSeedLengthExceeded"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::MaxSeedLengthExceeded"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidSeeds"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::InvalidSeeds"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::BorshIoError"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::BorshIoError"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::AccountNotRentExempt"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::AccountNotRentExempt"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::UnsupportedSysvar"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::UnsupportedSysvar"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::IllegalOwner"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::IllegalOwner"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::MaxAccountsDataAllocationsExceeded"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::MaxAccountsDataAllocationsExceeded"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidRealloc"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::InvalidRealloc"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::MaxInstructionTraceLengthExceeded"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::MaxInstructionTraceLengthExceeded"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::BuiltinProgramsMustConsumeComputeUnits"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::BuiltinProgramsMustConsumeComputeUnits"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidAccountOwner"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::InvalidAccountOwner"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::ArithmeticOverflow"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::ArithmeticOverflow"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::Immutable"
+                    |) in
+                  Value.StructTuple "pinocchio::program_error::ProgramError::Immutable" [] [] []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::IncorrectAuthority"
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::IncorrectAuthority"
+                    []
+                    []
+                    []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -613,765 +563,723 @@ Module program_error.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::Custom",
-                        0
-                      |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    M.alloc (|
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::program_error::ProgramError" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::Custom",
+                      0
+                    |) in
+                  let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], γ1_0 |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_tuple_field1_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Custom" |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple_field1_finish",
-                          [],
-                          []
-                        |),
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Custom" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                            |))
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidArgument"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "InvalidArgument" |) |)
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
                           |)
                         ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidInstructionData"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "InvalidInstructionData" |) |)
-                          |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidArgument"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "InvalidArgument" |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidInstructionData"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "InvalidInstructionData" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidAccountData"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "InvalidAccountData" |) |)
-                          |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidAccountData"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "InvalidAccountData" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::AccountDataTooSmall"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "AccountDataTooSmall" |) |)
-                          |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::AccountDataTooSmall"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "AccountDataTooSmall" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InsufficientFunds"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "InsufficientFunds" |) |)
-                          |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InsufficientFunds"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "InsufficientFunds" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::IncorrectProgramId"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "IncorrectProgramId" |) |)
-                          |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::IncorrectProgramId"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "IncorrectProgramId" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::MissingRequiredSignature"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "MissingRequiredSignature" |) |)
-                          |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::MissingRequiredSignature"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "MissingRequiredSignature" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::AccountAlreadyInitialized"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "AccountAlreadyInitialized" |) |)
-                          |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::AccountAlreadyInitialized"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "AccountAlreadyInitialized" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::UninitializedAccount"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "UninitializedAccount" |) |)
-                          |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::UninitializedAccount"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "UninitializedAccount" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::NotEnoughAccountKeys"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "NotEnoughAccountKeys" |) |)
-                          |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::NotEnoughAccountKeys"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "NotEnoughAccountKeys" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::AccountBorrowFailed"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "AccountBorrowFailed" |) |)
-                          |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::AccountBorrowFailed"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "AccountBorrowFailed" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::MaxSeedLengthExceeded"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "MaxSeedLengthExceeded" |) |)
-                          |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::MaxSeedLengthExceeded"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "MaxSeedLengthExceeded" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidSeeds"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "InvalidSeeds" |) |) |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidSeeds"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "InvalidSeeds" |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::BorshIoError"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BorshIoError" |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::AccountNotRentExempt"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "AccountNotRentExempt" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::BorshIoError"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BorshIoError" |) |) |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::UnsupportedSysvar"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "UnsupportedSysvar" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::AccountNotRentExempt"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "AccountNotRentExempt" |) |)
-                          |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::IllegalOwner"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IllegalOwner" |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::MaxAccountsDataAllocationsExceeded"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "MaxAccountsDataAllocationsExceeded" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::UnsupportedSysvar"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "UnsupportedSysvar" |) |)
-                          |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidRealloc"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "InvalidRealloc" |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::MaxInstructionTraceLengthExceeded"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "MaxInstructionTraceLengthExceeded" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::IllegalOwner"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IllegalOwner" |) |) |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::BuiltinProgramsMustConsumeComputeUnits"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "BuiltinProgramsMustConsumeComputeUnits" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::MaxAccountsDataAllocationsExceeded"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "MaxAccountsDataAllocationsExceeded" |) |)
-                          |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidAccountOwner"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "InvalidAccountOwner" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidRealloc"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "InvalidRealloc" |) |)
-                          |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::ArithmeticOverflow"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "ArithmeticOverflow" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::MaxInstructionTraceLengthExceeded"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "MaxInstructionTraceLengthExceeded" |) |)
-                          |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::Immutable"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Immutable" |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::IncorrectAuthority"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "IncorrectAuthority" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::BuiltinProgramsMustConsumeComputeUnits"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "BuiltinProgramsMustConsumeComputeUnits" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidAccountOwner"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "InvalidAccountOwner" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::ArithmeticOverflow"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "ArithmeticOverflow" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::Immutable"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Immutable" |) |) |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::IncorrectAuthority"
-                      |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "IncorrectAuthority" |) |)
-                          |)
-                        ]
-                      |)
-                    |)))
-              ]
-            |)
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1397,13 +1305,15 @@ Module program_error.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            M.match_operator (|
-              Ty.tuple [],
-              Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
-            |)
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::program_error::ProgramError" ],
+              self
+            |) in
+          M.match_operator (|
+            Ty.tuple [],
+            Value.DeclaredButUndefined,
+            [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1438,8 +1348,16 @@ Module program_error.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::program_error::ProgramError" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::program_error::ProgramError" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -1462,6 +1380,7 @@ Module program_error.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               LogicalOp.and (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -1469,52 +1388,63 @@ Module program_error.
                   [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
                 |),
                 ltac:(M.monadic
-                  (M.read (|
-                    M.match_operator (|
-                      Ty.path "bool",
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_0,
-                                "pinocchio::program_error::ProgramError::Custom",
-                                0
-                              |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_1,
-                                "pinocchio::program_error::ProgramError::Custom",
-                                0
-                              |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_trait_method (|
-                                  "core::cmp::PartialEq",
-                                  Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
-                                  [],
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
-                                  "eq",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                ]
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-                      ]
-                    |)
+                  (M.match_operator (|
+                    Ty.path "bool",
+                    M.alloc (|
+                      Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "pinocchio::program_error::ProgramError" ];
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "pinocchio::program_error::ProgramError" ]
+                        ],
+                      Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_0,
+                              "pinocchio::program_error::ProgramError::Custom",
+                              0
+                            |) in
+                          let __self_0 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], γ2_0 |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_1,
+                              "pinocchio::program_error::ProgramError::Custom",
+                              0
+                            |) in
+                          let __arg1_0 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], γ2_0 |) in
+                          M.call_closure (|
+                            Ty.path "bool",
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                              [],
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
+                              "eq",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                              M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                            ]
+                          |)));
+                      fun γ => ltac:(M.monadic (Value.Bool true))
+                    ]
                   |)))
               |)
             |)
@@ -1532,7 +1462,7 @@ Module program_error.
   End Impl_core_cmp_PartialEq_pinocchio_program_error_ProgramError_for_pinocchio_program_error_ProgramError.
   
   Definition value_BUILTIN_BIT_SHIFT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 32 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 32 |))).
   
   Global Instance Instance_IsConstant_value_BUILTIN_BIT_SHIFT :
     M.IsFunction.C "pinocchio::program_error::BUILTIN_BIT_SHIFT" value_BUILTIN_BIT_SHIFT.
@@ -1542,11 +1472,12 @@ Module program_error.
   Definition value_CUSTOM_ZERO (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 1 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 1 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -1562,11 +1493,12 @@ Module program_error.
   Definition value_INVALID_ARGUMENT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 2 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 2 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -1586,11 +1518,12 @@ Module program_error.
       : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 3 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 3 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -1608,11 +1541,12 @@ Module program_error.
   Definition value_INVALID_ACCOUNT_DATA (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 4 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 4 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -1632,11 +1566,12 @@ Module program_error.
       : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 5 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 5 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -1652,11 +1587,12 @@ Module program_error.
   Definition value_INSUFFICIENT_FUNDS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 6 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 6 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -1672,11 +1608,12 @@ Module program_error.
   Definition value_INCORRECT_PROGRAM_ID (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 7 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 7 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -1696,11 +1633,12 @@ Module program_error.
       : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 8 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 8 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -1722,11 +1660,12 @@ Module program_error.
       : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 9 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 9 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -1748,11 +1687,12 @@ Module program_error.
       : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 10 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 10 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -1772,11 +1712,12 @@ Module program_error.
       : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 11 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 11 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -1798,11 +1739,12 @@ Module program_error.
       : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 12 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 12 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -1822,11 +1764,12 @@ Module program_error.
       : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 13 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 13 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -1844,11 +1787,12 @@ Module program_error.
   Definition value_INVALID_SEEDS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 14 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 14 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -1864,11 +1808,12 @@ Module program_error.
   Definition value_BORSH_IO_ERROR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 15 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 15 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -1888,11 +1833,12 @@ Module program_error.
       : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 16 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 16 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -1910,11 +1856,12 @@ Module program_error.
   Definition value_UNSUPPORTED_SYSVAR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 17 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 17 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -1930,11 +1877,12 @@ Module program_error.
   Definition value_ILLEGAL_OWNER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 18 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 18 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -1954,11 +1902,12 @@ Module program_error.
       : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 19 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 19 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -1980,11 +1929,12 @@ Module program_error.
       : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 20 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 20 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -2006,11 +1956,12 @@ Module program_error.
       : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 21 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 21 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -2032,11 +1983,12 @@ Module program_error.
       : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 22 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 22 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -2058,11 +2010,12 @@ Module program_error.
       : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 23 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 23 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -2078,11 +2031,12 @@ Module program_error.
   Definition value_ARITHMETIC_OVERFLOW (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 24 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 24 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -2098,11 +2052,12 @@ Module program_error.
   Definition value_IMMUTABLE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 25 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 25 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -2118,11 +2073,12 @@ Module program_error.
   Definition value_INCORRECT_AUTHORITY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
           [
-            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 26 |)) |);
+            M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 26 |)) |);
             M.read (|
               get_constant (| "pinocchio::program_error::BUILTIN_BIT_SHIFT", Ty.path "usize" |)
             |)
@@ -2177,383 +2133,327 @@ Module program_error.
       match ε, τ, α with
       | [], [], [ error ] =>
         ltac:(M.monadic
-          (let error := M.alloc (| error |) in
-          M.read (|
-            M.match_operator (|
-              Ty.path "pinocchio::program_error::ProgramError",
-              error,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 4294967296
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::Custom"
-                        []
-                        []
-                        [ Value.Integer IntegerKind.U32 0 ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 8589934592
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::InvalidArgument"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 12884901888
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::InvalidInstructionData"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 17179869184
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::InvalidAccountData"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 21474836480
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::AccountDataTooSmall"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 25769803776
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::InsufficientFunds"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 30064771072
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::IncorrectProgramId"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 34359738368
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::MissingRequiredSignature"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 38654705664
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::AccountAlreadyInitialized"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 42949672960
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::UninitializedAccount"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 47244640256
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::NotEnoughAccountKeys"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 51539607552
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::AccountBorrowFailed"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 55834574848
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::MaxSeedLengthExceeded"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 60129542144
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::InvalidSeeds"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 64424509440
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::BorshIoError"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 68719476736
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::AccountNotRentExempt"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 73014444032
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::UnsupportedSysvar"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 77309411328
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::IllegalOwner"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 81604378624
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::MaxAccountsDataAllocationsExceeded"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 85899345920
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::InvalidRealloc"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 90194313216
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::MaxInstructionTraceLengthExceeded"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 94489280512
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::BuiltinProgramsMustConsumeComputeUnits"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 98784247808
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::InvalidAccountOwner"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 103079215104
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::ArithmeticOverflow"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 107374182400
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple "pinocchio::program_error::ProgramError::Immutable" [] [] []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.U64 111669149696
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::IncorrectAuthority"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      Value.StructTuple
-                        "pinocchio::program_error::ProgramError::Custom"
-                        []
-                        []
-                        [ M.cast (Ty.path "u32") (M.read (| error |)) ]
-                    |)))
-              ]
-            |)
+          (let error := M.alloc (| Ty.path "u64", error |) in
+          M.match_operator (|
+            Ty.path "pinocchio::program_error::ProgramError",
+            error,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 4294967296
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::Custom"
+                    []
+                    []
+                    [ Value.Integer IntegerKind.U32 0 ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 8589934592
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::InvalidArgument"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 12884901888
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::InvalidInstructionData"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 17179869184
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::InvalidAccountData"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 21474836480
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::AccountDataTooSmall"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 25769803776
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::InsufficientFunds"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 30064771072
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::IncorrectProgramId"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 34359738368
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::MissingRequiredSignature"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 38654705664
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::AccountAlreadyInitialized"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 42949672960
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::UninitializedAccount"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 47244640256
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::NotEnoughAccountKeys"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 51539607552
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::AccountBorrowFailed"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 55834574848
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::MaxSeedLengthExceeded"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 60129542144
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::InvalidSeeds"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 64424509440
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::BorshIoError"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 68719476736
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::AccountNotRentExempt"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 73014444032
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::UnsupportedSysvar"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 77309411328
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::IllegalOwner"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 81604378624
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::MaxAccountsDataAllocationsExceeded"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 85899345920
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::InvalidRealloc"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 90194313216
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::MaxInstructionTraceLengthExceeded"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 94489280512
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::BuiltinProgramsMustConsumeComputeUnits"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 98784247808
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::InvalidAccountOwner"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 103079215104
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::ArithmeticOverflow"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 107374182400
+                    |) in
+                  Value.StructTuple "pinocchio::program_error::ProgramError::Immutable" [] [] []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.U64 111669149696
+                    |) in
+                  Value.StructTuple
+                    "pinocchio::program_error::ProgramError::IncorrectAuthority"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (Value.StructTuple
+                    "pinocchio::program_error::ProgramError::Custom"
+                    []
+                    []
+                    [ M.cast (Ty.path "u32") (M.read (| error |)) ]))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2618,312 +2518,352 @@ Module program_error.
       match ε, τ, α with
       | [], [], [ error ] =>
         ltac:(M.monadic
-          (let error := M.alloc (| error |) in
-          M.read (|
-            M.match_operator (|
-              Ty.path "u64",
-              error,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidArgument"
-                      |) in
-                    get_constant (|
-                      "pinocchio::program_error::INVALID_ARGUMENT",
-                      Ty.path "u64"
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidInstructionData"
-                      |) in
+          (let error := M.alloc (| Ty.path "pinocchio::program_error::ProgramError", error |) in
+          M.match_operator (|
+            Ty.path "u64",
+            error,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidArgument"
+                    |) in
+                  M.read (|
+                    get_constant (| "pinocchio::program_error::INVALID_ARGUMENT", Ty.path "u64" |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidInstructionData"
+                    |) in
+                  M.read (|
                     get_constant (|
                       "pinocchio::program_error::INVALID_INSTRUCTION_DATA",
                       Ty.path "u64"
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidAccountData"
-                      |) in
+                    |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidAccountData"
+                    |) in
+                  M.read (|
                     get_constant (|
                       "pinocchio::program_error::INVALID_ACCOUNT_DATA",
                       Ty.path "u64"
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::AccountDataTooSmall"
-                      |) in
+                    |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::AccountDataTooSmall"
+                    |) in
+                  M.read (|
                     get_constant (|
                       "pinocchio::program_error::ACCOUNT_DATA_TOO_SMALL",
                       Ty.path "u64"
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InsufficientFunds"
-                      |) in
-                    get_constant (|
-                      "pinocchio::program_error::INSUFFICIENT_FUNDS",
-                      Ty.path "u64"
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::IncorrectProgramId"
-                      |) in
+                    |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InsufficientFunds"
+                    |) in
+                  M.read (|
+                    get_constant (| "pinocchio::program_error::INSUFFICIENT_FUNDS", Ty.path "u64" |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::IncorrectProgramId"
+                    |) in
+                  M.read (|
                     get_constant (|
                       "pinocchio::program_error::INCORRECT_PROGRAM_ID",
                       Ty.path "u64"
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::MissingRequiredSignature"
-                      |) in
+                    |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::MissingRequiredSignature"
+                    |) in
+                  M.read (|
                     get_constant (|
                       "pinocchio::program_error::MISSING_REQUIRED_SIGNATURES",
                       Ty.path "u64"
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::AccountAlreadyInitialized"
-                      |) in
+                    |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::AccountAlreadyInitialized"
+                    |) in
+                  M.read (|
                     get_constant (|
                       "pinocchio::program_error::ACCOUNT_ALREADY_INITIALIZED",
                       Ty.path "u64"
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::UninitializedAccount"
-                      |) in
+                    |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::UninitializedAccount"
+                    |) in
+                  M.read (|
                     get_constant (|
                       "pinocchio::program_error::UNINITIALIZED_ACCOUNT",
                       Ty.path "u64"
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::NotEnoughAccountKeys"
-                      |) in
+                    |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::NotEnoughAccountKeys"
+                    |) in
+                  M.read (|
                     get_constant (|
                       "pinocchio::program_error::NOT_ENOUGH_ACCOUNT_KEYS",
                       Ty.path "u64"
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::AccountBorrowFailed"
-                      |) in
+                    |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::AccountBorrowFailed"
+                    |) in
+                  M.read (|
                     get_constant (|
                       "pinocchio::program_error::ACCOUNT_BORROW_FAILED",
                       Ty.path "u64"
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::MaxSeedLengthExceeded"
-                      |) in
+                    |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::MaxSeedLengthExceeded"
+                    |) in
+                  M.read (|
                     get_constant (|
                       "pinocchio::program_error::MAX_SEED_LENGTH_EXCEEDED",
                       Ty.path "u64"
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidSeeds"
-                      |) in
-                    get_constant (| "pinocchio::program_error::INVALID_SEEDS", Ty.path "u64" |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::BorshIoError"
-                      |) in
-                    get_constant (| "pinocchio::program_error::BORSH_IO_ERROR", Ty.path "u64" |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::AccountNotRentExempt"
-                      |) in
+                    |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidSeeds"
+                    |) in
+                  M.read (|
+                    get_constant (| "pinocchio::program_error::INVALID_SEEDS", Ty.path "u64" |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::BorshIoError"
+                    |) in
+                  M.read (|
+                    get_constant (| "pinocchio::program_error::BORSH_IO_ERROR", Ty.path "u64" |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::AccountNotRentExempt"
+                    |) in
+                  M.read (|
                     get_constant (|
                       "pinocchio::program_error::ACCOUNT_NOT_RENT_EXEMPT",
                       Ty.path "u64"
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::UnsupportedSysvar"
-                      |) in
-                    get_constant (|
-                      "pinocchio::program_error::UNSUPPORTED_SYSVAR",
-                      Ty.path "u64"
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::IllegalOwner"
-                      |) in
-                    get_constant (| "pinocchio::program_error::ILLEGAL_OWNER", Ty.path "u64" |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::MaxAccountsDataAllocationsExceeded"
-                      |) in
+                    |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::UnsupportedSysvar"
+                    |) in
+                  M.read (|
+                    get_constant (| "pinocchio::program_error::UNSUPPORTED_SYSVAR", Ty.path "u64" |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::IllegalOwner"
+                    |) in
+                  M.read (|
+                    get_constant (| "pinocchio::program_error::ILLEGAL_OWNER", Ty.path "u64" |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::MaxAccountsDataAllocationsExceeded"
+                    |) in
+                  M.read (|
                     get_constant (|
                       "pinocchio::program_error::MAX_ACCOUNTS_DATA_ALLOCATIONS_EXCEEDED",
                       Ty.path "u64"
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidRealloc"
-                      |) in
+                    |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidRealloc"
+                    |) in
+                  M.read (|
                     get_constant (|
                       "pinocchio::program_error::INVALID_ACCOUNT_DATA_REALLOC",
                       Ty.path "u64"
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::MaxInstructionTraceLengthExceeded"
-                      |) in
+                    |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::MaxInstructionTraceLengthExceeded"
+                    |) in
+                  M.read (|
                     get_constant (|
                       "pinocchio::program_error::MAX_INSTRUCTION_TRACE_LENGTH_EXCEEDED",
                       Ty.path "u64"
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::BuiltinProgramsMustConsumeComputeUnits"
-                      |) in
+                    |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::BuiltinProgramsMustConsumeComputeUnits"
+                    |) in
+                  M.read (|
                     get_constant (|
                       "pinocchio::program_error::BUILTIN_PROGRAMS_MUST_CONSUME_COMPUTE_UNITS",
                       Ty.path "u64"
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidAccountOwner"
-                      |) in
+                    |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidAccountOwner"
+                    |) in
+                  M.read (|
                     get_constant (|
                       "pinocchio::program_error::INVALID_ACCOUNT_OWNER",
                       Ty.path "u64"
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::ArithmeticOverflow"
-                      |) in
+                    |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::ArithmeticOverflow"
+                    |) in
+                  M.read (|
                     get_constant (|
                       "pinocchio::program_error::ARITHMETIC_OVERFLOW",
                       Ty.path "u64"
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::Immutable"
-                      |) in
-                    get_constant (| "pinocchio::program_error::IMMUTABLE", Ty.path "u64" |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::IncorrectAuthority"
-                      |) in
+                    |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::Immutable"
+                    |) in
+                  M.read (|
+                    get_constant (| "pinocchio::program_error::IMMUTABLE", Ty.path "u64" |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::IncorrectAuthority"
+                    |) in
+                  M.read (|
                     get_constant (|
                       "pinocchio::program_error::INCORRECT_AUTHORITY",
                       Ty.path "u64"
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::Custom",
-                        0
-                      |) in
-                    let error := M.copy (| γ0_0 |) in
-                    M.match_operator (|
-                      Ty.path "u64",
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.eq,
-                                    [ M.read (| error |); Value.Integer IntegerKind.U32 0 ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::Custom",
+                      0
+                    |) in
+                  let error := M.copy (| Ty.path "u32", γ0_0 |) in
+                  M.match_operator (|
+                    Ty.path "u64",
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                Ty.path "bool",
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.eq,
+                                  [ M.read (| error |); Value.Integer IntegerKind.U32 0 ]
+                                |)
+                              |)) in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.read (|
                             get_constant (|
                               "pinocchio::program_error::CUSTOM_ZERO",
                               Ty.path "u64"
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.alloc (| M.cast (Ty.path "u64") (M.read (| error |)) |)))
-                      ]
-                    |)))
-              ]
-            |)
+                            |)
+                          |)));
+                      fun γ => ltac:(M.monadic (M.cast (Ty.path "u64") (M.read (| error |))))
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2990,307 +2930,319 @@ Module program_error.
       match ε, τ, α with
       | [], [ E ], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::Custom",
-                        0
-                      |) in
-                    let error := M.alloc (| γ1_0 |) in
-                    M.match_operator (|
-                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [
-                                      E;
-                                      Ty.associated_in_trait
-                                        "core::convert::TryFrom"
-                                        []
-                                        [ Ty.path "u32" ]
-                                        E
-                                        "Error"
-                                    ],
-                                  M.get_trait_method (|
-                                    "core::convert::TryFrom",
-                                    E,
-                                    [],
-                                    [ Ty.path "u32" ],
-                                    "try_from",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| M.deref (| M.read (| error |) |) |) ]
-                                |)
-                              |) in
-                            let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Ok",
-                                0
-                              |) in
-                            let custom_error := M.copy (| γ0_0 |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::program_error::ProgramError" ],
+              self
+            |) in
+          M.match_operator (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::Custom",
+                      0
+                    |) in
+                  let error := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], γ1_0 |) in
+                  M.match_operator (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  E;
+                                  Ty.associated_in_trait
+                                    "core::convert::TryFrom"
+                                    []
+                                    [ Ty.path "u32" ]
+                                    E
+                                    "Error"
+                                ],
                               M.call_closure (|
-                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    E;
+                                    Ty.associated_in_trait
+                                      "core::convert::TryFrom"
+                                      []
+                                      [ Ty.path "u32" ]
+                                      E
+                                      "Error"
+                                  ],
                                 M.get_trait_method (|
-                                  "pinocchio::program_error::ToStr",
+                                  "core::convert::TryFrom",
                                   E,
                                   [],
+                                  [ Ty.path "u32" ],
+                                  "try_from",
                                   [],
-                                  "to_str",
-                                  [],
-                                  [ E ]
+                                  []
                                 |),
-                                [ M.borrow (| Pointer.Kind.Ref, custom_error |) ]
+                                [ M.read (| M.deref (| M.read (| error |) |) |) ]
                               |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| mk_str (| "Error: Unknown" |) |)))
-                      ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidArgument"
-                      |) in
-                    M.alloc (| mk_str (| "Error: InvalidArgument" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidInstructionData"
-                      |) in
-                    M.alloc (| mk_str (| "Error: InvalidInstructionData" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidAccountData"
-                      |) in
-                    M.alloc (| mk_str (| "Error: InvalidAccountData" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::AccountDataTooSmall"
-                      |) in
-                    M.alloc (| mk_str (| "Error: AccountDataTooSmall" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InsufficientFunds"
-                      |) in
-                    M.alloc (| mk_str (| "Error: InsufficientFunds" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::IncorrectProgramId"
-                      |) in
-                    M.alloc (| mk_str (| "Error: IncorrectProgramId" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::MissingRequiredSignature"
-                      |) in
-                    M.alloc (| mk_str (| "Error: MissingRequiredSignature" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::AccountAlreadyInitialized"
-                      |) in
-                    M.alloc (| mk_str (| "Error: AccountAlreadyInitialized" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::UninitializedAccount"
-                      |) in
-                    M.alloc (| mk_str (| "Error: UninitializedAccount" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::NotEnoughAccountKeys"
-                      |) in
-                    M.alloc (| mk_str (| "Error: NotEnoughAccountKeys" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::AccountBorrowFailed"
-                      |) in
-                    M.alloc (| mk_str (| "Error: AccountBorrowFailed" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::MaxSeedLengthExceeded"
-                      |) in
-                    M.alloc (| mk_str (| "Error: MaxSeedLengthExceeded" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidSeeds"
-                      |) in
-                    M.alloc (| mk_str (| "Error: InvalidSeeds" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::BorshIoError"
-                      |) in
-                    M.alloc (| mk_str (| "Error: BorshIoError" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::AccountNotRentExempt"
-                      |) in
-                    M.alloc (| mk_str (| "Error: AccountNotRentExempt" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::UnsupportedSysvar"
-                      |) in
-                    M.alloc (| mk_str (| "Error: UnsupportedSysvar" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::IllegalOwner"
-                      |) in
-                    M.alloc (| mk_str (| "Error: IllegalOwner" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::MaxAccountsDataAllocationsExceeded"
-                      |) in
-                    M.alloc (| mk_str (| "Error: MaxAccountsDataAllocationsExceeded" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidRealloc"
-                      |) in
-                    M.alloc (| mk_str (| "Error: InvalidRealloc" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::MaxInstructionTraceLengthExceeded"
-                      |) in
-                    M.alloc (| mk_str (| "Error: MaxInstructionTraceLengthExceeded" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::BuiltinProgramsMustConsumeComputeUnits"
-                      |) in
-                    M.alloc (| mk_str (| "Error: BuiltinProgramsMustConsumeComputeUnits" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::InvalidAccountOwner"
-                      |) in
-                    M.alloc (| mk_str (| "Error: InvalidAccountOwner" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::ArithmeticOverflow"
-                      |) in
-                    M.alloc (| mk_str (| "Error: ArithmeticOverflow" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::Immutable"
-                      |) in
-                    M.alloc (| mk_str (| "Error: Immutable" |) |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "pinocchio::program_error::ProgramError::IncorrectAuthority"
-                      |) in
-                    M.alloc (| mk_str (| "Error: IncorrectAuthority" |) |)))
-              ]
-            |)
+                            |) in
+                          let γ0_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "core::result::Result::Ok",
+                              0
+                            |) in
+                          let custom_error := M.copy (| E, γ0_0 |) in
+                          M.call_closure (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                            M.get_trait_method (|
+                              "pinocchio::program_error::ToStr",
+                              E,
+                              [],
+                              [],
+                              "to_str",
+                              [],
+                              [ E ]
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, custom_error |) ]
+                          |)));
+                      fun γ => ltac:(M.monadic (mk_str (| "Error: Unknown" |)))
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidArgument"
+                    |) in
+                  mk_str (| "Error: InvalidArgument" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidInstructionData"
+                    |) in
+                  mk_str (| "Error: InvalidInstructionData" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidAccountData"
+                    |) in
+                  mk_str (| "Error: InvalidAccountData" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::AccountDataTooSmall"
+                    |) in
+                  mk_str (| "Error: AccountDataTooSmall" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InsufficientFunds"
+                    |) in
+                  mk_str (| "Error: InsufficientFunds" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::IncorrectProgramId"
+                    |) in
+                  mk_str (| "Error: IncorrectProgramId" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::MissingRequiredSignature"
+                    |) in
+                  mk_str (| "Error: MissingRequiredSignature" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::AccountAlreadyInitialized"
+                    |) in
+                  mk_str (| "Error: AccountAlreadyInitialized" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::UninitializedAccount"
+                    |) in
+                  mk_str (| "Error: UninitializedAccount" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::NotEnoughAccountKeys"
+                    |) in
+                  mk_str (| "Error: NotEnoughAccountKeys" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::AccountBorrowFailed"
+                    |) in
+                  mk_str (| "Error: AccountBorrowFailed" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::MaxSeedLengthExceeded"
+                    |) in
+                  mk_str (| "Error: MaxSeedLengthExceeded" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidSeeds"
+                    |) in
+                  mk_str (| "Error: InvalidSeeds" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::BorshIoError"
+                    |) in
+                  mk_str (| "Error: BorshIoError" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::AccountNotRentExempt"
+                    |) in
+                  mk_str (| "Error: AccountNotRentExempt" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::UnsupportedSysvar"
+                    |) in
+                  mk_str (| "Error: UnsupportedSysvar" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::IllegalOwner"
+                    |) in
+                  mk_str (| "Error: IllegalOwner" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::MaxAccountsDataAllocationsExceeded"
+                    |) in
+                  mk_str (| "Error: MaxAccountsDataAllocationsExceeded" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidRealloc"
+                    |) in
+                  mk_str (| "Error: InvalidRealloc" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::MaxInstructionTraceLengthExceeded"
+                    |) in
+                  mk_str (| "Error: MaxInstructionTraceLengthExceeded" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::BuiltinProgramsMustConsumeComputeUnits"
+                    |) in
+                  mk_str (| "Error: BuiltinProgramsMustConsumeComputeUnits" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::InvalidAccountOwner"
+                    |) in
+                  mk_str (| "Error: InvalidAccountOwner" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::ArithmeticOverflow"
+                    |) in
+                  mk_str (| "Error: ArithmeticOverflow" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::Immutable"
+                    |) in
+                  mk_str (| "Error: Immutable" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "pinocchio::program_error::ProgramError::IncorrectAuthority"
+                    |) in
+                  mk_str (| "Error: IncorrectAuthority" |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

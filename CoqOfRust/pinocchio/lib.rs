@@ -243,14 +243,14 @@ pub use entrypoint::lazy as lazy_entrypoint;
 
 /// Maximum number of accounts that a transaction may process.
 ///
-/// This value is used to set the maximum number of accounts that a program
-/// is expecting and statically initialize the array of `AccountInfo`.
+/// This value is set to `u8::MAX - 1`, which is the theoretical maximum
+/// number of accounts that a transaction can process given that indices
+/// of accounts are represented by an `u8` value and the last
+/// value (`255`) is reserved to indicate non-duplicated accounts.
 ///
-/// This is based on the current [maximum number of accounts] that a transaction
-/// may lock in a block.
-///
-/// [maximum number of accounts]: https://github.com/anza-xyz/agave/blob/2e6ca8c1f62db62c1db7f19c9962d4db43d0d550/runtime/src/bank.rs#L3209-L3221
-pub const MAX_TX_ACCOUNTS: usize = 128;
+/// The `MAX_TX_ACCOUNTS` is used to statically initialize the array of
+/// `AccountInfo`s when parsing accounts in an instruction.
+pub const MAX_TX_ACCOUNTS: usize = (u8::MAX - 1) as usize;
 
 /// `assert_eq(core::mem::align_of::<u128>(), 8)` is true for BPF but not
 /// for some host machines.

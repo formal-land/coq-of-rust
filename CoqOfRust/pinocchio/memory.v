@@ -15,9 +15,17 @@ Module memory.
     match ε, τ, α with
     | [], [], [ dst; src; n ] =>
       ltac:(M.monadic
-        (let dst := M.alloc (| dst |) in
-        let src := M.alloc (| src |) in
-        let n := M.alloc (| n |) in
+        (let dst :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+            dst
+          |) in
+        let src :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+            src
+          |) in
+        let n := M.alloc (| Ty.path "usize", n |) in
         M.read (|
           let~ _ :
               Ty.tuple
@@ -50,7 +58,7 @@ Module memory.
               |),
               [ Value.Tuple [ M.read (| dst |); M.read (| src |); M.read (| n |) ] ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -61,40 +69,37 @@ Module memory.
   Global Typeclasses Opaque sol_memcpy.
   
   (*
-  pub fn copy_val<T: ?Sized>(dst: &mut T, src: &T) {
+  pub fn copy_val<T: Copy>(dst: &mut T, src: &T) {
       #[cfg(target_os = "solana")]
-      // SAFETY: dst and src are of same type therefore the size is the same
+      // SAFETY: `dst` and `src` are of same type therefore the size
+      // is the same.
       unsafe {
           syscalls::sol_memcpy_(
               dst as *mut T as *mut u8,
               src as *const T as *const u8,
-              core::mem::size_of_val(dst) as u64,
+              core::mem::size_of::<T>() as u64,
           );
       }
   
       #[cfg(not(target_os = "solana"))]
-      core::hint::black_box((dst, src));
+      {
+          *dst = *src;
+      }
   }
   *)
   Definition copy_val (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
     | [], [ T ], [ dst; src ] =>
       ltac:(M.monadic
-        (let dst := M.alloc (| dst |) in
-        let src := M.alloc (| src |) in
+        (let dst := M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], dst |) in
+        let src := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], src |) in
         M.read (|
-          let~ _ :
-              Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ] :=
-            M.call_closure (|
-              Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ],
-              M.get_function (|
-                "core::hint::black_box",
-                [],
-                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ] ]
-              |),
-              [ Value.Tuple [ M.read (| dst |); M.read (| src |) ] ]
+          let~ _ : Ty.tuple [] :=
+            M.write (|
+              M.deref (| M.read (| dst |) |),
+              M.read (| M.deref (| M.read (| src |) |) |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -117,9 +122,9 @@ Module memory.
     match ε, τ, α with
     | [], [], [ dst; src; n ] =>
       ltac:(M.monadic
-        (let dst := M.alloc (| dst |) in
-        let src := M.alloc (| src |) in
-        let n := M.alloc (| n |) in
+        (let dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ], dst |) in
+        let src := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ], src |) in
+        let n := M.alloc (| Ty.path "usize", n |) in
         M.read (|
           let~ _ :
               Ty.tuple
@@ -149,7 +154,7 @@ Module memory.
               |),
               [ Value.Tuple [ M.read (| dst |); M.read (| src |); M.read (| n |) ] ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -177,9 +182,17 @@ Module memory.
     match ε, τ, α with
     | [], [], [ s1; s2; n ] =>
       ltac:(M.monadic
-        (let s1 := M.alloc (| s1 |) in
-        let s2 := M.alloc (| s2 |) in
-        let n := M.alloc (| n |) in
+        (let s1 :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+            s1
+          |) in
+        let s2 :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+            s2
+          |) in
+        let n := M.alloc (| Ty.path "usize", n |) in
         M.read (|
           let~ result : Ty.path "i32" := Value.Integer IntegerKind.I32 0 in
           let~ _ :
@@ -239,9 +252,13 @@ Module memory.
     match ε, τ, α with
     | [], [], [ s; c; n ] =>
       ltac:(M.monadic
-        (let s := M.alloc (| s |) in
-        let c := M.alloc (| c |) in
-        let n := M.alloc (| n |) in
+        (let s :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+            s
+          |) in
+        let c := M.alloc (| Ty.path "u8", c |) in
+        let n := M.alloc (| Ty.path "usize", n |) in
         M.read (|
           let~ _ :
               Ty.tuple
@@ -274,7 +291,7 @@ Module memory.
               |),
               [ Value.Tuple [ M.read (| s |); M.read (| c |); M.read (| n |) ] ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

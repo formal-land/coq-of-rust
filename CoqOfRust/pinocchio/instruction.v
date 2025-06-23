@@ -36,8 +36,13 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::instruction::Instruction" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -53,58 +58,128 @@ Module instruction.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Instruction" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "program_id" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "pinocchio::instruction::Instruction",
-                        "program_id"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 32 ]
+                            [ Ty.path "u8" ]
+                        ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "pinocchio::instruction::Instruction",
+                          "program_id"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "data" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "pinocchio::instruction::Instruction",
-                        "data"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "pinocchio::instruction::Instruction",
+                          "data"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "accounts" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "pinocchio::instruction::Instruction",
-                            "accounts"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.path "pinocchio::instruction::AccountMeta" ]
+                            ]
+                        ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.path "pinocchio::instruction::AccountMeta" ]
+                                ]
+                            ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "pinocchio::instruction::Instruction",
+                              "accounts"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -127,8 +202,12 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::instruction::Instruction" ],
+              self
+            |) in
+          Value.mkStructRecord
             "pinocchio::instruction::Instruction"
             []
             []
@@ -296,7 +375,7 @@ Module instruction.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "pinocchio::instruction::ProcessedSiblingInstruction"
             []
             []
@@ -350,8 +429,16 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "pinocchio::instruction::ProcessedSiblingInstruction" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -370,42 +457,57 @@ Module instruction.
                 M.deref (| mk_str (| "ProcessedSiblingInstruction" |) |)
               |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "data_len" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "pinocchio::instruction::ProcessedSiblingInstruction",
-                        "data_len"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.path "u64" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "pinocchio::instruction::ProcessedSiblingInstruction",
+                          "data_len"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "accounts_len" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "pinocchio::instruction::ProcessedSiblingInstruction",
-                            "accounts_len"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "pinocchio::instruction::ProcessedSiblingInstruction",
+                              "accounts_len"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -428,13 +530,18 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            M.match_operator (|
-              Ty.path "pinocchio::instruction::ProcessedSiblingInstruction",
-              Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
-            |)
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "pinocchio::instruction::ProcessedSiblingInstruction" ],
+              self
+            |) in
+          M.match_operator (|
+            Ty.path "pinocchio::instruction::ProcessedSiblingInstruction",
+            Value.DeclaredButUndefined,
+            [ fun γ => ltac:(M.monadic (M.read (| M.deref (| M.read (| self |) |) |))) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -472,13 +579,18 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            M.match_operator (|
-              Ty.tuple [],
-              Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
-            |)
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "pinocchio::instruction::ProcessedSiblingInstruction" ],
+              self
+            |) in
+          M.match_operator (|
+            Ty.tuple [],
+            Value.DeclaredButUndefined,
+            [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -513,8 +625,22 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "pinocchio::instruction::ProcessedSiblingInstruction" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "pinocchio::instruction::ProcessedSiblingInstruction" ],
+              other
+            |) in
           LogicalOp.and (|
             M.call_closure (|
               Ty.path "bool",
@@ -621,8 +747,12 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::instruction::Account" ],
+              self
+            |) in
+          Value.mkStructRecord
             "pinocchio::instruction::Account"
             []
             []
@@ -969,8 +1099,8 @@ Module instruction.
     match ε, τ, α with
     | [], [ T; U ], [ ptr; offset ] =>
       ltac:(M.monadic
-        (let ptr := M.alloc (| ptr |) in
-        let offset := M.alloc (| offset |) in
+        (let ptr := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], ptr |) in
+        let offset := M.alloc (| Ty.path "usize", offset |) in
         M.cast
           (Ty.apply (Ty.path "*const") [] [ U ])
           (M.call_closure (|
@@ -1020,8 +1150,12 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ account ] =>
         ltac:(M.monadic
-          (let account := M.alloc (| account |) in
-          Value.StructRecord
+          (let account :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::account_info::AccountInfo" ],
+              account
+            |) in
+          Value.mkStructRecord
             "pinocchio::instruction::Account"
             []
             []
@@ -1049,15 +1183,28 @@ Module instruction.
                     ]
                   |),
                   [
-                    (* MutToConstPointer *)
-                    M.pointer_coercion
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| account |) |),
-                          "pinocchio::account_info::AccountInfo",
-                          "raw"
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "pinocchio::account_info::Account" ],
+                      M.pointer_coercion
+                        M.PointerCoercion.MutToConstPointer
+                        (Ty.apply
+                          (Ty.path "*mut")
+                          []
+                          [ Ty.path "pinocchio::account_info::Account" ])
+                        (Ty.apply
+                          (Ty.path "*const")
+                          []
+                          [ Ty.path "pinocchio::account_info::Account" ]),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| account |) |),
+                            "pinocchio::account_info::AccountInfo",
+                            "raw"
+                          |)
                         |)
-                      |));
+                      ]
+                    |);
                     Value.Integer IntegerKind.Usize 8
                   ]
                 |));
@@ -1070,15 +1217,28 @@ Module instruction.
                     [ Ty.path "pinocchio::account_info::Account"; Ty.path "u64" ]
                   |),
                   [
-                    (* MutToConstPointer *)
-                    M.pointer_coercion
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| account |) |),
-                          "pinocchio::account_info::AccountInfo",
-                          "raw"
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "pinocchio::account_info::Account" ],
+                      M.pointer_coercion
+                        M.PointerCoercion.MutToConstPointer
+                        (Ty.apply
+                          (Ty.path "*mut")
+                          []
+                          [ Ty.path "pinocchio::account_info::Account" ])
+                        (Ty.apply
+                          (Ty.path "*const")
+                          []
+                          [ Ty.path "pinocchio::account_info::Account" ]),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| account |) |),
+                            "pinocchio::account_info::AccountInfo",
+                            "raw"
+                          |)
                         |)
-                      |));
+                      ]
+                    |);
                     Value.Integer IntegerKind.Usize 72
                   ]
                 |));
@@ -1104,15 +1264,28 @@ Module instruction.
                     [ Ty.path "pinocchio::account_info::Account"; Ty.path "u8" ]
                   |),
                   [
-                    (* MutToConstPointer *)
-                    M.pointer_coercion
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| account |) |),
-                          "pinocchio::account_info::AccountInfo",
-                          "raw"
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "pinocchio::account_info::Account" ],
+                      M.pointer_coercion
+                        M.PointerCoercion.MutToConstPointer
+                        (Ty.apply
+                          (Ty.path "*mut")
+                          []
+                          [ Ty.path "pinocchio::account_info::Account" ])
+                        (Ty.apply
+                          (Ty.path "*const")
+                          []
+                          [ Ty.path "pinocchio::account_info::Account" ]),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| account |) |),
+                            "pinocchio::account_info::AccountInfo",
+                            "raw"
+                          |)
                         |)
-                      |));
+                      ]
+                    |);
                     Value.Integer IntegerKind.Usize 88
                   ]
                 |));
@@ -1139,15 +1312,28 @@ Module instruction.
                     ]
                   |),
                   [
-                    (* MutToConstPointer *)
-                    M.pointer_coercion
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| account |) |),
-                          "pinocchio::account_info::AccountInfo",
-                          "raw"
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "pinocchio::account_info::Account" ],
+                      M.pointer_coercion
+                        M.PointerCoercion.MutToConstPointer
+                        (Ty.apply
+                          (Ty.path "*mut")
+                          []
+                          [ Ty.path "pinocchio::account_info::Account" ])
+                        (Ty.apply
+                          (Ty.path "*const")
+                          []
+                          [ Ty.path "pinocchio::account_info::Account" ]),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| account |) |),
+                            "pinocchio::account_info::AccountInfo",
+                            "raw"
+                          |)
                         |)
-                      |));
+                      ]
+                    |);
                     Value.Integer IntegerKind.Usize 40
                   ]
                 |));
@@ -1235,8 +1421,13 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::instruction::AccountMeta" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1252,58 +1443,93 @@ Module instruction.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AccountMeta" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "pubkey" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "pinocchio::instruction::AccountMeta",
-                        "pubkey"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 32 ]
+                            [ Ty.path "u8" ]
+                        ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "pinocchio::instruction::AccountMeta",
+                          "pubkey"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "is_writable" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "pinocchio::instruction::AccountMeta",
-                        "is_writable"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.path "bool" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "pinocchio::instruction::AccountMeta",
+                          "is_writable"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "is_signer" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "pinocchio::instruction::AccountMeta",
-                            "is_signer"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "bool" ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "pinocchio::instruction::AccountMeta",
+                              "is_signer"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1326,8 +1552,12 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::instruction::AccountMeta" ],
+              self
+            |) in
+          Value.mkStructRecord
             "pinocchio::instruction::AccountMeta"
             []
             []
@@ -1454,7 +1684,7 @@ Module instruction.
     Definition Self : Ty.t := Ty.path "pinocchio::instruction::AccountMeta".
     
     (*
-        pub fn new(pubkey: &'a Pubkey, is_writable: bool, is_signer: bool) -> Self {
+        pub const fn new(pubkey: &'a Pubkey, is_writable: bool, is_signer: bool) -> Self {
             Self {
                 pubkey,
                 is_writable,
@@ -1466,10 +1696,22 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ pubkey; is_writable; is_signer ] =>
         ltac:(M.monadic
-          (let pubkey := M.alloc (| pubkey |) in
-          let is_writable := M.alloc (| is_writable |) in
-          let is_signer := M.alloc (| is_signer |) in
-          Value.StructRecord
+          (let pubkey :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "array")
+                    [ M.unevaluated_const (mk_str (| "pinocchio_pubkey_Pubkey_discriminant" |)) ]
+                    [ Ty.path "u8" ]
+                ],
+              pubkey
+            |) in
+          let is_writable := M.alloc (| Ty.path "bool", is_writable |) in
+          let is_signer := M.alloc (| Ty.path "bool", is_signer |) in
+          Value.mkStructRecord
             "pinocchio::instruction::AccountMeta"
             []
             []
@@ -1486,7 +1728,7 @@ Module instruction.
     Global Typeclasses Opaque new.
     
     (*
-        pub fn readonly(pubkey: &'a Pubkey) -> Self {
+        pub const fn readonly(pubkey: &'a Pubkey) -> Self {
             Self::new(pubkey, false, false)
         }
     *)
@@ -1494,7 +1736,19 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ pubkey ] =>
         ltac:(M.monadic
-          (let pubkey := M.alloc (| pubkey |) in
+          (let pubkey :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "array")
+                    [ M.unevaluated_const (mk_str (| "pinocchio_pubkey_Pubkey_discriminant" |)) ]
+                    [ Ty.path "u8" ]
+                ],
+              pubkey
+            |) in
           M.call_closure (|
             Ty.path "pinocchio::instruction::AccountMeta",
             M.get_associated_function (|
@@ -1517,7 +1771,7 @@ Module instruction.
     Global Typeclasses Opaque readonly.
     
     (*
-        pub fn writable(pubkey: &'a Pubkey) -> Self {
+        pub const fn writable(pubkey: &'a Pubkey) -> Self {
             Self::new(pubkey, true, false)
         }
     *)
@@ -1525,7 +1779,19 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ pubkey ] =>
         ltac:(M.monadic
-          (let pubkey := M.alloc (| pubkey |) in
+          (let pubkey :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "array")
+                    [ M.unevaluated_const (mk_str (| "pinocchio_pubkey_Pubkey_discriminant" |)) ]
+                    [ Ty.path "u8" ]
+                ],
+              pubkey
+            |) in
           M.call_closure (|
             Ty.path "pinocchio::instruction::AccountMeta",
             M.get_associated_function (|
@@ -1548,7 +1814,7 @@ Module instruction.
     Global Typeclasses Opaque writable.
     
     (*
-        pub fn readonly_signer(pubkey: &'a Pubkey) -> Self {
+        pub const fn readonly_signer(pubkey: &'a Pubkey) -> Self {
             Self::new(pubkey, false, true)
         }
     *)
@@ -1556,7 +1822,19 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ pubkey ] =>
         ltac:(M.monadic
-          (let pubkey := M.alloc (| pubkey |) in
+          (let pubkey :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "array")
+                    [ M.unevaluated_const (mk_str (| "pinocchio_pubkey_Pubkey_discriminant" |)) ]
+                    [ Ty.path "u8" ]
+                ],
+              pubkey
+            |) in
           M.call_closure (|
             Ty.path "pinocchio::instruction::AccountMeta",
             M.get_associated_function (|
@@ -1580,7 +1858,7 @@ Module instruction.
     Global Typeclasses Opaque readonly_signer.
     
     (*
-        pub fn writable_signer(pubkey: &'a Pubkey) -> Self {
+        pub const fn writable_signer(pubkey: &'a Pubkey) -> Self {
             Self::new(pubkey, true, true)
         }
     *)
@@ -1588,7 +1866,19 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ pubkey ] =>
         ltac:(M.monadic
-          (let pubkey := M.alloc (| pubkey |) in
+          (let pubkey :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "array")
+                    [ M.unevaluated_const (mk_str (| "pinocchio_pubkey_Pubkey_discriminant" |)) ]
+                    [ Ty.path "u8" ]
+                ],
+              pubkey
+            |) in
           M.call_closure (|
             Ty.path "pinocchio::instruction::AccountMeta",
             M.get_associated_function (|
@@ -1624,7 +1914,11 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ account ] =>
         ltac:(M.monadic
-          (let account := M.alloc (| account |) in
+          (let account :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::account_info::AccountInfo" ],
+              account
+            |) in
           M.call_closure (|
             Ty.path "pinocchio::instruction::AccountMeta",
             M.get_associated_function (|
@@ -1717,8 +2011,13 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::instruction::Seed" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1734,58 +2033,111 @@ Module instruction.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Seed" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "seed" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "pinocchio::instruction::Seed",
-                        "seed"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "pinocchio::instruction::Seed",
+                          "seed"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "len" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "pinocchio::instruction::Seed",
-                        "len"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.path "u64" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "pinocchio::instruction::Seed",
+                          "len"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "_bytes" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "pinocchio::instruction::Seed",
-                            "_bytes"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::marker::PhantomData")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                            ]
+                        ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::marker::PhantomData")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                ]
+                            ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "pinocchio::instruction::Seed",
+                              "_bytes"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1808,8 +2160,12 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::instruction::Seed" ],
+              self
+            |) in
+          Value.mkStructRecord
             "pinocchio::instruction::Seed"
             []
             []
@@ -1935,8 +2291,12 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
-          Value.StructRecord
+          (let value :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+              value
+            |) in
+          Value.mkStructRecord
             "pinocchio::instruction::Seed"
             []
             []
@@ -2002,8 +2362,12 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
-          Value.StructRecord
+          (let value :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ SIZE ] [ Ty.path "u8" ] ],
+              value
+            |) in
+          Value.mkStructRecord
             "pinocchio::instruction::Seed"
             []
             []
@@ -2018,9 +2382,20 @@ Module instruction.
                     []
                   |),
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |))
+                    M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                      M.pointer_coercion
+                        M.PointerCoercion.Unsize
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "array") [ SIZE ] [ Ty.path "u8" ] ])
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |) ]
+                    |)
                   ]
                 |));
               ("len",
@@ -2035,9 +2410,23 @@ Module instruction.
                       []
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |))
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "array") [ SIZE ] [ Ty.path "u8" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |) ]
+                      |)
                     ]
                   |)));
               ("_bytes",
@@ -2076,7 +2465,11 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::instruction::Seed" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -2147,8 +2540,13 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::instruction::Signer" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -2164,58 +2562,124 @@ Module instruction.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Signer" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "seeds" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "pinocchio::instruction::Signer",
-                        "seeds"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "*const") [] [ Ty.path "pinocchio::instruction::Seed" ] ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "pinocchio::instruction::Signer",
+                          "seeds"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "len" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "pinocchio::instruction::Signer",
-                        "len"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.path "u64" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "pinocchio::instruction::Signer",
+                          "len"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "_seeds" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "pinocchio::instruction::Signer",
-                            "_seeds"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::marker::PhantomData")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.path "pinocchio::instruction::Seed" ]
+                                ]
+                            ]
+                        ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::marker::PhantomData")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [ Ty.path "pinocchio::instruction::Seed" ]
+                                    ]
+                                ]
+                            ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "pinocchio::instruction::Signer",
+                              "_seeds"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2238,8 +2702,12 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "pinocchio::instruction::Signer" ],
+              self
+            |) in
+          Value.mkStructRecord
             "pinocchio::instruction::Signer"
             []
             []
@@ -2374,8 +2842,15 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
-          Value.StructRecord
+          (let value :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "slice") [] [ Ty.path "pinocchio::instruction::Seed" ] ],
+              value
+            |) in
+          Value.mkStructRecord
             "pinocchio::instruction::Signer"
             []
             []
@@ -2451,8 +2926,15 @@ Module instruction.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
-          Value.StructRecord
+          (let value :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "array") [ SIZE ] [ Ty.path "pinocchio::instruction::Seed" ] ],
+              value
+            |) in
+          Value.mkStructRecord
             "pinocchio::instruction::Signer"
             []
             []
@@ -2467,9 +2949,30 @@ Module instruction.
                     []
                   |),
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |))
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "pinocchio::instruction::Seed" ]
+                        ],
+                      M.pointer_coercion
+                        M.PointerCoercion.Unsize
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ SIZE ]
+                              [ Ty.path "pinocchio::instruction::Seed" ]
+                          ])
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "pinocchio::instruction::Seed" ]
+                          ]),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |) ]
+                    |)
                   ]
                 |));
               ("len",
@@ -2484,9 +2987,34 @@ Module instruction.
                       []
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |))
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "pinocchio::instruction::Seed" ]
+                          ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ SIZE ]
+                                [ Ty.path "pinocchio::instruction::Seed" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.path "pinocchio::instruction::Seed" ]
+                            ]),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |) ]
+                      |)
                     ]
                   |)));
               ("_seeds",

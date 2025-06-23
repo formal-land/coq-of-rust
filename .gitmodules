@@ -28,3 +28,6 @@
 [submodule "third-party/stark-backend"]
 	path = third-party/stark-backend
 	url = https://github.com/openvm-org/stark-backend.git
+[submodule "third-party/anza-xyz-pinocchio"]
+	path = third-party/anza-xyz-pinocchio
+	url = https://github.com/anza-xyz/pinocchio.git

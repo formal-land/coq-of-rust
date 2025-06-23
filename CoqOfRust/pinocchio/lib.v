@@ -2,7 +2,20 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_MAX_TX_ACCOUNTS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-  ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 128 |))).
+  ltac:(M.monadic
+    (M.alloc (|
+      Ty.path "usize",
+      M.cast
+        (Ty.path "usize")
+        (M.call_closure (|
+          Ty.path "u8",
+          BinOp.Wrap.sub,
+          [
+            M.read (| get_associated_constant (| Ty.path "u8", "MAX", Ty.path "u8" |) |);
+            Value.Integer IntegerKind.U8 1
+          ]
+        |))
+    |))).
 
 Global Instance Instance_IsConstant_value_MAX_TX_ACCOUNTS :
   M.IsFunction.C "pinocchio::MAX_TX_ACCOUNTS" value_MAX_TX_ACCOUNTS.
@@ -10,7 +23,7 @@ Admitted.
 Global Typeclasses Opaque value_MAX_TX_ACCOUNTS.
 
 Definition value_BPF_ALIGN_OF_U128 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-  ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 8 |))).
+  ltac:(M.monadic (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 8 |))).
 
 Global Instance Instance_IsConstant_value_BPF_ALIGN_OF_U128 :
   M.IsFunction.C "pinocchio::BPF_ALIGN_OF_U128" value_BPF_ALIGN_OF_U128.
@@ -26,7 +39,7 @@ Admitted.
 Global Typeclasses Opaque value_NON_DUP_MARKER.
 
 Definition value_SUCCESS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-  ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 0 |))).
+  ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 0 |))).
 
 Global Instance Instance_IsConstant_value_SUCCESS :
   M.IsFunction.C "pinocchio::SUCCESS" value_SUCCESS.

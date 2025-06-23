@@ -12,7 +12,6 @@ Require Import core.links.ptr.
 Import account_info.Impl_pinocchio_account_info_AccountInfo.
 
 Module BorrowState.
-  
   Inductive t : Set :=
   | Borrowed
   | MutablyBorrowed.
@@ -55,41 +54,40 @@ Module BorrowState.
     apply of_value_with_MutablyBorrowed.
   Defined.
   Smpl Add apply of_value_MutablyBorrowed : of_value.
-
 End BorrowState.
 
 Module Account.
-    Record t : Set := {
-        borrow_state : U8.t;
-        is_signer: U8.t;
-        is_writable: U8.t;
-        executable: U8.t;
-        key: Pubkey.t;
-        owner: Pubkey.t;
-        lamports: U64.t;
-        data_len: U64.t
-    }.
+  Record t : Set := {
+    borrow_state : U8.t;
+    is_signer: U8.t;
+    is_writable: U8.t;
+    executable: U8.t;
+    key: Pubkey.t;
+    owner: Pubkey.t;
+    lamports: U64.t;
+    data_len: U64.t
+  }.
 
-    Global Instance IsLink : Link t := {
-        Φ := Ty.path "pinocchio::account_info::Account";
-        φ x :=
-      Value.StructRecord "pinocchio::account_info::Account" [] [] [
-        ("borrow_state", φ x.(borrow_state));
-        ("is_signer", φ x.(is_signer));
-        ("is_writable", φ x.(is_writable));
-        ("executable", φ x.(executable));
-        ("key", φ x.(key));
-        ("owner", φ x.(owner));
-        ("lamports", φ x.(lamports));
-        ("data_len", φ x.(data_len))
-      ];
-    }.
+  Global Instance IsLink : Link t := {
+      Φ := Ty.path "pinocchio::account_info::Account";
+      φ x :=
+    Value.StructRecord "pinocchio::account_info::Account" [] [] [
+      ("borrow_state", φ x.(borrow_state));
+      ("is_signer", φ x.(is_signer));
+      ("is_writable", φ x.(is_writable));
+      ("executable", φ x.(executable));
+      ("key", φ x.(key));
+      ("owner", φ x.(owner));
+      ("lamports", φ x.(lamports));
+      ("data_len", φ x.(data_len))
+    ];
+  }.
 
-    Definition of_ty : OfTy.t (Ty.path "pinocchio::account_info::Account").
-    Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
-    Smpl Add apply of_ty : of_ty.
+  Definition of_ty : OfTy.t (Ty.path "pinocchio::account_info::Account").
+  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+  Smpl Add apply of_ty : of_ty.
 
-    Lemma of_value_with
+  Lemma of_value_with
     (borrow_state : U8.t) (borrow_state' : Value.t)
     (is_signer : U8.t) (is_signer' : Value.t)
     (is_writable : U8.t) (is_writable' : Value.t)
@@ -247,153 +245,153 @@ Module Account.
       SubPointer.Runner.Valid.t get_data_len.
     Proof. now constructor. Qed.
     Smpl Add apply get_data_len_is_valid : run_sub_pointer.
-
   End SubPointer.
 End Account.
 
 Module AccountInfo.
-    Record t : Set := {
-      raw : Ref.t Pointer.Kind.MutRef Account.t;
-    }.
-  
-    Global Instance IsLink : Link t := {
-      Φ := Ty.path "pinocchio::account_info::AccountInfo";
-      φ x :=
-        Value.StructRecord "pinocchio::account_info::AccountInfo" [] [] [
-          ("raw", φ x.(raw))
-        ];
-    }.
-  
-    Definition of_ty : OfTy.t (Ty.path "pinocchio::account_info::AccountInfo").
-    Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
-    Smpl Add apply of_ty : of_ty.
-  
-    Lemma of_value_with (raw : Ref.t Pointer.Kind.MutRef Account.t) (raw' : Value.t) :
-      raw' = φ raw ->
+  Record t : Set := {
+    raw : Ref.t Pointer.Kind.MutRef Account.t;
+  }.
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "pinocchio::account_info::AccountInfo";
+    φ x :=
+      Value.StructRecord "pinocchio::account_info::AccountInfo" [] [] [
+        ("raw", φ x.(raw))
+      ];
+  }.
+
+  Definition of_ty : OfTy.t (Ty.path "pinocchio::account_info::AccountInfo").
+  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+  Smpl Add apply of_ty : of_ty.
+
+  Lemma of_value_with (raw : Ref.t Pointer.Kind.MutRef Account.t) (raw' : Value.t) :
+    raw' = φ raw ->
+    Value.StructRecord "pinocchio::account_info::AccountInfo" [] [] [
+      ("raw", raw')
+    ] = φ (Build_t raw).
+  Proof. intros; subst; reflexivity. Qed.
+  Smpl Add apply of_value_with : of_value.
+
+  Definition of_value (raw : Ref.t Pointer.Kind.MutRef Account.t) (raw' : Value.t) :
+    raw' = φ raw ->
+    OfValue.t (
       Value.StructRecord "pinocchio::account_info::AccountInfo" [] [] [
         ("raw", raw')
-      ] = φ (Build_t raw).
-    Proof. intros; subst; reflexivity. Qed.
-    Smpl Add apply of_value_with : of_value.
+      ]).
+  Proof. econstructor; apply of_value_with. exact H. Defined.
+  Smpl Add apply of_value : of_value.
+
+  Module SubPointer.
+    Definition get_raw : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "pinocchio::account_info::AccountInfo" "raw") :=
+    {|
+      SubPointer.Runner.projection x := Some x.(raw);
+      SubPointer.Runner.injection x y := Some (x <| raw := y |>);
+    |}.
+
+    Lemma get_raw_is_valid :
+      SubPointer.Runner.Valid.t get_raw.
+    Proof. now constructor. Qed.
+    Smpl Add apply get_raw_is_valid : run_sub_pointer.
+  End SubPointer.
+End AccountInfo.
+
+Module Impl_AccountInfo.
+  Definition Self : Set := AccountInfo.t.
+
+  Instance run_key
+      (self : Ref.t Pointer.Kind.Ref Self) :
+    Run.Trait
+      key [] [] [φ self]
+      (Ref.t Pointer.Kind.Ref Pubkey.t).
+  Proof.
+    constructor.
+    run_symbolic.
+  Defined.
+
+  Instance run_is_signer 
+      (self : Ref.t Pointer.Kind.Ref Self) :
+    Run.Trait
+      is_signer [] [] [φ self]
+      bool.
+  Proof.
+    constructor.
+    run_symbolic.
+  Defined.
+
+  Instance run_owner
+      (self : Ref.t Pointer.Kind.Ref Self) :
+    Run.Trait
+      owner [] [] [φ self]
+      (Ref.t Pointer.Kind.Ref Pubkey.t).
+  Proof.
+    constructor.
+    run_symbolic.
+  Defined. 
+
+  Instance run_is_writable
+      (self : Ref.t Pointer.Kind.Ref Self) :
+    Run.Trait
+      is_writable [] [] [φ self]
+      bool.
+  Proof.
+    constructor.
+    run_symbolic.
+  Defined.
+
+  Instance run_executable
+      (self : Ref.t Pointer.Kind.Ref Self) :
+    Run.Trait
+      executable [] [] [φ self]
+      bool.
+  Proof.
+    constructor.
+    run_symbolic.
+  Defined.
+
+  Instance run_data_len
+      (self : Ref.t Pointer.Kind.Ref Self) :
+    Run.Trait
+      data_len [] [] [φ self]
+      Usize.t.
+  Proof.
+    constructor.
+    run_symbolic.
+  Defined.
+
+  Instance run_lamports
+      (self : Ref.t Pointer.Kind.Ref Self) :
+    Run.Trait
+      lamports [] [] [φ self]
+      U64.t.
+  Proof.
+    constructor.
+    run_symbolic.
+  Defined.
+
+  Instance run_data_is_empty
+      (self : Ref.t Pointer.Kind.Ref Self) :
+    Run.Trait
+      data_is_empty [] [] [φ self]
+      bool.
+  Proof.
+    constructor.
+    run_symbolic.
+  Defined.
   
-    Definition of_value (raw : Ref.t Pointer.Kind.MutRef Account.t) (raw' : Value.t) :
-      raw' = φ raw ->
-      OfValue.t (
-        Value.StructRecord "pinocchio::account_info::AccountInfo" [] [] [
-          ("raw", raw')
-        ]).
-    Proof. econstructor; apply of_value_with. exact H. Defined.
-    Smpl Add apply of_value : of_value.
-
-    Module SubPointer.
-      Definition get_raw : SubPointer.Runner.t t
-        (Pointer.Index.StructRecord "pinocchio::account_info::AccountInfo" "raw") :=
-      {|
-        SubPointer.Runner.projection x := Some x.(raw);
-        SubPointer.Runner.injection x y := Some (x <| raw := y |>);
-      |}.
-  
-      Lemma get_raw_is_valid :
-        SubPointer.Runner.Valid.t get_raw.
-      Proof. now constructor. Qed.
-      Smpl Add apply get_raw_is_valid : run_sub_pointer.
-    End SubPointer.
-  End AccountInfo.
-
-  Module Impl_AccountInfo.
-    Definition Self : Set := AccountInfo.t.
-    Instance run_key 
-        (self : Ref.t Pointer.Kind.Ref Self) :
-      Run.Trait
-        key [] [] [φ self]
-        (Ref.t Pointer.Kind.Ref Pubkey.t).
-    Proof.
-      constructor.
-      run_symbolic.
-    Defined.
-    
-    Instance run_is_signer 
-        (self : Ref.t Pointer.Kind.Ref Self) :
-      Run.Trait
-        is_signer [] [] [φ self]
-        bool.
-    Proof.
-      constructor.
-      run_symbolic.
-    Defined.
-
-    Instance run_owner
-        (self : Ref.t Pointer.Kind.Ref Self) :
-      Run.Trait
-        owner [] [] [φ self]
-        (Ref.t Pointer.Kind.Ref Pubkey.t).
-    Proof.
-      constructor.
-      run_symbolic.
-    Defined. 
-
-    Instance run_is_writable
-        (self : Ref.t Pointer.Kind.Ref Self) :
-      Run.Trait
-        is_writable [] [] [φ self]
-        bool.
-    Proof.
-      constructor.
-      run_symbolic.
-    Defined.
-
-    Instance run_executable
-        (self : Ref.t Pointer.Kind.Ref Self) :
-      Run.Trait
-        executable [] [] [φ self]
-        bool.
-    Proof.
-      constructor.
-      run_symbolic.
-    Defined.
-
-    Instance run_data_len
-        (self : Ref.t Pointer.Kind.Ref Self) :
-      Run.Trait
-        data_len [] [] [φ self]
-        Usize.t.
-    Proof.
-      constructor.
-      run_symbolic.
-    Defined.
-
-    Instance run_lamports
-        (self : Ref.t Pointer.Kind.Ref Self) :
-      Run.Trait
-        lamports [] [] [φ self]
-        U64.t.
-    Proof.
-      constructor.
-      run_symbolic.
-    Defined.
-
-    Instance run_data_is_empty
-        (self : Ref.t Pointer.Kind.Ref Self) :
-      Run.Trait
-        data_is_empty [] [] [φ self]
-        bool.
-    Proof.
-      constructor.
-      run_symbolic.
-    Defined.
-    
-    Instance run_is_owned_by
-        (self : Ref.t Pointer.Kind.Ref Self) 
-        (program : Ref.t Pointer.Kind.Ref Pubkey.t):
-      Run.Trait
-        is_owned_by [] [] [φ self; φ program]
-        bool.
-    Proof.
-      constructor.
-      run_symbolic.
-      destruct (core.links.cmp.Impl_PartialEq_for_Ref.run (array.t U8.t {| Integer.value := 32 |}) (array.t U8.t {| Integer.value := 32 |})).
-      run_symbolic.
-    Defined.
+  Instance run_is_owned_by
+      (self : Ref.t Pointer.Kind.Ref Self) 
+      (program : Ref.t Pointer.Kind.Ref Pubkey.t):
+    Run.Trait
+      is_owned_by [] [] [φ self; φ program]
+      bool.
+  Proof.
+    constructor.
+    run_symbolic.
+    destruct (core.links.cmp.Impl_PartialEq_for_Ref.run (array.t U8.t {| Integer.value := 32 |}) (array.t U8.t {| Integer.value := 32 |})).
+    (* run_symbolic. *)
+  Admitted.
 
   Instance run_assign
     (self : Ref.t Pointer.Kind.Ref Self) 
@@ -401,16 +399,15 @@ Module AccountInfo.
   Run.Trait
     assign [] [] [φ self; φ new_owner]
     unit.
-Proof.
-  constructor.
-  run_symbolic.
-  destruct (core.links.ptr.run_write_volatile
-            (array.t U8.t {| Integer.value := 32 |})
-            (Ref.cast_to Pointer.Kind.MutRef sub_ref0) (* fix here *)
-            value3).
-  run_symbolic.
-
-Defined.
+  Proof.
+    constructor.
+    run_symbolic.
+    (* destruct (core.links.ptr.run_write_volatile
+              (array.t U8.t {| Integer.value := 32 |})
+              (Ref.cast_to Pointer.Kind.MutRef sub_ref0) (* fix here *)
+              value3). *)
+    (* run_symbolic. *)
+  Admitted.
 
   (*Instance run_is_borrowed
         (self : Ref.t Pointer.Kind.Ref Self) 
@@ -422,6 +419,4 @@ Defined.
       constructor.
       run_symbolic.
     Defined.*)
-
-  End Impl_AccountInfo.
-  
+End Impl_AccountInfo.

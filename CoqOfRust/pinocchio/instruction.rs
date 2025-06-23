@@ -125,7 +125,7 @@ pub struct AccountMeta<'a> {
 impl<'a> AccountMeta<'a> {
     /// Creates a new `AccountMeta`.
     #[inline(always)]
-    pub fn new(pubkey: &'a Pubkey, is_writable: bool, is_signer: bool) -> Self {
+    pub const fn new(pubkey: &'a Pubkey, is_writable: bool, is_signer: bool) -> Self {
         Self {
             pubkey,
             is_writable,
@@ -135,25 +135,25 @@ impl<'a> AccountMeta<'a> {
 
     /// Creates a new readonly `AccountMeta`.
     #[inline(always)]
-    pub fn readonly(pubkey: &'a Pubkey) -> Self {
+    pub const fn readonly(pubkey: &'a Pubkey) -> Self {
         Self::new(pubkey, false, false)
     }
 
     /// Creates a new writable `AccountMeta`.
     #[inline(always)]
-    pub fn writable(pubkey: &'a Pubkey) -> Self {
+    pub const fn writable(pubkey: &'a Pubkey) -> Self {
         Self::new(pubkey, true, false)
     }
 
     /// Creates a new readonly and signer `AccountMeta`.
     #[inline(always)]
-    pub fn readonly_signer(pubkey: &'a Pubkey) -> Self {
+    pub const fn readonly_signer(pubkey: &'a Pubkey) -> Self {
         Self::new(pubkey, false, true)
     }
 
     /// Creates a new writable and signer `AccountMeta`.
     #[inline(always)]
-    pub fn writable_signer(pubkey: &'a Pubkey) -> Self {
+    pub const fn writable_signer(pubkey: &'a Pubkey) -> Self {
         Self::new(pubkey, true, true)
     }
 }
