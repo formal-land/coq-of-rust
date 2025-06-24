@@ -260,6 +260,15 @@ jobs:
             rsync -rcv ./crates/stark-backend/src/ ../../CoqOfRust/openvm_stack_backend/version_v1_1_0/crates/stark_backend --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ../..
           endGroup
+          startGroup "Translate Pinocchio"
+            cd third-party/anza-xyz-pinocchio/sdk/pinocchio
+            cp ../../../../rust-toolchain ./
+            cargo coq-of-rust
+            touch src/lib.rs
+            cargo coq-of-rust
+            rsync -rcv ./src/ ../../../../CoqOfRust/pinocchio --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            cd ../../../..
+          endGroup
           startGroup "Generate Rocq files from Python"
             cd CoqOfRust
             make generate
