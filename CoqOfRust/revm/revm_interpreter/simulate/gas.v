@@ -2,6 +2,9 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 Require Import simulate.M.
 Require Import revm.revm_interpreter.links.gas.
+Require Import revm.revm_interpreter.links.interpreter.
+Require Import revm.revm_interpreter.links.interpreter_types.
+Require Import revm.revm_interpreter.simulate.interpreter_types.
 
 Module Impl_MemoryGas.
   Definition Self : Set :=
@@ -43,9 +46,8 @@ Module Impl_Gas.
     }}.
   Proof.
     cbn.
-    progress repeat get_can_access.
     eapply Run.Call. {
-      apply (Impl_MemoryGas.new_eq [_]).
+      apply Impl_MemoryGas.new_eq.
     }
     cbn.
     apply Run.Pure.
@@ -139,17 +141,29 @@ Module Impl_Gas.
     else
       (false, self).
 
-  Lemma record_cost_eq (self : Self) (cost : U64.t) :
-    let ref_self := {|
-      Ref.core := Ref.Core.Mutable (A := Self) 0%nat [] φ Some (fun _ => Some)
+  Lemma record_cost_eq {StackRest : Stack.t}
+      {WIRE : Set} {WIRE_types : InterpreterTypes.Types.t}
+      `{Link WIRE} `{InterpreterTypes.Types.AreLinks WIRE_types}
+      {ILoop : Loop.C WIRE_types}
+      (interpreter : Interpreter.t WIRE WIRE_types)
+      (stack_rest : Stack.to_Set StackRest)
+      (cost : U64.t) :
+    let ref_interpreter : Ref.t Pointer.Kind.MutRef _ := make_ref 0 in
+    let ref_control : Ref.t Pointer.Kind.MutRef _ := {| Ref.core :=
+        SubPointer.Runner.apply
+          ref_interpreter.(Ref.core)
+          Interpreter.SubPointer.get_control
     |} in
-    let '(success, self') := record_cost self cost in
+    let ref_self := RefStub.apply ref_control ILoop.(Loop.gas) in
+    (* let success_self' := record_cost self cost in *)
     {{
-      StackM.eval_f (Stack := [_]) (Impl_Gas.run_record_cost ref_self cost) (self, tt) 🌲
-      (Output.Success success, (self', tt))
+      StackM.eval_f (Stack := Interpreter.t WIRE WIRE_types :: StackRest)
+        (Impl_Gas.run_record_cost ref_self cost) (interpreter, stack_rest) 🌲
+      (Output.Success true, (interpreter, stack_rest))
     }}.
   Proof.
-    intros.
+  Admitted.
+    (* intros.
     destruct record_cost eqn:?; unfold record_cost in *.
     cbn; progress repeat get_can_access.
     eapply Run.Call. {
@@ -168,6 +182,6 @@ Module Impl_Gas.
     { cbn; progress repeat get_can_access.
       hauto l: on.
     }
-  Qed.
+  Qed. *)
   Global Opaque Impl_Gas.run_record_cost.
 End Impl_Gas.

@@ -154,29 +154,33 @@ Module StackM.
     { (* CallPrimitive *)
       destruct primitive.
       { (* StateAlloc *)
-        exact (
-          let ref_core :=
-            Ref.Core.Mutable
-              (List.length Stack)
-              []
-              φ
-              Some
-              (fun _ => Some) in
-          let stack := Stack.alloc stack value in
-          let_ (eval _ _ _ (k ref_core) stack) (fun '(output, stack) =>
-          let '(stack, _) := Stack.dealloc stack in
-          Pure (output, stack)
-          )
-        ).
+        (* We always allocate an immediate value *)
+        exact (eval _ _ _ (k (Ref.Core.Immediate (Some value))) stack).
       }
       { (* StateRead *)
         refine (
-          GetCanAccess Stack ref_core (fun H_access =>
-          _)
+          let immediate_value :=
+            match ref_core with
+            | Ref.Core.Immediate immediate_value => Some immediate_value
+            | _ => None
+            end in
+          _
         ).
-        destruct (Stack.CanAccess.read H_access stack) as [value|].
-        { exact (eval _ _ _ (k value) stack). }
-        { exact (Pure (Output.Exception Output.Exception.BreakMatch, stack)). }
+        destruct immediate_value as [value|].
+        { (* Immediate *)
+          destruct value as [value|].
+          { exact (eval _ _ _ (k value) stack). }
+          { exact (Pure (Output.Exception Output.Exception.BreakMatch, stack)). }
+        }
+        { (* Mutable *)
+          refine (
+            GetCanAccess Stack ref_core (fun H_access =>
+            _)
+          ).
+          destruct (Stack.CanAccess.read H_access stack) as [value|].
+          { exact (eval _ _ _ (k value) stack). }
+          { exact (Pure (Output.Exception Output.Exception.BreakMatch, stack)). }
+        }
       }
       { (* StateWrite *)
         refine (
@@ -278,3 +282,65 @@ Ltac get_can_access :=
     end
   |];
   cbn.
+
+Definition make_ref {A : Set} `{Link A} {kind : Pointer.Kind.t} (index : nat) : Ref.t kind A :=
+  {| Ref.core := Ref.Core.Mutable (A := A) index [] φ Some (fun _ => Some) |}.
+
+(** To get a reference to a sub-field from a reference to a larger object. *)
+Module RefStub.
+  Record t {A Sub_A : Set} `{Link A} `{Link Sub_A} : Set := {
+    path : Pointer.Path.t;
+    (* We suppose the pointer is valid (no [option] type for the [projection] and [injection]
+       functions) *)
+    projection : A -> Sub_A;
+    injection : A -> Sub_A -> A;
+  }.
+  Arguments t _ _ {_ _}.
+
+  Definition apply_core {A Sub_A : Set} `{Link A} `{Link Sub_A}
+      (ref_core : Ref.Core.t A)
+      (stub : t A Sub_A) :
+      Ref.Core.t Sub_A.
+  Proof.
+    destruct ref_core as [| ? ? address path big_to_value projection injection].
+    { (* Immediate *)
+      exact (
+        Ref.Core.Immediate (
+          match value with
+          | Some a => Some (stub.(projection) a)
+          | None => None
+          end
+        )
+      ).
+    }
+    { (* Mutable *)
+      exact (
+        Ref.Core.Mutable
+          address
+          (path ++ stub.(RefStub.path))
+          big_to_value
+          (fun big_a =>
+            match projection big_a with
+            | Some a => Some (stub.(RefStub.projection) a)
+            | None => None
+            end
+          )
+          (fun big_a new_sub_a =>
+            match projection big_a with
+            | Some a =>
+              let new_a := stub.(RefStub.injection) a new_sub_a in
+              injection big_a new_a
+            | None => None
+            end
+          )
+      ).
+    }
+  Defined.
+
+  Definition apply {A Sub_A : Set} `{Link A} `{Link Sub_A}
+      {kind_source kind_target : Pointer.Kind.t}
+      (ref : Ref.t kind_source A)
+      (stub : t A Sub_A) :
+      Ref.t kind_target Sub_A :=
+    {| Ref.core := apply_core ref.(Ref.core) stub |}.
+End RefStub.
