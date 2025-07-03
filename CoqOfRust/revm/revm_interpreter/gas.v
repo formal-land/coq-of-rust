@@ -1365,6 +1365,17 @@ Module gas.
                             []
                             []
                         |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.read (|
+                        M.return_ (|
+                          Value.StructTuple
+                            "revm_interpreter::gas::MemoryExtensionResult::Same"
+                            []
+                            []
+                            []
+                        |)
                       |)))
                 ]
               |)))

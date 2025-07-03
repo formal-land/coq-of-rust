@@ -8495,6 +8495,17 @@ Module ub_checks.
                             [ M.read (| diff |); M.read (| size |) ]
                           |)
                         |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.call_closure (|
+                        Ty.path "never",
+                        M.get_function (| "core::panicking::panic_nounwind", [], [] |),
+                        [
+                          mk_str (|
+                            "is_nonoverlapping: `size_of::<T>() * count` overflows a usize"
+                          |)
+                        ]
                       |)))
                 ]
               |)

@@ -2188,6 +2188,17 @@ Module vec.
                                                 |)
                                               |) in
                                             M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (M.call_closure (|
+                                            Ty.path "never",
+                                            M.get_function (|
+                                              "alloc::alloc::handle_alloc_error",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| new_layout |) ]
                                           |)))
                                     ]
                                   |)

@@ -21685,7 +21685,18 @@ Module str.
                                       0
                                     |) in
                                   let second_probe_offset := M.copy (| Ty.path "usize", γ0_0 |) in
-                                  M.read (| second_probe_offset |)))
+                                  M.read (| second_probe_offset |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (M.read (|
+                                    M.return_ (|
+                                      Value.StructTuple
+                                        "core::option::Option::None"
+                                        []
+                                        [ Ty.path "bool" ]
+                                        []
+                                    |)
+                                  |)))
                             ]
                           |)))
                     ]

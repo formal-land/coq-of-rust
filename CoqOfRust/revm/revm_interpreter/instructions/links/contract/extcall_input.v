@@ -53,6 +53,7 @@ Proof.
   constructor.
   destruct run_InterpreterTypes_for_WIRE eqn:?.
   destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
   destruct run_MemoryTrait_for_Memory.
   destruct (Impl_Try_for_Option.run alloy_primitives.bytes.links.mod.Bytes.t).
   destruct run_FromResidual_for_Self.

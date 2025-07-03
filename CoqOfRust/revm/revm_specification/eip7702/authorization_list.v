@@ -1713,66 +1713,38 @@ Module eip7702.
                 Ty.path "revm_specification::eip7702::authorization_list::AuthorizationList",
                 self
               |) in
-            M.match_operator (|
-              Ty.path "revm_specification::eip7702::authorization_list::AuthorizationList",
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_specification::eip7702::authorization_list::AuthorizationList::Signed",
-                        0
-                      |) in
-                    let signed :=
-                      M.copy (|
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
-                          [
-                            Ty.path "alloy_eip7702::auth_list::SignedAuthorization";
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        γ0_0
-                      |) in
-                    Value.StructTuple
-                      "revm_specification::eip7702::authorization_list::AuthorizationList::Recovered"
-                      []
-                      []
-                      [
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            []
-                            [
-                              Ty.path
-                                "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization";
-                              Ty.path "alloc::alloc::Global"
-                            ],
-                          M.get_trait_method (|
-                            "core::iter::traits::iterator::Iterator",
+            M.catch_return
+              (Ty.path "revm_specification::eip7702::authorization_list::AuthorizationList") (|
+              ltac:(M.monadic
+                (M.match_operator (|
+                  Ty.path "revm_specification::eip7702::authorization_list::AuthorizationList",
+                  self,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "revm_specification::eip7702::authorization_list::AuthorizationList::Signed",
+                            0
+                          |) in
+                        let signed :=
+                          M.copy (|
                             Ty.apply
-                              (Ty.path "core::iter::adapters::map::Map")
+                              (Ty.path "alloc::vec::Vec")
                               []
                               [
-                                Ty.apply
-                                  (Ty.path "alloc::vec::into_iter::IntoIter")
-                                  []
-                                  [
-                                    Ty.path "alloy_eip7702::auth_list::SignedAuthorization";
-                                    Ty.path "alloc::alloc::Global"
-                                  ];
-                                Ty.function
-                                  [ Ty.path "alloy_eip7702::auth_list::SignedAuthorization" ]
-                                  (Ty.path
-                                    "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization")
+                                Ty.path "alloy_eip7702::auth_list::SignedAuthorization";
+                                Ty.path "alloc::alloc::Global"
                               ],
-                            [],
-                            [],
-                            "collect",
-                            [],
-                            [
+                            γ0_0
+                          |) in
+                        Value.StructTuple
+                          "revm_specification::eip7702::authorization_list::AuthorizationList::Recovered"
+                          []
+                          []
+                          [
+                            M.call_closure (|
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
                                 []
@@ -1780,62 +1752,62 @@ Module eip7702.
                                   Ty.path
                                     "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization";
                                   Ty.path "alloc::alloc::Global"
-                                ]
-                            ]
-                          |),
-                          [
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "core::iter::adapters::map::Map")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloc::vec::into_iter::IntoIter")
-                                    []
-                                    [
-                                      Ty.path "alloy_eip7702::auth_list::SignedAuthorization";
-                                      Ty.path "alloc::alloc::Global"
-                                    ];
-                                  Ty.function
-                                    [ Ty.path "alloy_eip7702::auth_list::SignedAuthorization" ]
-                                    (Ty.path
-                                      "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization")
                                 ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
-                                  (Ty.path "alloc::vec::into_iter::IntoIter")
+                                  (Ty.path "core::iter::adapters::map::Map")
                                   []
                                   [
-                                    Ty.path "alloy_eip7702::auth_list::SignedAuthorization";
-                                    Ty.path "alloc::alloc::Global"
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::into_iter::IntoIter")
+                                      []
+                                      [
+                                        Ty.path "alloy_eip7702::auth_list::SignedAuthorization";
+                                        Ty.path "alloc::alloc::Global"
+                                      ];
+                                    Ty.function
+                                      [ Ty.path "alloy_eip7702::auth_list::SignedAuthorization" ]
+                                      (Ty.path
+                                        "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization")
                                   ],
                                 [],
                                 [],
-                                "map",
+                                "collect",
                                 [],
                                 [
-                                  Ty.path
-                                    "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization";
-                                  Ty.function
-                                    [ Ty.path "alloy_eip7702::auth_list::SignedAuthorization" ]
-                                    (Ty.path
-                                      "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization")
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [
+                                      Ty.path
+                                        "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization";
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
                                 ]
                               |),
                               [
                                 M.call_closure (|
                                   Ty.apply
-                                    (Ty.path "alloc::vec::into_iter::IntoIter")
+                                    (Ty.path "core::iter::adapters::map::Map")
                                     []
                                     [
-                                      Ty.path "alloy_eip7702::auth_list::SignedAuthorization";
-                                      Ty.path "alloc::alloc::Global"
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                                        []
+                                        [
+                                          Ty.path "alloy_eip7702::auth_list::SignedAuthorization";
+                                          Ty.path "alloc::alloc::Global"
+                                        ];
+                                      Ty.function
+                                        [ Ty.path "alloy_eip7702::auth_list::SignedAuthorization" ]
+                                        (Ty.path
+                                          "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization")
                                     ],
                                   M.get_trait_method (|
-                                    "core::iter::traits::collect::IntoIterator",
+                                    "core::iter::traits::iterator::Iterator",
                                     Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
+                                      (Ty.path "alloc::vec::into_iter::IntoIter")
                                       []
                                       [
                                         Ty.path "alloy_eip7702::auth_list::SignedAuthorization";
@@ -1843,63 +1815,96 @@ Module eip7702.
                                       ],
                                     [],
                                     [],
-                                    "into_iter",
+                                    "map",
                                     [],
-                                    []
+                                    [
+                                      Ty.path
+                                        "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization";
+                                      Ty.function
+                                        [ Ty.path "alloy_eip7702::auth_list::SignedAuthorization" ]
+                                        (Ty.path
+                                          "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization")
+                                    ]
                                   |),
-                                  [ M.read (| signed |) ]
-                                |);
-                                M.closure
-                                  (fun γ =>
-                                    ltac:(M.monadic
-                                      match γ with
-                                      | [ α0 ] =>
+                                  [
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                                        []
+                                        [
+                                          Ty.path "alloy_eip7702::auth_list::SignedAuthorization";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      M.get_trait_method (|
+                                        "core::iter::traits::collect::IntoIterator",
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [
+                                            Ty.path "alloy_eip7702::auth_list::SignedAuthorization";
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
+                                        [],
+                                        [],
+                                        "into_iter",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.read (| signed |) ]
+                                    |);
+                                    M.closure
+                                      (fun γ =>
                                         ltac:(M.monadic
-                                          (M.match_operator (|
-                                            Ty.path
-                                              "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
-                                            M.alloc (|
-                                              Ty.path
-                                                "alloy_eip7702::auth_list::SignedAuthorization",
-                                              α0
-                                            |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let signed :=
-                                                    M.copy (|
-                                                      Ty.path
-                                                        "alloy_eip7702::auth_list::SignedAuthorization",
-                                                      γ
-                                                    |) in
-                                                  M.call_closure (|
-                                                    Ty.path
-                                                      "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
-                                                    M.get_trait_method (|
-                                                      "core::convert::Into",
-                                                      Ty.path
-                                                        "alloy_eip7702::auth_list::SignedAuthorization",
-                                                      [],
-                                                      [
+                                          match γ with
+                                          | [ α0 ] =>
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                Ty.path
+                                                  "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
+                                                M.alloc (|
+                                                  Ty.path
+                                                    "alloy_eip7702::auth_list::SignedAuthorization",
+                                                  α0
+                                                |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let signed :=
+                                                        M.copy (|
+                                                          Ty.path
+                                                            "alloy_eip7702::auth_list::SignedAuthorization",
+                                                          γ
+                                                        |) in
+                                                      M.call_closure (|
                                                         Ty.path
-                                                          "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"
-                                                      ],
-                                                      "into",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [ M.read (| signed |) ]
-                                                  |)))
-                                            ]
-                                          |)))
-                                      | _ => M.impossible "wrong number of arguments"
-                                      end))
+                                                          "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
+                                                        M.get_trait_method (|
+                                                          "core::convert::Into",
+                                                          Ty.path
+                                                            "alloy_eip7702::auth_list::SignedAuthorization",
+                                                          [],
+                                                          [
+                                                            Ty.path
+                                                              "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"
+                                                          ],
+                                                          "into",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [ M.read (| signed |) ]
+                                                      |)))
+                                                ]
+                                              |)))
+                                          | _ => M.impossible "wrong number of arguments"
+                                          end))
+                                  ]
+                                |)
                               ]
                             |)
-                          ]
-                        |)
-                      ]))
-              ]
+                          ]));
+                    fun γ => ltac:(M.monadic (M.read (| M.return_ (| M.read (| self |) |) |)))
+                  ]
+                |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

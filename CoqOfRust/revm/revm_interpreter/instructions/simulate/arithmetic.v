@@ -11,15 +11,7 @@ Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_interpreter.simulate.gas.
 Require Import revm.revm_interpreter.simulate.interpreter_types.
-
-Parameter wrapping_add :
-  forall {BITS LIMBS : Usize.t} (x1 x2 : lib.Uint.t BITS LIMBS),
-  lib.Uint.t BITS LIMBS.
-
-Lemma wrapping_add_eq (BITS LIMBS : Usize.t) (x1 x2 : lib.Uint.t BITS LIMBS) :
-  links.M.evaluate (add.Impl_Uint.run_wrapping_add BITS LIMBS x1 x2).(Run.run_f) =
-  links.M.LowM.Pure (Output.Success (wrapping_add x1 x2)).
-Admitted.
+Require Import ruint.simulate.add.
 
 Lemma add_eq
     {WIRE H : Set} `{Link WIRE} `{Link H}
@@ -35,21 +27,46 @@ Lemma add_eq
   let ref_interpreter := make_ref 0 in
   let ref_host := make_ref 1 in
   {{
-    StackM.eval_f (Stack := [_; _]) (run_add run_InterpreterTypes_for_WIRE ref_interpreter ref_host) (interpreter, (_host, tt)) 🌲
-    let stack := interpreter.(Interpreter.stack) in
-    let (result, stack) := IStack.(Stack.popn_top) {| Integer.value := 1 |} stack in
-    match result with
-    | Some (arr, top) =>
-      let '{| ArrayPair.x := x1 |} := arr.(array.value) in
-      let x2 := top.(RefStub.projection) stack in
-      let stack := top.(RefStub.injection) stack (wrapping_add x1 x2) in
-      (Output.Success tt, (interpreter <| Interpreter.stack := stack |>, (_host, tt)))
-    | None =>
+    StackM.eval_f (Stack := [_; _])
+      (run_add run_InterpreterTypes_for_WIRE ref_interpreter ref_host)
+      (interpreter, (_host, tt)) 🌲
+    (
+      Output.Success tt,
       (
-        Output.Exception (Output.Exception.Panic (Panic.Make "no match branches left")),
-        (interpreter <| Interpreter.stack := stack |>, (_host, tt))
+        let gas := ILoop.(Loop.gas).(RefStub.projection) interpreter.(Interpreter.control) in
+        match Impl_Gas.record_cost gas constants.VERYLOW with
+        | None =>
+          let control :=
+            ILoop.(Loop.set_instruction_result)
+              interpreter.(Interpreter.control)
+              instruction_result.InstructionResult.OutOfGas in
+          interpreter
+            <| Interpreter.control := control |>
+        | Some gas =>
+          let control := ILoop.(Loop.gas).(RefStub.injection) interpreter.(Interpreter.control) gas in
+          let stack := interpreter.(Interpreter.stack) in
+          let (result, stack) := IStack.(Stack.popn_top) {| Integer.value := 1 |} stack in
+          match result with
+          | Some (arr, top) =>
+            let '{| ArrayPair.x := x1 |} := arr.(array.value) in
+            let x2 := top.(RefStub.projection) stack in
+            let stack := top.(RefStub.injection) stack (Impl_Uint.wrapping_add x1 x2) in
+            interpreter
+              <| Interpreter.control := control |>
+              <| Interpreter.stack := stack |>
+          | None =>
+            let control :=
+              ILoop.(Loop.set_instruction_result)
+                control
+                instruction_result.InstructionResult.StackUnderflow in
+            interpreter
+              <| Interpreter.control := control |>
+              <| Interpreter.stack := stack |>
+          end
+        end,
+        (_host, tt)
       )
-    end
+    )
   }}.
 Proof.
   intros.
@@ -62,23 +79,46 @@ Proof.
     apply VERYLOW_eq.
   }
   eapply Run.Call. {
-    pose proof (Impl_Gas.record_cost_eq (StackRest := [H]) interpreter) as H_record_cost.
-    apply H_record_cost.
+    apply Impl_Gas.record_cost_eq.
   }
-  eapply Run.Call. {
-    apply Run.Pure.
-  }
-  eapply Run.Call. {
-    apply popn_top.
-  }
-  destruct IStack.(Stack.popn_top) as [[[? ?]|] ?].
-  { get_can_access.
-    eapply Run.Call. {
-      rewrite wrapping_add_eq.
+  destruct Impl_Gas.record_cost as [gas'|] eqn:H_record_cost_eq.
+  { eapply Run.Call. {
       apply Run.Pure.
     }
-    get_can_access.
+    eapply Run.Call. {
+      apply popn_top.
+    }
+    destruct IStack.(Stack.popn_top) as [[[? ?]|] ?].
+    { get_can_access.
+      eapply Run.Call. {
+        rewrite Impl_Uint.wrapping_add_eq.
+        apply Run.Pure.
+      }
+      get_can_access.
+      apply Run.Pure.
+    }
+    { eapply Run.Call. {
+        epose proof (set_instruction_result [H; unit]
+          _
+          _
+          instruction_result.InstructionResult.StackUnderflow
+        ) as H_set_instruction_result.
+        apply H_set_instruction_result.
+      }
+      apply Run.Pure.
+    }
+  }
+  { eapply Run.Call. {
+      apply Run.Pure.
+    }
+    eapply Run.Call. {
+      epose proof (set_instruction_result [H]
+        _
+        _
+        instruction_result.InstructionResult.OutOfGas
+      ) as H_set_instruction_result.
+      apply H_set_instruction_result.
+    }
     apply Run.Pure.
   }
-  { apply Run.Pure. }
 Qed.

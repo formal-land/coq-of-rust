@@ -3578,6 +3578,68 @@ Module annotated_visitor.
                                 ]
                             ]
                         |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.read (|
+                        M.return_ (|
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_core_types::annotated_value::MoveFieldLayout"
+                                        ];
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Value"
+                                    ]
+                                ];
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Error"
+                            ]
+                            [
+                              Value.StructTuple
+                                "core::option::Option::None"
+                                []
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_core_types::annotated_value::MoveFieldLayout"
+                                        ];
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Value"
+                                    ]
+                                ]
+                                []
+                            ]
+                        |)
                       |)))
                 ]
               |)))

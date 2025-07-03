@@ -2839,6 +2839,28 @@ Module slice.
                           |)
                         |)
                       |)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.call_closure (|
+                      Ty.path "never",
+                      M.get_function (| "core::slice::index::slice_index_order_fail", [], [] |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "core::ops::range::Range",
+                            "start"
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "core::ops::range::Range",
+                            "end"
+                          |)
+                        |)
+                      ]
                     |)))
               ]
             |)))
@@ -3036,6 +3058,28 @@ Module slice.
                               |)
                             |)
                           |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.call_closure (|
+                          Ty.path "never",
+                          M.get_function (| "core::slice::index::slice_index_order_fail", [], [] |),
+                          [
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "core::ops::range::Range",
+                                "start"
+                              |)
+                            |);
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "core::ops::range::Range",
+                                "end"
+                              |)
+                            |)
+                          ]
                         |)))
                   ]
                 |)

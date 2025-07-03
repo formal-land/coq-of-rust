@@ -133,55 +133,67 @@ Module Impl_Gas.
         success
     }
   *)
-  Definition record_cost (self : Self) (cost : U64.t) : bool * Self :=
+  Definition record_cost (self : Self) (cost : U64.t) : option Self :=
     let (remaining, overflow) := u64_overflowing_sub self.(Gas.remaining) cost in
     let success := negb overflow in
     if success then
-      (true, self <| Gas.remaining := remaining |>)
+      Some (self <| Gas.remaining := remaining |>)
     else
-      (false, self).
+      None.
 
-  Lemma record_cost_eq {StackRest : Stack.t}
-      {WIRE : Set} {WIRE_types : InterpreterTypes.Types.t}
-      `{Link WIRE} `{InterpreterTypes.Types.AreLinks WIRE_types}
-      {ILoop : Loop.C WIRE_types}
+  Lemma record_cost_eq
+      {WIRE H : Set} `{Link WIRE} `{Link H}
+      {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
       (interpreter : Interpreter.t WIRE WIRE_types)
-      (stack_rest : Stack.to_Set StackRest)
+      (_host : H)
+      (gas_stub : RefStub.t WIRE_types.(InterpreterTypes.Types.Control) Gas.t)
       (cost : U64.t) :
-    let ref_interpreter : Ref.t Pointer.Kind.MutRef _ := make_ref 0 in
+    let ref_interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types) := make_ref 0 in
     let ref_control : Ref.t Pointer.Kind.MutRef _ := {| Ref.core :=
         SubPointer.Runner.apply
           ref_interpreter.(Ref.core)
           Interpreter.SubPointer.get_control
     |} in
-    let ref_self := RefStub.apply ref_control ILoop.(Loop.gas) in
-    (* let success_self' := record_cost self cost in *)
+    let ref_self := RefStub.apply ref_control gas_stub in
+    let gas := gas_stub.(RefStub.projection) interpreter.(Interpreter.control) in
+    let result := record_cost gas cost in
     {{
-      StackM.eval_f (Stack := Interpreter.t WIRE WIRE_types :: StackRest)
-        (Impl_Gas.run_record_cost ref_self cost) (interpreter, stack_rest) 🌲
-      (Output.Success true, (interpreter, stack_rest))
+      StackM.eval_f (Stack := [Interpreter.t WIRE WIRE_types; H])
+        (Impl_Gas.run_record_cost ref_self cost) (interpreter, (_host, tt)) 🌲
+      (
+        Output.Success (
+          match result with
+          | None => false
+          | Some _ => true
+          end
+        ),
+        (
+          interpreter <| Interpreter.control :=
+            match result with
+            | None => interpreter.(Interpreter.control)
+            | Some gas => gas_stub.(RefStub.injection) interpreter.(Interpreter.control) gas
+            end
+          |>,
+          (_host, tt)
+        )
+      )
     }}.
   Proof.
-  Admitted.
-    (* intros.
-    destruct record_cost eqn:?; unfold record_cost in *.
-    cbn; progress repeat get_can_access.
+    intros.
+    unfold record_cost in *; cbn.
+    progress repeat get_can_access.
     eapply Run.Call. {
       apply u64_overflowing_sub_eq.
     }
-    destruct u64_overflowing_sub eqn:?.
+    destruct u64_overflowing_sub as [remaining overflow] eqn:H_u64_overflowing_sub_eq.
     cbn; progress repeat get_can_access.
     eapply Run.Call. {
       apply Run.Pure.
     }
     cbn.
-    destruct negb eqn:?.
-    { cbn; progress repeat get_can_access.
-      hauto l: on.
-    }
-    { cbn; progress repeat get_can_access.
-      hauto l: on.
-    }
-  Qed. *)
+    destruct negb eqn:?; cbn; progress repeat get_can_access.
+    { apply Run.Pure. }
+    { apply Run.Pure. }
+  Qed.
   Global Opaque Impl_Gas.run_record_cost.
 End Impl_Gas.

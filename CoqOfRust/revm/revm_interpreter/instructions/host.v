@@ -584,10 +584,86 @@ Module instructions.
                                         |)
                                       |) in
                                     M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                  |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (M.read (|
+                                    let~ _ : Ty.tuple [] :=
+                                      M.call_closure (|
+                                        Ty.tuple [],
+                                        M.get_trait_method (|
+                                          "revm_interpreter::interpreter_types::LoopControl",
+                                          Ty.associated_in_trait
+                                            "revm_interpreter::interpreter_types::InterpreterTypes"
+                                            []
+                                            []
+                                            WIRE
+                                            "Control",
+                                          [],
+                                          [],
+                                          "set_instruction_result",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| interpreter |) |),
+                                              "revm_interpreter::interpreter::Interpreter",
+                                              "control"
+                                            |)
+                                          |);
+                                          Value.StructTuple
+                                            "revm_interpreter::instruction_result::InstructionResult::FatalExternalError"
+                                            []
+                                            []
+                                            []
+                                        ]
+                                      |) in
+                                    M.return_ (| Value.Tuple [] |)
                                   |)))
                             ]
                           |)
                         |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.read (|
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "revm_interpreter::interpreter_types::LoopControl",
+                              Ty.associated_in_trait
+                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                []
+                                []
+                                WIRE
+                                "Control",
+                              [],
+                              [],
+                              "set_instruction_result",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| interpreter |) |),
+                                  "revm_interpreter::interpreter::Interpreter",
+                                  "control"
+                                |)
+                              |);
+                              Value.StructTuple
+                                "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                []
+                                []
+                                []
+                            ]
+                          |) in
+                        M.return_ (| Value.Tuple [] |)
                       |)))
                 ]
               |)))
@@ -1043,6 +1119,44 @@ Module instructions.
                                 ]
                               |) in
                             M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.read (|
+                            let~ _ : Ty.tuple [] :=
+                              M.call_closure (|
+                                Ty.tuple [],
+                                M.get_trait_method (|
+                                  "revm_interpreter::interpreter_types::LoopControl",
+                                  Ty.associated_in_trait
+                                    "revm_interpreter::interpreter_types::InterpreterTypes"
+                                    []
+                                    []
+                                    WIRE
+                                    "Control",
+                                  [],
+                                  [],
+                                  "set_instruction_result",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| interpreter |) |),
+                                      "revm_interpreter::interpreter::Interpreter",
+                                      "control"
+                                    |)
+                                  |);
+                                  Value.StructTuple
+                                    "revm_interpreter::instruction_result::InstructionResult::FatalExternalError"
+                                    []
+                                    []
+                                    []
+                                ]
+                              |) in
+                            M.return_ (| Value.Tuple [] |)
                           |)))
                     ]
                   |)
@@ -1939,10 +2053,86 @@ Module instructions.
                                             M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                           |)))
                                     ]
+                                  |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (M.read (|
+                                    let~ _ : Ty.tuple [] :=
+                                      M.call_closure (|
+                                        Ty.tuple [],
+                                        M.get_trait_method (|
+                                          "revm_interpreter::interpreter_types::LoopControl",
+                                          Ty.associated_in_trait
+                                            "revm_interpreter::interpreter_types::InterpreterTypes"
+                                            []
+                                            []
+                                            WIRE
+                                            "Control",
+                                          [],
+                                          [],
+                                          "set_instruction_result",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| interpreter |) |),
+                                              "revm_interpreter::interpreter::Interpreter",
+                                              "control"
+                                            |)
+                                          |);
+                                          Value.StructTuple
+                                            "revm_interpreter::instruction_result::InstructionResult::FatalExternalError"
+                                            []
+                                            []
+                                            []
+                                        ]
+                                      |) in
+                                    M.return_ (| Value.Tuple [] |)
                                   |)))
                             ]
                           |)
                         |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.read (|
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "revm_interpreter::interpreter_types::LoopControl",
+                              Ty.associated_in_trait
+                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                []
+                                []
+                                WIRE
+                                "Control",
+                              [],
+                              [],
+                              "set_instruction_result",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| interpreter |) |),
+                                  "revm_interpreter::interpreter::Interpreter",
+                                  "control"
+                                |)
+                              |);
+                              Value.StructTuple
+                                "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                []
+                                []
+                                []
+                            ]
+                          |) in
+                        M.return_ (| Value.Tuple [] |)
                       |)))
                 ]
               |)))
@@ -2947,10 +3137,86 @@ Module instructions.
                                                 M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                               |)))
                                         ]
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.read (|
+                                        let~ _ : Ty.tuple [] :=
+                                          M.call_closure (|
+                                            Ty.tuple [],
+                                            M.get_trait_method (|
+                                              "revm_interpreter::interpreter_types::LoopControl",
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Control",
+                                              [],
+                                              [],
+                                              "set_instruction_result",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| interpreter |) |),
+                                                  "revm_interpreter::interpreter::Interpreter",
+                                                  "control"
+                                                |)
+                                              |);
+                                              Value.StructTuple
+                                                "revm_interpreter::instruction_result::InstructionResult::FatalExternalError"
+                                                []
+                                                []
+                                                []
+                                            ]
+                                          |) in
+                                        M.return_ (| Value.Tuple [] |)
                                       |)))
                                 ]
                               |)
                             |)
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.read (|
+                            let~ _ : Ty.tuple [] :=
+                              M.call_closure (|
+                                Ty.tuple [],
+                                M.get_trait_method (|
+                                  "revm_interpreter::interpreter_types::LoopControl",
+                                  Ty.associated_in_trait
+                                    "revm_interpreter::interpreter_types::InterpreterTypes"
+                                    []
+                                    []
+                                    WIRE
+                                    "Control",
+                                  [],
+                                  [],
+                                  "set_instruction_result",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| interpreter |) |),
+                                      "revm_interpreter::interpreter::Interpreter",
+                                      "control"
+                                    |)
+                                  |);
+                                  Value.StructTuple
+                                    "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                    []
+                                    []
+                                    []
+                                ]
+                              |) in
+                            M.return_ (| Value.Tuple [] |)
                           |)))
                     ]
                   |)
@@ -4617,10 +4883,86 @@ Module instructions.
                                         ]
                                       |)
                                     |)
+                                  |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (M.read (|
+                                    let~ _ : Ty.tuple [] :=
+                                      M.call_closure (|
+                                        Ty.tuple [],
+                                        M.get_trait_method (|
+                                          "revm_interpreter::interpreter_types::LoopControl",
+                                          Ty.associated_in_trait
+                                            "revm_interpreter::interpreter_types::InterpreterTypes"
+                                            []
+                                            []
+                                            WIRE
+                                            "Control",
+                                          [],
+                                          [],
+                                          "set_instruction_result",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| interpreter |) |),
+                                              "revm_interpreter::interpreter::Interpreter",
+                                              "control"
+                                            |)
+                                          |);
+                                          Value.StructTuple
+                                            "revm_interpreter::instruction_result::InstructionResult::FatalExternalError"
+                                            []
+                                            []
+                                            []
+                                        ]
+                                      |) in
+                                    M.return_ (| Value.Tuple [] |)
                                   |)))
                             ]
                           |)
                         |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.read (|
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "revm_interpreter::interpreter_types::LoopControl",
+                              Ty.associated_in_trait
+                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                []
+                                []
+                                WIRE
+                                "Control",
+                              [],
+                              [],
+                              "set_instruction_result",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| interpreter |) |),
+                                  "revm_interpreter::interpreter::Interpreter",
+                                  "control"
+                                |)
+                              |);
+                              Value.StructTuple
+                                "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                []
+                                []
+                                []
+                            ]
+                          |) in
+                        M.return_ (| Value.Tuple [] |)
                       |)))
                 ]
               |)))
@@ -5144,10 +5486,86 @@ Module instructions.
                                             |)
                                           |) in
                                         M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.read (|
+                                        let~ _ : Ty.tuple [] :=
+                                          M.call_closure (|
+                                            Ty.tuple [],
+                                            M.get_trait_method (|
+                                              "revm_interpreter::interpreter_types::LoopControl",
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Control",
+                                              [],
+                                              [],
+                                              "set_instruction_result",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| interpreter |) |),
+                                                  "revm_interpreter::interpreter::Interpreter",
+                                                  "control"
+                                                |)
+                                              |);
+                                              Value.StructTuple
+                                                "revm_interpreter::instruction_result::InstructionResult::FatalExternalError"
+                                                []
+                                                []
+                                                []
+                                            ]
+                                          |) in
+                                        M.return_ (| Value.Tuple [] |)
                                       |)))
                                 ]
                               |)
                             |)
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.read (|
+                            let~ _ : Ty.tuple [] :=
+                              M.call_closure (|
+                                Ty.tuple [],
+                                M.get_trait_method (|
+                                  "revm_interpreter::interpreter_types::LoopControl",
+                                  Ty.associated_in_trait
+                                    "revm_interpreter::interpreter_types::InterpreterTypes"
+                                    []
+                                    []
+                                    WIRE
+                                    "Control",
+                                  [],
+                                  [],
+                                  "set_instruction_result",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| interpreter |) |),
+                                      "revm_interpreter::interpreter::Interpreter",
+                                      "control"
+                                    |)
+                                  |);
+                                  Value.StructTuple
+                                    "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                    []
+                                    []
+                                    []
+                                ]
+                              |) in
+                            M.return_ (| Value.Tuple [] |)
                           |)))
                     ]
                   |)
@@ -5591,8 +6009,84 @@ Module instructions.
                                     |)
                                   |) in
                                 M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.read (|
+                                let~ _ : Ty.tuple [] :=
+                                  M.call_closure (|
+                                    Ty.tuple [],
+                                    M.get_trait_method (|
+                                      "revm_interpreter::interpreter_types::LoopControl",
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "Control",
+                                      [],
+                                      [],
+                                      "set_instruction_result",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| interpreter |) |),
+                                          "revm_interpreter::interpreter::Interpreter",
+                                          "control"
+                                        |)
+                                      |);
+                                      Value.StructTuple
+                                        "revm_interpreter::instruction_result::InstructionResult::FatalExternalError"
+                                        []
+                                        []
+                                        []
+                                    ]
+                                  |) in
+                                M.return_ (| Value.Tuple [] |)
                               |)))
                         ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.read (|
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "revm_interpreter::interpreter_types::LoopControl",
+                              Ty.associated_in_trait
+                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                []
+                                []
+                                WIRE
+                                "Control",
+                              [],
+                              [],
+                              "set_instruction_result",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| interpreter |) |),
+                                  "revm_interpreter::interpreter::Interpreter",
+                                  "control"
+                                |)
+                              |);
+                              Value.StructTuple
+                                "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                []
+                                []
+                                []
+                            ]
+                          |) in
+                        M.return_ (| Value.Tuple [] |)
                       |)))
                 ]
               |)))
@@ -6371,8 +6865,84 @@ Module instructions.
                                         ]
                                       |) in
                                     M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                  |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (M.read (|
+                                    let~ _ : Ty.tuple [] :=
+                                      M.call_closure (|
+                                        Ty.tuple [],
+                                        M.get_trait_method (|
+                                          "revm_interpreter::interpreter_types::LoopControl",
+                                          Ty.associated_in_trait
+                                            "revm_interpreter::interpreter_types::InterpreterTypes"
+                                            []
+                                            []
+                                            WIRE
+                                            "Control",
+                                          [],
+                                          [],
+                                          "set_instruction_result",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| interpreter |) |),
+                                              "revm_interpreter::interpreter::Interpreter",
+                                              "control"
+                                            |)
+                                          |);
+                                          Value.StructTuple
+                                            "revm_interpreter::instruction_result::InstructionResult::FatalExternalError"
+                                            []
+                                            []
+                                            []
+                                        ]
+                                      |) in
+                                    M.return_ (| Value.Tuple [] |)
                                   |)))
                             ]
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.read (|
+                            let~ _ : Ty.tuple [] :=
+                              M.call_closure (|
+                                Ty.tuple [],
+                                M.get_trait_method (|
+                                  "revm_interpreter::interpreter_types::LoopControl",
+                                  Ty.associated_in_trait
+                                    "revm_interpreter::interpreter_types::InterpreterTypes"
+                                    []
+                                    []
+                                    WIRE
+                                    "Control",
+                                  [],
+                                  [],
+                                  "set_instruction_result",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| interpreter |) |),
+                                      "revm_interpreter::interpreter::Interpreter",
+                                      "control"
+                                    |)
+                                  |);
+                                  Value.StructTuple
+                                    "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                    []
+                                    []
+                                    []
+                                ]
+                              |) in
+                            M.return_ (| Value.Tuple [] |)
                           |)))
                     ]
                   |)
@@ -6857,6 +7427,44 @@ Module instructions.
                                 ]
                               |) in
                             M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.read (|
+                            let~ _ : Ty.tuple [] :=
+                              M.call_closure (|
+                                Ty.tuple [],
+                                M.get_trait_method (|
+                                  "revm_interpreter::interpreter_types::LoopControl",
+                                  Ty.associated_in_trait
+                                    "revm_interpreter::interpreter_types::InterpreterTypes"
+                                    []
+                                    []
+                                    WIRE
+                                    "Control",
+                                  [],
+                                  [],
+                                  "set_instruction_result",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| interpreter |) |),
+                                      "revm_interpreter::interpreter::Interpreter",
+                                      "control"
+                                    |)
+                                  |);
+                                  Value.StructTuple
+                                    "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                    []
+                                    []
+                                    []
+                                ]
+                              |) in
+                            M.return_ (| Value.Tuple [] |)
                           |)))
                     ]
                   |)
@@ -7290,6 +7898,44 @@ Module instructions.
                                 |)
                               |) in
                             M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.read (|
+                            let~ _ : Ty.tuple [] :=
+                              M.call_closure (|
+                                Ty.tuple [],
+                                M.get_trait_method (|
+                                  "revm_interpreter::interpreter_types::LoopControl",
+                                  Ty.associated_in_trait
+                                    "revm_interpreter::interpreter_types::InterpreterTypes"
+                                    []
+                                    []
+                                    WIRE
+                                    "Control",
+                                  [],
+                                  [],
+                                  "set_instruction_result",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| interpreter |) |),
+                                      "revm_interpreter::interpreter::Interpreter",
+                                      "control"
+                                    |)
+                                  |);
+                                  Value.StructTuple
+                                    "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                    []
+                                    []
+                                    []
+                                ]
+                              |) in
+                            M.return_ (| Value.Tuple [] |)
                           |)))
                     ]
                   |)
@@ -9107,10 +9753,86 @@ Module instructions.
                                             ]
                                           |) in
                                         M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.read (|
+                                        let~ _ : Ty.tuple [] :=
+                                          M.call_closure (|
+                                            Ty.tuple [],
+                                            M.get_trait_method (|
+                                              "revm_interpreter::interpreter_types::LoopControl",
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                impl_InterpreterTypes
+                                                "Control",
+                                              [],
+                                              [],
+                                              "set_instruction_result",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| interpreter |) |),
+                                                  "revm_interpreter::interpreter::Interpreter",
+                                                  "control"
+                                                |)
+                                              |);
+                                              Value.StructTuple
+                                                "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                                []
+                                                []
+                                                []
+                                            ]
+                                          |) in
+                                        M.return_ (| Value.Tuple [] |)
                                       |)))
                                 ]
                               |)
                             |)
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.read (|
+                            let~ _ : Ty.tuple [] :=
+                              M.call_closure (|
+                                Ty.tuple [],
+                                M.get_trait_method (|
+                                  "revm_interpreter::interpreter_types::LoopControl",
+                                  Ty.associated_in_trait
+                                    "revm_interpreter::interpreter_types::InterpreterTypes"
+                                    []
+                                    []
+                                    impl_InterpreterTypes
+                                    "Control",
+                                  [],
+                                  [],
+                                  "set_instruction_result",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| interpreter |) |),
+                                      "revm_interpreter::interpreter::Interpreter",
+                                      "control"
+                                    |)
+                                  |);
+                                  Value.StructTuple
+                                    "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                    []
+                                    []
+                                    []
+                                ]
+                              |) in
+                            M.return_ (| Value.Tuple [] |)
                           |)))
                     ]
                   |)
@@ -9813,10 +10535,86 @@ Module instructions.
                                             ]
                                           |) in
                                         M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.read (|
+                                        let~ _ : Ty.tuple [] :=
+                                          M.call_closure (|
+                                            Ty.tuple [],
+                                            M.get_trait_method (|
+                                              "revm_interpreter::interpreter_types::LoopControl",
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Control",
+                                              [],
+                                              [],
+                                              "set_instruction_result",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| interpreter |) |),
+                                                  "revm_interpreter::interpreter::Interpreter",
+                                                  "control"
+                                                |)
+                                              |);
+                                              Value.StructTuple
+                                                "revm_interpreter::instruction_result::InstructionResult::FatalExternalError"
+                                                []
+                                                []
+                                                []
+                                            ]
+                                          |) in
+                                        M.return_ (| Value.Tuple [] |)
                                       |)))
                                 ]
                               |)
                             |)
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.read (|
+                            let~ _ : Ty.tuple [] :=
+                              M.call_closure (|
+                                Ty.tuple [],
+                                M.get_trait_method (|
+                                  "revm_interpreter::interpreter_types::LoopControl",
+                                  Ty.associated_in_trait
+                                    "revm_interpreter::interpreter_types::InterpreterTypes"
+                                    []
+                                    []
+                                    WIRE
+                                    "Control",
+                                  [],
+                                  [],
+                                  "set_instruction_result",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| interpreter |) |),
+                                      "revm_interpreter::interpreter::Interpreter",
+                                      "control"
+                                    |)
+                                  |);
+                                  Value.StructTuple
+                                    "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
+                                    []
+                                    []
+                                    []
+                                ]
+                              |) in
+                            M.return_ (| Value.Tuple [] |)
                           |)))
                     ]
                   |)

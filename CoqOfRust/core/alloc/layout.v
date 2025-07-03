@@ -597,7 +597,8 @@ Module alloc.
                               ]
                             |) in
                           M.alloc (| Ty.path "bool", Value.Bool true |)
-                        |)))
+                        |)));
+                    fun γ => ltac:(M.monadic (M.read (| M.return_ (| Value.Bool false |) |)))
                   ]
                 |)))
             |)))
@@ -1287,75 +1288,87 @@ Module alloc.
                 self
               |) in
             let align := M.alloc (| Ty.path "usize", align |) in
-            M.match_operator (|
-              Ty.path "usize",
-              M.alloc (|
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.path "core::ptr::alignment::Alignment" ],
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::option::Option")
-                    []
-                    [ Ty.path "core::ptr::alignment::Alignment" ],
-                  M.get_associated_function (|
-                    Ty.path "core::ptr::alignment::Alignment",
-                    "new",
-                    [],
-                    []
+            M.catch_return (Ty.path "usize") (|
+              ltac:(M.monadic
+                (M.match_operator (|
+                  Ty.path "usize",
+                  M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.path "core::ptr::alignment::Alignment" ],
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "core::ptr::alignment::Alignment" ],
+                      M.get_associated_function (|
+                        Ty.path "core::ptr::alignment::Alignment",
+                        "new",
+                        [],
+                        []
+                      |),
+                      [ M.read (| align |) ]
+                    |)
                   |),
-                  [ M.read (| align |) ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let align := M.copy (| Ty.path "core::ptr::alignment::Alignment", γ0_0 |) in
-                    M.read (|
-                      let~ len_rounded_up : Ty.path "usize" :=
-                        M.call_closure (|
-                          Ty.path "usize",
-                          M.get_associated_function (|
-                            Ty.path "core::alloc::layout::Layout",
-                            "size_rounded_up_to_custom_align",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                            M.read (| align |)
-                          ]
-                        |) in
-                      M.alloc (|
-                        Ty.path "usize",
-                        M.call_closure (|
-                          Ty.path "usize",
-                          M.get_function (|
-                            "core::intrinsics::unchecked_sub",
-                            [],
-                            [ Ty.path "usize" ]
-                          |),
-                          [
-                            M.read (| len_rounded_up |);
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::alloc::layout::Layout",
-                                "size"
-                              |)
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::option::Option::Some",
+                            0
+                          |) in
+                        let align := M.copy (| Ty.path "core::ptr::alignment::Alignment", γ0_0 |) in
+                        M.read (|
+                          let~ len_rounded_up : Ty.path "usize" :=
+                            M.call_closure (|
+                              Ty.path "usize",
+                              M.get_associated_function (|
+                                Ty.path "core::alloc::layout::Layout",
+                                "size_rounded_up_to_custom_align",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                M.read (| align |)
+                              ]
+                            |) in
+                          M.alloc (|
+                            Ty.path "usize",
+                            M.call_closure (|
+                              Ty.path "usize",
+                              M.get_function (|
+                                "core::intrinsics::unchecked_sub",
+                                [],
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.read (| len_rounded_up |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::alloc::layout::Layout",
+                                    "size"
+                                  |)
+                                |)
+                              ]
                             |)
-                          ]
-                        |)
-                      |)
-                    |)))
-              ]
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.read (|
+                          M.return_ (|
+                            M.read (|
+                              get_associated_constant (| Ty.path "usize", "MAX", Ty.path "usize" |)
+                            |)
+                          |)
+                        |)))
+                  ]
+                |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

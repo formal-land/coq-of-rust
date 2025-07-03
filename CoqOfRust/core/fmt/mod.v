@@ -15879,6 +15879,43 @@ Module fmt.
                                                 |)
                                               |) in
                                             M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (M.read (|
+                                            let~ _ : Ty.tuple [] :=
+                                              let β :=
+                                                M.SubPointer.get_struct_record_field (|
+                                                  printable_range,
+                                                  "core::ops::range::Range",
+                                                  "end"
+                                                |) in
+                                              M.write (|
+                                                β,
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.add,
+                                                  [
+                                                    M.read (| β |);
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      M.get_associated_function (|
+                                                        Ty.path "str",
+                                                        "len",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| rest |) |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
+                                                |)
+                                              |) in
+                                            M.break (||)
                                           |)))
                                     ]
                                   |)));
