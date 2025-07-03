@@ -7422,7 +7422,65 @@ Module eof.
                                       ]
                                       [ Value.Tuple [] ]
                                   |)
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (M.read (|
+                                  let~ _ : Ty.tuple [] :=
+                                    M.write (|
+                                      M.deref (| M.read (| container |) |),
+                                      Value.StructTuple
+                                        "core::option::Option::Some"
+                                        []
+                                        [ Ty.path "revm_bytecode::eof::verification::CodeType" ]
+                                        [ M.read (| new_code_type |) ]
+                                    |) in
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::result::Result::Ok"
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path
+                                          "revm_bytecode::eof::verification::EofValidationError"
+                                      ]
+                                      [ Value.Tuple [] ]
+                                  |)
                                 |)))
+                          ]
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.call_closure (|
+                          Ty.path "never",
+                          M.get_function (| "core::panicking::panic_fmt", [], [] |),
+                          [
+                            M.call_closure (|
+                              Ty.path "core::fmt::Arguments",
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Arguments",
+                                "new_const",
+                                [ Value.Integer IntegerKind.Usize 1 ],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                        Value.Array [ mk_str (| "It should not be possible" |) ]
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              ]
+                            |)
                           ]
                         |)))
                   ]
@@ -10490,6 +10548,27 @@ Module eof.
                                                     |)
                                                   |) in
                                                 M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.read (|
+                                                M.return_ (|
+                                                  Value.StructTuple
+                                                    "core::result::Result::Err"
+                                                    []
+                                                    [
+                                                      Ty.tuple [];
+                                                      Ty.path
+                                                        "revm_bytecode::eof::verification::EofValidationError"
+                                                    ]
+                                                    [
+                                                      Value.StructTuple
+                                                        "revm_bytecode::eof::verification::EofValidationError::UnknownOpcode"
+                                                        []
+                                                        []
+                                                        []
+                                                    ]
+                                                |)
                                               |)))
                                         ]
                                       |)

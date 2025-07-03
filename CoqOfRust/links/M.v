@@ -844,15 +844,17 @@ Module Run.
       {{ k (φ ref) 🔽 R, Output }}
     ) ->
     {{ LowM.CallPrimitive (Primitive.StateAlloc ty' value') k 🔽 R, Output }}
-  (* | CallPrimitiveStateAllocImmediate
+  | CallPrimitiveStateAllocImmediate
+      (ty' : Ty.t)
       (value' : Value.t)
       (k : Value.t -> M)
-      (of_value : OfValue.t value') :
-    {{
-      k (φ (Ref.immediate Pointer.Kind.Raw (OfValue.get_value of_value))) 🔽
-      R, Output
-    }} ->
-    {{ LowM.CallPrimitive (Primitive.StateAlloc value') k 🔽 R, Output }} *)
+      (of_ty : OfTy.t ty')
+      (value : OfTy.get_Set of_ty) :
+    value' = φ value ->
+    (forall (ref : Ref.t Pointer.Kind.Raw (OfTy.get_Set of_ty)),
+      {{ k (φ ref) 🔽 R, Output }}
+    ) ->
+    {{ LowM.CallPrimitive (Primitive.StateAlloc ty' value') k 🔽 R, Output }}
   | CallPrimitiveStateRead {A : Set} `{Link A}
       (ref_core : Ref.Core.t A)
       (k : Value.t -> M) :
@@ -1114,9 +1116,12 @@ Proof.
     | H : forall _, _ |- _ => apply (H {| Ref.core := ref_core |})
     end.
   }
-  (* { (* AllocImmediate *)
-    exact (evaluate _ _ _ _ _ run).
-  } *)
+  { (* AllocImmediate *)
+    eapply evaluate.
+    match goal with
+    | H : forall _, _ |- _ => apply (H (Ref.immediate Pointer.Kind.Raw value))
+    end.
+  }
   { (* Read *)
     apply (LowM.CallPrimitive (Primitive.StateRead ref_core)).
     intros value.
@@ -1247,8 +1252,13 @@ Ltac run_symbolic_state_alloc :=
     intro
   ].
 
-(* Ltac run_symbolic_state_alloc_immediate :=
-  unshelve eapply Run.CallPrimitiveStateAllocImmediate; [now repeat (smpl of_value || smpl of_ty) |]. *)
+Ltac run_symbolic_state_alloc_immediate :=
+  unshelve eapply Run.CallPrimitiveStateAllocImmediate; cbn; [
+    now repeat (smpl of_ty || smpl of_value) |
+    |
+    repeat (smpl of_value) |
+    intro
+  ].
 
 Ltac run_symbolic_state_read :=
   eapply Run.CallPrimitiveStateRead;

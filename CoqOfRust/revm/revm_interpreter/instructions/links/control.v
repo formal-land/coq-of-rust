@@ -5,7 +5,9 @@ Require Import alloy_primitives.bytes.links.mod.
 Require Import alloy_primitives.links.aliases.
 Require Import core.convert.links.mod.
 Require Import core.convert.links.num.
+Require Import core.fmt.links.mod.
 Require Import core.links.option.
+Require Import core.links.panicking.
 Require Import core.links.result.
 Require Import core.num.links.mod.
 Require Import revm.revm_interpreter.gas.links.constants.
@@ -210,6 +212,7 @@ Proof.
   destruct run_SubRoutineStack_for_SubRoutineStack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   run_symbolic.
+  destruct_all Empty_set.
 Defined.
 
 (*
@@ -235,6 +238,7 @@ Proof.
   destruct run_SubRoutineStack_for_SubRoutineStack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   run_symbolic.
+  destruct_all Empty_set.
 Defined.
 
 (*

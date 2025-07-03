@@ -1741,6 +1741,21 @@ Module compatibility.
                                                               ]
                                                             |)
                                                           |)
+                                                        |)));
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (M.read (|
+                                                          let~ _ : Ty.tuple [] :=
+                                                            M.write (|
+                                                              struct_and_function_linking,
+                                                              Value.Bool false
+                                                            |) in
+                                                          let~ _ : Ty.tuple [] :=
+                                                            M.write (|
+                                                              struct_layout,
+                                                              Value.Bool false
+                                                            |) in
+                                                          M.break (||)
                                                         |)))
                                                   ]
                                                 |)))
@@ -2731,6 +2746,234 @@ Module compatibility.
                                                               ]
                                                             |)
                                                           |)
+                                                        |)));
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (M.read (|
+                                                          let~ _ : Ty.tuple [] :=
+                                                            M.match_operator (|
+                                                              Ty.tuple [],
+                                                              M.alloc (|
+                                                                Ty.tuple [],
+                                                                Value.Tuple []
+                                                              |),
+                                                              [
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let γ :=
+                                                                      M.use
+                                                                        (M.alloc (|
+                                                                          Ty.path "bool",
+                                                                          M.call_closure (|
+                                                                            Ty.path "bool",
+                                                                            M.get_trait_method (|
+                                                                              "core::cmp::PartialEq",
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::Visibility",
+                                                                              [],
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::Visibility"
+                                                                              ],
+                                                                              "eq",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      old_func
+                                                                                    |)
+                                                                                  |),
+                                                                                  "move_binary_format::normalized::Function",
+                                                                                  "visibility"
+                                                                                |)
+                                                                              |);
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.alloc (|
+                                                                                  Ty.path
+                                                                                    "move_binary_format::file_format::Visibility",
+                                                                                  Value.StructTuple
+                                                                                    "move_binary_format::file_format::Visibility::Friend"
+                                                                                    []
+                                                                                    []
+                                                                                    []
+                                                                                |)
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        |)) in
+                                                                    let _ :=
+                                                                      is_constant_or_break_match (|
+                                                                        M.read (| γ |),
+                                                                        Value.Bool true
+                                                                      |) in
+                                                                    M.read (|
+                                                                      let~ _ : Ty.tuple [] :=
+                                                                        M.write (|
+                                                                          friend_linking,
+                                                                          Value.Bool false
+                                                                        |) in
+                                                                      M.alloc (|
+                                                                        Ty.tuple [],
+                                                                        Value.Tuple []
+                                                                      |)
+                                                                    |)));
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (M.match_operator (|
+                                                                      Ty.tuple [],
+                                                                      M.alloc (|
+                                                                        Ty.tuple [],
+                                                                        Value.Tuple []
+                                                                      |),
+                                                                      [
+                                                                        fun γ =>
+                                                                          ltac:(M.monadic
+                                                                            (let γ :=
+                                                                              M.use
+                                                                                (M.alloc (|
+                                                                                  Ty.path "bool",
+                                                                                  M.call_closure (|
+                                                                                    Ty.path "bool",
+                                                                                    M.get_trait_method (|
+                                                                                      "core::cmp::PartialEq",
+                                                                                      Ty.path
+                                                                                        "move_binary_format::file_format::Visibility",
+                                                                                      [],
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "move_binary_format::file_format::Visibility"
+                                                                                      ],
+                                                                                      "ne",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.SubPointer.get_struct_record_field (|
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              old_func
+                                                                                            |)
+                                                                                          |),
+                                                                                          "move_binary_format::normalized::Function",
+                                                                                          "visibility"
+                                                                                        |)
+                                                                                      |);
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.alloc (|
+                                                                                          Ty.path
+                                                                                            "move_binary_format::file_format::Visibility",
+                                                                                          Value.StructTuple
+                                                                                            "move_binary_format::file_format::Visibility::Private"
+                                                                                            []
+                                                                                            []
+                                                                                            []
+                                                                                        |)
+                                                                                      |)
+                                                                                    ]
+                                                                                  |)
+                                                                                |)) in
+                                                                            let _ :=
+                                                                              is_constant_or_break_match (|
+                                                                                M.read (| γ |),
+                                                                                Value.Bool true
+                                                                              |) in
+                                                                            M.read (|
+                                                                              let~ _ :
+                                                                                  Ty.tuple [] :=
+                                                                                M.write (|
+                                                                                  struct_and_function_linking,
+                                                                                  Value.Bool false
+                                                                                |) in
+                                                                              M.alloc (|
+                                                                                Ty.tuple [],
+                                                                                Value.Tuple []
+                                                                              |)
+                                                                            |)));
+                                                                        fun γ =>
+                                                                          ltac:(M.monadic
+                                                                            (M.match_operator (|
+                                                                              Ty.tuple [],
+                                                                              M.alloc (|
+                                                                                Ty.tuple [],
+                                                                                Value.Tuple []
+                                                                              |),
+                                                                              [
+                                                                                fun γ =>
+                                                                                  ltac:(M.monadic
+                                                                                    (let γ :=
+                                                                                      M.use
+                                                                                        (M.alloc (|
+                                                                                          Ty.path
+                                                                                            "bool",
+                                                                                          LogicalOp.and (|
+                                                                                            M.read (|
+                                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                                M.deref (|
+                                                                                                  M.read (|
+                                                                                                    old_func
+                                                                                                  |)
+                                                                                                |),
+                                                                                                "move_binary_format::normalized::Function",
+                                                                                                "is_entry"
+                                                                                              |)
+                                                                                            |),
+                                                                                            ltac:(M.monadic
+                                                                                              (M.read (|
+                                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                                  M.deref (|
+                                                                                                    M.read (|
+                                                                                                      self
+                                                                                                    |)
+                                                                                                  |),
+                                                                                                  "move_binary_format::compatibility::Compatibility",
+                                                                                                  "check_private_entry_linking"
+                                                                                                |)
+                                                                                              |)))
+                                                                                          |)
+                                                                                        |)) in
+                                                                                    let _ :=
+                                                                                      is_constant_or_break_match (|
+                                                                                        M.read (|
+                                                                                          γ
+                                                                                        |),
+                                                                                        Value.Bool
+                                                                                          true
+                                                                                      |) in
+                                                                                    M.read (|
+                                                                                      let~ _ :
+                                                                                          Ty.tuple
+                                                                                            [] :=
+                                                                                        M.write (|
+                                                                                          entry_linking,
+                                                                                          Value.Bool
+                                                                                            false
+                                                                                        |) in
+                                                                                      M.alloc (|
+                                                                                        Ty.tuple [],
+                                                                                        Value.Tuple
+                                                                                          []
+                                                                                      |)
+                                                                                    |)));
+                                                                                fun γ =>
+                                                                                  ltac:(M.monadic
+                                                                                    (Value.Tuple
+                                                                                      []))
+                                                                              ]
+                                                                            |)))
+                                                                      ]
+                                                                    |)))
+                                                              ]
+                                                            |) in
+                                                          M.continue (||)
                                                         |)))
                                                   ]
                                                 |)))

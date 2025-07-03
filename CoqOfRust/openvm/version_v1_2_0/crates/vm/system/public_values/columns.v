@@ -581,7 +581,76 @@ Module system.
                                       |),
                                       []
                                     |))
-                                ]))
+                                ]));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.call_closure (|
+                                Ty.path "never",
+                                M.get_function (| "core::panicking::panic_fmt", [], [] |),
+                                [
+                                  M.call_closure (|
+                                    Ty.path "core::fmt::Arguments",
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::Arguments",
+                                      "new_v1",
+                                      [
+                                        Value.Integer IntegerKind.Usize 1;
+                                        Value.Integer IntegerKind.Usize 0
+                                      ],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 1 ]
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                              Value.Array
+                                                [
+                                                  mk_str (|
+                                                    "internal error: entered unreachable code: first_three should have exactly 3 elements"
+                                                  |)
+                                                ]
+                                            |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 0 ]
+                                                [ Ty.path "core::fmt::rt::Argument" ],
+                                              M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 0 ]
+                                                  [ Ty.path "core::fmt::rt::Argument" ],
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "none",
+                                                  [],
+                                                  []
+                                                |),
+                                                []
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                              |)))
                         ]
                       |)))
                 ]

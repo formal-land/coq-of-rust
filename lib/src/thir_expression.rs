@@ -1356,24 +1356,31 @@ fn compile_stmts<'a>(
                 thir::StmtKind::Let {
                     pattern,
                     initializer,
+                    else_block,
                     ..
                 } => {
                     let init = match initializer {
                         Some(initializer) => compile_expr(env, generics, thir, initializer),
                         None => Expr::local_var("Value.DeclaredButUndefined"),
                     };
+                    let else_block = else_block
+                        .as_ref()
+                        .map(|else_block| compile_block(env, generics, thir, else_block));
                     let compiled_pattern =
                         crate::thir_pattern::compile_pattern(env, generics, pattern);
                     let init_ty =
                         initializer.map(|initializer| thir.exprs.get(initializer).unwrap().ty);
 
-                    match compiled_pattern.as_ref() {
-                        Pattern::Binding {
-                            name,
-                            ty: _,
-                            pattern: None,
-                            is_with_ref: false,
-                        } => Rc::new(Expr::Let {
+                    match (compiled_pattern.as_ref(), &else_block) {
+                        (
+                            Pattern::Binding {
+                                name,
+                                ty: _,
+                                pattern: None,
+                                is_with_ref: false,
+                            },
+                            None,
+                        ) => Rc::new(Expr::Let {
                             name: Some(name.clone()),
                             ty: init_ty
                                 .as_ref()
@@ -1381,16 +1388,25 @@ fn compile_stmts<'a>(
                             init: init.read(),
                             body,
                         }),
-                        _ => build_match(
-                            return_ty.clone(),
-                            init,
-                            vec![MatchArm {
+                        _ => {
+                            let mut arms = vec![MatchArm {
                                 pattern: compiled_pattern,
                                 if_let_guard: vec![],
                                 body: body.read(),
-                            }],
-                        )
-                        .alloc(return_ty.clone()),
+                            }];
+                            if let Some(else_block) = else_block {
+                                // If there is an else block, we add a wildcard arm to the match.
+                                // This is to handle the case where the pattern does not match.
+                                // If the pattern matches, the else block is not executed.
+                                arms.push(MatchArm {
+                                    pattern: Rc::new(Pattern::Wild),
+                                    if_let_guard: vec![],
+                                    body: else_block.read(),
+                                });
+                            }
+
+                            build_match(return_ty.clone(), init, arms).alloc(return_ty.clone())
+                        }
                     }
                 }
                 thir::StmtKind::Expr { expr: expr_id, .. } => {

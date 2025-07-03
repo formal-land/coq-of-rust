@@ -5,104 +5,65 @@ Module Stack.
   Definition t : Type :=
     list Set.
 
-  Fixpoint to_Set_aux (A : Set) (Stack : t) : Set :=
-    match Stack with
-    | [] => A
-    | B :: Stack => A * to_Set_aux B Stack
-    end.
-
-  Definition to_Set (Stack : t) : Set :=
+  Fixpoint to_Set (Stack : t) : Set :=
     match Stack with
     | [] => unit
-    | A :: Stack => to_Set_aux A Stack
+    | A :: Stack => A * to_Set Stack
     end.
 
   Definition nth (Stack : t) (index : nat) : Set :=
     List.nth index Stack unit.
 
-  Fixpoint read_aux {A : Set} {Stack : t}
-    (stack : to_Set_aux A Stack)
-    (index : nat)
-    {struct Stack} :
-    nth (A :: Stack) index.
-  Proof.
-    destruct Stack as [|B Stack], index as [|index]; cbn in *.
-    { exact stack. }
-    { destruct index; exact tt. }
-    { exact (fst stack). }
-    { exact (read_aux _ _ (snd stack) index). }
-  Defined.
-
-  Definition read {Stack : t} (stack : to_Set Stack) (index : nat) : nth Stack index.
-  Proof.
-    destruct Stack; cbn in *.
-    { destruct index; exact tt. }
-    { apply (read_aux stack). }
-  Defined.
-
-  Fixpoint write_aux {A : Set} {Stack : t}
-    (stack : to_Set_aux A Stack)
-    (index : nat)
-    (value : nth (A :: Stack) index)
-    {struct Stack} :
-    to_Set_aux A Stack.
-  Proof.
-    destruct Stack as [|B Stack], index as [|index]; cbn in *.
-    { exact value. }
-    { exact stack. }
-    { exact (value, snd stack). }
-    { exact (fst stack, write_aux _ _ (snd stack) index value). }
-  Defined.
-
-  Definition write {Stack : t}
+  Fixpoint read {Stack : t}
     (stack : to_Set Stack)
     (index : nat)
-    (value : nth Stack index) :
+    {struct Stack} :
+    nth Stack index.
+  Proof.
+    destruct Stack as [|A Stack], index as [|index]; cbn in *.
+    { exact tt. }
+    { exact tt. }
+    { exact (fst stack). }
+    { exact (read _ (snd stack) index). }
+  Defined.
+
+  Fixpoint write {Stack : t}
+    (stack : to_Set Stack)
+    (index : nat)
+    (value : nth Stack index)
+    {struct Stack} :
     to_Set Stack.
   Proof.
-    destruct Stack; cbn in *.
+    destruct Stack as [|A Stack], index as [|index]; cbn in *.
     { exact tt. }
-    { apply (write_aux stack index value). }
+    { exact tt. }
+    { exact (value, snd stack). }
+    { exact (fst stack, write _ (snd stack) index value). }
   Defined.
 
-  Fixpoint alloc_aux {A : Set} {Stack : t} {B : Set}
-    (stack : to_Set_aux A Stack)
-    (value : B)
+  Fixpoint alloc {Stack : t} {A : Set}
+    (stack : to_Set Stack)
+    (value : A)
     {struct Stack} :
-    to_Set_aux A (Stack ++ [B]).
-  Proof.
-    destruct Stack as [|A' Stack]; cbn in *.
-    { exact (stack, value). }
-    { exact (fst stack, alloc_aux _ _ _ (snd stack) value). }
-  Defined.
-
-  Definition alloc {Stack : t} {A : Set} (stack : to_Set Stack) (value : A) :
     to_Set (Stack ++ [A]).
   Proof.
-    destruct Stack; cbn in *.
-    { exact value. }
-    { apply (alloc_aux stack value). }
+    destruct Stack as [|A' Stack]; cbn in *.
+    { exact (value, tt). }
+    { exact (fst stack, alloc _ _ (snd stack) value). }
   Defined.
 
-  Fixpoint dealloc_aux {A : Set} {Stack : t} {B : Set}
-    (stack : to_Set_aux A (Stack ++ [B]))
+  Fixpoint dealloc {Stack : t} {A : Set}
+    (stack : to_Set (Stack ++ [A]))
     {struct Stack} :
-    to_Set_aux A Stack * B.
+    to_Set Stack * A.
   Proof.
     destruct Stack as [|A' Stack]; cbn in *.
-    { exact stack. }
+    { exact (tt, fst stack). }
     { exact (
-        let '(stack', value) := dealloc_aux _ _ _ (snd stack) in
+        let '(stack', value) := dealloc _ _ (snd stack) in
         ((fst stack, stack'), value)
       ).
     }
-  Defined.
-
-  Definition dealloc {Stack : t} {A : Set} (stack : to_Set (Stack ++ [A])) : to_Set Stack * A.
-  Proof.
-    destruct Stack; cbn in *.
-    { exact (tt, stack). }
-    { exact (dealloc_aux stack). }
   Defined.
 
   Module CanAccess.
@@ -193,29 +154,33 @@ Module StackM.
     { (* CallPrimitive *)
       destruct primitive.
       { (* StateAlloc *)
-        exact (
-          let ref_core :=
-            Ref.Core.Mutable
-              (List.length Stack)
-              []
-              φ
-              Some
-              (fun _ => Some) in
-          let stack := Stack.alloc stack value in
-          let_ (eval _ _ _ (k ref_core) stack) (fun '(output, stack) =>
-          let '(stack, _) := Stack.dealloc stack in
-          Pure (output, stack)
-          )
-        ).
+        (* We always allocate an immediate value *)
+        exact (eval _ _ _ (k (Ref.Core.Immediate (Some value))) stack).
       }
       { (* StateRead *)
         refine (
-          GetCanAccess Stack ref_core (fun H_access =>
-          _)
+          let immediate_value :=
+            match ref_core with
+            | Ref.Core.Immediate immediate_value => Some immediate_value
+            | _ => None
+            end in
+          _
         ).
-        destruct (Stack.CanAccess.read H_access stack) as [value|].
-        { exact (eval _ _ _ (k value) stack). }
-        { exact (Pure (Output.Exception Output.Exception.BreakMatch, stack)). }
+        destruct immediate_value as [value|].
+        { (* Immediate *)
+          destruct value as [value|].
+          { exact (eval _ _ _ (k value) stack). }
+          { exact (Pure (Output.Exception Output.Exception.BreakMatch, stack)). }
+        }
+        { (* Mutable *)
+          refine (
+            GetCanAccess Stack ref_core (fun H_access =>
+            _)
+          ).
+          destruct (Stack.CanAccess.read H_access stack) as [value|].
+          { exact (eval _ _ _ (k value) stack). }
+          { exact (Pure (Output.Exception Output.Exception.BreakMatch, stack)). }
+        }
       }
       { (* StateWrite *)
         refine (
@@ -284,7 +249,7 @@ End StackM.
 Module Run.
   Reserved Notation "{{ e 🌲 value }}".
 
-  Inductive t {A : Set} (value : A) : StackM.t A -> Set :=
+  Inductive t {A : Set} (value : A) : StackM.t A -> Prop :=
   | Pure :
     {{ StackM.Pure value 🌲 value }}
   | GetCanAccess {B : Set} `{Link B}
@@ -310,9 +275,72 @@ Export Run.
 
 Ltac get_can_access :=
   unshelve eapply Run.GetCanAccess; [
+    cbn;
     match goal with
     | |- Stack.CanAccess.t ?Stack (Ref.Core.Mutable ?index _ _ _ ?injection) =>
       apply (Stack.CanAccess.Mutable Stack index _ _ _ injection)
     end
   |];
   cbn.
+
+Definition make_ref {A : Set} `{Link A} {kind : Pointer.Kind.t} (index : nat) : Ref.t kind A :=
+  {| Ref.core := Ref.Core.Mutable (A := A) index [] φ Some (fun _ => Some) |}.
+
+(** To get a reference to a sub-field from a reference to a larger object. *)
+Module RefStub.
+  Record t {A Sub_A : Set} `{Link A} `{Link Sub_A} : Set := {
+    path : Pointer.Path.t;
+    (* We suppose the pointer is valid (no [option] type for the [projection] and [injection]
+       functions) *)
+    projection : A -> Sub_A;
+    injection : A -> Sub_A -> A;
+  }.
+  Arguments t _ _ {_ _}.
+
+  Definition apply_core {A Sub_A : Set} `{Link A} `{Link Sub_A}
+      (ref_core : Ref.Core.t A)
+      (stub : t A Sub_A) :
+      Ref.Core.t Sub_A.
+  Proof.
+    destruct ref_core as [| ? ? address path big_to_value projection injection].
+    { (* Immediate *)
+      exact (
+        Ref.Core.Immediate (
+          match value with
+          | Some a => Some (stub.(projection) a)
+          | None => None
+          end
+        )
+      ).
+    }
+    { (* Mutable *)
+      exact (
+        Ref.Core.Mutable
+          address
+          (path ++ stub.(RefStub.path))
+          big_to_value
+          (fun big_a =>
+            match projection big_a with
+            | Some a => Some (stub.(RefStub.projection) a)
+            | None => None
+            end
+          )
+          (fun big_a new_sub_a =>
+            match projection big_a with
+            | Some a =>
+              let new_a := stub.(RefStub.injection) a new_sub_a in
+              injection big_a new_a
+            | None => None
+            end
+          )
+      ).
+    }
+  Defined.
+
+  Definition apply {A Sub_A : Set} `{Link A} `{Link Sub_A}
+      {kind_source kind_target : Pointer.Kind.t}
+      (ref : Ref.t kind_source A)
+      (stub : t A Sub_A) :
+      Ref.t kind_target Sub_A :=
+    {| Ref.core := apply_core ref.(Ref.core) stub |}.
+End RefStub.

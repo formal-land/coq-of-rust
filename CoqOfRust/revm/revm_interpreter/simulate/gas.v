@@ -2,6 +2,9 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 Require Import simulate.M.
 Require Import revm.revm_interpreter.links.gas.
+Require Import revm.revm_interpreter.links.interpreter.
+Require Import revm.revm_interpreter.links.interpreter_types.
+Require Import revm.revm_interpreter.simulate.interpreter_types.
 
 Module Impl_MemoryGas.
   Definition Self : Set :=
@@ -43,9 +46,8 @@ Module Impl_Gas.
     }}.
   Proof.
     cbn.
-    progress repeat get_can_access.
     eapply Run.Call. {
-      apply (Impl_MemoryGas.new_eq [_]).
+      apply Impl_MemoryGas.new_eq.
     }
     cbn.
     apply Run.Pure.
@@ -61,10 +63,12 @@ Module Impl_Gas.
     self.(Gas.limit).
 
   Lemma limit_eq (self : Self) :
-    let ref_self := {| Ref.core := Ref.Core.Mutable (A := Self) 0%nat [] φ Some (fun _ => Some) |} in
+    let ref_self := {|
+      Ref.core := Ref.Core.Mutable (A := Self) 0%nat [] φ Some (fun _ => Some)
+    |} in
     {{
-      StackM.eval_f (Stack := [_]) (Impl_Gas.run_limit ref_self) self 🌲
-      (Output.Success (limit self), self)
+      StackM.eval_f (Stack := [_]) (Impl_Gas.run_limit ref_self) (self, tt) 🌲
+      (Output.Success (limit self), (self, tt))
     }}.
   Proof.
     cbn.
@@ -91,10 +95,12 @@ Module Impl_Gas.
     |}.
 
   Lemma erase_cost_eq (self : Self) (returned : U64.t) :
-    let ref_self := {| Ref.core := Ref.Core.Mutable (A := Self) 0%nat [] φ Some (fun _ => Some) |} in
+    let ref_self := {|
+      Ref.core := Ref.Core.Mutable (A := Self) 0%nat [] φ Some (fun _ => Some)
+    |} in
     {{
-      StackM.eval_f (Stack := [_]) (Impl_Gas.run_erase_cost ref_self returned) self 🌲
-      (Output.Success tt, erase_cost self returned)
+      StackM.eval_f (Stack := [_]) (Impl_Gas.run_erase_cost ref_self returned) (self, tt) 🌲
+      (Output.Success tt, (erase_cost self returned, tt))
     }}.
   Proof.
     cbn.
@@ -127,41 +133,67 @@ Module Impl_Gas.
         success
     }
   *)
-  Definition record_cost (self : Self) (cost : U64.t) : bool * Self :=
+  Definition record_cost (self : Self) (cost : U64.t) : option Self :=
     let (remaining, overflow) := u64_overflowing_sub self.(Gas.remaining) cost in
     let success := negb overflow in
     if success then
-      (true, self <| Gas.remaining := remaining |>)
+      Some (self <| Gas.remaining := remaining |>)
     else
-      (false, self).
+      None.
 
-  Lemma record_cost_eq (self : Self) (cost : U64.t) :
-    let ref_self := {| Ref.core := Ref.Core.Mutable (A := Self) 0%nat [] φ Some (fun _ => Some) |} in
-    let '(success, self') := record_cost self cost in
+  Lemma record_cost_eq
+      {WIRE H : Set} `{Link WIRE} `{Link H}
+      {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+      (interpreter : Interpreter.t WIRE WIRE_types)
+      (_host : H)
+      (gas_stub : RefStub.t WIRE_types.(InterpreterTypes.Types.Control) Gas.t)
+      (cost : U64.t) :
+    let ref_interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types) := make_ref 0 in
+    let ref_control : Ref.t Pointer.Kind.MutRef _ := {| Ref.core :=
+        SubPointer.Runner.apply
+          ref_interpreter.(Ref.core)
+          Interpreter.SubPointer.get_control
+    |} in
+    let ref_self := RefStub.apply ref_control gas_stub in
+    let gas := gas_stub.(RefStub.projection) interpreter.(Interpreter.control) in
+    let result := record_cost gas cost in
     {{
-      StackM.eval_f (Stack := [_]) (Impl_Gas.run_record_cost ref_self cost) self 🌲
-      (Output.Success success, self')
+      StackM.eval_f (Stack := [Interpreter.t WIRE WIRE_types; H])
+        (Impl_Gas.run_record_cost ref_self cost) (interpreter, (_host, tt)) 🌲
+      (
+        Output.Success (
+          match result with
+          | None => false
+          | Some _ => true
+          end
+        ),
+        (
+          interpreter <| Interpreter.control :=
+            match result with
+            | None => interpreter.(Interpreter.control)
+            | Some gas => gas_stub.(RefStub.injection) interpreter.(Interpreter.control) gas
+            end
+          |>,
+          (_host, tt)
+        )
+      )
     }}.
   Proof.
     intros.
-    destruct record_cost eqn:?; unfold record_cost in *.
-    cbn; progress repeat get_can_access.
+    unfold record_cost in *; cbn.
+    progress repeat get_can_access.
     eapply Run.Call. {
       apply u64_overflowing_sub_eq.
     }
-    destruct u64_overflowing_sub eqn:?.
+    destruct u64_overflowing_sub as [remaining overflow] eqn:H_u64_overflowing_sub_eq.
     cbn; progress repeat get_can_access.
     eapply Run.Call. {
       apply Run.Pure.
     }
     cbn.
-    destruct negb eqn:?.
-    { cbn; progress repeat get_can_access.
-      hauto l: on.
-    }
-    { cbn; progress repeat get_can_access.
-      hauto l: on.
-    }
+    destruct negb eqn:?; cbn; progress repeat get_can_access.
+    { apply Run.Pure. }
+    { apply Run.Pure. }
   Qed.
   Global Opaque Impl_Gas.run_record_cost.
 End Impl_Gas.

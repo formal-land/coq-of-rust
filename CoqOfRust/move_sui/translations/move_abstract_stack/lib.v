@@ -1331,6 +1331,23 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                               [ Ty.tuple []; Ty.path "move_abstract_stack::AbsStackError" ]
                               [ Value.Tuple [] ]
                           |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.read (|
+                          M.return_ (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              []
+                              [ Ty.tuple []; Ty.path "move_abstract_stack::AbsStackError" ]
+                              [
+                                Value.StructTuple
+                                  "move_abstract_stack::AbsStackError::Overflow"
+                                  []
+                                  []
+                                  []
+                              ]
+                          |)
                         |)))
                   ]
                 |)

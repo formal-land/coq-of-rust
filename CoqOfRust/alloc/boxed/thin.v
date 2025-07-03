@@ -1671,6 +1671,24 @@ Module boxed.
                               ]
                             |) in
                           result
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.call_closure (|
+                          Ty.path "never",
+                          M.get_function (| "alloc::alloc::handle_alloc_error", [], [] |),
+                          [
+                            M.call_closure (|
+                              Ty.path "core::alloc::layout::Layout",
+                              M.get_associated_function (|
+                                Ty.path "core::alloc::layout::Layout",
+                                "new",
+                                [],
+                                [ Ty.tuple [] ]
+                              |),
+                              []
+                            |)
+                          ]
                         |)))
                   ]
                 |)
@@ -2171,6 +2189,20 @@ Module boxed.
                                     Ty.path "core::alloc::AllocError"
                                   ]
                                   [ M.read (| result |) ]
+                              |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.read (|
+                              M.return_ (|
+                                Value.StructTuple
+                                  "core::result::Result::Err"
+                                  []
+                                  [
+                                    Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ];
+                                    Ty.path "core::alloc::AllocError"
+                                  ]
+                                  [ Value.StructTuple "core::alloc::AllocError" [] [] [] ]
                               |)
                             |)))
                       ]

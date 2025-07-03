@@ -134,6 +134,12 @@ Module Impl_Result_T_E.
     constructor.
     unfold result.Impl_core_result_Result_T_E.unwrap_or.
     cbn.
+    unshelve eapply Run.CallPrimitiveStateAllocImmediate; cbn; [
+      now repeat (smpl of_ty || smpl of_value) |
+      |
+      repeat (smpl of_value) |
+      intro
+    ].
     run_symbolic.
   Defined.
 

@@ -745,10 +745,24 @@ Module table.
                                   M.borrow (|
                                     Pointer.Kind.MutRef,
                                     M.deref (| M.read (| M.deref (| M.read (| boxed |) |) |) |)
+                                  |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    Ty.path "never",
+                                    M.get_function (| "core::panicking::panic", [], [] |),
+                                    [ mk_str (| "internal error: entered unreachable code" |) ]
                                   |)))
                             ]
                           |)
                         |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.call_closure (|
+                        Ty.path "never",
+                        M.get_function (| "core::panicking::panic", [], [] |),
+                        [ mk_str (| "internal error: entered unreachable code" |) ]
                       |)))
                 ]
               |)

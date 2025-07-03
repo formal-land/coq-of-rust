@@ -2644,12 +2644,122 @@ Module modexp.
                                                   ]
                                                 |)
                                               |)
+                                            |)));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.read (|
+                                              M.return_ (|
+                                                Value.StructTuple
+                                                  "core::result::Result::Err"
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "revm_precompile::interface::PrecompileOutput";
+                                                    Ty.path
+                                                      "revm_precompile::interface::PrecompileErrors"
+                                                  ]
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path
+                                                        "revm_precompile::interface::PrecompileErrors",
+                                                      M.get_trait_method (|
+                                                        "core::convert::Into",
+                                                        Ty.path
+                                                          "revm_precompile::interface::PrecompileError",
+                                                        [],
+                                                        [
+                                                          Ty.path
+                                                            "revm_precompile::interface::PrecompileErrors"
+                                                        ],
+                                                        "into",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        Value.StructTuple
+                                                          "revm_precompile::interface::PrecompileError::ModexpExpOverflow"
+                                                          []
+                                                          []
+                                                          []
+                                                      ]
+                                                    |)
+                                                  ]
+                                              |)
                                             |)))
                                       ]
                                     |)
                                   |)
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (M.read (|
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::result::Result::Err"
+                                      []
+                                      [
+                                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                                      ]
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "revm_precompile::interface::PrecompileErrors",
+                                          M.get_trait_method (|
+                                            "core::convert::Into",
+                                            Ty.path "revm_precompile::interface::PrecompileError",
+                                            [],
+                                            [ Ty.path "revm_precompile::interface::PrecompileErrors"
+                                            ],
+                                            "into",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            Value.StructTuple
+                                              "revm_precompile::interface::PrecompileError::ModexpModOverflow"
+                                              []
+                                              []
+                                              []
+                                          ]
+                                        |)
+                                      ]
+                                  |)
                                 |)))
                           ]
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.read (|
+                          M.return_ (|
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              []
+                              [
+                                Ty.path "revm_precompile::interface::PrecompileOutput";
+                                Ty.path "revm_precompile::interface::PrecompileErrors"
+                              ]
+                              [
+                                M.call_closure (|
+                                  Ty.path "revm_precompile::interface::PrecompileErrors",
+                                  M.get_trait_method (|
+                                    "core::convert::Into",
+                                    Ty.path "revm_precompile::interface::PrecompileError",
+                                    [],
+                                    [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
+                                    "into",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    Value.StructTuple
+                                      "revm_precompile::interface::PrecompileError::ModexpBaseOverflow"
+                                      []
+                                      []
+                                      []
+                                  ]
+                                |)
+                              ]
+                          |)
                         |)))
                   ]
                 |)
