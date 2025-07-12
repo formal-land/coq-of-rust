@@ -778,37 +778,29 @@ Module Output.
   Definition panic {R Output : Set} (message : string) : t R Output :=
     Exception (Exception.Panic (Panic.Make message)).
 
-  Module Forall.
-    Record t {R Output : Set} {P : t R Output -> Set} : Set := {
-      success (output : Output) : P (Success output);
-      return_ (return_ : R) : P (Exception (Exception.Return return_));
-      break : P (Exception Exception.Break);
-      continue : P (Exception Exception.Continue);
-      break_match : P (Exception Exception.BreakMatch);
-      panic (panic : Panic.t) : P (Exception (Exception.Panic panic));
-    }.
-    Arguments t {_ _}.
-
-    (** This function is there to help reduce the evaluation of a run by swapping the [evaluate]
-        function with the [match] on the various cases of output. Otherwise, the evaluation would
-        be stuck on the application on the evaluation function on a [match], blowing up the result.
-    *)
-    Definition apply {R Output A : Set} {P : Output.t R Output -> Set}
-        (f : forall {output : Output.t R Output}, P output -> A)
-        (H : t P)
-        (output : Output.t R Output) :
-        A :=
-      match output with
-      | Output.Success output => f (H.(Forall.success) output)
-      | Output.Exception (Exception.Return return_) => f (H.(Forall.return_) return_)
-      | Output.Exception Exception.Break => f (H.(Forall.break))
-      | Output.Exception Exception.Continue => f (H.(Forall.continue))
-      | Output.Exception Exception.BreakMatch => f (H.(Forall.break_match))
-      | Output.Exception (Exception.Panic panic) => f (H.(Forall.panic) panic)
-      end.
-    (* This is useful to get [cbn] to make progress when evaluating a run. *)
-    Arguments Output.Forall.apply /.
-  End Forall.
+  (** This function is there to help reduce the evaluation of a run by swapping the [evaluate]
+      function with the [match] on the various cases of output. Otherwise, the evaluation would
+      be stuck on the application on the evaluation function on a [match], blowing up the result.
+  *)
+  Definition apply {R Output A : Set}
+      {P : t R Output -> Set}
+      (f : forall {output : Output.t R Output}, P output -> A)
+      (H : forall (output : t R Output), P output)
+      (output : t R Output) :
+      A :=
+    match output with
+    | Success output => f (H (Success output))
+    | Exception exception =>
+      match exception with
+      | Exception.Return return_ => f (H (Exception (Exception.Return return_)))
+      | Exception.Break => f (H (Exception Exception.Break))
+      | Exception.Continue => f (H (Exception Exception.Continue))
+      | Exception.BreakMatch => f (H (Exception Exception.BreakMatch))
+      | Exception.Panic panic => f (H (Exception (Exception.Panic panic)))
+      end
+    end.
+  (* This is useful to get [cbn] to make progress when evaluating a run. *)
+  Arguments apply /.
 End Output.
 
 (** For the output of closure calls, where we know it can only be a success or panic, but not a
@@ -974,7 +966,7 @@ Module Run.
   | CallLogicalOp
       (op : LogicalOp.t) (lhs : bool) (rhs : M) (k : Value.t + Exception.t -> M) :
     {{ rhs 🔽 R, bool }} ->
-    Output.Forall.t (fun (value_inter : Output.t R bool) =>
+    (forall (value_inter : Output.t R bool),
       {{ k (Output.to_value value_inter) 🔽 R, Output }}
     ) ->
     {{ LowM.CallLogicalOp op (Value.Bool lhs) rhs k 🔽 R, Output }}
@@ -983,7 +975,7 @@ Module Run.
       (of_ty : OfTy.t ty) :
     let Output' : Set := OfTy.get_Set of_ty in
     {{ e 🔽 R, Output' }} ->
-    Output.Forall.t (fun (value_inter : Output.t R Output') =>
+    (forall (value_inter : Output.t R Output'),
       {{ k (Output.to_value value_inter) 🔽 R, Output }}
     ) ->
     {{ LowM.Let ty e k 🔽 R, Output }}
@@ -992,7 +984,7 @@ Module Run.
       (of_ty : OfTy.t ty) :
     let Output' : Set := OfTy.get_Set of_ty in
     {{ e 🔽 R, Output' }} ->
-    Output.Forall.t (fun (value_inter : Output.t R (Ref.t Pointer.Kind.Raw Output')) =>
+    (forall (value_inter : Output.t R (Ref.t Pointer.Kind.Raw Output')),
       {{ k (Output.to_value value_inter) 🔽 R, Output }}
     ) ->
     {{ LowM.LetAlloc ty e k 🔽 R, Output }}
@@ -1001,7 +993,7 @@ Module Run.
       (of_ty : OfTy.t ty) :
     let Output' : Set := OfTy.get_Set of_ty in
     {{ body 🔽 R, Output' }} ->
-    Output.Forall.t (fun (value_inter : Output.t R (Ref.t Pointer.Kind.Raw Output')) =>
+    (forall (value_inter : Output.t R (Ref.t Pointer.Kind.Raw Output')),
       {{ k (Output.to_value value_inter) 🔽 R, Output }}
     ) ->
     {{ LowM.Loop ty body k 🔽 R, Output }}
@@ -1195,7 +1187,7 @@ Proof.
   }
   { (* CallLogicalOp *)
     match goal with
-    | H : Output.Forall.t _ |- _ => rename H into H_k
+    | H : forall _ : Output.t _ _, _ |- _ => rename H into H_k
     end.
     destruct op.
     { (* And *)
@@ -1205,13 +1197,13 @@ Proof.
           exact (evaluate _ _ _ _ _ run).
         }
         intros output'.
-        unshelve eapply (Output.Forall.apply _ H_k output').
+        unshelve eapply (Output.apply _ H_k output').
         intros ? H_k'.
         eapply evaluate.
         apply H_k'.
       }
       { (* False *)
-        unshelve eapply (Output.Forall.apply _ H_k (Output.Success false)).
+        unshelve eapply (Output.apply _ H_k (Output.Success false)).
         intros ? H_k'.
         eapply evaluate.
         apply H_k'.
@@ -1220,7 +1212,7 @@ Proof.
     { (* Or *)
       refine (if lhs then _ else _).
       { (* True *)
-        unshelve eapply (Output.Forall.apply _ H_k (Output.Success true)).
+        unshelve eapply (Output.apply _ H_k (Output.Success true)).
         intros ? H_k'.
         eapply evaluate.
         apply H_k'.
@@ -1230,7 +1222,7 @@ Proof.
           exact (evaluate _ _ _ _ _ run).
         }
         intros output'.
-        unshelve eapply (Output.Forall.apply _ H_k output').
+        unshelve eapply (Output.apply _ H_k output').
         intros ? H_k'.
         eapply evaluate.
         apply H_k'.
@@ -1243,9 +1235,9 @@ Proof.
     }
     intros output'.
     match goal with
-    | H : Output.Forall.t _ |- _ => rename H into H_k
+    | H : forall _ : Output.t _ _, _ |- _ => rename H into H_k
     end.
-    unshelve eapply (Output.Forall.apply _ H_k output').
+    unshelve eapply (Output.apply _ H_k output').
     intros ? H_k'.
     eapply evaluate.
     apply H_k'.
@@ -1256,9 +1248,9 @@ Proof.
     }
     intros output'.
     match goal with
-    | H : Output.Forall.t _ |- _ => rename H into H_k
+    | H : forall _ : Output.t _ _, _ |- _ => rename H into H_k
     end.
-    unshelve eapply (Output.Forall.apply _ H_k output').
+    unshelve eapply (Output.apply _ H_k output').
     intros ? H_k'.
     eapply evaluate.
     apply H_k'.
@@ -1269,9 +1261,9 @@ Proof.
     }
     intros output'.
     match goal with
-    | H : Output.Forall.t _ |- _ => rename H into H_k
+    | H : forall _ : Output.t _ _, _ |- _ => rename H into H_k
     end.
-    unshelve eapply (Output.Forall.apply _ H_k output').
+    unshelve eapply (Output.apply _ H_k output').
     intros ? H_k'.
     eapply evaluate.
     apply H_k'.
@@ -1442,7 +1434,7 @@ Ltac run_symbolic_closure_auto :=
   ].
 
 Ltac run_symbolic_logical_op :=
-  apply Run.CallLogicalOp; [| apply Output.Forall.Build_t; try intro].
+  apply Run.CallLogicalOp; [| cbn; intros [|[]]].
 
 Smpl Create run_sub_pointer.
 
@@ -1533,16 +1525,16 @@ Ltac rewrite_cast_integer :=
   end.
 
 Ltac run_symbolic_let :=
-  unshelve eapply Run.Let; [repeat smpl of_ty | | cbn; constructor; try intro].
+  unshelve eapply Run.Let; [repeat smpl of_ty | | cbn; intros [|[]]].
 
 Ltac run_symbolic_let_alloc :=
-  unshelve eapply Run.LetAlloc; [repeat smpl of_ty | | cbn; constructor; try intro].
+  unshelve eapply Run.LetAlloc; [repeat smpl of_ty | | cbn; intros [|[]]].
 
 Ltac run_symbolic_loop :=
   unshelve eapply Run.Loop; [
     repeat smpl of_ty |
     |
-    cbn; constructor; try intro
+    cbn; intros [|[]]
   ].
 
 Ltac run_symbolic_match_tuple :=
