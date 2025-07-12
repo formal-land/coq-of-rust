@@ -178,7 +178,7 @@ Proof.
   }
   get_can_access.
   apply Run.Pure.
-Qed.
+Time Qed.
 
 Lemma mul_eq
     {WIRE H : Set} `{Link WIRE} `{Link H}

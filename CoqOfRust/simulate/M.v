@@ -223,10 +223,11 @@ Module SimulateM.
       ).
     }
     { (* Call *)
-      exact (
-        Call stack run_f0 (fun '(output, stack) =>
-        eval _ _ _ (k (SuccessOrPanic.of_output output)) stack)
-      ).
+      exact (Call stack run_f0 (fun '(output, stack) =>
+        SuccessOrPanic.apply (fun output =>
+          eval _ _ _ (k output) stack
+        ) output
+      )).
     }
     { (* Loop *)
       exact TodoLoop.

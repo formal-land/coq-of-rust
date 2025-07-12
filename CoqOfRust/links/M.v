@@ -783,20 +783,18 @@ Module Output.
       be stuck on the application on the evaluation function on a [match], blowing up the result.
   *)
   Definition apply {R Output A : Set}
-      {P : t R Output -> Set}
-      (f : forall {output : Output.t R Output}, P output -> A)
-      (H : forall (output : t R Output), P output)
+      (f : t R Output -> A)
       (output : t R Output) :
       A :=
     match output with
-    | Success output => f (H (Success output))
+    | Success output => f (Success output)
     | Exception exception =>
       match exception with
-      | Exception.Return return_ => f (H (Exception (Exception.Return return_)))
-      | Exception.Break => f (H (Exception Exception.Break))
-      | Exception.Continue => f (H (Exception Exception.Continue))
-      | Exception.BreakMatch => f (H (Exception Exception.BreakMatch))
-      | Exception.Panic panic => f (H (Exception (Exception.Panic panic)))
+      | Exception.Return return_ => f (Exception (Exception.Return return_))
+      | Exception.Break => f (Exception Exception.Break)
+      | Exception.Continue => f (Exception Exception.Continue)
+      | Exception.BreakMatch => f (Exception Exception.BreakMatch)
+      | Exception.Panic panic => f (Exception (Exception.Panic panic))
       end
     end.
   (* This is useful to get [cbn] to make progress when evaluating a run. *)
@@ -812,14 +810,18 @@ Module SuccessOrPanic.
   Arguments Success {_}.
   Arguments Panic {_}.
 
-  Definition of_output {Output : Set} (output : Output.t Output Output) :
-    t Output :=
+  Definition apply {Output A : Set}
+      (f : t Output -> A)
+      (output : Output.t Output Output) :
+      A :=
     match output with
-    | Output.Success output => Success output
-    | Output.Exception (Output.Exception.Panic panic) => Panic panic
+    | Output.Success output => f (Success output)
+    | Output.Exception (Output.Exception.Panic panic) => f (Panic panic)
     | Output.Exception _ =>
-      Panic (Panic.Make "unexpected return, break, or continue escaping a function")
+      f (Panic (Panic.Make "unexpected return, break, or continue escaping a function"))
     end.
+  (* This is useful to get [cbn] to make progress when evaluating a run. *)
+  Arguments apply /.
 End SuccessOrPanic.
 
 Module Run.
@@ -1197,35 +1199,29 @@ Proof.
           exact (evaluate _ _ _ _ _ run).
         }
         intros output'.
-        unshelve eapply (Output.apply _ H_k output').
-        intros ? H_k'.
-        eapply evaluate.
-        apply H_k'.
+        exact (Output.apply
+          (fun output' => evaluate _ _ _ _ _ (H_k output'))
+          output'
+        ).
       }
       { (* False *)
-        unshelve eapply (Output.apply _ H_k (Output.Success false)).
-        intros ? H_k'.
-        eapply evaluate.
-        apply H_k'.
+        exact (evaluate _ _ _ _ _ (H_k (Output.Success false))).
       }
     }
     { (* Or *)
       refine (if lhs then _ else _).
       { (* True *)
-        unshelve eapply (Output.apply _ H_k (Output.Success true)).
-        intros ? H_k'.
-        eapply evaluate.
-        apply H_k'.
+        exact (evaluate _ _ _ _ _ (H_k (Output.Success true))).
       }
       { (* False *)
         eapply LinkM.Let. {
           exact (evaluate _ _ _ _ _ run).
         }
         intros output'.
-        unshelve eapply (Output.apply _ H_k output').
-        intros ? H_k'.
-        eapply evaluate.
-        apply H_k'.
+        exact (Output.apply
+          (fun output' => evaluate _ _ _ _ _ (H_k output'))
+          output'
+        ).
       }
     }
   }
@@ -1237,10 +1233,10 @@ Proof.
     match goal with
     | H : forall _ : Output.t _ _, _ |- _ => rename H into H_k
     end.
-    unshelve eapply (Output.apply _ H_k output').
-    intros ? H_k'.
-    eapply evaluate.
-    apply H_k'.
+    exact (Output.apply
+      (fun output' => evaluate _ _ _ _ _ (H_k output'))
+      output'
+    ).
   }
   { (* LetAlloc *)
     eapply (LinkM.LetAlloc (A := Output')). {
@@ -1250,10 +1246,10 @@ Proof.
     match goal with
     | H : forall _ : Output.t _ _, _ |- _ => rename H into H_k
     end.
-    unshelve eapply (Output.apply _ H_k output').
-    intros ? H_k'.
-    eapply evaluate.
-    apply H_k'.
+    exact (Output.apply
+      (fun output' => evaluate _ _ _ _ _ (H_k output'))
+      output'
+    ).
   }
   { (* Loop *)
     eapply (LinkM.Loop (A := Output')). {
@@ -1263,10 +1259,10 @@ Proof.
     match goal with
     | H : forall _ : Output.t _ _, _ |- _ => rename H into H_k
     end.
-    unshelve eapply (Output.apply _ H_k output').
-    intros ? H_k'.
-    eapply evaluate.
-    apply H_k'.
+    exact (Output.apply
+      (fun output' => evaluate _ _ _ _ _ (H_k output'))
+      output'
+    ).
   }
   { (* MatchTuple *)
     exact (evaluate _ _ _ _ _ run).
