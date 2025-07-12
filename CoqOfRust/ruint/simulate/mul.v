@@ -12,7 +12,7 @@ Module Impl_Uint.
       {Stack : Stack.t} (stack : Stack.to_Set Stack)
       (BITS LIMBS : Usize.t) (x1 x2 : lib.Uint.t BITS LIMBS) :
     {{
-      StackM.eval_f (Stack := Stack)
+      SimulateM.eval_f (Stack := Stack)
         (Impl_Uint.run_wrapping_mul BITS LIMBS x1 x2)
         stack 🌲
       (

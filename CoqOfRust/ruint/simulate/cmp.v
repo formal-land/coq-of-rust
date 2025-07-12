@@ -13,7 +13,7 @@ Module Impl_Uint.
     let ref_self := make_ref 0 in
     let stack := (self, tt) in
     {{
-      StackM.eval_f (Stack := [_])
+      SimulateM.eval_f (Stack := [_])
         (Impl_Uint.run_is_zero BITS LIMBS ref_self)
         stack 🌲
       (

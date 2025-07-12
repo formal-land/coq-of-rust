@@ -146,7 +146,7 @@ Lemma add_eq
   let ref_interpreter := make_ref 0 in
   let ref_host := make_ref 1 in
   {{
-    StackM.eval_f (Stack := [_; _])
+    SimulateM.eval_f (Stack := [_; _])
       (run_add run_InterpreterTypes_for_WIRE ref_interpreter ref_host)
       (interpreter, (_host, tt)) 🌲
     (
@@ -169,7 +169,7 @@ Lemma add_eq
 Proof.
   intros.
   destruct InterpreterTypesEq as [[] []].
-  unfold run_add, StackM.eval_f, StackM.eval, evaluate.
+  cbn.
   gas_macro_eq H gas set_instruction_result.
   popn_top_macro_eq H IInterpreterTypes popn_top set_instruction_result.
   get_can_access.
@@ -193,7 +193,7 @@ Lemma mul_eq
   let ref_interpreter := make_ref 0 in
   let ref_host := make_ref 1 in
   {{
-    StackM.eval_f (Stack := [_; _])
+    SimulateM.eval_f (Stack := [_; _])
       (run_mul run_InterpreterTypes_for_WIRE ref_interpreter ref_host)
       (interpreter, (_host, tt)) 🌲
     (
@@ -216,7 +216,7 @@ Lemma mul_eq
 Proof.
   intros.
   destruct InterpreterTypesEq as [[] []].
-  unfold run_mul, StackM.eval_f, StackM.eval, evaluate.
+  cbn.
   gas_macro_eq H gas set_instruction_result.
   popn_top_macro_eq H IInterpreterTypes popn_top set_instruction_result.
   get_can_access.
@@ -240,7 +240,7 @@ Lemma sub_eq
   let ref_interpreter := make_ref 0 in
   let ref_host := make_ref 1 in
   {{
-    StackM.eval_f (Stack := [_; _])
+    SimulateM.eval_f (Stack := [_; _])
       (run_sub run_InterpreterTypes_for_WIRE ref_interpreter ref_host)
       (interpreter, (_host, tt)) 🌲
     (
@@ -263,7 +263,7 @@ Lemma sub_eq
 Proof.
   intros.
   destruct InterpreterTypesEq as [[] []].
-  unfold run_sub, StackM.eval_f, StackM.eval, evaluate.
+  cbn.
   gas_macro_eq H gas set_instruction_result.
   popn_top_macro_eq H IInterpreterTypes popn_top set_instruction_result.
   get_can_access.
@@ -288,7 +288,7 @@ Lemma div_eq
   let ref_interpreter := make_ref 0 in
   let ref_host := make_ref 1 in
   {{
-    StackM.eval_f (Stack := [_; _])
+    SimulateM.eval_f (Stack := [_; _])
       (run_div run_InterpreterTypes_for_WIRE ref_interpreter ref_host)
       (interpreter, (_host, tt)) 🌲
     (
@@ -314,7 +314,7 @@ Lemma div_eq
 Proof.
   intros.
   destruct InterpreterTypesEq as [[] []].
-  unfold run_div, StackM.eval_f, StackM.eval, evaluate.
+  cbn.
   gas_macro_eq H gas set_instruction_result.
   popn_top_macro_eq H IInterpreterTypes popn_top set_instruction_result.
   get_can_access.

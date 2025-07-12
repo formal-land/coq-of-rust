@@ -13,7 +13,7 @@ Module Option.
 
   Lemma unwrap_or_eq {A : Set} `{Link A} (value : option A) (default : A) :
     {{
-      StackM.eval_f (Stack := []) (run_unwrap_or value default) tt 🌲
+      SimulateM.eval_f (Stack := []) (run_unwrap_or value default) tt 🌲
       (Output.Success (unwrap_or value default), tt)
     }}.
   Proof.
@@ -37,7 +37,7 @@ Lemma apply_duplicate_eq (numbers : Numbers.t) :
   let ref_numbers :=
     {| Ref.core := Ref.Core.Mutable (A := Numbers.t) 0%nat [] φ Some (fun _ => Some) |} in
   {{
-    StackM.eval_f (Stack := [_]) (run_apply_duplicate ref_numbers) (numbers, tt) 🌲
+    SimulateM.eval_f (Stack := [_]) (run_apply_duplicate ref_numbers) (numbers, tt) 🌲
     (Output.Success tt, (apply_duplicate numbers, tt))
   }}.
 Proof.
@@ -54,7 +54,7 @@ Lemma duplicate_eq (a b c : U64.t) :
   let ref_b := {| Ref.core := Ref.Core.Mutable (A := U64.t) 1%nat [] φ Some (fun _ => Some) |} in
   let ref_c := {| Ref.core := Ref.Core.Mutable (A := U64.t) 2%nat [] φ Some (fun _ => Some) |} in
   {{
-    StackM.eval_f (Stack := [_; _; _]) (run_duplicate ref_a ref_b ref_c) (a, (b, (c, tt))) 🌲
+    SimulateM.eval_f (Stack := [_; _; _]) (run_duplicate ref_a ref_b ref_c) (a, (b, (c, tt))) 🌲
     (Output.Success tt, (a, (a, (a, tt))))
   }}.
 Proof.

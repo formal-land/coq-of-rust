@@ -42,7 +42,7 @@ Module Stack.
             Interpreter.SubPointer.get_stack
         |} in
         {{
-          StackM.eval_f (Stack := Interpreter.t WIRE WIRE_types :: Stack)
+          SimulateM.eval_f (Stack := Interpreter.t WIRE WIRE_types :: Stack)
             (run_InterpreterTypes_for_WIRE.(InterpreterTypes.run_StackTrait_for_Stack).(StackTrait.popn_top).(TraitMethod.run)
               POPN
               ref_self
@@ -95,7 +95,7 @@ Module Loop.
         let control' :=
           I.(set_instruction_result) interpreter.(Interpreter.control) result in
         {{
-          StackM.eval_f (Stack := Interpreter.t WIRE WIRE_types :: StackRest)
+          SimulateM.eval_f (Stack := Interpreter.t WIRE WIRE_types :: StackRest)
             (run_InterpreterTypes_for_WIRE.(InterpreterTypes.run_LoopControl_for_Control).(LoopControl.set_instruction_result).(TraitMethod.run)
               ref_self
               result
@@ -117,7 +117,7 @@ Module Loop.
               Interpreter.SubPointer.get_control
         |} in
         {{
-          StackM.eval_f (Stack := Interpreter.t WIRE WIRE_types :: StackRest)
+          SimulateM.eval_f (Stack := Interpreter.t WIRE WIRE_types :: StackRest)
             (run_InterpreterTypes_for_WIRE.(InterpreterTypes.run_LoopControl_for_Control).(LoopControl.gas).(TraitMethod.run)
               ref_self
             )
