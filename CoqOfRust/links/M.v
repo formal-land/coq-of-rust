@@ -777,28 +777,6 @@ Module Output.
 
   Definition panic {R Output : Set} (message : string) : t R Output :=
     Exception (Exception.Panic (Panic.Make message)).
-
-  (** This function is there to help reduce the evaluation of a run by swapping the [evaluate]
-      function with the [match] on the various cases of output. Otherwise, the evaluation would
-      be stuck on the application on the evaluation function on a [match], blowing up the result.
-  *)
-  Definition apply {R Output A : Set}
-      (f : t R Output -> A)
-      (output : t R Output) :
-      A :=
-    match output with
-    | Success output => f (Success output)
-    | Exception exception =>
-      match exception with
-      | Exception.Return return_ => f (Exception (Exception.Return return_))
-      | Exception.Break => f (Exception Exception.Break)
-      | Exception.Continue => f (Exception Exception.Continue)
-      | Exception.BreakMatch => f (Exception Exception.BreakMatch)
-      | Exception.Panic panic => f (Exception (Exception.Panic panic))
-      end
-    end.
-  (* This is useful to get [cbn] to make progress when evaluating a run. *)
-  Arguments apply /.
 End Output.
 
 (** For the output of closure calls, where we know it can only be a success or panic, but not a
@@ -1004,6 +982,19 @@ Module Run.
       (k : list Value.t -> M) :
     {{ k fields 🔽 R, Output }} ->
     {{ LowM.MatchTuple (Value.Tuple fields) k 🔽 R, Output }}
+  | IfThenElse
+      (ty : Ty.t)
+      (cond' : Value.t) (cond : bool)
+      (then_ : M) (else_ : M) (k : Value.t + Exception.t -> M)
+      (of_ty : OfTy.t ty) :
+    let Output' : Set := OfTy.get_Set of_ty in
+    cond' = φ cond ->
+    {{ then_ 🔽 R, Output' }} ->
+    {{ else_ 🔽 R, Output' }} ->
+    (forall (value_inter : Output.t R Output'),
+      {{ k (Output.to_value value_inter) 🔽 R, Output }}
+    ) ->
+    {{ LowM.IfThenElse ty cond' then_ else_ k 🔽 R, Output }}
   (** This primitive is useful to avoid blocking the reduction of this inductive with a [rewrite]
       that is hard to eliminate. *)
   | Rewrite
@@ -1081,13 +1072,39 @@ Module LinkM.
       (k : SuccessOrPanic.t A -> t R Output)
   | Loop {A : Set} `{Link A}
       (body : t R A)
-      (k : Output.t R (Ref.t Pointer.Kind.Raw A) -> t R Output).
+      (k : Output.t R (Ref.t Pointer.Kind.Raw A) -> t R Output)
+  | IfThenElse
+      (cond : bool) (then_ : t R Output) (else_ : t R Output)
+  | MatchOutput {A : Set}
+      (output : Output.t R A)
+      (k_success : A -> t R Output)
+      (k_return : R -> t R Output)
+      (* For some reasons, adding the [unit] parameters allows to keep the names of the handlers
+         after a [destruct] *)
+      (k_break : unit -> t R Output)
+      (k_continue : unit -> t R Output)
+      (k_break_match : unit -> t R Output)
+      (k_panic : Panic.t -> t R Output).
   Arguments Pure {_ _}.
   Arguments CallPrimitive {_ _ _}.
   Arguments Let {_ _ _}.
   Arguments LetAlloc {_ _ _ _}.
   Arguments Call {_ _ _ _ _ _}.
   Arguments Loop {_ _ _ _}.
+  Arguments IfThenElse {_ _}.
+  Arguments MatchOutput {_ _ _}.
+
+  Definition match_output {R Output A : Set}
+      (output : Output.t R A)
+      (k : Output.t R A -> t R Output) :
+      t R Output :=
+    MatchOutput output
+      (fun success => k (Output.Success success))
+      (fun return_ => k (Output.Exception (Output.Exception.Return return_)))
+      (fun _ => k (Output.Exception Output.Exception.Break))
+      (fun _ => k (Output.Exception Output.Exception.Continue))
+      (fun _ => k (Output.Exception Output.Exception.BreakMatch))
+      (fun panic => k (Output.Exception (Output.Exception.Panic panic))).
 End LinkM.
 
 (* Definition evaluate_get_sub_pointer {R A : Set} `{Link A} {index : Pointer.Index.t}
@@ -1199,9 +1216,9 @@ Proof.
           exact (evaluate _ _ _ _ _ run).
         }
         intros output'.
-        exact (Output.apply
-          (fun output' => evaluate _ _ _ _ _ (H_k output'))
-          output'
+        exact (
+          LinkM.match_output output' (fun output' =>
+          evaluate _ _ _ _ _ (H_k output'))
         ).
       }
       { (* False *)
@@ -1218,9 +1235,9 @@ Proof.
           exact (evaluate _ _ _ _ _ run).
         }
         intros output'.
-        exact (Output.apply
-          (fun output' => evaluate _ _ _ _ _ (H_k output'))
-          output'
+        exact (
+          LinkM.match_output output' (fun output' =>
+          evaluate _ _ _ _ _ (H_k output'))
         ).
       }
     }
@@ -1233,9 +1250,9 @@ Proof.
     match goal with
     | H : forall _ : Output.t _ _, _ |- _ => rename H into H_k
     end.
-    exact (Output.apply
-      (fun output' => evaluate _ _ _ _ _ (H_k output'))
-      output'
+    exact (
+      LinkM.match_output output' (fun output' =>
+      evaluate _ _ _ _ _ (H_k output'))
     ).
   }
   { (* LetAlloc *)
@@ -1246,9 +1263,9 @@ Proof.
     match goal with
     | H : forall _ : Output.t _ _, _ |- _ => rename H into H_k
     end.
-    exact (Output.apply
-      (fun output' => evaluate _ _ _ _ _ (H_k output'))
-      output'
+    exact (
+      LinkM.match_output output' (fun output' =>
+      evaluate _ _ _ _ _ (H_k output'))
     ).
   }
   { (* Loop *)
@@ -1259,13 +1276,32 @@ Proof.
     match goal with
     | H : forall _ : Output.t _ _, _ |- _ => rename H into H_k
     end.
-    exact (Output.apply
-      (fun output' => evaluate _ _ _ _ _ (H_k output'))
-      output'
+    exact (
+      LinkM.match_output output' (fun output' =>
+      evaluate _ _ _ _ _ (H_k output'))
     ).
   }
   { (* MatchTuple *)
     exact (evaluate _ _ _ _ _ run).
+  }
+  { (* IfThenElse *)
+    eapply LinkM.Let. {
+      eapply (LinkM.IfThenElse cond).
+      { (* then *)
+        exact (evaluate _ _ _ _ _ run1).
+      }
+      { (* else *)
+        exact (evaluate _ _ _ _ _ run2).
+      }
+    }
+    intros output'.
+    match goal with
+    | H : forall _ : Output.t _ _, _ |- _ => rename H into H_k
+    end.
+    exact (
+      LinkM.match_output output' (fun output' =>
+      evaluate _ _ _ _ _ (H_k output'))
+    ).
   }
   { (* Rewrite *)
     exact (evaluate _ _ _ _ _ run).
@@ -1439,19 +1475,6 @@ Ltac run_sub_pointer :=
     smpl run_sub_pointer
   |]; intro.
 
-Lemma if_then_else_bool_eq (condition : bool) then_ else_ :
-  M.if_then_else_bool (φ condition) then_ else_ =
-  if condition then then_ else else_.
-Proof.
-  now destruct condition.
-Qed.
-
-Ltac rewrite_if_then_else_bool_eq :=
-  match goal with
-  | |- context [ M.if_then_else_bool (φ ?condition) ?then_ ?else_ ] =>
-    rewrite (if_then_else_bool_eq condition then_ else_)
-  end.
-
 Ltac run_main_rewrites :=
   eapply Run.Rewrite; [
     (repeat (
@@ -1459,7 +1482,6 @@ Ltac run_main_rewrites :=
       Ref.rewrite_deref_eq ||
       Ref.rewrite_borrow_eq ||
       Ref.rewrite_cast_cast_eq ||
-      rewrite_if_then_else_bool_eq ||
       (repeat (
         erewrite IsTraitAssociatedType_eq ||
         match goal with
@@ -1536,6 +1558,16 @@ Ltac run_symbolic_loop :=
 Ltac run_symbolic_match_tuple :=
   with_strategy transparent [φ] apply Run.MatchTuple.
 
+Ltac run_symbolic_if_then_else :=
+  unshelve eapply Run.IfThenElse; [
+    |
+    repeat smpl of_ty |
+    repeat smpl of_value |
+    |
+    |
+    cbn; intros [|[]]
+  ].
+
 Ltac run_symbolic_one_step :=
   match goal with
   | |- {{ _ 🔽 _, _ }} =>
@@ -1558,6 +1590,7 @@ Ltac run_symbolic_one_step :=
     run_sub_pointer ||
     run_symbolic_loop ||
     run_symbolic_match_tuple ||
+    run_symbolic_if_then_else ||
     fold @LowM.let_
   end.
 

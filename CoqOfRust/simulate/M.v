@@ -232,6 +232,29 @@ Module SimulateM.
     { (* Loop *)
       exact TodoLoop.
     }
+    { (* IfThenElse *)
+      exact (
+        if cond then
+          eval _ _ _ e1 stack
+        else
+          eval _ _ _ e2 stack
+      ).
+    }
+    { (* MatchOutput *)
+      exact (
+        match output with
+        | Output.Success success => eval _ _ _ (k_success success) stack
+        | Output.Exception exception =>
+          match exception with
+          | Output.Exception.Return return_ => eval _ _ _ (k_return return_) stack
+          | Output.Exception.Break => eval _ _ _ (k_break tt) stack
+          | Output.Exception.Continue => eval _ _ _ (k_continue tt) stack
+          | Output.Exception.BreakMatch => eval _ _ _ (k_break_match tt) stack
+          | Output.Exception.Panic panic => eval _ _ _ (k_panic panic) stack
+          end
+        end
+      ).
+    }
   Defined.
 
   Definition eval_f

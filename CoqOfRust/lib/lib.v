@@ -295,7 +295,7 @@ Global Opaque repeat.
 
 Definition is_constant_or_break_match (value expected_value : Value.t) : M :=
   let* are_equal := M.call_closure (Ty.path "bool") BinOp.eq [value; expected_value] in
-  if_then_else_bool are_equal (pure (Value.Tuple [])) break_match.
+  if_then_else_bool (Ty.tuple []) are_equal (pure (Value.Tuple [])) break_match.
 
 (** There is an automatic instanciation of the function traits for closures and functions. *)
 Module FunctionTraitAutomaticImpl.

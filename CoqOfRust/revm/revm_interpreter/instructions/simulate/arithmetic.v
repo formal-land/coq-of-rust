@@ -18,7 +18,7 @@ Require Import ruint.simulate.mul.
 
 Definition gas_macro {WIRE : Set} `{Link WIRE}
     {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
-    (IInterpreterTypes : InterpreterTypes.C WIRE_types)
+    {IInterpreterTypes : InterpreterTypes.C WIRE_types}
     (interpreter : Interpreter.t WIRE WIRE_types)
     (cost : U64.t)
     (k : Interpreter.t WIRE WIRE_types -> Interpreter.t WIRE WIRE_types) :
@@ -83,7 +83,7 @@ Ltac gas_macro_eq H gas set_instruction_result :=
 
 Definition popn_top_macro {WIRE : Set} `{Link WIRE}
     {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
-    (IInterpreterTypes : InterpreterTypes.C WIRE_types)
+    {IInterpreterTypes : InterpreterTypes.C WIRE_types}
     (interpreter : Interpreter.t WIRE WIRE_types)
     (N : Usize.t)
     (k :
@@ -152,8 +152,8 @@ Lemma add_eq
     (
       Output.Success tt,
       (
-        gas_macro IInterpreterTypes interpreter constants.VERYLOW (fun interpreter =>
-        popn_top_macro IInterpreterTypes interpreter {| Integer.value := 1 |} (fun arr top interpreter =>
+        gas_macro interpreter constants.VERYLOW (fun interpreter =>
+        popn_top_macro interpreter {| Integer.value := 1 |} (fun arr top interpreter =>
           let '{| ArrayPair.x := op1 |} := arr.(array.value) in
           let op2 := top.(RefStub.projection) interpreter.(Interpreter.stack) in
           let stack :=
@@ -169,7 +169,7 @@ Lemma add_eq
 Proof.
   intros.
   destruct InterpreterTypesEq as [[] []].
-  cbn.
+  Time cbn.
   gas_macro_eq H gas set_instruction_result.
   popn_top_macro_eq H IInterpreterTypes popn_top set_instruction_result.
   get_can_access.
@@ -199,8 +199,8 @@ Lemma mul_eq
     (
       Output.Success tt,
       (
-        gas_macro IInterpreterTypes interpreter constants.LOW (fun interpreter =>
-        popn_top_macro IInterpreterTypes interpreter {| Integer.value := 1 |} (fun arr top interpreter =>
+        gas_macro interpreter constants.LOW (fun interpreter =>
+        popn_top_macro interpreter {| Integer.value := 1 |} (fun arr top interpreter =>
           let '{| ArrayPair.x := op1 |} := arr.(array.value) in
           let op2 := top.(RefStub.projection) interpreter.(Interpreter.stack) in
           let stack :=
@@ -246,8 +246,8 @@ Lemma sub_eq
     (
       Output.Success tt,
       (
-        gas_macro IInterpreterTypes interpreter constants.VERYLOW (fun interpreter =>
-        popn_top_macro IInterpreterTypes interpreter {| Integer.value := 1 |} (fun arr top interpreter =>
+        gas_macro interpreter constants.VERYLOW (fun interpreter =>
+        popn_top_macro interpreter {| Integer.value := 1 |} (fun arr top interpreter =>
           let '{| ArrayPair.x := op1 |} := arr.(array.value) in
           let op2 := top.(RefStub.projection) interpreter.(Interpreter.stack) in
           let stack :=
@@ -274,7 +274,6 @@ Proof.
   apply Run.Pure.
 Qed.
 
-(*
 Lemma div_eq
     {WIRE H : Set} `{Link WIRE} `{Link H}
     {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
@@ -294,8 +293,8 @@ Lemma div_eq
     (
       Output.Success tt,
       (
-        gas_macro IInterpreterTypes interpreter constants.LOW (fun interpreter =>
-        popn_top_macro IInterpreterTypes interpreter {| Integer.value := 1 |} (fun arr top interpreter =>
+        gas_macro interpreter constants.LOW (fun interpreter =>
+        popn_top_macro interpreter {| Integer.value := 1 |} (fun arr top interpreter =>
           let '{| ArrayPair.x := op1 |} := arr.(array.value) in
           let op2 := top.(RefStub.projection) interpreter.(Interpreter.stack) in
           interpreter
@@ -317,13 +316,6 @@ Proof.
   cbn.
   gas_macro_eq H gas set_instruction_result.
   popn_top_macro_eq H IInterpreterTypes popn_top set_instruction_result.
-  get_can_access.
-  destruct (Impl_Uint.is_zero_eq op2).
-  - apply Run.Pure.
-  - eapply Run.Call. {
-      apply Impl_Uint.wrapping_div_eq.
-    }
-    get_can_access.
-    apply Run.Pure.
-Qed.
-*)
+  eapply Run.Call. {
+    cbn.
+Admitted.
