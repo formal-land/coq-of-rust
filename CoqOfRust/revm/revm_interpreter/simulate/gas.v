@@ -18,7 +18,7 @@ Module Impl_MemoryGas.
 
   Lemma new_eq (Stack : Stack.t) (stack : Stack.to_Set Stack) :
     {{
-      StackM.eval_f Impl_MemoryGas.run_new stack 🌲
+      SimulateM.eval_f Impl_MemoryGas.run_new stack 🌲
       (Output.Success new, stack)
     }}.
   Proof.
@@ -41,7 +41,7 @@ Module Impl_Gas.
 
   Lemma new_eq (limit : U64.t) :
     {{
-      StackM.eval_f (Stack := []) (Impl_Gas.run_new limit) tt 🌲
+      SimulateM.eval_f (Stack := []) (Impl_Gas.run_new limit) tt 🌲
       (Output.Success (new limit), tt)
     }}.
   Proof.
@@ -67,7 +67,7 @@ Module Impl_Gas.
       Ref.core := Ref.Core.Mutable (A := Self) 0%nat [] φ Some (fun _ => Some)
     |} in
     {{
-      StackM.eval_f (Stack := [_]) (Impl_Gas.run_limit ref_self) (self, tt) 🌲
+      SimulateM.eval_f (Stack := [_]) (Impl_Gas.run_limit ref_self) (self, tt) 🌲
       (Output.Success (limit self), (self, tt))
     }}.
   Proof.
@@ -99,7 +99,7 @@ Module Impl_Gas.
       Ref.core := Ref.Core.Mutable (A := Self) 0%nat [] φ Some (fun _ => Some)
     |} in
     {{
-      StackM.eval_f (Stack := [_]) (Impl_Gas.run_erase_cost ref_self returned) (self, tt) 🌲
+      SimulateM.eval_f (Stack := [_]) (Impl_Gas.run_erase_cost ref_self returned) (self, tt) 🌲
       (Output.Success tt, (erase_cost self returned, tt))
     }}.
   Proof.
@@ -119,7 +119,7 @@ Module Impl_Gas.
   Axiom u64_overflowing_sub_eq :
     forall (Stack : Stack.t) (stack : Stack.to_Set Stack) (self other : U64.t),
     {{
-      StackM.eval_f (Stack := Stack) (core.num.links.mod.Impl_u64.run_overflowing_sub self other) stack 🌲
+      SimulateM.eval_f (Stack := Stack) (core.num.links.mod.Impl_u64.run_overflowing_sub self other) stack 🌲
       (Output.Success (u64_overflowing_sub self other), stack)
     }}.
 
@@ -158,7 +158,7 @@ Module Impl_Gas.
     let gas := gas_stub.(RefStub.projection) interpreter.(Interpreter.control) in
     let result := record_cost gas cost in
     {{
-      StackM.eval_f (Stack := [Interpreter.t WIRE WIRE_types; H])
+      SimulateM.eval_f (Stack := [Interpreter.t WIRE WIRE_types; H])
         (Impl_Gas.run_record_cost ref_self cost) (interpreter, (_host, tt)) 🌲
       (
         Output.Success (

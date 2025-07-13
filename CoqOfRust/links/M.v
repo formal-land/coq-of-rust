@@ -788,27 +788,18 @@ Module SuccessOrPanic.
   Arguments Success {_}.
   Arguments Panic {_}.
 
-  Definition to_value {Output : Set} `{Link Output} (output : t Output) :
-      Value.t + M.Exception.t :=
+  Definition apply {Output A : Set}
+      (f : t Output -> A)
+      (output : Output.t Output Output) :
+      A :=
     match output with
-    | Success output => inl (φ output)
-    | Panic panic => inr (M.Exception.Panic panic)
-    end.
-
-  Definition to_output {Output : Set} (output : t Output) : Output.t Output Output :=
-    match output with
-    | Success output => Output.Success output
-    | Panic panic => Output.Exception (Output.Exception.Panic panic)
-    end.
-
-  Definition of_output {Output : Set} (output : Output.t Output Output) :
-    t Output :=
-    match output with
-    | Output.Success output => Success output
-    | Output.Exception (Output.Exception.Panic panic) => Panic panic
+    | Output.Success output => f (Success output)
+    | Output.Exception (Output.Exception.Panic panic) => f (Panic panic)
     | Output.Exception _ =>
-      Panic (Panic.Make "unexpected return, break, or continue escaping a function")
+      f (Panic (Panic.Make "unexpected return, break, or continue escaping a function"))
     end.
+  (* This is useful to get [cbn] to make progress when evaluating a run. *)
+  Arguments apply /.
 End SuccessOrPanic.
 
 Module Run.
@@ -943,8 +934,13 @@ Module Run.
     let Output' : Set := OfTy.get_Set of_ty in
     let closure := Value.Closure (existS (_, _) f) in
     {{ f args 🔽 Output', Output' }} ->
-    (forall (value_inter : SuccessOrPanic.t Output'),
-      {{ k (SuccessOrPanic.to_value value_inter) 🔽 R, Output }}
+    (* Success *)
+    (forall (value_inter : Output'),
+      {{ k (inl (φ value_inter)) 🔽 R, Output }}
+    ) ->
+    (* Panic *)
+    (forall (panic : Panic.t),
+      {{ k (inr (M.Exception.Panic panic)) 🔽 R, Output }}
     ) ->
     {{ LowM.CallClosure ty closure args k 🔽 R, Output }}
   | CallLogicalOp
@@ -986,6 +982,19 @@ Module Run.
       (k : list Value.t -> M) :
     {{ k fields 🔽 R, Output }} ->
     {{ LowM.MatchTuple (Value.Tuple fields) k 🔽 R, Output }}
+  | IfThenElse
+      (ty : Ty.t)
+      (cond' : Value.t) (cond : bool)
+      (then_ : M) (else_ : M) (k : Value.t + Exception.t -> M)
+      (of_ty : OfTy.t ty) :
+    let Output' : Set := OfTy.get_Set of_ty in
+    cond' = φ cond ->
+    {{ then_ 🔽 R, Output' }} ->
+    {{ else_ 🔽 R, Output' }} ->
+    (forall (value_inter : Output.t R Output'),
+      {{ k (Output.to_value value_inter) 🔽 R, Output }}
+    ) ->
+    {{ LowM.IfThenElse ty cond' then_ else_ k 🔽 R, Output }}
   (** This primitive is useful to avoid blocking the reduction of this inductive with a [rewrite]
       that is hard to eliminate. *)
   | Rewrite
@@ -1047,7 +1056,7 @@ Module Primitive.
     t (Ref.Core.t runner.(SubPointer.Runner.Sub_A)).
 End Primitive.
 
-Module LowM.
+Module LinkM.
   (** The typed version of the [LowM.t] monad used in the generated code. We might need to use a
       co-inductive definition instead at some point. *)
   Inductive t (R Output : Set) : Set :=
@@ -1063,14 +1072,40 @@ Module LowM.
       (k : SuccessOrPanic.t A -> t R Output)
   | Loop {A : Set} `{Link A}
       (body : t R A)
-      (k : Output.t R (Ref.t Pointer.Kind.Raw A) -> t R Output).
+      (k : Output.t R (Ref.t Pointer.Kind.Raw A) -> t R Output)
+  | IfThenElse
+      (cond : bool) (then_ : t R Output) (else_ : t R Output)
+  | MatchOutput {A : Set}
+      (output : Output.t R A)
+      (k_success : A -> t R Output)
+      (k_return : R -> t R Output)
+      (* For some reasons, adding the [unit] parameters allows to keep the names of the handlers
+         after a [destruct] *)
+      (k_break : unit -> t R Output)
+      (k_continue : unit -> t R Output)
+      (k_break_match : unit -> t R Output)
+      (k_panic : Panic.t -> t R Output).
   Arguments Pure {_ _}.
   Arguments CallPrimitive {_ _ _}.
   Arguments Let {_ _ _}.
   Arguments LetAlloc {_ _ _ _}.
   Arguments Call {_ _ _ _ _ _}.
   Arguments Loop {_ _ _ _}.
-End LowM.
+  Arguments IfThenElse {_ _}.
+  Arguments MatchOutput {_ _ _}.
+
+  Definition match_output {R Output A : Set}
+      (output : Output.t R A)
+      (k : Output.t R A -> t R Output) :
+      t R Output :=
+    MatchOutput output
+      (fun success => k (Output.Success success))
+      (fun return_ => k (Output.Exception (Output.Exception.Return return_)))
+      (fun _ => k (Output.Exception Output.Exception.Break))
+      (fun _ => k (Output.Exception Output.Exception.Continue))
+      (fun _ => k (Output.Exception Output.Exception.BreakMatch))
+      (fun panic => k (Output.Exception (Output.Exception.Panic panic))).
+End LinkM.
 
 (* Definition evaluate_get_sub_pointer {R A : Set} `{Link A} {index : Pointer.Index.t}
     (ref_core : Ref.Core.t A) (runner : SubPointer.Runner.t A index) :
@@ -1099,17 +1134,17 @@ Defined. *)
     input [e] expression, following the proof of equivalence provided in [run]. *)
 Fixpoint evaluate {R Output : Set} `{Link R} `{Link Output} {e : M}
     (run : {{ e 🔽 R, Output }}) :
-  LowM.t R Output.
+  LinkM.t R Output.
 Proof.
   destruct run.
   { (* PureSuccess *)
-    exact (LowM.Pure (Output.Success value)).
+    exact (LinkM.Pure (Output.Success value)).
   }
   { (* PureException *)
-    exact (LowM.Pure (Output.Exception exception)).
+    exact (LinkM.Pure (Output.Exception exception)).
   }
   { (* Alloc *)
-    apply (LowM.CallPrimitive (Primitive.StateAlloc value)).
+    apply (LinkM.CallPrimitive (Primitive.StateAlloc value)).
     intros ref_core.
     eapply evaluate.
     match goal with
@@ -1123,7 +1158,7 @@ Proof.
     end.
   }
   { (* Read *)
-    apply (LowM.CallPrimitive (Primitive.StateRead ref_core)).
+    apply (LinkM.CallPrimitive (Primitive.StateRead ref_core)).
     intros value.
     eapply evaluate.
     match goal with
@@ -1134,12 +1169,12 @@ Proof.
     exact (evaluate _ _ _ _ _ run).
   }
   { (* Write *)
-    apply (LowM.CallPrimitive (Primitive.StateWrite ref.(Ref.core) value)).
+    apply (LinkM.CallPrimitive (Primitive.StateWrite ref.(Ref.core) value)).
     intros _.
     exact (evaluate _ _ _ _ _ run).
   }
   { (* SubPointer *)
-    apply (LowM.CallPrimitive (Primitive.GetSubPointer ref_core runner)).
+    apply (LinkM.CallPrimitive (Primitive.GetSubPointer ref_core runner)).
     intros sub_ref_core.
     eapply evaluate.
     match goal with
@@ -1156,77 +1191,117 @@ Proof.
     exact (evaluate _ _ _ _ _ run).
   }
   { (* CallClosure *)
-    eapply (LowM.Call (A := Output')). {
+    eapply (LinkM.Call (A := Output')). {
       exact run.
     }
-    intros output'; eapply evaluate.
-    match goal with
-    | H : forall _ : SuccessOrPanic.t Output', _ |- _ => apply (H output')
-    end.
+    intros [output'|panic]; eapply evaluate.
+    { match goal with
+      | H : forall _ : Output', _ |- _ => apply (H output')
+      end.
+    }
+    { match goal with
+      | H : forall _ : Panic.t, _ |- _ => apply (H panic)
+      end.
+    }
   }
   { (* CallLogicalOp *)
     match goal with
-    | H : forall _ : Output.t _ bool, _ |- _ => rename H into H_k
+    | H : forall _ : Output.t _ _, _ |- _ => rename H into H_k
     end.
     destruct op.
     { (* And *)
       refine (if lhs then _ else _).
       { (* True *)
-        eapply LowM.Let. {
+        eapply LinkM.Let. {
           exact (evaluate _ _ _ _ _ run).
         }
-        intros output'; eapply evaluate.
-        exact (H_k output').
+        intros output'.
+        exact (
+          LinkM.match_output output' (fun output' =>
+          evaluate _ _ _ _ _ (H_k output'))
+        ).
       }
       { (* False *)
-        eapply evaluate.
-        exact (H_k (Output.Success false)).
+        exact (evaluate _ _ _ _ _ (H_k (Output.Success false))).
       }
     }
     { (* Or *)
       refine (if lhs then _ else _).
       { (* True *)
-        eapply evaluate.
-        exact (H_k (Output.Success true)).
+        exact (evaluate _ _ _ _ _ (H_k (Output.Success true))).
       }
       { (* False *)
-        eapply LowM.Let. {
+        eapply LinkM.Let. {
           exact (evaluate _ _ _ _ _ run).
         }
-        intros output'; eapply evaluate.
-        exact (H_k output').
+        intros output'.
+        exact (
+          LinkM.match_output output' (fun output' =>
+          evaluate _ _ _ _ _ (H_k output'))
+        ).
       }
     }
   }
   { (* Let *)
-    eapply LowM.Let. {
+    eapply LinkM.Let. {
       exact (evaluate _ _ _ _ _ run).
     }
-    intros output'; eapply evaluate.
+    intros output'.
     match goal with
-    | H : forall _ : Output.t _ Output', _ |- _ => apply (H output')
+    | H : forall _ : Output.t _ _, _ |- _ => rename H into H_k
     end.
+    exact (
+      LinkM.match_output output' (fun output' =>
+      evaluate _ _ _ _ _ (H_k output'))
+    ).
   }
   { (* LetAlloc *)
-    eapply (LowM.LetAlloc (A := Output')). {
+    eapply (LinkM.LetAlloc (A := Output')). {
       exact (evaluate _ _ _ _ _ run).
     }
-    intros output'; eapply evaluate.
+    intros output'.
     match goal with
-    | H : forall _ : Output.t _ (Ref.t Pointer.Kind.Raw Output'), _ |- _ => apply (H output')
+    | H : forall _ : Output.t _ _, _ |- _ => rename H into H_k
     end.
+    exact (
+      LinkM.match_output output' (fun output' =>
+      evaluate _ _ _ _ _ (H_k output'))
+    ).
   }
   { (* Loop *)
-    eapply (LowM.Loop (A := Output')). {
+    eapply (LinkM.Loop (A := Output')). {
       exact (evaluate _ _ _ _ _ run).
     }
-    intros output'; eapply evaluate.
+    intros output'.
     match goal with
-    | H : forall _ : Output.t _ (Ref.t Pointer.Kind.Raw Output'), _ |- _ => apply (H output')
+    | H : forall _ : Output.t _ _, _ |- _ => rename H into H_k
     end.
+    exact (
+      LinkM.match_output output' (fun output' =>
+      evaluate _ _ _ _ _ (H_k output'))
+    ).
   }
   { (* MatchTuple *)
     exact (evaluate _ _ _ _ _ run).
+  }
+  { (* IfThenElse *)
+    eapply LinkM.Let. {
+      eapply (LinkM.IfThenElse cond).
+      { (* then *)
+        exact (evaluate _ _ _ _ _ run1).
+      }
+      { (* else *)
+        exact (evaluate _ _ _ _ _ run2).
+      }
+    }
+    intros output'.
+    match goal with
+    | H : forall _ : Output.t _ _, _ |- _ => rename H into H_k
+    end.
+    exact (
+      LinkM.match_output output' (fun output' =>
+      evaluate _ _ _ _ _ (H_k output'))
+    ).
   }
   { (* Rewrite *)
     exact (evaluate _ _ _ _ _ run).
@@ -1364,7 +1439,7 @@ Ltac run_symbolic_closure :=
     try prepare_call;
     try match goal with
     | H : _ |- _ => apply H
-    end |
+    end | |
   ].
 
 Ltac run_symbolic_closure_auto :=
@@ -1386,11 +1461,12 @@ Ltac run_symbolic_closure_auto :=
         try typeclasses eauto
       )
     ) |
-    cbn; intros []
+    cbn; intro |
+    cbn; intro
   ].
 
 Ltac run_symbolic_logical_op :=
-  apply Run.CallLogicalOp; [| intros []].
+  apply Run.CallLogicalOp; [| cbn; intros [|[]]].
 
 Smpl Create run_sub_pointer.
 
@@ -1399,19 +1475,6 @@ Ltac run_sub_pointer :=
     smpl run_sub_pointer
   |]; intro.
 
-Lemma if_then_else_bool_eq (condition : bool) then_ else_ :
-  M.if_then_else_bool (φ condition) then_ else_ =
-  if condition then then_ else else_.
-Proof.
-  now destruct condition.
-Qed.
-
-Ltac rewrite_if_then_else_bool_eq :=
-  match goal with
-  | |- context [ M.if_then_else_bool (φ ?condition) ?then_ ?else_ ] =>
-    rewrite (if_then_else_bool_eq condition then_ else_)
-  end.
-
 Ltac run_main_rewrites :=
   eapply Run.Rewrite; [
     (repeat (
@@ -1419,7 +1482,6 @@ Ltac run_main_rewrites :=
       Ref.rewrite_deref_eq ||
       Ref.rewrite_borrow_eq ||
       Ref.rewrite_cast_cast_eq ||
-      rewrite_if_then_else_bool_eq ||
       (repeat (
         erewrite IsTraitAssociatedType_eq ||
         match goal with
@@ -1481,20 +1543,30 @@ Ltac rewrite_cast_integer :=
   end.
 
 Ltac run_symbolic_let :=
-  unshelve eapply Run.Let; [repeat smpl of_ty | | cbn; intros []].
+  unshelve eapply Run.Let; [repeat smpl of_ty | | cbn; intros [|[]]].
 
 Ltac run_symbolic_let_alloc :=
-  unshelve eapply Run.LetAlloc; [repeat smpl of_ty | | cbn; intros []].
+  unshelve eapply Run.LetAlloc; [repeat smpl of_ty | | cbn; intros [|[]]].
 
 Ltac run_symbolic_loop :=
   unshelve eapply Run.Loop; [
     repeat smpl of_ty |
     |
-    cbn; intros []
+    cbn; intros [|[]]
   ].
 
 Ltac run_symbolic_match_tuple :=
   with_strategy transparent [φ] apply Run.MatchTuple.
+
+Ltac run_symbolic_if_then_else :=
+  unshelve eapply Run.IfThenElse; [
+    |
+    repeat smpl of_ty |
+    repeat smpl of_value |
+    |
+    |
+    cbn; intros [|[]]
+  ].
 
 Ltac run_symbolic_one_step :=
   match goal with
@@ -1518,6 +1590,7 @@ Ltac run_symbolic_one_step :=
     run_sub_pointer ||
     run_symbolic_loop ||
     run_symbolic_match_tuple ||
+    run_symbolic_if_then_else ||
     fold @LowM.let_
   end.
 

@@ -29,6 +29,7 @@ Proof.
   constructor.
   run_symbolic.
 Defined.
+Global Opaque run_VERYLOW.
 
 Instance run_DATA_LOADN_GAS :
   Run.Trait
