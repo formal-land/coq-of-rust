@@ -115,7 +115,7 @@ End Stack.
 
 (** Here we define an execution mode where we keep dynamic cast to retrieve data from the stack. In
     practice, these casts should always be correct as the original Rust code was well typed. *)
-Module StackM.
+Module SimulateM.
   Inductive t (A : Set) : Set :=
   | Pure (value : A)
   | GetCanAccess {B : Set} `{Link B}
@@ -142,7 +142,7 @@ Module StackM.
   Parameter TodoLoop : forall {A : Set}, t A.
 
   Fixpoint eval {R Output : Set} {Stack : Stack.t}
-      (e : LowM.t R Output)
+      (e : LinkM.t R Output)
       (stack : Stack.to_Set Stack)
       {struct e} :
     t (Output.t R Output * Stack.to_Set Stack).
@@ -223,13 +223,37 @@ Module StackM.
       ).
     }
     { (* Call *)
-      exact (
-        Call stack run_f0 (fun '(output, stack) =>
-        eval _ _ _ (k (SuccessOrPanic.of_output output)) stack)
-      ).
+      exact (Call stack run_f0 (fun '(output, stack) =>
+        SuccessOrPanic.apply (fun output =>
+          eval _ _ _ (k output) stack
+        ) output
+      )).
     }
     { (* Loop *)
       exact TodoLoop.
+    }
+    { (* IfThenElse *)
+      exact (
+        if cond then
+          eval _ _ _ e1 stack
+        else
+          eval _ _ _ e2 stack
+      ).
+    }
+    { (* MatchOutput *)
+      exact (
+        match output with
+        | Output.Success success => eval _ _ _ (k_success success) stack
+        | Output.Exception exception =>
+          match exception with
+          | Output.Exception.Return return_ => eval _ _ _ (k_return return_) stack
+          | Output.Exception.Break => eval _ _ _ (k_break tt) stack
+          | Output.Exception.Continue => eval _ _ _ (k_continue tt) stack
+          | Output.Exception.BreakMatch => eval _ _ _ (k_break_match tt) stack
+          | Output.Exception.Panic panic => eval _ _ _ (k_panic panic) stack
+          end
+        end
+      ).
     }
   Defined.
 
@@ -244,30 +268,30 @@ Module StackM.
       Stack.to_Set Stack ->
       t (Output.t Output Output * Stack.to_Set Stack) :=
     eval (links.M.evaluate run.(Run.run_f)).
-End StackM.
+End SimulateM.
 
 Module Run.
   Reserved Notation "{{ e 🌲 value }}".
 
-  Inductive t {A : Set} (value : A) : StackM.t A -> Prop :=
+  Inductive t {A : Set} (value : A) : SimulateM.t A -> Prop :=
   | Pure :
-    {{ StackM.Pure value 🌲 value }}
+    {{ SimulateM.Pure value 🌲 value }}
   | GetCanAccess {B : Set} `{Link B}
       (Stack : Stack.t)
       (ref_core : Ref.Core.t B)
-      (k : Stack.CanAccess.t Stack ref_core -> StackM.t A)
+      (k : Stack.CanAccess.t Stack ref_core -> SimulateM.t A)
       (H_access : Stack.CanAccess.t Stack ref_core)
     (H_k : {{ k H_access 🌲 value }}) :
-    {{ StackM.GetCanAccess Stack ref_core k 🌲 value }}
+    {{ SimulateM.GetCanAccess Stack ref_core k 🌲 value }}
   | Call {B : Set} `{Link B} {Stack : Stack.t}
       {f : list Value.t -> M} {args : list Value.t}
       (stack_in : Stack.to_Set Stack)
       (run_f : {{ f args 🔽 B }})
       (value_inter : Output.t B B * Stack.to_Set Stack)
-      (k : Output.t B B * Stack.to_Set Stack -> StackM.t A)
-    (H_f : {{ StackM.eval (links.M.evaluate run_f) stack_in 🌲 value_inter }})
+      (k : Output.t B B * Stack.to_Set Stack -> SimulateM.t A)
+    (H_f : {{ SimulateM.eval (links.M.evaluate run_f) stack_in 🌲 value_inter }})
     (H_k : {{ k value_inter 🌲 value }}) :
-    {{ StackM.Call stack_in run_f k 🌲 value }}
+    {{ SimulateM.Call stack_in run_f k 🌲 value }}
 
   where "{{ e 🌲 value }}" := (t value e).
 End Run.

@@ -392,6 +392,7 @@ Module LowM.
   | LetAlloc (ty : Ty.t) (e : t A) (k : A -> t A)
   | Loop (ty : Ty.t) (body : t A) (k : A -> t A)
   | MatchTuple (tuple : Value.t) (k : list Value.t -> t A)
+  | IfThenElse (ty : Ty.t) (cond : Value.t) (then_ : t A) (else_ : t A) (k : A -> t A)
   | Impossible (message : string).
   Arguments Pure {_}.
   Arguments CallPrimitive {_}.
@@ -401,6 +402,7 @@ Module LowM.
   Arguments LetAlloc {_}.
   Arguments Loop {_}.
   Arguments MatchTuple {_}.
+  Arguments IfThenElse {_}.
   Arguments Impossible {_}.
 
   Fixpoint let_ {A : Set} (e1 : t A) (e2 : A -> t A) : t A :=
@@ -420,6 +422,8 @@ Module LowM.
       LetAlloc ty e (fun v => let_ (k v) e2)
     | MatchTuple tuple k =>
       MatchTuple tuple (fun fields => let_ (k fields) e2)
+    | IfThenElse ty cond then_ else_ k =>
+      IfThenElse ty cond then_ else_ (fun v => let_ (k v) e2)
     | Impossible message => Impossible message
     end.
 End LowM.
@@ -922,13 +926,8 @@ Module SubPointer.
   Parameter get_slice_rest : Value.t -> Z -> Z -> M.
 End SubPointer.
 
-(** Explicit definition to simplify the links later *)
-Definition if_then_else_bool (condition : Value.t) (then_ else_ : M) : M :=
-  match condition with
-  | Value.Bool true => then_
-  | Value.Bool false => else_
-  | _ => impossible "if_then_else_bool: expected a boolean"
-  end.
+Definition if_then_else_bool (ty : Ty.t) (condition : Value.t) (then_ else_ : M) : M :=
+  LowM.IfThenElse ty condition then_ else_ LowM.Pure.
 
 Definition is_struct_tuple (value : Value.t) (constructor : string) : M :=
   let* value := deref value in
