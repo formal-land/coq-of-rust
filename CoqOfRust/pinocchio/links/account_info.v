@@ -390,8 +390,9 @@ Module Impl_AccountInfo.
     constructor.
     run_symbolic.
     destruct (core.links.cmp.Impl_PartialEq_for_Ref.run (array.t U8.t {| Integer.value := 32 |}) (array.t U8.t {| Integer.value := 32 |})).
-    (* run_symbolic. *)
-  Admitted.
+    run_symbolic.
+  Defined. 
+  
 
   Instance run_assign
     (self : Ref.t Pointer.Kind.Ref Self) 
