@@ -4082,7 +4082,7 @@ Module Matrix.
                                                     "{{synthetic}}'10",
                                                   γ0_0
                                                 |) in
-                                              let γ0_1 := M.read (| γ0_1 |) in
+                                              let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                                               let scale := M.copy (| EF, γ0_1 |) in
                                               M.read (|
                                                 let~ scale :

@@ -3342,7 +3342,7 @@ Module keygen.
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let γ := M.read (| γ |) in
+                                            (let γ := M.deref (| M.read (| γ |) |) in
                                             let id := M.copy (| Ty.path "usize", γ |) in
                                             M.borrow (|
                                               Pointer.Kind.Ref,

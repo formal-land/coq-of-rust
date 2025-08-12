@@ -13412,8 +13412,10 @@ Module prover.
                                                                                       0
                                                                                     |) in
                                                                                   let γ0_0 :=
-                                                                                    M.read (|
-                                                                                      γ0_0
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        γ0_0
+                                                                                      |)
                                                                                     |) in
                                                                                   let γ2_0 :=
                                                                                     M.SubPointer.get_tuple_field (|
@@ -21406,8 +21408,10 @@ Module prover.
                                                                                                               |) in
                                                                                                             let
                                                                                                                   γ0_0 :=
-                                                                                                              M.read (|
-                                                                                                                γ0_0
+                                                                                                              M.deref (|
+                                                                                                                M.read (|
+                                                                                                                  γ0_0
+                                                                                                                |)
                                                                                                               |) in
                                                                                                             let
                                                                                                                   air_id :=
@@ -22000,7 +22004,7 @@ Module prover.
                                       ltac:(M.monadic
                                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                        let γ0_0 := M.read (| γ0_0 |) in
+                                        let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                         let γ2_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                         let γ2_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                         let id1 :=

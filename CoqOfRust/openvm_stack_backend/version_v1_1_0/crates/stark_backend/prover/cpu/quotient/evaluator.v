@@ -8210,7 +8210,7 @@ Module prover.
                                                     M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                                   let γ1_1 :=
                                                     M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                                  let γ1_0 := M.read (| γ1_0 |) in
+                                                  let γ1_0 := M.deref (| M.read (| γ1_0 |) |) in
                                                   let alpha_pow :=
                                                     M.copy (|
                                                       Ty.associated_in_trait
@@ -8256,7 +8256,7 @@ Module prover.
                                                         "ExtensionPacking",
                                                       γ1_0
                                                     |) in
-                                                  let γ1_1 := M.read (| γ1_1 |) in
+                                                  let γ1_1 := M.deref (| M.read (| γ1_1 |) |) in
                                                   let node_idx :=
                                                     M.copy (| Ty.path "usize", γ1_1 |) in
                                                   M.match_operator (|

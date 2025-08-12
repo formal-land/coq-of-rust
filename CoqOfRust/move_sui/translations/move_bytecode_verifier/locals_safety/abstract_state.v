@@ -115,7 +115,7 @@ Module locals_safety.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -124,7 +124,7 @@ Module locals_safety.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Unavailable" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -136,7 +136,7 @@ Module locals_safety.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -3215,13 +3215,13 @@ Module locals_safety.
                                                     M.SubPointer.get_tuple_field (| γ, 0 |) in
                                                   let γ0_1 :=
                                                     M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                                  let γ0_0 := M.read (| γ0_0 |) in
+                                                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                                   let _ :=
                                                     M.is_struct_tuple (|
                                                       γ0_0,
                                                       "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Unavailable"
                                                     |) in
-                                                  let γ0_1 := M.read (| γ0_1 |) in
+                                                  let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                                                   let _ :=
                                                     M.is_struct_tuple (|
                                                       γ0_1,
@@ -3249,13 +3249,15 @@ Module locals_safety.
                                                               γ,
                                                               1
                                                             |) in
-                                                          let γ0_0 := M.read (| γ0_0 |) in
+                                                          let γ0_0 :=
+                                                            M.deref (| M.read (| γ0_0 |) |) in
                                                           let _ :=
                                                             M.is_struct_tuple (|
                                                               γ0_0,
                                                               "move_bytecode_verifier::locals_safety::abstract_state::LocalState::MaybeAvailable"
                                                             |) in
-                                                          let γ0_1 := M.read (| γ0_1 |) in
+                                                          let γ0_1 :=
+                                                            M.deref (| M.read (| γ0_1 |) |) in
                                                           let _ :=
                                                             M.is_struct_tuple (|
                                                               γ0_1,
@@ -3274,13 +3276,15 @@ Module locals_safety.
                                                               γ,
                                                               1
                                                             |) in
-                                                          let γ0_0 := M.read (| γ0_0 |) in
+                                                          let γ0_0 :=
+                                                            M.deref (| M.read (| γ0_0 |) |) in
                                                           let _ :=
                                                             M.is_struct_tuple (|
                                                               γ0_0,
                                                               "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Unavailable"
                                                             |) in
-                                                          let γ0_1 := M.read (| γ0_1 |) in
+                                                          let γ0_1 :=
+                                                            M.deref (| M.read (| γ0_1 |) |) in
                                                           let _ :=
                                                             M.is_struct_tuple (|
                                                               γ0_1,
@@ -3299,13 +3303,15 @@ Module locals_safety.
                                                               γ,
                                                               1
                                                             |) in
-                                                          let γ0_0 := M.read (| γ0_0 |) in
+                                                          let γ0_0 :=
+                                                            M.deref (| M.read (| γ0_0 |) |) in
                                                           let _ :=
                                                             M.is_struct_tuple (|
                                                               γ0_0,
                                                               "move_bytecode_verifier::locals_safety::abstract_state::LocalState::MaybeAvailable"
                                                             |) in
-                                                          let γ0_1 := M.read (| γ0_1 |) in
+                                                          let γ0_1 :=
+                                                            M.deref (| M.read (| γ0_1 |) |) in
                                                           let _ :=
                                                             M.is_struct_tuple (|
                                                               γ0_1,
@@ -3324,13 +3330,15 @@ Module locals_safety.
                                                               γ,
                                                               1
                                                             |) in
-                                                          let γ0_0 := M.read (| γ0_0 |) in
+                                                          let γ0_0 :=
+                                                            M.deref (| M.read (| γ0_0 |) |) in
                                                           let _ :=
                                                             M.is_struct_tuple (|
                                                               γ0_0,
                                                               "move_bytecode_verifier::locals_safety::abstract_state::LocalState::MaybeAvailable"
                                                             |) in
-                                                          let γ0_1 := M.read (| γ0_1 |) in
+                                                          let γ0_1 :=
+                                                            M.deref (| M.read (| γ0_1 |) |) in
                                                           let _ :=
                                                             M.is_struct_tuple (|
                                                               γ0_1,
@@ -3349,13 +3357,15 @@ Module locals_safety.
                                                               γ,
                                                               1
                                                             |) in
-                                                          let γ0_0 := M.read (| γ0_0 |) in
+                                                          let γ0_0 :=
+                                                            M.deref (| M.read (| γ0_0 |) |) in
                                                           let _ :=
                                                             M.is_struct_tuple (|
                                                               γ0_0,
                                                               "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
                                                             |) in
-                                                          let γ0_1 := M.read (| γ0_1 |) in
+                                                          let γ0_1 :=
+                                                            M.deref (| M.read (| γ0_1 |) |) in
                                                           let _ :=
                                                             M.is_struct_tuple (|
                                                               γ0_1,
@@ -3374,13 +3384,15 @@ Module locals_safety.
                                                               γ,
                                                               1
                                                             |) in
-                                                          let γ0_0 := M.read (| γ0_0 |) in
+                                                          let γ0_0 :=
+                                                            M.deref (| M.read (| γ0_0 |) |) in
                                                           let _ :=
                                                             M.is_struct_tuple (|
                                                               γ0_0,
                                                               "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Unavailable"
                                                             |) in
-                                                          let γ0_1 := M.read (| γ0_1 |) in
+                                                          let γ0_1 :=
+                                                            M.deref (| M.read (| γ0_1 |) |) in
                                                           let _ :=
                                                             M.is_struct_tuple (|
                                                               γ0_1,
@@ -3399,13 +3411,15 @@ Module locals_safety.
                                                               γ,
                                                               1
                                                             |) in
-                                                          let γ0_0 := M.read (| γ0_0 |) in
+                                                          let γ0_0 :=
+                                                            M.deref (| M.read (| γ0_0 |) |) in
                                                           let _ :=
                                                             M.is_struct_tuple (|
                                                               γ0_0,
                                                               "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
                                                             |) in
-                                                          let γ0_1 := M.read (| γ0_1 |) in
+                                                          let γ0_1 :=
+                                                            M.deref (| M.read (| γ0_1 |) |) in
                                                           let _ :=
                                                             M.is_struct_tuple (|
                                                               γ0_1,
@@ -3433,13 +3447,13 @@ Module locals_safety.
                                                     M.SubPointer.get_tuple_field (| γ, 0 |) in
                                                   let γ0_1 :=
                                                     M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                                  let γ0_0 := M.read (| γ0_0 |) in
+                                                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                                   let _ :=
                                                     M.is_struct_tuple (|
                                                       γ0_0,
                                                       "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
                                                     |) in
-                                                  let γ0_1 := M.read (| γ0_1 |) in
+                                                  let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                                                   let _ :=
                                                     M.is_struct_tuple (|
                                                       γ0_1,

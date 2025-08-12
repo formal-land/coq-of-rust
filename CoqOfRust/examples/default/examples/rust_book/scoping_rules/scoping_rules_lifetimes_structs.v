@@ -227,7 +227,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
           [
             fun γ =>
               ltac:(M.monadic
-                (let γ := M.read (| γ |) in
+                (let γ := M.deref (| M.read (| γ |) |) in
                 let γ1_0 :=
                   M.SubPointer.get_struct_tuple_field (|
                     γ,
@@ -266,7 +266,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                 |)));
             fun γ =>
               ltac:(M.monadic
-                (let γ := M.read (| γ |) in
+                (let γ := M.deref (| M.read (| γ |) |) in
                 let γ1_0 :=
                   M.SubPointer.get_struct_tuple_field (|
                     γ,

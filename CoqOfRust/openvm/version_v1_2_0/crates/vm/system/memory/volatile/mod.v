@@ -4506,7 +4506,8 @@ Module system.
                                                                 γ0_0,
                                                                 1
                                                               |) in
-                                                            let γ1_0 := M.read (| γ1_0 |) in
+                                                            let γ1_0 :=
+                                                              M.deref (| M.read (| γ1_0 |) |) in
                                                             let limb :=
                                                               M.copy (|
                                                                 Ty.associated_in_trait
@@ -4945,7 +4946,8 @@ Module system.
                                                                 γ0_0,
                                                                 1
                                                               |) in
-                                                            let γ1_0 := M.read (| γ1_0 |) in
+                                                            let γ1_0 :=
+                                                              M.deref (| M.read (| γ1_0 |) |) in
                                                             let limb :=
                                                               M.copy (|
                                                                 Ty.associated_in_trait
@@ -9329,7 +9331,7 @@ Module system.
                                               ],
                                             γ1_0
                                           |) in
-                                        let γ1_1 := M.read (| γ1_1 |) in
+                                        let γ1_1 := M.deref (| M.read (| γ1_1 |) |) in
                                         let γ3_0 := M.SubPointer.get_tuple_field (| γ1_1, 0 |) in
                                         let γ3_1 := M.SubPointer.get_tuple_field (| γ1_1, 1 |) in
                                         let γ4_0 := M.SubPointer.get_tuple_field (| γ3_0, 0 |) in
@@ -13476,7 +13478,7 @@ Module system.
                             |)
                           |)
                         |) in
-                      let γ := M.read (| γ |) in
+                      let γ := M.deref (| M.read (| γ |) |) in
                       let γ1_0 :=
                         M.SubPointer.get_struct_tuple_field (|
                           γ,

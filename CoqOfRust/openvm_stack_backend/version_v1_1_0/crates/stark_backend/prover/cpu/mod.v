@@ -27894,7 +27894,9 @@ Module prover.
                                                                             1
                                                                           |) in
                                                                         let γ0_0 :=
-                                                                          M.read (| γ0_0 |) in
+                                                                          M.deref (|
+                                                                            M.read (| γ0_0 |)
+                                                                          |) in
                                                                         let γ2_0 :=
                                                                           M.SubPointer.get_tuple_field (|
                                                                             γ0_0,
@@ -37704,7 +37706,7 @@ Module prover.
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (let γ := M.read (| γ |) in
+                                          (let γ := M.deref (| M.read (| γ |) |) in
                                           let air_idx := M.copy (| Ty.path "usize", γ |) in
                                           M.read (|
                                             let~ pk :

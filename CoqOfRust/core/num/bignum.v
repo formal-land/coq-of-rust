@@ -998,7 +998,7 @@ Module num.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let v := M.copy (| Ty.path "u32", γ |) in
                                   M.call_closure (|
                                     Ty.path "bool",
@@ -1100,7 +1100,7 @@ Module num.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let γ := M.read (| γ |) in
+                                      (let γ := M.deref (| M.read (| γ |) |) in
                                       let x := M.copy (| Ty.path "u32", γ |) in
                                       M.call_closure (|
                                         Ty.path "bool",
@@ -2931,7 +2931,10 @@ Module num.
                                                                 [
                                                                   fun γ =>
                                                                     ltac:(M.monadic
-                                                                      (let γ := M.read (| γ |) in
+                                                                      (let γ :=
+                                                                        M.deref (|
+                                                                          M.read (| γ |)
+                                                                        |) in
                                                                       let v :=
                                                                         M.copy (|
                                                                           Ty.path "u32",
@@ -5828,7 +5831,8 @@ Module num.
                                                             [
                                                               fun γ =>
                                                                 ltac:(M.monadic
-                                                                  (let γ := M.read (| γ |) in
+                                                                  (let γ :=
+                                                                    M.deref (| M.read (| γ |) |) in
                                                                   let d :=
                                                                     M.copy (| Ty.path "u32", γ |) in
                                                                   M.call_closure (|
@@ -6023,7 +6027,8 @@ Module num.
                                                             [
                                                               fun γ =>
                                                                 ltac:(M.monadic
-                                                                  (let γ := M.read (| γ |) in
+                                                                  (let γ :=
+                                                                    M.deref (| M.read (| γ |) |) in
                                                                   let d :=
                                                                     M.copy (| Ty.path "u32", γ |) in
                                                                   M.call_closure (|
@@ -7268,7 +7273,7 @@ Module num.
                                                       "core::option::Option::Some",
                                                       0
                                                     |) in
-                                                  let γ0_0 := M.read (| γ0_0 |) in
+                                                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                                   let v := M.copy (| Ty.path "u32", γ0_0 |) in
                                                   M.read (|
                                                     let~ _ : Ty.tuple [] :=
@@ -8207,7 +8212,7 @@ Module num.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let γ := M.read (| γ |) in
+                                    (let γ := M.deref (| M.read (| γ |) |) in
                                     let v := M.copy (| Ty.path "u8", γ |) in
                                     M.call_closure (|
                                       Ty.path "bool",
@@ -8311,7 +8316,7 @@ Module num.
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let γ := M.read (| γ |) in
+                                        (let γ := M.deref (| M.read (| γ |) |) in
                                         let x := M.copy (| Ty.path "u8", γ |) in
                                         M.call_closure (|
                                           Ty.path "bool",
@@ -10167,7 +10172,10 @@ Module num.
                                                                   [
                                                                     fun γ =>
                                                                       ltac:(M.monadic
-                                                                        (let γ := M.read (| γ |) in
+                                                                        (let γ :=
+                                                                          M.deref (|
+                                                                            M.read (| γ |)
+                                                                          |) in
                                                                         let v :=
                                                                           M.copy (|
                                                                             Ty.path "u8",
@@ -13125,7 +13133,10 @@ Module num.
                                                               [
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let d :=
                                                                       M.copy (|
                                                                         Ty.path "u8",
@@ -13324,7 +13335,10 @@ Module num.
                                                               [
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let d :=
                                                                       M.copy (|
                                                                         Ty.path "u8",
@@ -14584,7 +14598,7 @@ Module num.
                                                         "core::option::Option::Some",
                                                         0
                                                       |) in
-                                                    let γ0_0 := M.read (| γ0_0 |) in
+                                                    let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                                     let v := M.copy (| Ty.path "u8", γ0_0 |) in
                                                     M.read (|
                                                       let~ _ : Ty.tuple [] :=

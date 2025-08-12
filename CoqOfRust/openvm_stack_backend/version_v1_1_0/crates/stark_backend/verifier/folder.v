@@ -445,7 +445,7 @@ Module verifier.
                                               "core::option::Option::Some",
                                               0
                                             |) in
-                                          let γ0_0 := M.read (| γ0_0 |) in
+                                          let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                           let idx := M.copy (| Ty.path "usize", γ0_0 |) in
                                           M.read (|
                                             let~ _ : Ty.tuple [] :=

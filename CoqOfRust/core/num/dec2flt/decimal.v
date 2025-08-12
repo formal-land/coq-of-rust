@@ -2694,7 +2694,7 @@ Module num.
                                   |) in
                                 let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                 let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                let γ1_0 := M.read (| γ1_0 |) in
+                                let γ1_0 := M.deref (| M.read (| γ1_0 |) |) in
                                 let _ :=
                                   is_constant_or_break_match (|
                                     M.read (| γ1_0 |),
@@ -2843,7 +2843,7 @@ Module num.
                           |) in
                         let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                         let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                        let γ1_0 := M.read (| γ1_0 |) in
+                        let γ1_0 := M.deref (| M.read (| γ1_0 |) |) in
                         let _ :=
                           is_constant_or_break_match (|
                             M.read (| γ1_0 |),
@@ -2984,7 +2984,7 @@ Module num.
                                                       M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                                     let γ1_1 :=
                                                       M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                                    let γ1_0 := M.read (| γ1_0 |) in
+                                                    let γ1_0 := M.deref (| M.read (| γ1_0 |) |) in
                                                     let _ :=
                                                       is_constant_or_break_match (|
                                                         M.read (| γ1_0 |),
@@ -3753,7 +3753,8 @@ Module num.
                                                               "core::option::Option::Some",
                                                               0
                                                             |) in
-                                                          let γ0_0 := M.read (| γ0_0 |) in
+                                                          let γ0_0 :=
+                                                            M.deref (| M.read (| γ0_0 |) |) in
                                                           let c :=
                                                             M.copy (| Ty.path "u8", γ0_0 |) in
                                                           M.match_operator (|
@@ -4043,7 +4044,7 @@ Module num.
                           |) in
                         let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                         let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                        let γ1_0 := M.read (| γ1_0 |) in
+                        let γ1_0 := M.deref (| M.read (| γ1_0 |) |) in
                         let ch := M.copy (| Ty.path "u8", γ1_0 |) in
                         let s_next :=
                           M.copy (|
@@ -4165,7 +4166,7 @@ Module num.
                                               M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                             let γ1_1 :=
                                               M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                            let γ1_0 := M.read (| γ1_0 |) in
+                                            let γ1_0 := M.deref (| M.read (| γ1_0 |) |) in
                                             let ch := M.copy (| Ty.path "u8", γ1_0 |) in
                                             let s_next :=
                                               M.copy (|
@@ -5005,7 +5006,7 @@ Module num.
                                                   let γ1_1 :=
                                                     M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                                   let i := M.copy (| Ty.path "usize", γ1_0 |) in
-                                                  let γ1_1 := M.read (| γ1_1 |) in
+                                                  let γ1_1 := M.deref (| M.read (| γ1_1 |) |) in
                                                   let p5 := M.copy (| Ty.path "u8", γ1_1 |) in
                                                   M.match_operator (|
                                                     Ty.tuple [],

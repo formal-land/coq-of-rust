@@ -455,7 +455,7 @@ Module bytes.
                               "core::ops::range::Bound::Included",
                               0
                             |) in
-                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                           let n := M.copy (| Ty.path "usize", γ0_0 |) in
                           M.read (| n |)));
                       fun γ =>
@@ -466,7 +466,7 @@ Module bytes.
                               "core::ops::range::Bound::Excluded",
                               0
                             |) in
-                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                           let n := M.copy (| Ty.path "usize", γ0_0 |) in
                           M.call_closure (|
                             Ty.path "usize",
@@ -534,7 +534,7 @@ Module bytes.
                               "core::ops::range::Bound::Included",
                               0
                             |) in
-                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                           let n := M.copy (| Ty.path "usize", γ0_0 |) in
                           M.call_closure (|
                             Ty.path "usize",
@@ -569,7 +569,7 @@ Module bytes.
                               "core::ops::range::Bound::Excluded",
                               0
                             |) in
-                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                           let n := M.copy (| Ty.path "usize", γ0_0 |) in
                           M.read (| n |)));
                       fun γ =>

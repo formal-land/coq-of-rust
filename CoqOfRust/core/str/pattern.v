@@ -1195,7 +1195,7 @@ Module str.
                           ltac:(M.monadic
                             (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                             let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
                                 γ0_0,
@@ -1215,7 +1215,7 @@ Module str.
                                   ],
                                 γ2_0
                               |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
                                 γ0_1,
@@ -1273,7 +1273,7 @@ Module str.
                           ltac:(M.monadic
                             (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                             let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
                                 γ0_0,
@@ -1282,7 +1282,7 @@ Module str.
                               |) in
                             let __self_0 :=
                               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "char" ], γ2_0 |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
                                 γ0_1,
@@ -1357,7 +1357,7 @@ Module str.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -1424,7 +1424,7 @@ Module str.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -1664,7 +1664,7 @@ Module str.
                           ltac:(M.monadic
                             (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                             let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
                                 γ0_0,
@@ -1681,7 +1681,7 @@ Module str.
                               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ2_0 |) in
                             let __self_1 :=
                               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ2_1 |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
                                 γ0_1,
@@ -1737,7 +1737,7 @@ Module str.
                           ltac:(M.monadic
                             (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                             let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
                                 γ0_0,
@@ -1754,7 +1754,7 @@ Module str.
                               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ2_0 |) in
                             let __self_1 :=
                               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ2_1 |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
                                 γ0_1,
@@ -1848,7 +1848,7 @@ Module str.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -1913,7 +1913,7 @@ Module str.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -1978,7 +1978,7 @@ Module str.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ := M.is_struct_tuple (| γ, "core::str::pattern::SearchStep::Done" |) in
                     M.call_closure (|
                       Ty.apply
@@ -6298,7 +6298,7 @@ Module str.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let m := M.copy (| Ty.path "char", γ |) in
                                   M.call_closure (|
                                     Ty.path "bool",
@@ -6415,7 +6415,7 @@ Module str.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let m := M.copy (| Ty.path "char", γ |) in
                                   M.call_closure (|
                                     Ty.path "bool",
@@ -6509,7 +6509,7 @@ Module str.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let m := M.copy (| Ty.path "char", γ |) in
                                   M.call_closure (|
                                     Ty.path "bool",
@@ -11323,7 +11323,7 @@ Module str.
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (let γ := M.read (| γ |) in
+                                                      (let γ := M.deref (| M.read (| γ |) |) in
                                                       let s :=
                                                         M.copy (|
                                                           Ty.apply
@@ -11441,7 +11441,7 @@ Module str.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let γ := M.read (| γ |) in
+                                              (let γ := M.deref (| M.read (| γ |) |) in
                                               let s :=
                                                 M.copy (|
                                                   Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
@@ -11552,7 +11552,7 @@ Module str.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let γ := M.read (| γ |) in
+                                              (let γ := M.deref (| M.read (| γ |) |) in
                                               let s :=
                                                 M.copy (|
                                                   Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
@@ -11666,7 +11666,7 @@ Module str.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let γ := M.read (| γ |) in
+                                              (let γ := M.deref (| M.read (| γ |) |) in
                                               let s :=
                                                 M.copy (|
                                                   Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
@@ -11780,7 +11780,7 @@ Module str.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let γ := M.read (| γ |) in
+                                              (let γ := M.deref (| M.read (| γ |) |) in
                                               let s :=
                                                 M.copy (|
                                                   Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
@@ -11897,7 +11897,7 @@ Module str.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let γ := M.read (| γ |) in
+                                              (let γ := M.deref (| M.read (| γ |) |) in
                                               let s :=
                                                 M.copy (|
                                                   Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
@@ -13167,7 +13167,7 @@ Module str.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -13200,7 +13200,7 @@ Module str.
                       ]));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -13269,7 +13269,7 @@ Module str.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -13323,7 +13323,7 @@ Module str.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -17397,7 +17397,7 @@ Module str.
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (let γ := M.read (| γ |) in
+                                          (let γ := M.deref (| M.read (| γ |) |) in
                                           let b := M.copy (| Ty.path "u8", γ |) in
                                           M.call_closure (|
                                             Ty.path "u64",
@@ -17672,7 +17672,7 @@ Module str.
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let γ0_0 := M.read (| γ0_0 |) in
+                                      let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                       let b := M.copy (| Ty.path "u8", γ0_0 |) in
                                       M.read (| b |)));
                                   fun γ =>
@@ -19018,7 +19018,7 @@ Module str.
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let γ0_0 := M.read (| γ0_0 |) in
+                                      let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                       let b := M.copy (| Ty.path "u8", γ0_0 |) in
                                       M.read (| b |)));
                                   fun γ =>
@@ -20356,7 +20356,7 @@ Module str.
                                     "core::option::Option::Some",
                                     0
                                   |) in
-                                let γ0_0 := M.read (| γ0_0 |) in
+                                let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                 let a := M.copy (| Ty.path "u8", γ0_0 |) in
                                 M.read (|
                                   let~ b : Ty.path "u8" :=
@@ -21653,7 +21653,7 @@ Module str.
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let γ := M.read (| γ |) in
+                                                    (let γ := M.deref (| M.read (| γ |) |) in
                                                     let idx := M.copy (| Ty.path "usize", γ |) in
                                                     M.call_closure (|
                                                       Ty.path "bool",
@@ -24240,10 +24240,12 @@ Module str.
                                                                   γ0_0,
                                                                   1
                                                                 |) in
-                                                              let γ1_0 := M.read (| γ1_0 |) in
+                                                              let γ1_0 :=
+                                                                M.deref (| M.read (| γ1_0 |) |) in
                                                               let b1 :=
                                                                 M.copy (| Ty.path "u8", γ1_0 |) in
-                                                              let γ1_1 := M.read (| γ1_1 |) in
+                                                              let γ1_1 :=
+                                                                M.deref (| M.read (| γ1_1 |) |) in
                                                               let b2 :=
                                                                 M.copy (| Ty.path "u8", γ1_1 |) in
                                                               M.match_operator (|

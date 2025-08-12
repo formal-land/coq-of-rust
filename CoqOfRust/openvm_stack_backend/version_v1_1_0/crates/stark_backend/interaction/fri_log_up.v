@@ -2260,7 +2260,7 @@ Module interaction.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ := M.read (| γ |) in
+                            (let γ := M.deref (| M.read (| γ |) |) in
                             let γ1_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                             let γ1_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                             let alpha := M.copy (| Challenge, γ1_0 |) in
@@ -6356,8 +6356,10 @@ Module interaction.
                                                                                                                                                           |) in
                                                                                                                                                         let
                                                                                                                                                               γ1_1 :=
-                                                                                                                                                          M.read (|
-                                                                                                                                                            γ1_1
+                                                                                                                                                          M.deref (|
+                                                                                                                                                            M.read (|
+                                                                                                                                                              γ1_1
+                                                                                                                                                            |)
                                                                                                                                                           |) in
                                                                                                                                                         let
                                                                                                                                                               beta :=
@@ -8326,8 +8328,10 @@ Module interaction.
                                                                                                                                                       |) in
                                                                                                                                                     let
                                                                                                                                                           γ0_0 :=
-                                                                                                                                                      M.read (|
-                                                                                                                                                        γ0_0
+                                                                                                                                                      M.deref (|
+                                                                                                                                                        M.read (|
+                                                                                                                                                          γ0_0
+                                                                                                                                                        |)
                                                                                                                                                       |) in
                                                                                                                                                     let
                                                                                                                                                           interaction_idx :=
@@ -9734,7 +9738,7 @@ Module interaction.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (|
                         γ,
@@ -9761,7 +9765,7 @@ Module interaction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (|
                         γ,
@@ -9785,7 +9789,7 @@ Module interaction.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (|
                         γ,
@@ -9857,7 +9861,7 @@ Module interaction.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -9869,7 +9873,7 @@ Module interaction.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -9881,7 +9885,7 @@ Module interaction.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -18580,8 +18584,10 @@ Module interaction.
                                                                                                 ltac:(M.monadic
                                                                                                   (let
                                                                                                         γ :=
-                                                                                                    M.read (|
-                                                                                                      γ
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        γ
+                                                                                                      |)
                                                                                                     |) in
                                                                                                   let
                                                                                                         interaction_idx :=
@@ -20724,8 +20730,10 @@ Module interaction.
                                                                                                         |) in
                                                                                                       let
                                                                                                             γ1_1 :=
-                                                                                                        M.read (|
-                                                                                                          γ1_1
+                                                                                                        M.deref (|
+                                                                                                          M.read (|
+                                                                                                            γ1_1
+                                                                                                          |)
                                                                                                         |) in
                                                                                                       let
                                                                                                             interaction_idx :=
@@ -22632,7 +22640,7 @@ Module interaction.
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let γ := M.read (| γ |) in
+                                        (let γ := M.deref (| M.read (| γ |) |) in
                                         let i := M.copy (| Ty.path "usize", γ |) in
                                         M.match_operator (|
                                           Ty.path "core::cmp::Ordering",
@@ -22643,7 +22651,7 @@ Module interaction.
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
-                                                (let γ := M.read (| γ |) in
+                                                (let γ := M.deref (| M.read (| γ |) |) in
                                                 let j := M.copy (| Ty.path "usize", γ |) in
                                                 M.read (|
                                                   let~ field_cmp : Ty.path "core::cmp::Ordering" :=

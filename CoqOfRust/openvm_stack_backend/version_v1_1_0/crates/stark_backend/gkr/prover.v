@@ -899,7 +899,7 @@ Module gkr.
                                                   "core::option::Option::Some",
                                                   0
                                                 |) in
-                                              let γ0_0 := M.read (| γ0_0 |) in
+                                              let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                               let y_i := M.copy (| F, γ0_0 |) in
                                               M.read (|
                                                 M.use
@@ -1619,7 +1619,7 @@ Module gkr.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ := M.read (| γ |) in
+                            (let γ := M.deref (| M.read (| γ |) |) in
                             let γ1_0 :=
                               M.SubPointer.get_struct_tuple_field (|
                                 γ,
@@ -1691,7 +1691,7 @@ Module gkr.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let γ := M.read (| γ |) in
+                                    (let γ := M.deref (| M.read (| γ |) |) in
                                     let γ1_0 :=
                                       M.SubPointer.get_struct_record_field (|
                                         γ,
@@ -1733,7 +1733,7 @@ Module gkr.
                                     Value.Tuple [ numerators; denominators ]));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let γ := M.read (| γ |) in
+                                    (let γ := M.deref (| M.read (| γ |) |) in
                                     let γ1_0 :=
                                       M.SubPointer.get_struct_record_field (|
                                         γ,
@@ -1816,7 +1816,7 @@ Module gkr.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ := M.read (| γ |) in
+                            (let γ := M.deref (| M.read (| γ |) |) in
                             let γ1_0 :=
                               M.SubPointer.get_struct_record_field (|
                                 γ,
@@ -6290,7 +6290,7 @@ Module gkr.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (|
                         γ,
@@ -9794,8 +9794,10 @@ Module gkr.
                                                                                       (let γ :=
                                                                                         claims_to_verify in
                                                                                       let γ :=
-                                                                                        M.read (|
-                                                                                          γ
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            γ
+                                                                                          |)
                                                                                         |) in
                                                                                       let γ1_0 :=
                                                                                         M.SubPointer.get_struct_tuple_field (|
@@ -10976,8 +10978,10 @@ Module gkr.
                                                                                             |) in
                                                                                           let
                                                                                                 γ1_0 :=
-                                                                                            M.read (|
-                                                                                              γ1_0
+                                                                                            M.deref (|
+                                                                                              M.read (|
+                                                                                                γ1_0
+                                                                                              |)
                                                                                             |) in
                                                                                           let
                                                                                                 instance :=

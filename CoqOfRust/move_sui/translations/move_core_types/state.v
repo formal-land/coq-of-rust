@@ -104,7 +104,7 @@ Module state.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -113,19 +113,19 @@ Module state.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DESERIALIZER" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "move_core_types::state::VMState::VERIFIER" |) in
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VERIFIER" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "move_core_types::state::VMState::RUNTIME" |) in
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "RUNTIME" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "move_core_types::state::VMState::OTHER" |) in
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OTHER" |) |) |)))

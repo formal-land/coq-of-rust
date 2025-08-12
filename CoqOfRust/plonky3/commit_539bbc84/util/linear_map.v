@@ -330,8 +330,8 @@ Module linear_map.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let γ := M.read (| γ |) in
-                                    let γ := M.read (| γ |) in
+                                    (let γ := M.deref (| M.read (| γ |) |) in
+                                    let γ := M.deref (| M.read (| γ |) |) in
                                     let γ2_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                     let γ2_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                     let kk := M.alloc (| Ty.apply (Ty.path "&") [] [ K ], γ2_0 |) in
@@ -369,7 +369,7 @@ Module linear_map.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ := M.read (| γ |) in
+                                (let γ := M.deref (| M.read (| γ |) |) in
                                 let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                 let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                 let v := M.alloc (| Ty.apply (Ty.path "&") [] [ V ], γ1_1 |) in
@@ -517,8 +517,8 @@ Module linear_map.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let γ := M.read (| γ |) in
-                                    let γ := M.read (| γ |) in
+                                    (let γ := M.deref (| M.read (| γ |) |) in
+                                    let γ := M.deref (| M.read (| γ |) |) in
                                     let γ2_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                     let γ2_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                     let kk := M.alloc (| Ty.apply (Ty.path "&") [] [ K ], γ2_0 |) in
@@ -556,7 +556,7 @@ Module linear_map.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ := M.read (| γ |) in
+                                (let γ := M.deref (| M.read (| γ |) |) in
                                 let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                 let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                 let v := M.alloc (| Ty.apply (Ty.path "&mut") [] [ V ], γ1_1 |) in
@@ -812,7 +812,7 @@ Module linear_map.
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let γ := M.read (| γ |) in
+                                        (let γ := M.deref (| M.read (| γ |) |) in
                                         let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                         let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                         let kk :=
@@ -1089,7 +1089,7 @@ Module linear_map.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ := M.read (| γ |) in
+                                (let γ := M.deref (| M.read (| γ |) |) in
                                 let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                 let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                 let v := M.alloc (| Ty.apply (Ty.path "&") [] [ V ], γ1_1 |) in

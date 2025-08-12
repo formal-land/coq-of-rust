@@ -768,17 +768,17 @@ Module Impl_core_clone_Clone_for_mother_Outline.
           [
             fun γ =>
               ltac:(M.monadic
-                (let γ := M.read (| γ |) in
+                (let γ := M.deref (| M.read (| γ |) |) in
                 let _ := M.is_struct_tuple (| γ, "mother::Outline::NoWinner" |) in
                 Value.StructTuple "mother::Outline::NoWinner" [] [] []));
             fun γ =>
               ltac:(M.monadic
-                (let γ := M.read (| γ |) in
+                (let γ := M.deref (| M.read (| γ |) |) in
                 let _ := M.is_struct_tuple (| γ, "mother::Outline::WinnerDetected" |) in
                 Value.StructTuple "mother::Outline::WinnerDetected" [] [] []));
             fun γ =>
               ltac:(M.monadic
-                (let γ := M.read (| γ |) in
+                (let γ := M.deref (| M.read (| γ |) |) in
                 let _ := M.is_struct_tuple (| γ, "mother::Outline::PayoutCompleted" |) in
                 Value.StructTuple "mother::Outline::PayoutCompleted" [] [] []))
           ]
@@ -899,7 +899,7 @@ Module Impl_core_cmp_PartialEq_mother_Status_for_mother_Status.
                       ltac:(M.monadic
                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                        let γ0_0 := M.read (| γ0_0 |) in
+                        let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                         let γ2_0 :=
                           M.SubPointer.get_struct_tuple_field (|
                             γ0_0,
@@ -908,7 +908,7 @@ Module Impl_core_cmp_PartialEq_mother_Status_for_mother_Status.
                           |) in
                         let __self_0 :=
                           M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], γ2_0 |) in
-                        let γ0_1 := M.read (| γ0_1 |) in
+                        let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                         let γ2_0 :=
                           M.SubPointer.get_struct_tuple_field (|
                             γ0_1,
@@ -937,7 +937,7 @@ Module Impl_core_cmp_PartialEq_mother_Status_for_mother_Status.
                       ltac:(M.monadic
                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                        let γ0_0 := M.read (| γ0_0 |) in
+                        let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                         let γ2_0 :=
                           M.SubPointer.get_struct_tuple_field (|
                             γ0_0,
@@ -949,7 +949,7 @@ Module Impl_core_cmp_PartialEq_mother_Status_for_mother_Status.
                             Ty.apply (Ty.path "&") [] [ Ty.path "mother::Outline" ],
                             γ2_0
                           |) in
-                        let γ0_1 := M.read (| γ0_1 |) in
+                        let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                         let γ2_0 :=
                           M.SubPointer.get_struct_tuple_field (|
                             γ0_1,
@@ -981,7 +981,7 @@ Module Impl_core_cmp_PartialEq_mother_Status_for_mother_Status.
                       ltac:(M.monadic
                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                        let γ0_0 := M.read (| γ0_0 |) in
+                        let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                         let γ2_0 :=
                           M.SubPointer.get_struct_tuple_field (|
                             γ0_0,
@@ -990,7 +990,7 @@ Module Impl_core_cmp_PartialEq_mother_Status_for_mother_Status.
                           |) in
                         let __self_0 :=
                           M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], γ2_0 |) in
-                        let γ0_1 := M.read (| γ0_1 |) in
+                        let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                         let γ2_0 :=
                           M.SubPointer.get_struct_tuple_field (|
                             γ0_1,
@@ -1087,17 +1087,17 @@ Module Impl_core_clone_Clone_for_mother_Status.
           [
             fun γ =>
               ltac:(M.monadic
-                (let γ := M.read (| γ |) in
+                (let γ := M.deref (| M.read (| γ |) |) in
                 let _ := M.is_struct_tuple (| γ, "mother::Status::NotStarted" |) in
                 Value.StructTuple "mother::Status::NotStarted" [] [] []));
             fun γ =>
               ltac:(M.monadic
-                (let γ := M.read (| γ |) in
+                (let γ := M.deref (| M.read (| γ |) |) in
                 let _ := M.is_struct_tuple (| γ, "mother::Status::OpeningPeriod" |) in
                 Value.StructTuple "mother::Status::OpeningPeriod" [] [] []));
             fun γ =>
               ltac:(M.monadic
-                (let γ := M.read (| γ |) in
+                (let γ := M.deref (| M.read (| γ |) |) in
                 let γ1_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "mother::Status::EndingPeriod", 0 |) in
                 let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], γ1_0 |) in
@@ -1122,7 +1122,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
                   ]));
             fun γ =>
               ltac:(M.monadic
-                (let γ := M.read (| γ |) in
+                (let γ := M.deref (| M.read (| γ |) |) in
                 let γ1_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "mother::Status::Ended", 0 |) in
                 let __self_0 :=
@@ -1148,7 +1148,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
                   ]));
             fun γ =>
               ltac:(M.monadic
-                (let γ := M.read (| γ |) in
+                (let γ := M.deref (| M.read (| γ |) |) in
                 let γ1_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "mother::Status::RfDelay", 0 |) in
                 let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], γ1_0 |) in
@@ -2009,7 +2009,7 @@ Module Impl_core_cmp_PartialEq_mother_Failure_for_mother_Failure.
                       ltac:(M.monadic
                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                        let γ0_0 := M.read (| γ0_0 |) in
+                        let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                         let γ2_0 :=
                           M.SubPointer.get_struct_tuple_field (|
                             γ0_0,
@@ -2021,7 +2021,7 @@ Module Impl_core_cmp_PartialEq_mother_Failure_for_mother_Failure.
                             Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
                             γ2_0
                           |) in
-                        let γ0_1 := M.read (| γ0_1 |) in
+                        let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                         let γ2_0 :=
                           M.SubPointer.get_struct_tuple_field (|
                             γ0_1,

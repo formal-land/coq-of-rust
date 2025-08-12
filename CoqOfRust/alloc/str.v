@@ -7357,7 +7357,7 @@ Module str.
                                           "core::str::pattern::Utf8Pattern::StringPattern",
                                           0
                                         |) in
-                                      let γ1_0 := M.read (| γ1_0 |) in
+                                      let γ1_0 := M.deref (| M.read (| γ1_0 |) |) in
                                       let γ3_0 := M.SubPointer.get_slice_index (| γ1_0, 0 |) in
                                       let from_byte :=
                                         M.alloc (|
@@ -7504,7 +7504,7 @@ Module str.
                                         ]
                                       |)
                                     |) in
-                                  let γ := M.read (| γ |) in
+                                  let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                                   let to_byte :=
                                     M.alloc (|

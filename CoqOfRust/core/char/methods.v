@@ -2504,7 +2504,7 @@ Module char.
                               M.read (| γ0_0 |),
                               Value.Integer IntegerKind.Usize 1
                             |) in
-                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                           let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
                           let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 1, 0 |) in
                           let a :=
@@ -2526,7 +2526,7 @@ Module char.
                               M.read (| γ0_0 |),
                               Value.Integer IntegerKind.Usize 2
                             |) in
-                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                           let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
                           let γ2_1 := M.SubPointer.get_slice_index (| γ0_1, 1 |) in
                           let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 2, 0 |) in
@@ -2593,7 +2593,7 @@ Module char.
                               M.read (| γ0_0 |),
                               Value.Integer IntegerKind.Usize 3
                             |) in
-                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                           let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
                           let γ2_1 := M.SubPointer.get_slice_index (| γ0_1, 1 |) in
                           let γ2_2 := M.SubPointer.get_slice_index (| γ0_1, 2 |) in
@@ -2690,7 +2690,7 @@ Module char.
                               M.read (| γ0_0 |),
                               Value.Integer IntegerKind.Usize 4
                             |) in
-                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                           let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
                           let γ2_1 := M.SubPointer.get_slice_index (| γ0_1, 1 |) in
                           let γ2_2 := M.SubPointer.get_slice_index (| γ0_1, 2 |) in
@@ -2960,7 +2960,7 @@ Module char.
                               M.read (| γ0_0 |),
                               Value.Integer IntegerKind.Usize 1
                             |) in
-                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                           let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
                           let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 1, 0 |) in
                           let a :=
@@ -2982,7 +2982,7 @@ Module char.
                               M.read (| γ0_0 |),
                               Value.Integer IntegerKind.Usize 2
                             |) in
-                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                           let γ2_0 := M.SubPointer.get_slice_index (| γ0_1, 0 |) in
                           let γ2_1 := M.SubPointer.get_slice_index (| γ0_1, 1 |) in
                           let γ2_rest := M.SubPointer.get_slice_rest (| γ0_1, 2, 0 |) in

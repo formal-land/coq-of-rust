@@ -2995,9 +2995,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                 M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                               let γ1_1 :=
                                                 M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                              let γ1_0 := M.read (| γ1_0 |) in
+                                              let γ1_0 := M.deref (| M.read (| γ1_0 |) |) in
                                               let id := M.copy (| Ty.path "u128", γ1_0 |) in
-                                              let γ1_1 := M.read (| γ1_1 |) in
+                                              let γ1_1 := M.deref (| M.read (| γ1_1 |) |) in
                                               let v := M.copy (| Ty.path "u128", γ1_1 |) in
                                               M.read (|
                                                 let~ balance : Ty.path "u128" :=
@@ -3242,9 +3242,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                 M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                               let γ1_1 :=
                                                 M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                              let γ1_0 := M.read (| γ1_0 |) in
+                                              let γ1_0 := M.deref (| M.read (| γ1_0 |) |) in
                                               let id := M.copy (| Ty.path "u128", γ1_0 |) in
-                                              let γ1_1 := M.read (| γ1_1 |) in
+                                              let γ1_1 := M.deref (| M.read (| γ1_1 |) |) in
                                               let v := M.copy (| Ty.path "u128", γ1_1 |) in
                                               M.read (|
                                                 let~ _ : Ty.tuple [] :=

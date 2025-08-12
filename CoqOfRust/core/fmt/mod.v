@@ -90,17 +90,17 @@ Module fmt.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ := M.is_struct_tuple (| γ, "core::fmt::Alignment::Left" |) in
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Left" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ := M.is_struct_tuple (| γ, "core::fmt::Alignment::Right" |) in
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Right" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ := M.is_struct_tuple (| γ, "core::fmt::Alignment::Center" |) in
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Center" |) |) |)))
                 ]
@@ -10711,8 +10711,8 @@ Module fmt.
                 ltac:(M.monadic
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let γ0_0 := M.read (| γ0_0 |) in
-                  let γ0_1 := M.read (| γ0_1 |) in
+                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
+                  let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                   Value.StructTuple
                     "core::option::Option::Some"
                     []
@@ -10722,14 +10722,14 @@ Module fmt.
                 ltac:(M.monadic
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                   let γ2_0 := M.SubPointer.get_slice_index (| γ0_0, 0 |) in
                   let s :=
                     M.alloc (|
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                       γ2_0
                     |) in
-                  let γ0_1 := M.read (| γ0_1 |) in
+                  let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                   Value.StructTuple
                     "core::option::Option::Some"
                     []
@@ -15122,7 +15122,8 @@ Module fmt.
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let γ := M.read (| γ |) in
+                                                            (let γ :=
+                                                              M.deref (| M.read (| γ |) |) in
                                                             let b := M.copy (| Ty.path "u8", γ |) in
                                                             M.call_closure (|
                                                               Ty.path "bool",

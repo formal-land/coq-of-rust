@@ -5784,7 +5784,9 @@ Module air_builders.
                                                                             fun γ =>
                                                                               ltac:(M.monadic
                                                                                 (let γ :=
-                                                                                  M.read (| γ |) in
+                                                                                  M.deref (|
+                                                                                    M.read (| γ |)
+                                                                                  |) in
                                                                                 let γ1_0 :=
                                                                                   M.SubPointer.get_tuple_field (|
                                                                                     γ,
@@ -14014,8 +14016,10 @@ Module air_builders.
                                                                                                         ltac:(M.monadic
                                                                                                           (let
                                                                                                                 γ :=
-                                                                                                            M.read (|
-                                                                                                              γ
+                                                                                                            M.deref (|
+                                                                                                              M.read (|
+                                                                                                                γ
+                                                                                                              |)
                                                                                                             |) in
                                                                                                           let
                                                                                                                 γ1_0 :=

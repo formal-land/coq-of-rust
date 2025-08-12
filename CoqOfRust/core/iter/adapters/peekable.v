@@ -2886,7 +2886,7 @@ Module iter.
                             ],
                           γ0_0
                         |) in
-                      let γ0_0 := M.read (| γ0_0 |) in
+                      let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                       let γ3_0 :=
                         M.SubPointer.get_struct_tuple_field (|
                           γ0_0,
@@ -3039,7 +3039,7 @@ Module iter.
                           "core::option::Option::Some",
                           0
                         |) in
-                      let γ0_0 := M.read (| γ0_0 |) in
+                      let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                       let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                       Value.StructTuple
                         "core::option::Option::None"

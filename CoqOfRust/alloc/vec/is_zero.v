@@ -1333,7 +1333,7 @@ Module vec.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
@@ -1548,7 +1548,7 @@ Module vec.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
@@ -1740,7 +1740,7 @@ Module vec.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
@@ -1909,7 +1909,7 @@ Module vec.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
@@ -2051,7 +2051,7 @@ Module vec.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
@@ -2163,7 +2163,7 @@ Module vec.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
@@ -2256,7 +2256,7 @@ Module vec.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let value_G := M.alloc (| Ty.apply (Ty.path "&") [] [ G ], γ1_0 |) in
@@ -2331,7 +2331,7 @@ Module vec.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let value_H := M.alloc (| Ty.apply (Ty.path "&") [] [ H ], γ1_0 |) in
                     M.call_closure (|

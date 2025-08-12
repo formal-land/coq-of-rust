@@ -1192,8 +1192,10 @@ Module str.
                                                                                                                                       |) in
                                                                                                                                     let
                                                                                                                                           γ0_0 :=
-                                                                                                                                      M.read (|
-                                                                                                                                        γ0_0
+                                                                                                                                      M.deref (|
+                                                                                                                                        M.read (|
+                                                                                                                                          γ0_0
+                                                                                                                                        |)
                                                                                                                                       |) in
                                                                                                                                     let
                                                                                                                                           word :=
@@ -1529,8 +1531,10 @@ Module str.
                                                                                                                       |) in
                                                                                                                     let
                                                                                                                           γ0_0 :=
-                                                                                                                      M.read (|
-                                                                                                                        γ0_0
+                                                                                                                      M.deref (|
+                                                                                                                        M.read (|
+                                                                                                                          γ0_0
+                                                                                                                        |)
                                                                                                                       |) in
                                                                                                                     let
                                                                                                                           word :=
@@ -1964,8 +1968,8 @@ Module str.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let γ := M.read (| γ |) in
-                                    let γ := M.read (| γ |) in
+                                    (let γ := M.deref (| M.read (| γ |) |) in
+                                    let γ := M.deref (| M.read (| γ |) |) in
                                     let byte := M.copy (| Ty.path "u8", γ |) in
                                     UnOp.not (|
                                       M.call_closure (|

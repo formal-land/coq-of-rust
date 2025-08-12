@@ -10579,7 +10579,7 @@ Module vec.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let item :=
                     M.copy (|
                       Ty.path
@@ -10681,7 +10681,7 @@ Module vec.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let item :=
                     M.copy (|
                       Ty.path

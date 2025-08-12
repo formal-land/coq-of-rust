@@ -90,7 +90,7 @@ Module num.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let γ := M.read (| γ |) in
+                                    (let γ := M.deref (| M.read (| γ |) |) in
                                     let c := M.copy (| Ty.path "u8", γ |) in
                                     M.call_closure (|
                                       Ty.path "bool",
@@ -3493,12 +3493,12 @@ Module num.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ := M.is_struct_tuple (| γ, "core::num::flt2dec::Sign::Minus" |) in
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Minus" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ := M.is_struct_tuple (| γ, "core::num::flt2dec::Sign::MinusPlus" |) in
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MinusPlus" |) |) |)))
                   ]

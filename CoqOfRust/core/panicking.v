@@ -2258,17 +2258,17 @@ Module panicking.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Eq" |) in
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eq" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Ne" |) in
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ne" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Match" |) in
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Match" |) |) |)))
                 ]

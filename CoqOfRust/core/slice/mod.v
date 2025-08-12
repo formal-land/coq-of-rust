@@ -534,7 +534,7 @@ Module slice.
               fun γ =>
                 ltac:(M.monadic
                   (let γ := self in
-                  let γ := M.read (| γ |) in
+                  let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                   let γ1_rest := M.SubPointer.get_slice_rest (| γ, 1, 0 |) in
                   let first := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
@@ -583,7 +583,7 @@ Module slice.
               fun γ =>
                 ltac:(M.monadic
                   (let γ := self in
-                  let γ := M.read (| γ |) in
+                  let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                   let γ1_rest := M.SubPointer.get_slice_rest (| γ, 1, 0 |) in
                   let first := M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], γ1_0 |) in
@@ -638,7 +638,7 @@ Module slice.
               fun γ =>
                 ltac:(M.monadic
                   (let γ := self in
-                  let γ := M.read (| γ |) in
+                  let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                   let γ1_rest := M.SubPointer.get_slice_rest (| γ, 1, 0 |) in
                   let first := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
@@ -724,7 +724,7 @@ Module slice.
               fun γ =>
                 ltac:(M.monadic
                   (let γ := self in
-                  let γ := M.read (| γ |) in
+                  let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                   let γ1_rest := M.SubPointer.get_slice_rest (| γ, 1, 0 |) in
                   let first := M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], γ1_0 |) in
@@ -802,7 +802,7 @@ Module slice.
               fun γ =>
                 ltac:(M.monadic
                   (let γ := self in
-                  let γ := M.read (| γ |) in
+                  let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_rest := M.SubPointer.get_slice_rest (| γ, 0, 1 |) in
                   let γ1_rev0 := M.SubPointer.get_slice_rev_index (| γ, 0 |) in
                   let init :=
@@ -888,7 +888,7 @@ Module slice.
               fun γ =>
                 ltac:(M.monadic
                   (let γ := self in
-                  let γ := M.read (| γ |) in
+                  let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_rest := M.SubPointer.get_slice_rest (| γ, 0, 1 |) in
                   let γ1_rev0 := M.SubPointer.get_slice_rev_index (| γ, 0 |) in
                   let init :=
@@ -957,7 +957,7 @@ Module slice.
               fun γ =>
                 ltac:(M.monadic
                   (let γ := self in
-                  let γ := M.read (| γ |) in
+                  let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_rest := M.SubPointer.get_slice_rest (| γ, 0, 1 |) in
                   let γ1_rev0 := M.SubPointer.get_slice_rev_index (| γ, 0 |) in
                   let last := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_rev0 |) in
@@ -1006,7 +1006,7 @@ Module slice.
               fun γ =>
                 ltac:(M.monadic
                   (let γ := self in
-                  let γ := M.read (| γ |) in
+                  let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_rest := M.SubPointer.get_slice_rest (| γ, 0, 1 |) in
                   let γ1_rev0 := M.SubPointer.get_slice_rev_index (| γ, 0 |) in
                   let last := M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], γ1_rev0 |) in
@@ -14627,7 +14627,7 @@ Module slice.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ := M.read (| γ |) in
+                                (let γ := M.deref (| M.read (| γ |) |) in
                                 let γ1_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                                 let γ1_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                                 let a := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in

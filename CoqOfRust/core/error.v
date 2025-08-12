@@ -1313,7 +1313,7 @@ Module error.
                                 [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ],
                               γ0_0
                             |) in
-                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                           let γ3_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ0_0,
@@ -1446,7 +1446,7 @@ Module error.
                                 [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ],
                               γ0_0
                             |) in
-                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                           let γ3_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ0_0,
@@ -1653,7 +1653,7 @@ Module error.
                 ltac:(M.monadic
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                   let γ2_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ0_0,

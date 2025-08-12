@@ -2900,7 +2900,7 @@ Module signed.
                                 "core::option::Option::Some",
                                 0
                               |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                             let _ :=
                               is_constant_or_break_match (|
                                 M.read (| γ0_0 |),
@@ -2955,7 +2955,7 @@ Module signed.
                                 "core::option::Option::Some",
                                 0
                               |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                             let _ :=
                               is_constant_or_break_match (|
                                 M.read (| γ0_0 |),
@@ -3531,7 +3531,7 @@ Module signed.
                                 "core::option::Option::Some",
                                 0
                               |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                             let _ :=
                               is_constant_or_break_match (|
                                 M.read (| γ0_0 |),
@@ -3586,7 +3586,7 @@ Module signed.
                                 "core::option::Option::Some",
                                 0
                               |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                             let _ :=
                               is_constant_or_break_match (|
                                 M.read (| γ0_0 |),

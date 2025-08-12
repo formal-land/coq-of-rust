@@ -383,13 +383,13 @@ Module num.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (| γ, "core::num::dec2flt::FloatErrorKind::Empty" |) in
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Empty" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -431,13 +431,13 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "core::num::dec2flt::FloatErrorKind::Empty" |) in
                     Value.StructTuple "core::num::dec2flt::FloatErrorKind::Empty" [] [] []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "core::num::dec2flt::FloatErrorKind::Invalid" |) in
                     Value.StructTuple "core::num::dec2flt::FloatErrorKind::Invalid" [] [] []))
@@ -900,7 +900,7 @@ Module num.
                               "core::option::Option::Some",
                               0
                             |) in
-                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                           let c := M.copy (| Ty.path "u8", γ0_0 |) in
                           M.read (| c |)));
                       fun γ =>

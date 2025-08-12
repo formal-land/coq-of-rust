@@ -98,7 +98,7 @@ End ChunksExact.
 Module Impl_ChunksExact.
   Definition Self (T : Set) `{Link T} : Set :=
     ChunksExact.t T.
-    
+
   (* pub fn remainder(&self) -> &'a [T] *)
   Instance run_remainder
     (T : Set) `{Link T}

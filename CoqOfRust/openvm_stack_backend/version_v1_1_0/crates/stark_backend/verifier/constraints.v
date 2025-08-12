@@ -2447,7 +2447,9 @@ Module verifier.
                                                                       fun γ =>
                                                                         ltac:(M.monadic
                                                                           (let γ :=
-                                                                            M.read (| γ |) in
+                                                                            M.deref (|
+                                                                              M.read (| γ |)
+                                                                            |) in
                                                                           let γ1_0 :=
                                                                             M.SubPointer.get_tuple_field (|
                                                                               γ,
@@ -3709,7 +3711,9 @@ Module verifier.
                                                                           γ0_0
                                                                         |) in
                                                                       let γ0_1 :=
-                                                                        M.read (| γ0_1 |) in
+                                                                        M.deref (|
+                                                                          M.read (| γ0_1 |)
+                                                                        |) in
                                                                       let c :=
                                                                         M.copy (|
                                                                           Ty.associated_in_trait
@@ -4574,8 +4578,10 @@ Module verifier.
                                                                                             γ0_0
                                                                                           |) in
                                                                                         let γ0_1 :=
-                                                                                          M.read (|
-                                                                                            γ0_1
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              γ0_1
+                                                                                            |)
                                                                                           |) in
                                                                                         let c :=
                                                                                           M.copy (|
@@ -8928,7 +8934,7 @@ Module verifier.
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
-                                                        (let γ := M.read (| γ |) in
+                                                        (let γ := M.deref (| M.read (| γ |) |) in
                                                         let γ1_0 :=
                                                           M.SubPointer.get_tuple_field (| γ, 0 |) in
                                                         let γ1_1 :=

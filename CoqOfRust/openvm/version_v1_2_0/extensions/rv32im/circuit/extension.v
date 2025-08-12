@@ -327,7 +327,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -365,7 +365,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -400,7 +400,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -471,7 +471,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -509,7 +509,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -544,7 +544,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -615,7 +615,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -653,7 +653,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -688,7 +688,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -754,7 +754,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -792,7 +792,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -827,7 +827,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -969,7 +969,7 @@ Module extension.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -1040,7 +1040,7 @@ Module extension.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -1084,7 +1084,7 @@ Module extension.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -1483,7 +1483,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -1535,7 +1535,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -1584,7 +1584,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -1670,7 +1670,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -1711,7 +1711,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -1749,7 +1749,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -1958,7 +1958,7 @@ Module extension.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -2029,7 +2029,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -2100,7 +2100,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -2235,7 +2235,7 @@ Module extension.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -2306,7 +2306,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -2377,7 +2377,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -2538,7 +2538,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -2576,7 +2576,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -2614,7 +2614,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -2685,7 +2685,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -2723,7 +2723,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -2761,7 +2761,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -2832,7 +2832,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -2870,7 +2870,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -2908,7 +2908,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -2974,7 +2974,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -3012,7 +3012,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -3050,7 +3050,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -3192,7 +3192,7 @@ Module extension.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -3263,7 +3263,7 @@ Module extension.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -3307,7 +3307,7 @@ Module extension.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -3802,7 +3802,7 @@ Module extension.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -3873,7 +3873,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -3944,7 +3944,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -4079,7 +4079,7 @@ Module extension.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -4150,7 +4150,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -4221,7 +4221,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -8470,7 +8470,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -8508,7 +8508,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -8576,7 +8576,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -8614,7 +8614,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -8682,7 +8682,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -8720,7 +8720,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -8783,7 +8783,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -8821,7 +8821,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -8960,7 +8960,7 @@ Module extension.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -9033,7 +9033,7 @@ Module extension.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -9358,7 +9358,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -9410,7 +9410,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -9493,7 +9493,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -9534,7 +9534,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -9706,7 +9706,7 @@ Module extension.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -9777,7 +9777,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -9912,7 +9912,7 @@ Module extension.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -9983,7 +9983,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -10137,7 +10137,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -10175,7 +10175,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -10246,7 +10246,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -10284,7 +10284,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -10355,7 +10355,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -10393,7 +10393,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -10459,7 +10459,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -10497,7 +10497,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -10639,7 +10639,7 @@ Module extension.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -10712,7 +10712,7 @@ Module extension.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -11099,7 +11099,7 @@ Module extension.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -11170,7 +11170,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -11305,7 +11305,7 @@ Module extension.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -11376,7 +11376,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -13293,7 +13293,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -13355,7 +13355,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -13417,7 +13417,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -13479,7 +13479,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -13540,7 +13540,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -13605,7 +13605,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -13666,7 +13666,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -13731,7 +13731,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -13785,7 +13785,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -13838,7 +13838,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -13920,7 +13920,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -13982,7 +13982,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -14044,7 +14044,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -14106,7 +14106,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -14167,7 +14167,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -14232,7 +14232,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -14293,7 +14293,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -14358,7 +14358,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -14412,7 +14412,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -14465,7 +14465,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -14547,7 +14547,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -14609,7 +14609,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -14671,7 +14671,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -14733,7 +14733,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -14794,7 +14794,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -14859,7 +14859,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -14920,7 +14920,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -14985,7 +14985,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -15039,7 +15039,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -15092,7 +15092,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -15169,7 +15169,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -15231,7 +15231,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -15293,7 +15293,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -15355,7 +15355,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -15416,7 +15416,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -15481,7 +15481,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -15542,7 +15542,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -15607,7 +15607,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -15661,7 +15661,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -15714,7 +15714,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -15867,7 +15867,7 @@ Module extension.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -15968,7 +15968,7 @@ Module extension.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -16042,7 +16042,7 @@ Module extension.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -16115,7 +16115,7 @@ Module extension.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -16183,7 +16183,7 @@ Module extension.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -16257,7 +16257,7 @@ Module extension.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -16325,7 +16325,7 @@ Module extension.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -16399,7 +16399,7 @@ Module extension.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -16460,7 +16460,7 @@ Module extension.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -16520,7 +16520,7 @@ Module extension.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -17857,7 +17857,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -17933,7 +17933,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -18009,7 +18009,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -18085,7 +18085,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -18160,7 +18160,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -18239,7 +18239,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -18314,7 +18314,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -18393,7 +18393,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -18461,7 +18461,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -18528,7 +18528,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -18625,7 +18625,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -18690,7 +18690,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -18755,7 +18755,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -18820,7 +18820,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -18884,7 +18884,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -18952,7 +18952,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -19016,7 +19016,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -19084,7 +19084,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -19141,7 +19141,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -19197,7 +19197,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -20008,7 +20008,7 @@ Module extension.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -20085,7 +20085,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -20162,7 +20162,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -20239,7 +20239,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -20310,7 +20310,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -20387,7 +20387,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -20458,7 +20458,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -20535,7 +20535,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -20600,7 +20600,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -20665,7 +20665,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -20789,7 +20789,7 @@ Module extension.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -20870,7 +20870,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -20951,7 +20951,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -21032,7 +21032,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -21107,7 +21107,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -21188,7 +21188,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -21263,7 +21263,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -21344,7 +21344,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -21413,7 +21413,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -21482,7 +21482,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -21700,7 +21700,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -21762,7 +21762,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -21824,7 +21824,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -21914,7 +21914,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -21976,7 +21976,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -22038,7 +22038,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -22128,7 +22128,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -22190,7 +22190,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -22252,7 +22252,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -22337,7 +22337,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -22399,7 +22399,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -22461,7 +22461,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -22622,7 +22622,7 @@ Module extension.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -22723,7 +22723,7 @@ Module extension.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -22795,7 +22795,7 @@ Module extension.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -23350,7 +23350,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -23426,7 +23426,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -23502,7 +23502,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -23607,7 +23607,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -23672,7 +23672,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -23737,7 +23737,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -24083,7 +24083,7 @@ Module extension.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -24160,7 +24160,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -24237,7 +24237,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -24373,7 +24373,7 @@ Module extension.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -24454,7 +24454,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -24535,7 +24535,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -24685,7 +24685,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -24751,7 +24751,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -24817,7 +24817,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -24878,7 +24878,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -25015,7 +25015,7 @@ Module extension.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -25300,7 +25300,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -25381,7 +25381,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -25517,7 +25517,7 @@ Module extension.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -25623,7 +25623,7 @@ Module extension.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -25835,7 +25835,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -25875,7 +25875,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -25934,7 +25934,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -25974,7 +25974,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -26033,7 +26033,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -26073,7 +26073,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -26127,7 +26127,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -26167,7 +26167,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -26297,7 +26297,7 @@ Module extension.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -26370,7 +26370,7 @@ Module extension.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -26676,7 +26676,7 @@ Module extension.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -26723,7 +26723,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -26827,7 +26827,7 @@ Module extension.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -26878,7 +26878,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -27143,7 +27143,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -27183,7 +27183,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -27223,7 +27223,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -27282,7 +27282,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -27322,7 +27322,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -27362,7 +27362,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -27421,7 +27421,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -27461,7 +27461,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -27501,7 +27501,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -27555,7 +27555,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -27595,7 +27595,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -27635,7 +27635,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -27765,7 +27765,7 @@ Module extension.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -27838,7 +27838,7 @@ Module extension.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -27884,7 +27884,7 @@ Module extension.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -28268,7 +28268,7 @@ Module extension.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -28315,7 +28315,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -28362,7 +28362,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -28466,7 +28466,7 @@ Module extension.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -28517,7 +28517,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -28568,7 +28568,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -28778,7 +28778,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -28818,7 +28818,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -28877,7 +28877,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -28917,7 +28917,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -28976,7 +28976,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -29016,7 +29016,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -29070,7 +29070,7 @@ Module extension.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -29110,7 +29110,7 @@ Module extension.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -29240,7 +29240,7 @@ Module extension.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -29313,7 +29313,7 @@ Module extension.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -29619,7 +29619,7 @@ Module extension.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -29666,7 +29666,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -29770,7 +29770,7 @@ Module extension.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -29821,7 +29821,7 @@ Module extension.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -30645,7 +30645,7 @@ Module extension.
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let γ0_0 := M.read (| γ0_0 |) in
+                                      let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                       let chip :=
                                         M.copy (|
                                           Ty.apply
@@ -37079,7 +37079,7 @@ Module extension.
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let γ0_0 := M.read (| γ0_0 |) in
+                                      let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                       let chip :=
                                         M.copy (|
                                           Ty.apply
@@ -40006,7 +40006,7 @@ Module extension.
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let γ0_0 := M.read (| γ0_0 |) in
+                                      let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                       let chip :=
                                         M.copy (|
                                           Ty.apply
