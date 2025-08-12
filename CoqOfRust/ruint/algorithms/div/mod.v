@@ -133,7 +133,7 @@ Module algorithms.
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let γ := M.read (| γ |) in
+                                            (let γ := M.deref (| M.read (| γ |) |) in
                                             let x := M.copy (| Ty.path "u64", γ |) in
                                             M.call_closure (|
                                               Ty.path "bool",
@@ -473,7 +473,7 @@ Module algorithms.
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let γ := M.read (| γ |) in
+                                                    (let γ := M.deref (| M.read (| γ |) |) in
                                                     let n := M.copy (| Ty.path "u64", γ |) in
                                                     M.call_closure (|
                                                       Ty.path "bool",

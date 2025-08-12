@@ -3089,7 +3089,8 @@ Module jal_lui.
                                                             |) in
                                                           let i :=
                                                             M.copy (| Ty.path "usize", γ0_0 |) in
-                                                          let γ0_1 := M.read (| γ0_1 |) in
+                                                          let γ0_1 :=
+                                                            M.deref (| M.read (| γ0_1 |) |) in
                                                           let val :=
                                                             M.copy (|
                                                               Ty.associated_in_trait

@@ -4705,7 +4705,7 @@ Module air.
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
-                                                          (let γ := M.read (| γ |) in
+                                                          (let γ := M.deref (| M.read (| γ |) |) in
                                                           let bool :=
                                                             M.copy (|
                                                               Ty.associated_in_trait
@@ -8281,7 +8281,7 @@ Module air.
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
-                                                          (let γ := M.read (| γ |) in
+                                                          (let γ := M.deref (| M.read (| γ |) |) in
                                                           let bit :=
                                                             M.copy (|
                                                               Ty.associated_in_trait

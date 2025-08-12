@@ -2018,8 +2018,10 @@ Module control_flow_graph.
                                                                                     0
                                                                                   |) in
                                                                                 let γ0_0 :=
-                                                                                  M.read (|
-                                                                                    γ0_0
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      γ0_0
+                                                                                    |)
                                                                                   |) in
                                                                                 let _ :=
                                                                                   M.is_struct_tuple (|
@@ -2178,8 +2180,10 @@ Module control_flow_graph.
                                                                                     0
                                                                                   |) in
                                                                                 let γ0_0 :=
-                                                                                  M.read (|
-                                                                                    γ0_0
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      γ0_0
+                                                                                    |)
                                                                                   |) in
                                                                                 let _ :=
                                                                                   M.is_struct_tuple (|
@@ -2267,7 +2271,7 @@ Module control_flow_graph.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let γ := M.read (| γ |) in
+                                              (let γ := M.deref (| M.read (| γ |) |) in
                                               let _ :=
                                                 M.is_struct_tuple (|
                                                   γ,
@@ -2276,7 +2280,7 @@ Module control_flow_graph.
                                               M.never_to_any (| M.read (| M.continue (||) |) |)));
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let γ := M.read (| γ |) in
+                                              (let γ := M.deref (| M.read (| γ |) |) in
                                               let _ :=
                                                 M.is_struct_tuple (|
                                                   γ,

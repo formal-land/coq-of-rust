@@ -2733,7 +2733,7 @@ Module string.
                           let γ1_0 := M.SubPointer.get_tuple_field (| γ0_1, 0 |) in
                           let γ1_1 := M.SubPointer.get_tuple_field (| γ0_1, 1 |) in
                           let γ1_2 := M.SubPointer.get_tuple_field (| γ0_1, 2 |) in
-                          let γ1_0 := M.read (| γ1_0 |) in
+                          let γ1_0 := M.deref (| M.read (| γ1_0 |) |) in
                           let v :=
                             M.copy (|
                               Ty.apply
@@ -2742,7 +2742,7 @@ Module string.
                                 [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ],
                               γ1_1
                             |) in
-                          let γ1_2 := M.read (| γ1_2 |) in
+                          let γ1_2 := M.deref (| M.read (| γ1_2 |) |) in
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::result::Result")
@@ -3144,13 +3144,13 @@ Module string.
                   let γ1_0 := M.SubPointer.get_tuple_field (| γ0_1, 0 |) in
                   let γ1_1 := M.SubPointer.get_tuple_field (| γ0_1, 1 |) in
                   let γ1_2 := M.SubPointer.get_tuple_field (| γ0_1, 2 |) in
-                  let γ1_0 := M.read (| γ1_0 |) in
+                  let γ1_0 := M.deref (| M.read (| γ1_0 |) |) in
                   let v :=
                     M.copy (|
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ],
                       γ1_1
                     |) in
-                  let γ1_2 := M.read (| γ1_2 |) in
+                  let γ1_2 := M.deref (| M.read (| γ1_2 |) |) in
                   M.call_closure (|
                     Ty.path "alloc::string::String",
                     M.get_associated_function (|
@@ -3169,13 +3169,13 @@ Module string.
                   let γ1_0 := M.SubPointer.get_tuple_field (| γ0_1, 0 |) in
                   let γ1_1 := M.SubPointer.get_tuple_field (| γ0_1, 1 |) in
                   let γ1_2 := M.SubPointer.get_tuple_field (| γ0_1, 2 |) in
-                  let γ1_0 := M.read (| γ1_0 |) in
+                  let γ1_0 := M.deref (| M.read (| γ1_0 |) |) in
                   let v :=
                     M.copy (|
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ],
                       γ1_1
                     |) in
-                  let γ1_2 := M.read (| γ1_2 |) in
+                  let γ1_2 := M.deref (| M.read (| γ1_2 |) |) in
                   let γ3_0 := M.SubPointer.get_slice_index (| γ1_2, 0 |) in
                   let _remainder :=
                     M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], γ3_0 |) in
@@ -3948,7 +3948,7 @@ Module string.
                           let γ1_0 := M.SubPointer.get_tuple_field (| γ0_1, 0 |) in
                           let γ1_1 := M.SubPointer.get_tuple_field (| γ0_1, 1 |) in
                           let γ1_2 := M.SubPointer.get_tuple_field (| γ0_1, 2 |) in
-                          let γ1_0 := M.read (| γ1_0 |) in
+                          let γ1_0 := M.deref (| M.read (| γ1_0 |) |) in
                           let v :=
                             M.copy (|
                               Ty.apply
@@ -3957,7 +3957,7 @@ Module string.
                                 [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ],
                               γ1_1
                             |) in
-                          let γ1_2 := M.read (| γ1_2 |) in
+                          let γ1_2 := M.deref (| M.read (| γ1_2 |) |) in
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::result::Result")
@@ -4359,13 +4359,13 @@ Module string.
                   let γ1_0 := M.SubPointer.get_tuple_field (| γ0_1, 0 |) in
                   let γ1_1 := M.SubPointer.get_tuple_field (| γ0_1, 1 |) in
                   let γ1_2 := M.SubPointer.get_tuple_field (| γ0_1, 2 |) in
-                  let γ1_0 := M.read (| γ1_0 |) in
+                  let γ1_0 := M.deref (| M.read (| γ1_0 |) |) in
                   let v :=
                     M.copy (|
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ],
                       γ1_1
                     |) in
-                  let γ1_2 := M.read (| γ1_2 |) in
+                  let γ1_2 := M.deref (| M.read (| γ1_2 |) |) in
                   M.call_closure (|
                     Ty.path "alloc::string::String",
                     M.get_associated_function (|
@@ -4384,13 +4384,13 @@ Module string.
                   let γ1_0 := M.SubPointer.get_tuple_field (| γ0_1, 0 |) in
                   let γ1_1 := M.SubPointer.get_tuple_field (| γ0_1, 1 |) in
                   let γ1_2 := M.SubPointer.get_tuple_field (| γ0_1, 2 |) in
-                  let γ1_0 := M.read (| γ1_0 |) in
+                  let γ1_0 := M.deref (| M.read (| γ1_0 |) |) in
                   let v :=
                     M.copy (|
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ],
                       γ1_1
                     |) in
-                  let γ1_2 := M.read (| γ1_2 |) in
+                  let γ1_2 := M.deref (| M.read (| γ1_2 |) |) in
                   let γ3_0 := M.SubPointer.get_slice_index (| γ1_2, 0 |) in
                   let _remainder :=
                     M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], γ3_0 |) in
@@ -9288,7 +9288,7 @@ Module string.
                           "core::ops::range::Bound::Included",
                           0
                         |) in
-                      let γ0_0 := M.read (| γ0_0 |) in
+                      let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                       let n := M.copy (| Ty.path "usize", γ0_0 |) in
                       M.match_operator (|
                         Ty.tuple [],
@@ -9358,7 +9358,7 @@ Module string.
                           "core::ops::range::Bound::Excluded",
                           0
                         |) in
-                      let γ0_0 := M.read (| γ0_0 |) in
+                      let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                       let n := M.copy (| Ty.path "usize", γ0_0 |) in
                       M.match_operator (|
                         Ty.tuple [],
@@ -9464,7 +9464,7 @@ Module string.
                           "core::ops::range::Bound::Included",
                           0
                         |) in
-                      let γ0_0 := M.read (| γ0_0 |) in
+                      let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                       let n := M.copy (| Ty.path "usize", γ0_0 |) in
                       M.match_operator (|
                         Ty.tuple [],
@@ -9538,7 +9538,7 @@ Module string.
                           "core::ops::range::Bound::Excluded",
                           0
                         |) in
-                      let γ0_0 := M.read (| γ0_0 |) in
+                      let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                       let n := M.copy (| Ty.path "usize", γ0_0 |) in
                       M.match_operator (|
                         Ty.tuple [],
@@ -11549,7 +11549,7 @@ Module string.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let c :=
                     M.copy (|
                       Ty.path

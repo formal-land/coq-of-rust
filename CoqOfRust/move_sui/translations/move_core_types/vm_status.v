@@ -246,7 +246,7 @@ Module vm_status.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let _ :=
                     M.is_struct_tuple (|
                       γ,
@@ -255,7 +255,7 @@ Module vm_status.
                   Value.StructTuple "move_core_types::vm_status::StatusType::Validation" [] [] []));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let _ :=
                     M.is_struct_tuple (|
                       γ,
@@ -268,7 +268,7 @@ Module vm_status.
                     []));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let _ :=
                     M.is_struct_tuple (|
                       γ,
@@ -281,7 +281,7 @@ Module vm_status.
                     []));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let _ :=
                     M.is_struct_tuple (|
                       γ,
@@ -294,7 +294,7 @@ Module vm_status.
                     []));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let _ :=
                     M.is_struct_tuple (|
                       γ,
@@ -303,7 +303,7 @@ Module vm_status.
                   Value.StructTuple "move_core_types::vm_status::StatusType::Execution" [] [] []));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let _ :=
                     M.is_struct_tuple (| γ, "move_core_types::vm_status::StatusType::Unknown" |) in
                   Value.StructTuple "move_core_types::vm_status::StatusType::Unknown" [] [] []))
@@ -453,7 +453,7 @@ Module vm_status.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -462,7 +462,7 @@ Module vm_status.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Validation" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -471,7 +471,7 @@ Module vm_status.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Verification" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -483,7 +483,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -495,7 +495,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -504,7 +504,7 @@ Module vm_status.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Execution" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -1976,7 +1976,7 @@ Module vm_status.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -1988,7 +1988,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2000,7 +2000,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2012,7 +2012,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2024,7 +2024,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2036,7 +2036,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2048,7 +2048,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2060,7 +2060,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2072,7 +2072,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2084,7 +2084,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2096,7 +2096,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2108,7 +2108,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2120,7 +2120,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2132,7 +2132,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2144,7 +2144,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2156,7 +2156,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2168,7 +2168,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2180,7 +2180,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2192,7 +2192,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2204,7 +2204,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2216,7 +2216,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2228,7 +2228,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2240,7 +2240,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2252,7 +2252,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2261,7 +2261,7 @@ Module vm_status.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BAD_CHAIN_ID" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2273,7 +2273,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2285,7 +2285,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2297,7 +2297,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2309,7 +2309,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2321,7 +2321,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2333,7 +2333,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2345,7 +2345,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2357,7 +2357,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2369,7 +2369,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2381,7 +2381,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2393,7 +2393,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2405,7 +2405,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2417,7 +2417,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2429,7 +2429,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2441,7 +2441,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2453,7 +2453,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2465,7 +2465,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2477,7 +2477,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2486,7 +2486,7 @@ Module vm_status.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LOOKUP_FAILED" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2495,7 +2495,7 @@ Module vm_status.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TYPE_MISMATCH" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2507,7 +2507,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2519,7 +2519,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2531,7 +2531,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2543,7 +2543,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2555,7 +2555,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2567,7 +2567,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2579,7 +2579,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2591,7 +2591,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2603,7 +2603,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2615,7 +2615,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2627,7 +2627,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2639,7 +2639,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2651,7 +2651,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2663,7 +2663,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2675,7 +2675,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2687,7 +2687,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2699,7 +2699,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2711,7 +2711,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2723,7 +2723,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2735,7 +2735,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2747,7 +2747,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2759,7 +2759,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2771,7 +2771,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2783,7 +2783,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2795,7 +2795,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2807,7 +2807,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2819,7 +2819,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2831,7 +2831,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2843,7 +2843,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2855,7 +2855,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2867,7 +2867,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2879,7 +2879,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2891,7 +2891,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2903,7 +2903,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2915,7 +2915,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2927,7 +2927,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2939,7 +2939,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2951,7 +2951,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2963,7 +2963,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2975,7 +2975,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2987,7 +2987,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2999,7 +2999,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3011,7 +3011,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3023,7 +3023,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3035,7 +3035,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3047,7 +3047,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3059,7 +3059,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3071,7 +3071,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3083,7 +3083,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3095,7 +3095,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3107,7 +3107,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3119,7 +3119,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3131,7 +3131,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3143,7 +3143,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3155,7 +3155,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3164,7 +3164,7 @@ Module vm_status.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LINKER_ERROR" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3176,7 +3176,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3188,7 +3188,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3200,7 +3200,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3212,7 +3212,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3224,7 +3224,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3236,7 +3236,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3248,7 +3248,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3260,7 +3260,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3272,7 +3272,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3284,7 +3284,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3296,7 +3296,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3308,7 +3308,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3320,7 +3320,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3332,7 +3332,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3344,7 +3344,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3356,7 +3356,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3368,7 +3368,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3380,7 +3380,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3392,7 +3392,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3406,7 +3406,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3418,7 +3418,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3432,7 +3432,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3446,7 +3446,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3458,7 +3458,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3470,7 +3470,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3482,7 +3482,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3494,7 +3494,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3506,7 +3506,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3518,7 +3518,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3530,7 +3530,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3542,7 +3542,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3554,7 +3554,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3566,7 +3566,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3578,7 +3578,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3590,7 +3590,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3602,7 +3602,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3614,7 +3614,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3626,7 +3626,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3638,7 +3638,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3650,7 +3650,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3662,7 +3662,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3674,7 +3674,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3686,7 +3686,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3698,7 +3698,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3710,7 +3710,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3722,7 +3722,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3734,7 +3734,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3746,7 +3746,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3758,7 +3758,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3767,7 +3767,7 @@ Module vm_status.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PC_OVERFLOW" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3779,7 +3779,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3788,7 +3788,7 @@ Module vm_status.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "STORAGE_ERROR" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3800,7 +3800,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3812,7 +3812,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3821,7 +3821,7 @@ Module vm_status.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "UNREACHABLE" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3833,7 +3833,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3845,7 +3845,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3857,7 +3857,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3869,7 +3869,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3881,7 +3881,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3893,7 +3893,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3905,7 +3905,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3917,7 +3917,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3929,7 +3929,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3941,7 +3941,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3953,7 +3953,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3962,7 +3962,7 @@ Module vm_status.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MALFORMED" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3971,7 +3971,7 @@ Module vm_status.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BAD_MAGIC" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3983,7 +3983,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -3995,7 +3995,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4007,7 +4007,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4019,7 +4019,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4031,7 +4031,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4043,7 +4043,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4055,7 +4055,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4067,7 +4067,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4079,7 +4079,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4091,7 +4091,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4100,7 +4100,7 @@ Module vm_status.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BAD_U16" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4109,7 +4109,7 @@ Module vm_status.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BAD_U32" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4118,7 +4118,7 @@ Module vm_status.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BAD_U64" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4127,7 +4127,7 @@ Module vm_status.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BAD_U128" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4136,7 +4136,7 @@ Module vm_status.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BAD_U256" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4148,7 +4148,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4160,7 +4160,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4172,7 +4172,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4184,7 +4184,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4196,7 +4196,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4208,7 +4208,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4217,7 +4217,7 @@ Module vm_status.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EXECUTED" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4226,7 +4226,7 @@ Module vm_status.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OUT_OF_GAS" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4238,7 +4238,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4250,7 +4250,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4259,7 +4259,7 @@ Module vm_status.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MISSING_DATA" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4271,7 +4271,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4280,7 +4280,7 @@ Module vm_status.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ABORTED" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4292,7 +4292,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4304,7 +4304,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4316,7 +4316,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4328,7 +4328,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4340,7 +4340,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4352,7 +4352,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4364,7 +4364,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4376,7 +4376,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4388,7 +4388,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -4400,7 +4400,7 @@ Module vm_status.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,

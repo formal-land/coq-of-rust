@@ -883,7 +883,7 @@ Module num.
                           |) in
                         let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                         let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                        let γ1_0 := M.read (| γ1_0 |) in
+                        let γ1_0 := M.deref (| M.read (| γ1_0 |) |) in
                         let c := M.copy (| Ty.path "u8", γ1_0 |) in
                         let s_next :=
                           M.copy (|
@@ -996,7 +996,7 @@ Module num.
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let γ0_0 := M.read (| γ0_0 |) in
+                                      let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                       let x := M.copy (| Ty.path "u8", γ0_0 |) in
                                       let γ :=
                                         M.alloc (|
@@ -1469,7 +1469,7 @@ Module num.
                               |) in
                             let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                             let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                            let γ1_0 := M.read (| γ1_0 |) in
+                            let γ1_0 := M.deref (| M.read (| γ1_0 |) |) in
                             let _ :=
                               is_constant_or_break_match (|
                                 M.read (| γ1_0 |),
@@ -1674,7 +1674,7 @@ Module num.
                               |) in
                             let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                             let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                            let γ1_0 := M.read (| γ1_0 |) in
+                            let γ1_0 := M.deref (| M.read (| γ1_0 |) |) in
                             let c := M.copy (| Ty.path "u8", γ1_0 |) in
                             let s_next :=
                               M.copy (|
@@ -2034,7 +2034,7 @@ Module num.
                                       |) in
                                     let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                     let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                    let γ1_0 := M.read (| γ1_0 |) in
+                                    let γ1_0 := M.deref (| M.read (| γ1_0 |) |) in
                                     let c := M.copy (| Ty.path "u8", γ1_0 |) in
                                     let p_next :=
                                       M.copy (|

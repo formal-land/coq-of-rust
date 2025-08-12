@@ -3447,7 +3447,7 @@ Module iter.
                                     |)
                                   |)
                                 |) in
-                              let γ := M.read (| γ |) in
+                              let γ := M.deref (| M.read (| γ |) |) in
                               let γ1_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
                                   γ,
@@ -3782,7 +3782,7 @@ Module iter.
                                     |)
                                   |)
                                 |) in
-                              let γ := M.read (| γ |) in
+                              let γ := M.deref (| M.read (| γ |) |) in
                               let γ1_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
                                   γ,
@@ -4217,7 +4217,7 @@ Module iter.
                                     |)
                                   |)
                                 |) in
-                              let γ := M.read (| γ |) in
+                              let γ := M.deref (| M.read (| γ |) |) in
                               let γ1_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
                                   γ,
@@ -4552,7 +4552,7 @@ Module iter.
                                     |)
                                   |)
                                 |) in
-                              let γ := M.read (| γ |) in
+                              let γ := M.deref (| M.read (| γ |) |) in
                               let γ1_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
                                   γ,

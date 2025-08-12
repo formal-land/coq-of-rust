@@ -31675,7 +31675,7 @@ Module slice.
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let γ0_0 := M.read (| γ0_0 |) in
+                                        let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                         let γ2_0 := M.SubPointer.get_slice_index (| γ0_0, 0 |) in
                                         let γ2_1 := M.SubPointer.get_slice_index (| γ0_0, 1 |) in
                                         let l :=
@@ -32194,7 +32194,7 @@ Module slice.
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let γ0_0 := M.read (| γ0_0 |) in
+                                        let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                         let γ2_0 := M.SubPointer.get_slice_index (| γ0_0, 0 |) in
                                         let γ2_1 := M.SubPointer.get_slice_index (| γ0_0, 1 |) in
                                         let l :=
@@ -32788,7 +32788,7 @@ Module slice.
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let γ0_0 := M.read (| γ0_0 |) in
+                                        let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                         let γ2_0 := M.SubPointer.get_slice_index (| γ0_0, 0 |) in
                                         let γ2_1 := M.SubPointer.get_slice_index (| γ0_0, 1 |) in
                                         let l :=
@@ -33335,7 +33335,7 @@ Module slice.
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let γ0_0 := M.read (| γ0_0 |) in
+                                        let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                         let γ2_0 := M.SubPointer.get_slice_index (| γ0_0, 0 |) in
                                         let γ2_1 := M.SubPointer.get_slice_index (| γ0_0, 1 |) in
                                         let l :=

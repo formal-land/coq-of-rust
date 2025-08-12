@@ -327,7 +327,7 @@ Module borrow.
                 ltac:(M.monadic
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                   let γ2_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ0_0,
@@ -342,7 +342,7 @@ Module borrow.
                         [ Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned" ],
                       γ2_0
                     |) in
-                  let γ0_1 := M.read (| γ0_1 |) in
+                  let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                   let γ2_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ0_1,

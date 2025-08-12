@@ -207,7 +207,7 @@ Module hardfork.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -216,7 +216,7 @@ Module hardfork.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FRONTIER" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -228,7 +228,7 @@ Module hardfork.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -237,7 +237,7 @@ Module hardfork.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "HOMESTEAD" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -246,7 +246,7 @@ Module hardfork.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DAO_FORK" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -255,7 +255,7 @@ Module hardfork.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TANGERINE" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -267,7 +267,7 @@ Module hardfork.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -276,7 +276,7 @@ Module hardfork.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BYZANTIUM" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -288,7 +288,7 @@ Module hardfork.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -297,7 +297,7 @@ Module hardfork.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PETERSBURG" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -306,7 +306,7 @@ Module hardfork.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ISTANBUL" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -315,19 +315,19 @@ Module hardfork.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MUIR_GLACIER" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::BERLIN" |) in
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BERLIN" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::LONDON" |) in
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LONDON" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -336,7 +336,7 @@ Module hardfork.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ARROW_GLACIER" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -345,13 +345,13 @@ Module hardfork.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "GRAY_GLACIER" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::MERGE" |) in
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MERGE" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -360,25 +360,25 @@ Module hardfork.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SHANGHAI" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::CANCUN" |) in
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CANCUN" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::PRAGUE" |) in
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PRAGUE" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::OSAKA" |) in
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OSAKA" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::LATEST" |) in
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LATEST" |) |) |)))

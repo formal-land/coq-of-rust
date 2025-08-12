@@ -50,17 +50,17 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ := M.is_struct_tuple (| γ, "combinators_and_then::Food::CordonBleu" |) in
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CordonBleu" |) |) |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ := M.is_struct_tuple (| γ, "combinators_and_then::Food::Steak" |) in
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Steak" |) |) |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ := M.is_struct_tuple (| γ, "combinators_and_then::Food::Sushi" |) in
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Sushi" |) |) |)))
               ]
@@ -128,17 +128,17 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ := M.is_struct_tuple (| γ, "combinators_and_then::Day::Monday" |) in
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Monday" |) |) |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ := M.is_struct_tuple (| γ, "combinators_and_then::Day::Tuesday" |) in
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Tuesday" |) |) |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ := M.is_struct_tuple (| γ, "combinators_and_then::Day::Wednesday" |) in
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Wednesday" |) |) |)))
               ]

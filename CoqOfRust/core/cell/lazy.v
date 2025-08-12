@@ -264,7 +264,7 @@ Module cell.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let γ1_0 :=
                           M.SubPointer.get_struct_tuple_field (|
                             γ,
@@ -275,7 +275,7 @@ Module cell.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let γ1_0 :=
                           M.SubPointer.get_struct_tuple_field (|
                             γ,
@@ -299,7 +299,7 @@ Module cell.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ := M.is_struct_tuple (| γ, "core::cell::lazy::State::Poisoned" |) in
                         M.never_to_any (|
                           M.call_closure (|
@@ -427,7 +427,7 @@ Module cell.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ := M.read (| γ |) in
+                                (let γ := M.deref (| M.read (| γ |) |) in
                                 let γ1_0 :=
                                   M.SubPointer.get_struct_tuple_field (|
                                     γ,
@@ -442,7 +442,7 @@ Module cell.
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ := M.read (| γ |) in
+                                (let γ := M.deref (| M.read (| γ |) |) in
                                 let γ1_0 :=
                                   M.SubPointer.get_struct_tuple_field (|
                                     γ,
@@ -471,7 +471,7 @@ Module cell.
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ := M.read (| γ |) in
+                                (let γ := M.deref (| M.read (| γ |) |) in
                                 let _ :=
                                   M.is_struct_tuple (| γ, "core::cell::lazy::State::Poisoned" |) in
                                 M.never_to_any (|
@@ -719,7 +719,7 @@ Module cell.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let γ := M.read (| γ |) in
+                                    (let γ := M.deref (| M.read (| γ |) |) in
                                     let γ1_0 :=
                                       M.SubPointer.get_struct_tuple_field (|
                                         γ,
@@ -826,7 +826,7 @@ Module cell.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let γ1_0 :=
                           M.SubPointer.get_struct_tuple_field (|
                             γ,
@@ -929,7 +929,7 @@ Module cell.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let γ1_0 :=
                           M.SubPointer.get_struct_tuple_field (|
                             γ,

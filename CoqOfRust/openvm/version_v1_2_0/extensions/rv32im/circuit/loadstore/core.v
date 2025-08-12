@@ -131,7 +131,7 @@ Module loadstore.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -140,7 +140,7 @@ Module loadstore.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LoadW0" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -149,7 +149,7 @@ Module loadstore.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LoadHu0" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -158,7 +158,7 @@ Module loadstore.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LoadHu2" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -167,7 +167,7 @@ Module loadstore.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LoadBu0" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -176,7 +176,7 @@ Module loadstore.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LoadBu1" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -185,7 +185,7 @@ Module loadstore.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LoadBu2" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -194,7 +194,7 @@ Module loadstore.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LoadBu3" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -203,7 +203,7 @@ Module loadstore.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "StoreW0" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -212,7 +212,7 @@ Module loadstore.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "StoreH0" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -221,7 +221,7 @@ Module loadstore.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "StoreH2" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -230,7 +230,7 @@ Module loadstore.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "StoreB0" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -239,7 +239,7 @@ Module loadstore.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "StoreB1" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -248,7 +248,7 @@ Module loadstore.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "StoreB2" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -5329,7 +5329,7 @@ Module loadstore.
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
-                                                          (let γ := M.read (| γ |) in
+                                                          (let γ := M.deref (| M.read (| γ |) |) in
                                                           let flag :=
                                                             M.copy (|
                                                               Ty.associated_in_trait
@@ -6937,7 +6937,9 @@ Module loadstore.
                                                                         fun γ =>
                                                                           ltac:(M.monadic
                                                                             (let γ :=
-                                                                              M.read (| γ |) in
+                                                                              M.deref (|
+                                                                                M.read (| γ |)
+                                                                              |) in
                                                                             let idx :=
                                                                               M.copy (|
                                                                                 Ty.path

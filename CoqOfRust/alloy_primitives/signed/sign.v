@@ -94,7 +94,7 @@ Module signed.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -103,7 +103,7 @@ Module signed.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Negative" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -486,7 +486,7 @@ Module signed.
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let γ0_0 := M.read (| γ0_0 |) in
+                    let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                     let _ :=
                       M.is_struct_tuple (|
                         γ0_0,
@@ -592,7 +592,7 @@ Module signed.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "alloy_primitives::signed::sign::Sign::Positive" |) in
                     Value.Bool true));
@@ -627,7 +627,7 @@ Module signed.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "alloy_primitives::signed::sign::Sign::Negative" |) in
                     Value.Bool true));
@@ -665,13 +665,13 @@ Module signed.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "alloy_primitives::signed::sign::Sign::Positive" |) in
                     Value.UnicodeChar 43));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "alloy_primitives::signed::sign::Sign::Negative" |) in
                     Value.UnicodeChar 45))

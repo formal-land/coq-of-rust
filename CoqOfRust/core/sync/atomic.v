@@ -261,31 +261,31 @@ Module sync.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Relaxed" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Release" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Acquire" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AcqRel" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SeqCst" |) |) |)))

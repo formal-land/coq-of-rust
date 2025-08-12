@@ -263,6 +263,7 @@ Module Impl_VmCoreAir_for_BranchEqualCoreAir.
     pose proof (Impl_Into_for_From_T.run (Impl_From_for_T.run AirBuilder_types.(AirBuilder.AssociatedTypes.Expr))).
     destruct run_Add_for_Self.
     destruct run_Mul_for_Self.
+    destruct run_Into_for_Var.
     destruct run_Add_Expr_for_Var.
     destruct run_Mul_Var_for_Var.
     destruct run_Mul_Var_for_Expr.
@@ -284,7 +285,6 @@ Module Impl_VmCoreAir_for_BranchEqualCoreAir.
           intros.
           constructor.
           run_symbolic.
-          admit.
         }
         change (M.closure handler) with (φ (Function2.of_run run_handler)).
         destruct fold as [? ? run_fold].

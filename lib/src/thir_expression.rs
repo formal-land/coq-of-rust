@@ -159,7 +159,11 @@ fn build_inner_match(
             Pattern::Deref(pattern) => Rc::new(Expr::Let {
                 name: Some(scrutinee.clone()),
                 ty: None,
-                init: Expr::local_var(&scrutinee).read(),
+                init: Rc::new(Expr::Call {
+                    func: Expr::local_var("M.deref"),
+                    args: vec![Expr::local_var(&scrutinee).read()],
+                    kind: CallKind::Effectful,
+                }),
                 body: build_inner_match(
                     vec![(scrutinee.clone(), pattern.clone())],
                     body,

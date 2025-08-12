@@ -8967,7 +8967,7 @@ Module hintstore.
                                             let γ1_1 :=
                                               M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                             let i := M.copy (| Ty.path "usize", γ1_0 |) in
-                                            let γ1_1 := M.read (| γ1_1 |) in
+                                            let γ1_1 := M.deref (| M.read (| γ1_1 |) |) in
                                             let γ3_0 :=
                                               M.SubPointer.get_tuple_field (| γ1_1, 0 |) in
                                             let γ3_1 :=
@@ -10465,7 +10465,7 @@ Module hintstore.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let γ1_0 :=
                         M.SubPointer.get_struct_record_field (|
                           γ,

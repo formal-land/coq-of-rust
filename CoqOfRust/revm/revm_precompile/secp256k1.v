@@ -1037,7 +1037,7 @@ Module secp256k1.
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
-                                                        (let γ := M.read (| γ |) in
+                                                        (let γ := M.deref (| M.read (| γ |) |) in
                                                         let b := M.copy (| Ty.path "u8", γ |) in
                                                         M.call_closure (|
                                                           Ty.path "bool",
