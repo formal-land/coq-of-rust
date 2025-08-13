@@ -2,7 +2,9 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.links.array.
 Require Import pinocchio.pubkey.
+Require Import core.links.option.
 Import pinocchio.pubkey.pubkey.
+
 From Hammer Require Import Hammer.
 
 Module Pubkey.
