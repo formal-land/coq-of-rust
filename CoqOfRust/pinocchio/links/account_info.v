@@ -390,9 +390,9 @@ Module Impl_AccountInfo.
     constructor.
     run_symbolic.
     destruct (core.links.cmp.Impl_PartialEq_for_Ref.run (array.t U8.t {| Integer.value := 32 |}) (array.t U8.t {| Integer.value := 32 |})).
-    (* run_symbolic. *)
+    admit.
   Admitted.
-
+  
   Instance run_assign
     (self : Ref.t Pointer.Kind.Ref Self) 
     (new_owner : Ref.t Pointer.Kind.Ref Pubkey.t):
@@ -402,21 +402,17 @@ Module Impl_AccountInfo.
   Proof.
     constructor.
     run_symbolic.
-    (* destruct (core.links.ptr.run_write_volatile
-              (array.t U8.t {| Integer.value := 32 |})
-              (Ref.cast_to Pointer.Kind.MutRef sub_ref0) (* fix here *)
-              value3). *)
-    (* run_symbolic. *)
+    admit.
   Admitted.
 
-  (*Instance run_is_borrowed
+  Instance run_is_borrowed
         (self : Ref.t Pointer.Kind.Ref Self) 
         (state : BorrowState.t):
-    Run.Trait
-      is_borrowed [] [] [φ self; φ state]
-        bool.
-    Proof.
-      constructor.
-      run_symbolic.
-    Defined.*)
+  Run.Trait
+    is_borrowed [] [] [φ self; φ state]
+      bool.
+  Proof.
+    constructor.
+    run_symbolic.
+  Admitted.
 End Impl_AccountInfo.
