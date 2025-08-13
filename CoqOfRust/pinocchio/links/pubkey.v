@@ -3,9 +3,10 @@ Require Import CoqOfRust.links.M.
 Require Import core.links.array.
 Require Import pinocchio.pubkey.
 Require Import core.links.option.
-Import pinocchio.pubkey.pubkey.
+Require Import core.links.result.
+Require Import pinocchio.links.program_error.
 
-From Hammer Require Import Hammer.
+Import pinocchio.pubkey.pubkey.
 
 Module Pubkey.
   Definition t : Set :=
@@ -40,8 +41,6 @@ Proof.
     run_symbolic.
     admit.
 Admitted.
-Definition foo `{Link Pubkey.t} : bool := true.
-Definition foow `{Link (option (Ref.t Pointer.Kind.Ref Pubkey.t * U8.t))} : bool := true.
 
 Instance try_find_program_address
   (seeds : Ref.t Pointer.Kind.Ref (list (Ref.t Pointer.Kind.Ref (list (Integer.t IntegerKind.U8)))))
@@ -55,5 +54,28 @@ Proof.
     admit.
 Admitted.
 
+Instance create_program_address
+  (seeds : Ref.t Pointer.Kind.Ref (list (Ref.t Pointer.Kind.Ref (list (Integer.t IntegerKind.U8)))))
+  (program_id : Ref.t Pointer.Kind.Ref Pubkey.t) :
+  Run.Trait
+    create_program_address [] [] [φ seeds; φ program_id]
+    (Result.t (Ref.t Pointer.Kind.Ref Pubkey.t) ProgramError.t).
+Proof.
+  constructor.
+  run_symbolic.
+  admit.
+Admitted.
+
+Instance checked_create_program_address
+  (seeds : Ref.t Pointer.Kind.Ref (list (Ref.t Pointer.Kind.Ref (list (Integer.t IntegerKind.U8)))))
+  (program_id : Ref.t Pointer.Kind.Ref Pubkey.t) :
+  Run.Trait
+    checked_create_program_address [] [] [φ seeds; φ program_id]
+    (Result.t (Ref.t Pointer.Kind.Ref Pubkey.t) ProgramError.t).
+Proof.
+  constructor.
+  run_symbolic.
+  admit.
+Admitted.
 
 
