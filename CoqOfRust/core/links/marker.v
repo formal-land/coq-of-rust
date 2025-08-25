@@ -16,3 +16,24 @@ Module Copy.
     run_Clone_for_Self : Clone.Run Self;
   }.
 End Copy.
+(*
+pub trait PointeeSized {
+    // Empty.
+}
+*)
+Module PointeeSized.
+  Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
+    ("pinocchio::pointee::PointeeSized", [], [], Φ Self).
+
+  Class Run (Self : Set) `{Link Self} : Set := {
+    dummy_empty_class : unit;
+  }.
+End PointeeSized.
+
+(*
+  pub struct PhantomData<T: PointeeSized>;
+*)
+Module PhantomData.
+  Inductive t (T : Set) `{PointeeSized.Run T} : Set := 
+    | Make.
+End PhantomData.
