@@ -25,12 +25,15 @@ Module PointeeSized.
   Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
     ("pinocchio::pointee::PointeeSized", [], [], Φ Self).
 
-  Class Run (Self : Set) `{Link Self} : Set := {}.
+  Class Run (Self : Set) `{Link Self} : Set := {
+    dummy_empty_class : unit;
+  }.
 End PointeeSized.
 
 (*
   pub struct PhantomData<T: PointeeSized>;
 *)
 Module PhantomData.
-  Record t (T : Set) `{PointeeSized.Run T} : Set := {}.
+  Inductive t (T : Set) `{PointeeSized.Run T} : Set := 
+    | Make.
 End PhantomData.
