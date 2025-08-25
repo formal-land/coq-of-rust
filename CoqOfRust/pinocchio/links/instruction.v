@@ -74,3 +74,23 @@ Module Instruction.
   Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
   Smpl Add apply of_ty : of_ty.
 End Instruction.
+
+Module ProcessedSiblingInstruction.
+  Record t : Set := {
+    data_len     : U64.t;
+    accounts_len : U64.t;
+  }.
+
+  Global Instance IsLink : Link t :=
+  { Φ := Ty.path "pinocchio::instruction::ProcessedSiblingInstruction";
+    φ x :=
+      Value.StructRecord "pinocchio::instruction::ProcessedSiblingInstruction" [] [] [
+        ("data_len"    , φ x.(data_len));
+        ("accounts_len", φ x.(accounts_len))
+      ];
+  }.
+
+  Definition of_ty : OfTy.t (Ty.path "pinocchio::instruction::ProcessedSiblingInstruction").
+  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+  Smpl Add apply of_ty : of_ty.
+End ProcessedSiblingInstruction.
