@@ -97,17 +97,53 @@ Module ProcessedSiblingInstruction.
   Smpl Add apply of_ty : of_ty.
 End ProcessedSiblingInstruction.
 
-Module Account.
-  Record t : Set := {
-    key         : Ref.t Pointer.Kind.Raw Pubkey.t;
-    lamports    : Ref.t Pointer.Kind.Raw U64.t;
-    data_len    : U64.t;
-    data        : Ref.t Pointer.Kind.Raw U8.t;
-    owner       : Ref.t Pointer.Kind.Raw Pubkey.t;
-    rent_epoch  : U64.t;
-    is_signer   : bool;
-    is_writable : bool;
-    executable  : bool;
-    _account_info : PhantomData.t (Ref.t Pointer.Kind.Ref AccountInfo.t);
-  }.
-End Account.
+Module cpi.
+  Module Account.
+    Record t : Set := {
+      key         : Ref.t Pointer.Kind.Raw Pubkey.t;
+      lamports    : Ref.t Pointer.Kind.Raw U64.t;
+      data_len    : U64.t;
+      data        : Ref.t Pointer.Kind.Raw U8.t;
+      owner       : Ref.t Pointer.Kind.Raw Pubkey.t;
+      rent_epoch  : U64.t;
+      is_signer   : bool;
+      is_writable : bool;
+      executable  : bool;
+      _account_info : PhantomData.t (Ref.t Pointer.Kind.Ref AccountInfo.t);
+    }.
+
+    Global Instance IsLink : Link t :=
+    { Φ := Ty.path "pinocchio::instruction::AccountCPI";
+      φ x :=
+        Value.StructRecord "pinocchio::instruction::AccountCPI" [] [] [
+          ("key"         , φ x.(key));
+          ("lamports"    , φ x.(lamports));
+          ("data_len"    , φ x.(data_len));
+          ("data"        , φ x.(data));
+          ("owner"       , φ x.(owner));
+          ("rent_epoch"  , φ x.(rent_epoch));
+          ("is_signer"   , φ x.(is_signer));
+          ("is_writable" , φ x.(is_writable));
+          ("executable"  , φ x.(executable));
+          ("_account_info", φ x.(_account_info))
+        ];
+    }.
+  End Account.
+End cpi.
+
+Instance run_offset
+  (T U : Set) `{Link T} `{Link U} 
+  (ptr : Ref.t Pointer.Kind.ConstPointer T) 
+  (offset : Usize.t) :
+  Run.Trait
+    pinocchio.instruction.instruction.offset
+    []
+    [Φ T; Φ U]
+    [ φ (ptr : Ref.t Pointer.Kind.ConstPointer T)
+    ; φ (offset : Usize.t)
+    ]
+    (Ref.t Pointer.Kind.ConstPointer U).
+Proof.
+  constructor.
+  admit.
+Admitted.
