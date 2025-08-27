@@ -4,6 +4,7 @@ Require Import core.links.cmp.
 Require Import pinocchio.links.pubkey.
 Require Import pinocchio.account_info.
 Require Import core.links.array.
+Require Import core.links.marker.
 
 Import core.links.cmp.PartialEq.
 Import core.links.cmp.
@@ -82,6 +83,9 @@ Module Account.
       ("data_len", φ x.(data_len))
     ];
   }.
+
+  Global Instance PointeeSized_Run : PointeeSized.Run t :=
+  { dummy_empty_class := tt }.
 
   Definition of_ty : OfTy.t (Ty.path "pinocchio::account_info::Account").
   Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
@@ -260,6 +264,9 @@ Module AccountInfo.
         ("raw", φ x.(raw))
       ];
   }.
+
+  Global Instance PointeeSized_Run : PointeeSized.Run t :=
+  { dummy_empty_class := tt }.
 
   Definition of_ty : OfTy.t (Ty.path "pinocchio::account_info::AccountInfo").
   Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.

@@ -36,4 +36,13 @@ End PointeeSized.
 Module PhantomData.
   Inductive t (T : Set) `{PointeeSized.Run T} : Set := 
     | Make.
+
+  Global Instance IsLink (T : Set) `{Link T} `{PointeeSized.Run T} : Link (t T) :=
+    { Φ := Ty.apply (Ty.path "core::marker::PhantomData") [] [Φ T];
+      φ _ := Value.StructTuple "core::marker::PhantomData" [] [Φ T] []
+    }.
+  
+  Global Instance PointeeSized_Run_Ref {K A} `{Link A} `{PointeeSized.Run A}
+    : PointeeSized.Run (Ref.t K A) :=
+      { dummy_empty_class := tt }.
 End PhantomData.

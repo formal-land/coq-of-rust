@@ -1,8 +1,10 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.links.array.
+Require Import core.links.marker.
 Require Import pinocchio.instruction.
 Require Import pinocchio.links.pubkey.
+Require Import pinocchio.links.account_info.
 
 (*
 pub struct AccountMeta<'a> {
@@ -94,3 +96,18 @@ Module ProcessedSiblingInstruction.
   Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
   Smpl Add apply of_ty : of_ty.
 End ProcessedSiblingInstruction.
+
+Module Account.
+  Record t : Set := {
+    key         : Ref.t Pointer.Kind.Raw Pubkey.t;
+    lamports    : Ref.t Pointer.Kind.Raw U64.t;
+    data_len    : U64.t;
+    data        : Ref.t Pointer.Kind.Raw U8.t;
+    owner       : Ref.t Pointer.Kind.Raw Pubkey.t;
+    rent_epoch  : U64.t;
+    is_signer   : bool;
+    is_writable : bool;
+    executable  : bool;
+    _account_info : PhantomData.t (Ref.t Pointer.Kind.Ref AccountInfo.t);
+  }.
+End Account.
