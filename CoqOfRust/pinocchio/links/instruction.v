@@ -149,11 +149,75 @@ Proof.
   admit.
 Admitted.
 
-Print pinocchio.instruction.instruction.Impl_core_convert_From_ref__pinocchio_account_info_AccountInfo_for_pinocchio_instruction_Account.
+Module Impl_AccountMeta.
+  Definition Self : Set := AccountMeta.t.
 
-Lemma Φ_Ref {A : Set} `{Link A} :
-  Φ (Ref.t Pointer.Kind.Ref A) = Ty.apply (Ty.path "&") [] [Φ A].
-Proof. reflexivity. Qed.
+  Instance run_new
+    (pubkey : Ref.t Pointer.Kind.Ref Pubkey.t)
+    (is_writable : bool)
+    (is_signer : bool) :
+    Run.Trait
+    pinocchio.instruction.instruction.Impl_pinocchio_instruction_AccountMeta.new
+    [] []
+      [ φ pubkey; φ is_writable; φ is_signer ]
+      Self.
+  Proof.
+    constructor.
+    run_symbolic.
+    admit.
+  Admitted.
+
+  Instance run_readonly
+    (pubkey : Ref.t Pointer.Kind.Ref Pubkey.t) :
+    Run.Trait
+    pinocchio.instruction.instruction.Impl_pinocchio_instruction_AccountMeta.readonly
+      [] []
+      [ φ pubkey ]
+      Self.
+  Proof.
+    constructor.
+    run_symbolic.
+    admit.
+  Admitted.
+
+  Instance run_writable
+    (pubkey : Ref.t Pointer.Kind.Ref Pubkey.t) :
+    Run.Trait
+    pinocchio.instruction.instruction.Impl_pinocchio_instruction_AccountMeta.writable
+      [] []
+      [ φ pubkey ]
+      Self.
+  Proof.
+    constructor.
+    run_symbolic.
+    admit.
+  Admitted.
+
+  Instance run_readonly_signer
+    (pubkey : Ref.t Pointer.Kind.Ref Pubkey.t) :
+    Run.Trait
+    pinocchio.instruction.instruction.Impl_pinocchio_instruction_AccountMeta.readonly_signer
+      [] []
+      [ φ pubkey ]
+      Self.
+  Proof.
+    constructor.
+    admit.
+  Admitted.
+
+  Instance run_writable_signer
+    (pubkey : Ref.t Pointer.Kind.Ref Pubkey.t) :
+    Run.Trait
+    pinocchio.instruction.instruction.Impl_pinocchio_instruction_AccountMeta.writable_signer
+      [] []
+      [ φ pubkey ]
+      Self.
+  Proof.
+    constructor.
+    run_symbolic.
+    admit.
+  Admitted.
+End Impl_AccountMeta.
 
 Module Impl_From_ref_AccountInfo_for_Account.
   Definition run_from : From.Run_from cpi.Account.t (Ref.t Pointer.Kind.Ref AccountInfo.t).
@@ -163,7 +227,7 @@ Module Impl_From_ref_AccountInfo_for_Account.
       { apply pinocchio.instruction.instruction.Impl_core_convert_From_ref__pinocchio_account_info_AccountInfo_for_pinocchio_instruction_Account.Implements. }
       { reflexivity. }
     }
-    { constructor.
+    { constructor. 
       admit.
     }
   Admitted.
