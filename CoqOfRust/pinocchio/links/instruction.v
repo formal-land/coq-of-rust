@@ -235,3 +235,29 @@ Module Impl_From_ref_AccountInfo_for_Account.
   Instance run : From.Run cpi.Account.t (Ref.t Pointer.Kind.Ref AccountInfo.t) :=
     { From.from := run_from }.
 End Impl_From_ref_AccountInfo_for_Account.
+
+Global Instance PointeeSized_Run_list (A : Set) `{Link A} :
+  PointeeSized.Run (list A) :=
+{ dummy_empty_class := tt }.
+
+Module Seed.
+  Record t : Set := {
+    seed   : Ref.t Pointer.Kind.Raw U8.t;
+    len    : U64.t;
+    _bytes : PhantomData.t (Ref.t Pointer.Kind.Ref (list U8.t));
+  }.
+
+  Global Instance IsLink : Link t :=
+  { Φ := Ty.path "pinocchio::seed::Seed";
+    φ x :=
+      Value.StructRecord "pinocchio::seed::Seed" [] [] [
+        ("seed"  , φ x.(seed));
+        ("len"   , φ x.(len));
+        ("_bytes", φ x.(_bytes))
+      ];
+  }.
+
+  Definition of_ty : OfTy.t (Ty.path "pinocchio::seed::Seed").
+  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+  Smpl Add apply of_ty : of_ty.
+End Seed.
