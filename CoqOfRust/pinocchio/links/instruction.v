@@ -2,6 +2,7 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.links.array.
 Require Import core.links.marker.
+Require Import core.convert.links.mod.
 Require Import pinocchio.instruction.
 Require Import pinocchio.links.pubkey.
 Require Import pinocchio.links.account_info.
@@ -113,9 +114,9 @@ Module cpi.
     }.
 
     Global Instance IsLink : Link t :=
-    { Φ := Ty.path "pinocchio::instruction::AccountCPI";
+    { Φ := Ty.path "pinocchio::instruction::Account";
       φ x :=
-        Value.StructRecord "pinocchio::instruction::AccountCPI" [] [] [
+        Value.StructRecord "pinocchio::instruction::Account" [] [] [
           ("key"         , φ x.(key));
           ("lamports"    , φ x.(lamports));
           ("data_len"    , φ x.(data_len));
@@ -147,3 +148,26 @@ Proof.
   constructor.
   admit.
 Admitted.
+
+Print pinocchio.instruction.instruction.Impl_core_convert_From_ref__pinocchio_account_info_AccountInfo_for_pinocchio_instruction_Account.
+
+Lemma Φ_Ref {A : Set} `{Link A} :
+  Φ (Ref.t Pointer.Kind.Ref A) = Ty.apply (Ty.path "&") [] [Φ A].
+Proof. reflexivity. Qed.
+
+Module Impl_From_ref_AccountInfo_for_Account.
+  Definition run_from : From.Run_from cpi.Account.t (Ref.t Pointer.Kind.Ref AccountInfo.t).
+  Proof.
+    eexists.
+    { eapply IsTraitMethod.Defined.
+      { apply pinocchio.instruction.instruction.Impl_core_convert_From_ref__pinocchio_account_info_AccountInfo_for_pinocchio_instruction_Account.Implements. }
+      { reflexivity. }
+    }
+    { constructor.
+      admit.
+    }
+  Admitted.
+
+  Instance run : From.Run cpi.Account.t (Ref.t Pointer.Kind.Ref AccountInfo.t) :=
+    { From.from := run_from }.
+End Impl_From_ref_AccountInfo_for_Account.
