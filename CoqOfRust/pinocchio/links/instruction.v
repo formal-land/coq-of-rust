@@ -248,21 +248,19 @@ Module Seed.
   }.
 
   Global Instance IsLink : Link t :=
-  { Φ := Ty.path "pinocchio::seed::Seed";
+  { Φ := Ty.path "pinocchio::instruction::Seed";
     φ x :=
-      Value.StructRecord "pinocchio::seed::Seed" [] [] [
+      Value.StructRecord "pinocchio::instruction::Seed" [] [] [
         ("seed"  , φ x.(seed));
         ("len"   , φ x.(len));
         ("_bytes", φ x.(_bytes))
       ];
   }.
 
-  Definition of_ty : OfTy.t (Ty.path "pinocchio::seed::Seed").
+  Definition of_ty : OfTy.t (Ty.path "pinocchio::instruction::Seed").
   Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
   Smpl Add apply of_ty : of_ty.
 End Seed.
-
-Print pinocchio.instruction.instruction.Impl_core_convert_From_ref__slice_u8_for_pinocchio_instruction_Seed.
 
 Module Impl_From_ref_slice_u8_for_Seed.
   Definition run_from
@@ -270,7 +268,8 @@ Module Impl_From_ref_slice_u8_for_Seed.
   Proof.
     eexists.
     { eapply IsTraitMethod.Defined.
-      { apply pinocchio.instruction.instruction.Impl_core_convert_From_ref__slice_u8_for_pinocchio_instruction_Seed.Implements. }
+      { with_strategy transparent [Φ] cbn.
+        apply pinocchio.instruction.instruction.Impl_core_convert_From_ref__slice_u8_for_pinocchio_instruction_Seed.Implements. }
       { reflexivity. } }
     { constructor.
       admit. }
