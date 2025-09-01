@@ -261,3 +261,22 @@ Module Seed.
   Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
   Smpl Add apply of_ty : of_ty.
 End Seed.
+
+Print pinocchio.instruction.instruction.Impl_core_convert_From_ref__slice_u8_for_pinocchio_instruction_Seed.
+
+Module Impl_From_ref_slice_u8_for_Seed.
+  Definition run_from
+    : From.Run_from Seed.t (Ref.t Pointer.Kind.Ref (list (Integer.t IntegerKind.U8))).
+  Proof.
+    eexists.
+    { eapply IsTraitMethod.Defined.
+      { apply pinocchio.instruction.instruction.Impl_core_convert_From_ref__slice_u8_for_pinocchio_instruction_Seed.Implements. }
+      { reflexivity. } }
+    { constructor.
+      admit. }
+  Admitted.
+
+  Instance run
+    : From.Run Seed.t (Ref.t Pointer.Kind.Ref (list (Integer.t IntegerKind.U8))) :=
+    { From.from := run_from }.
+End Impl_From_ref_slice_u8_for_Seed.
