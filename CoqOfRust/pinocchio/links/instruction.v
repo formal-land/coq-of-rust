@@ -1,5 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import core.ops.links.deref.
 Require Import core.links.array.
 Require Import core.links.marker.
 Require Import core.convert.links.mod.
@@ -299,3 +300,88 @@ Module Impl_From_ref_array_u8_SIZE_for_Seed.
     : From.Run Seed.t (Ref.t Pointer.Kind.Ref (array.t (Integer.t IntegerKind.U8) SIZE)) :=
     { From.from := run_from SIZE }.
 End Impl_From_ref_array_u8_SIZE_for_Seed.
+
+Module Impl_Deref_for_Seed.
+  Definition run_deref
+    : Deref.Run_deref Seed.t (list (Integer.t IntegerKind.U8)).
+  Proof.
+    eexists.
+    { eapply IsTraitMethod.Defined.
+      { apply pinocchio.instruction.instruction.Impl_core_ops_deref_Deref_for_pinocchio_instruction_Seed.Implements. }
+      { reflexivity. } }
+    { constructor.
+      admit. }
+  Admitted.
+
+  Instance run
+    : Deref.Run Seed.t (list (Integer.t IntegerKind.U8)) :=
+    { Deref.deref := run_deref }.
+End Impl_Deref_for_Seed.
+
+(*
+pub struct Signer<'a, 'b> {
+    /// Signer seeds.
+    pub(crate) seeds: *const Seed<'a>,
+
+    /// Number of seeds.
+    pub(crate) len: u64,
+
+    /// The pointer to the seeds is only valid while the `&'b [Seed<'a>]` lives. Instead
+    /// of holding a reference to the actual `[Seed<'a>]`, which would increase the size
+    /// of the type, we claim to hold a reference without actually holding one using a
+    /// `PhantomData<&'b [Seed<'a>]>`.
+    _seeds: PhantomData<&'b [Seed<'a>]>,
+}
+*)
+Module Signer.
+  Record t : Set := {
+    seeds : Ref.t Pointer.Kind.ConstPointer Seed.t;
+    len   : Integer.t IntegerKind.U64;
+    _seeds : PhantomData.t (Ref.t Pointer.Kind.Ref (list Seed.t));
+  }.
+
+  Global Instance IsLink : Link t :=
+  { Φ := Ty.path "pinocchio::instruction::Signer";
+    φ x :=
+      Value.StructRecord "pinocchio::instruction::Signer" [] [] [
+        ("seeds", φ x.(seeds));
+        ("len"  , φ x.(len));
+        ("_seeds", φ x.(_seeds))
+      ];
+  }.
+
+  Definition of_ty : OfTy.t (Ty.path "pinocchio::instruction::Signer").
+  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+  Smpl Add apply of_ty : of_ty.
+End Signer.
+
+Module Impl_From_ref_slice_Seed_for_Signer.
+  Definition run_from
+    : From.Run_from Signer.t (Ref.t Pointer.Kind.Ref (list Seed.t)).
+  Proof.
+    eexists.
+    { eapply IsTraitMethod.Defined.
+      { apply pinocchio.instruction.instruction.Impl_core_convert_From_ref__slice_pinocchio_instruction_Seed_for_pinocchio_instruction_Signer.Implements. }
+      { reflexivity. } }
+    { constructor.
+      admit. }
+  Admitted.
+
+  Instance run
+    : From.Run Signer.t (Ref.t Pointer.Kind.Ref (list Seed.t)) :=
+    { From.from := run_from }.
+End Impl_From_ref_slice_Seed_for_Signer.
+
+Module Impl_From_ref_array_Seed_SIZE_for_Signer.
+  Definition run_from
+    : forall (SIZE : Usize.t),
+      From.Run_from Signer.t (Ref.t Pointer.Kind.Ref (array.t Seed.t SIZE)).
+  Proof.
+    intros SIZE.
+    eexists.
+    { eapply IsTraitMethod.Defined.
+      { apply pinocchio.instruction.instruction.Impl_core_convert_From_ref__array_SIZE_pinocchio_instruction_Seed_for_pinocchio_instruction_Signer.Implements. }
+      { reflexivity. } }
+    { constructor.
+      admit. }
+  Admitted.
