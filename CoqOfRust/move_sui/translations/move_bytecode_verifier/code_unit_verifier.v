@@ -1551,7 +1551,7 @@ Module code_unit_verifier.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -1569,7 +1569,7 @@ Module code_unit_verifier.
                           M.read (| code |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                           M.never_to_any (|
                             M.read (|

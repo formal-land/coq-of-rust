@@ -3256,7 +3256,7 @@ Module metrics.
                                                 "core::option::Option::Some",
                                                 0
                                               |) in
-                                            let γ0_0 := M.read (| γ0_0 |) in
+                                            let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                             let γ2_0 :=
                                               M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                             let γ2_1 :=
@@ -3764,7 +3764,7 @@ Module metrics.
                                               M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                             let γ1_1 :=
                                               M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                            let γ1_0 := M.read (| γ1_0 |) in
+                                            let γ1_0 := M.deref (| M.read (| γ1_0 |) |) in
                                             let γ3_0 :=
                                               M.SubPointer.get_tuple_field (| γ1_0, 0 |) in
                                             let γ3_1 :=
@@ -4343,7 +4343,7 @@ Module metrics.
                                           |) in
                                         let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                         let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                        let γ1_0 := M.read (| γ1_0 |) in
+                                        let γ1_0 := M.deref (| M.read (| γ1_0 |) |) in
                                         let γ3_0 := M.SubPointer.get_tuple_field (| γ1_0, 0 |) in
                                         let γ3_1 := M.SubPointer.get_tuple_field (| γ1_0, 1 |) in
                                         let γ3_2 := M.SubPointer.get_tuple_field (| γ1_0, 2 |) in

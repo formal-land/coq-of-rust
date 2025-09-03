@@ -2034,7 +2034,7 @@ Module branch_lt.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let γ := M.read (| γ |) in
+                                              (let γ := M.deref (| M.read (| γ |) |) in
                                               let flag :=
                                                 M.copy (|
                                                   Ty.associated_in_trait

@@ -2224,7 +2224,7 @@ Module divrem.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let γ := M.read (| γ |) in
+                                              (let γ := M.deref (| M.read (| γ |) |) in
                                               let flag :=
                                                 M.copy (|
                                                   Ty.associated_in_trait
@@ -17593,7 +17593,7 @@ Module divrem.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -17602,7 +17602,7 @@ Module divrem.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "None" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -17611,7 +17611,7 @@ Module divrem.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ZeroDivisor" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -17930,7 +17930,7 @@ Module divrem.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_record_field (|
                         γ,
@@ -18929,7 +18929,8 @@ Module divrem.
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let γ := M.read (| γ |) in
+                                                            (let γ :=
+                                                              M.deref (| M.read (| γ |) |) in
                                                             let v :=
                                                               M.copy (| Ty.path "u32", γ |) in
                                                             M.call_closure (|

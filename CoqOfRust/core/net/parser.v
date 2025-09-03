@@ -1274,7 +1274,7 @@ Module net.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let b := M.copy (| Ty.path "u8", γ |) in
                                   M.call_closure (|
                                     Ty.path "char",
@@ -1411,7 +1411,7 @@ Module net.
                                 ltac:(M.monadic
                                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                  let γ0_0 := M.read (| γ0_0 |) in
+                                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                   let b := M.copy (| Ty.path "u8", γ0_0 |) in
                                   let tail :=
                                     M.copy (|
@@ -7970,33 +7970,33 @@ Module net.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ip" |) in
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ip" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv4" |) in
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ipv4" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv6" |) in
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ipv6" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Socket" |) in
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Socket" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV4" |) in
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SocketV4" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV6" |) in
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SocketV6" |) |) |)))
@@ -8035,32 +8035,32 @@ Module net.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ip" |) in
                     Value.StructTuple "core::net::parser::AddrKind::Ip" [] [] []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv4" |) in
                     Value.StructTuple "core::net::parser::AddrKind::Ipv4" [] [] []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv6" |) in
                     Value.StructTuple "core::net::parser::AddrKind::Ipv6" [] [] []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Socket" |) in
                     Value.StructTuple "core::net::parser::AddrKind::Socket" [] [] []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV4" |) in
                     Value.StructTuple "core::net::parser::AddrKind::SocketV4" [] [] []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV6" |) in
                     Value.StructTuple "core::net::parser::AddrKind::SocketV6" [] [] []))
               ]

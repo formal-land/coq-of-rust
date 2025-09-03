@@ -699,13 +699,13 @@ Module num.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Empty" |) in
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Empty" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -717,7 +717,7 @@ Module num.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -726,7 +726,7 @@ Module num.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PosOverflow" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -735,7 +735,7 @@ Module num.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NegOverflow" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Zero" |) in
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Zero" |) |) |)))
@@ -774,30 +774,30 @@ Module num.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ := M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Empty" |) in
                     Value.StructTuple "core::num::error::IntErrorKind::Empty" [] [] []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::InvalidDigit" |) in
                     Value.StructTuple "core::num::error::IntErrorKind::InvalidDigit" [] [] []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::PosOverflow" |) in
                     Value.StructTuple "core::num::error::IntErrorKind::PosOverflow" [] [] []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::NegOverflow" |) in
                     Value.StructTuple "core::num::error::IntErrorKind::NegOverflow" [] [] []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ := M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Zero" |) in
                     Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] []))
               ]

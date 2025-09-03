@@ -100,7 +100,7 @@ Module option.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                   M.call_closure (|
                     Ty.apply
@@ -120,7 +120,7 @@ Module option.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
@@ -225,7 +225,7 @@ Module option.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let γ1_0 :=
                         M.SubPointer.get_struct_tuple_field (|
                           γ,
@@ -2628,7 +2628,7 @@ Module option.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := self in
-                          let γ := M.read (| γ |) in
+                          let γ := M.deref (| M.read (| γ |) |) in
                           let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                           M.read (|
                             let~ _ : Ty.tuple [] :=
@@ -3114,7 +3114,7 @@ Module option.
                 ltac:(M.monadic
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                   let v := M.copy (| T, γ0_0 |) in
                   Value.StructTuple "core::option::Option::Some" [] [ T ] [ M.read (| v |) ]));
               fun γ =>
@@ -3222,7 +3222,7 @@ Module option.
                 ltac:(M.monadic
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                   let t := M.copy (| T, γ0_0 |) in
                   Value.StructTuple "core::option::Option::Some" [] [ T ] [ M.read (| t |) ]));
               fun γ =>
@@ -3458,7 +3458,7 @@ Module option.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let x := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
@@ -3475,7 +3475,7 @@ Module option.
                     ]));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                   Value.StructTuple "core::option::Option::None" [] [ T ] []))
             ]
@@ -3524,7 +3524,7 @@ Module option.
                 ltac:(M.monadic
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                   let γ2_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ0_0,
@@ -3532,7 +3532,7 @@ Module option.
                       0
                     |) in
                   let to := M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], γ2_0 |) in
-                  let γ0_1 := M.read (| γ0_1 |) in
+                  let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                   let γ2_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ0_1,
@@ -3952,7 +3952,7 @@ Module option.
                 ltac:(M.monadic
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                   let γ2_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ0_0,
@@ -3960,7 +3960,7 @@ Module option.
                       0
                     |) in
                   let l := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
-                  let γ0_1 := M.read (| γ0_1 |) in
+                  let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                   let γ2_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ0_1,
@@ -3980,23 +3980,23 @@ Module option.
                 ltac:(M.monadic
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                   let γ2_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ0_0,
                       "core::option::Option::Some",
                       0
                     |) in
-                  let γ0_1 := M.read (| γ0_1 |) in
+                  let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                   let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
                   Value.Bool false));
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                   let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
-                  let γ0_1 := M.read (| γ0_1 |) in
+                  let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                   let γ2_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ0_1,
@@ -4008,9 +4008,9 @@ Module option.
                 ltac:(M.monadic
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                   let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
-                  let γ0_1 := M.read (| γ0_1 |) in
+                  let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                   let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
                   Value.Bool true))
             ]
@@ -4071,7 +4071,7 @@ Module option.
                 ltac:(M.monadic
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                   let γ2_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ0_0,
@@ -4079,7 +4079,7 @@ Module option.
                       0
                     |) in
                   let l := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
-                  let γ0_1 := M.read (| γ0_1 |) in
+                  let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                   let γ2_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ0_1,
@@ -4107,14 +4107,14 @@ Module option.
                 ltac:(M.monadic
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                   let γ2_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ0_0,
                       "core::option::Option::Some",
                       0
                     |) in
-                  let γ0_1 := M.read (| γ0_1 |) in
+                  let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                   let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
                   Value.StructTuple
                     "core::option::Option::Some"
@@ -4125,9 +4125,9 @@ Module option.
                 ltac:(M.monadic
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                   let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
-                  let γ0_1 := M.read (| γ0_1 |) in
+                  let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                   let γ2_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ0_1,
@@ -4143,9 +4143,9 @@ Module option.
                 ltac:(M.monadic
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                   let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
-                  let γ0_1 := M.read (| γ0_1 |) in
+                  let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                   let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
                   Value.StructTuple
                     "core::option::Option::Some"
@@ -4210,7 +4210,7 @@ Module option.
                 ltac:(M.monadic
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                   let γ2_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ0_0,
@@ -4218,7 +4218,7 @@ Module option.
                       0
                     |) in
                   let l := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
-                  let γ0_1 := M.read (| γ0_1 |) in
+                  let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                   let γ2_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ0_1,
@@ -4238,23 +4238,23 @@ Module option.
                 ltac:(M.monadic
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                   let γ2_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ0_0,
                       "core::option::Option::Some",
                       0
                     |) in
-                  let γ0_1 := M.read (| γ0_1 |) in
+                  let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                   let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
                   Value.StructTuple "core::cmp::Ordering::Greater" [] [] []));
               fun γ =>
                 ltac:(M.monadic
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                   let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
-                  let γ0_1 := M.read (| γ0_1 |) in
+                  let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                   let γ2_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ0_1,
@@ -4266,9 +4266,9 @@ Module option.
                 ltac:(M.monadic
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                   let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
-                  let γ0_1 := M.read (| γ0_1 |) in
+                  let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                   let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
                   Value.StructTuple "core::cmp::Ordering::Equal" [] [] []))
             ]

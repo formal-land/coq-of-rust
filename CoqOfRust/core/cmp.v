@@ -372,17 +372,17 @@ Module cmp.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Less" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Equal" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Greater" |) |) |)))
                 ]

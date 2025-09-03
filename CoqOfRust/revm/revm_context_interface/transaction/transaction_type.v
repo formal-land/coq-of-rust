@@ -141,7 +141,7 @@ Module transaction.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -150,7 +150,7 @@ Module transaction.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Legacy" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -159,7 +159,7 @@ Module transaction.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip2930" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -168,7 +168,7 @@ Module transaction.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip1559" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -177,7 +177,7 @@ Module transaction.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip4844" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,
@@ -186,7 +186,7 @@ Module transaction.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip7702" |) |) |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let _ :=
                           M.is_struct_tuple (|
                             γ,

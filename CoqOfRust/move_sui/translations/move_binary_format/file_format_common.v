@@ -684,7 +684,7 @@ Module file_format_common.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -696,7 +696,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -708,7 +708,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -720,7 +720,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -729,7 +729,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FUNCTION_INST" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -738,7 +738,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SIGNATURES" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -747,7 +747,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CONSTANT_POOL" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -756,7 +756,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IDENTIFIERS" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -768,7 +768,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -777,7 +777,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "STRUCT_DEFS" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -789,7 +789,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -798,7 +798,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FUNCTION_DEFS" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -807,7 +807,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FIELD_HANDLE" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -816,7 +816,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FIELD_INST" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -825,7 +825,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FRIEND_DECLS" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -1199,7 +1199,7 @@ Module file_format_common.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -1208,7 +1208,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BOOL" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -1217,7 +1217,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U8" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -1226,7 +1226,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U64" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -1235,7 +1235,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U128" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -1244,7 +1244,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ADDRESS" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -1253,7 +1253,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "REFERENCE" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -1265,7 +1265,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -1274,7 +1274,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "STRUCT" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -1286,7 +1286,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -1295,7 +1295,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VECTOR" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -1304,7 +1304,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "STRUCT_INST" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -1313,7 +1313,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SIGNER" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -1322,7 +1322,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U16" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -1331,7 +1331,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U32" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -1456,7 +1456,7 @@ Module file_format_common.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -1465,7 +1465,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NATIVE" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2049,7 +2049,7 @@ Module file_format_common.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2058,7 +2058,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "POP" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2067,7 +2067,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "RET" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2076,7 +2076,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BR_TRUE" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2085,7 +2085,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BR_FALSE" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2094,7 +2094,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BRANCH" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2103,7 +2103,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_U64" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2112,7 +2112,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_CONST" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2121,7 +2121,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_TRUE" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2130,7 +2130,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_FALSE" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2139,7 +2139,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "COPY_LOC" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2148,7 +2148,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MOVE_LOC" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2157,7 +2157,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ST_LOC" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2169,7 +2169,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2181,7 +2181,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2193,7 +2193,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2205,7 +2205,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2214,7 +2214,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CALL" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2223,7 +2223,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PACK" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2232,7 +2232,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "UNPACK" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2241,7 +2241,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "READ_REF" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2250,7 +2250,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "WRITE_REF" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2259,7 +2259,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ADD" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2268,7 +2268,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SUB" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2277,7 +2277,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MUL" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2286,7 +2286,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MOD" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2295,7 +2295,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DIV" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2304,7 +2304,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BIT_OR" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2313,7 +2313,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BIT_AND" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2322,7 +2322,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "XOR" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2331,7 +2331,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OR" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2340,7 +2340,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AND" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2349,7 +2349,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NOT" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2358,7 +2358,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EQ" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2367,7 +2367,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NEQ" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2376,7 +2376,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LT" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2385,7 +2385,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "GT" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2394,7 +2394,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LE" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2403,7 +2403,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "GE" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2412,7 +2412,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ABORT" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2421,7 +2421,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NOP" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2430,7 +2430,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FREEZE_REF" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2439,7 +2439,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SHL" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2448,7 +2448,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SHR" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2457,7 +2457,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_U8" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2466,7 +2466,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_U128" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2475,7 +2475,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CAST_U8" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2484,7 +2484,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CAST_U64" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2493,7 +2493,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CAST_U128" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2505,7 +2505,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2517,7 +2517,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2526,7 +2526,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CALL_GENERIC" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2535,7 +2535,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PACK_GENERIC" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2547,7 +2547,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2556,7 +2556,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VEC_PACK" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2565,7 +2565,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VEC_LEN" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2577,7 +2577,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2589,7 +2589,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2598,7 +2598,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VEC_PUSH_BACK" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2607,7 +2607,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VEC_POP_BACK" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2616,7 +2616,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VEC_UNPACK" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2625,7 +2625,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VEC_SWAP" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2634,7 +2634,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_U16" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2643,7 +2643,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_U32" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2652,7 +2652,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_U256" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2661,7 +2661,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CAST_U16" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2670,7 +2670,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CAST_U32" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2679,7 +2679,7 @@ Module file_format_common.
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CAST_U256" |) |) |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2691,7 +2691,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2703,7 +2703,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2715,7 +2715,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2727,7 +2727,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2739,7 +2739,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2751,7 +2751,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2763,7 +2763,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2775,7 +2775,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -2787,7 +2787,7 @@ Module file_format_common.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let _ :=
                         M.is_struct_tuple (|
                           γ,
@@ -5961,7 +5961,7 @@ Module file_format_common.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Pop" |) in
                     Value.StructTuple
@@ -5971,7 +5971,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Ret" |) in
                     Value.StructTuple
@@ -5981,7 +5981,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -5995,7 +5995,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6009,7 +6009,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6023,7 +6023,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6037,7 +6037,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6051,7 +6051,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6065,7 +6065,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (|
                         γ,
@@ -6078,7 +6078,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (|
                         γ,
@@ -6091,7 +6091,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (|
                         γ,
@@ -6104,7 +6104,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6118,7 +6118,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (|
                         γ,
@@ -6131,7 +6131,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (|
                         γ,
@@ -6144,7 +6144,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6158,7 +6158,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6172,7 +6172,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6186,7 +6186,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6200,7 +6200,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6214,7 +6214,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6228,7 +6228,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6242,7 +6242,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6256,7 +6256,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6270,7 +6270,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (|
                         γ,
@@ -6283,7 +6283,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (|
                         γ,
@@ -6296,7 +6296,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (|
                         γ,
@@ -6309,7 +6309,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6323,7 +6323,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6337,7 +6337,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6351,7 +6351,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6365,7 +6365,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6379,7 +6379,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6393,7 +6393,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Add" |) in
                     Value.StructTuple
@@ -6403,7 +6403,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Sub" |) in
                     Value.StructTuple
@@ -6413,7 +6413,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Mul" |) in
                     Value.StructTuple
@@ -6423,7 +6423,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Mod" |) in
                     Value.StructTuple
@@ -6433,7 +6433,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Div" |) in
                     Value.StructTuple
@@ -6443,7 +6443,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (|
                         γ,
@@ -6456,7 +6456,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (|
                         γ,
@@ -6469,7 +6469,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Xor" |) in
                     Value.StructTuple
@@ -6479,7 +6479,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Shl" |) in
                     Value.StructTuple
@@ -6489,7 +6489,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Shr" |) in
                     Value.StructTuple
@@ -6499,7 +6499,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Or" |) in
                     Value.StructTuple
@@ -6509,7 +6509,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::And" |) in
                     Value.StructTuple
@@ -6519,7 +6519,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Not" |) in
                     Value.StructTuple
@@ -6529,7 +6529,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Eq" |) in
                     Value.StructTuple
@@ -6539,7 +6539,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Neq" |) in
                     Value.StructTuple
@@ -6549,7 +6549,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Lt" |) in
                     Value.StructTuple
@@ -6559,7 +6559,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Gt" |) in
                     Value.StructTuple
@@ -6569,7 +6569,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Le" |) in
                     Value.StructTuple
@@ -6579,7 +6579,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Ge" |) in
                     Value.StructTuple
@@ -6589,7 +6589,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (|
                         γ,
@@ -6602,7 +6602,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_binary_format::file_format::Bytecode::Nop" |) in
                     Value.StructTuple
@@ -6612,7 +6612,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (|
                         γ,
@@ -6625,7 +6625,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6639,7 +6639,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6653,7 +6653,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6667,7 +6667,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6681,7 +6681,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6695,7 +6695,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (|
                         γ,
@@ -6708,7 +6708,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6722,7 +6722,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6736,7 +6736,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6750,7 +6750,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6764,7 +6764,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (|
                         γ,
@@ -6777,7 +6777,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (|
                         γ,
@@ -6790,7 +6790,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (|
                         γ,
@@ -6803,7 +6803,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6817,7 +6817,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6831,7 +6831,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6845,7 +6845,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6859,7 +6859,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6873,7 +6873,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6887,7 +6887,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6901,7 +6901,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6915,7 +6915,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,
@@ -6929,7 +6929,7 @@ Module file_format_common.
                       []));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (|
                         γ,

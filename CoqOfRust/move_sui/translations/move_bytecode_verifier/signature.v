@@ -2622,7 +2622,8 @@ Module signature.
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let γ := M.read (| γ |) in
+                                                            (let γ :=
+                                                              M.deref (| M.read (| γ |) |) in
                                                             let _ :=
                                                               M.is_struct_tuple (|
                                                                 γ,
@@ -2633,7 +2634,8 @@ Module signature.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let γ := M.read (| γ |) in
+                                                            (let γ :=
+                                                              M.deref (| M.read (| γ |) |) in
                                                             let γ1_0 :=
                                                               M.SubPointer.get_struct_tuple_field (|
                                                                 γ,
@@ -4679,7 +4681,8 @@ Module signature.
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let γ := M.read (| γ |) in
+                                                            (let γ :=
+                                                              M.deref (| M.read (| γ |) |) in
                                                             let γ1_0 :=
                                                               M.SubPointer.get_struct_tuple_field (|
                                                                 γ,
@@ -4700,7 +4703,8 @@ Module signature.
                                                             M.read (| code |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let γ := M.read (| γ |) in
+                                                            (let γ :=
+                                                              M.deref (| M.read (| γ |) |) in
                                                             let _ :=
                                                               M.is_struct_tuple (|
                                                                 γ,
@@ -5723,7 +5727,8 @@ Module signature.
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let γ := M.read (| γ |) in
+                                                            (let γ :=
+                                                              M.deref (| M.read (| γ |) |) in
                                                             let γ1_0 :=
                                                               M.SubPointer.get_struct_tuple_field (|
                                                                 γ,
@@ -6360,7 +6365,10 @@ Module signature.
                                                               [
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -6381,7 +6389,10 @@ Module signature.
                                                                     Value.Tuple [ idx ]));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -6402,7 +6413,10 @@ Module signature.
                                                                     Value.Tuple [ idx ]));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -6423,7 +6437,10 @@ Module signature.
                                                                     Value.Tuple [ idx ]));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -6444,7 +6461,10 @@ Module signature.
                                                                     Value.Tuple [ idx ]));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -6465,7 +6485,10 @@ Module signature.
                                                                     Value.Tuple [ idx ]));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -6486,7 +6509,10 @@ Module signature.
                                                                     Value.Tuple [ idx ]));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -7101,7 +7127,10 @@ Module signature.
                                                               [
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -7122,7 +7151,10 @@ Module signature.
                                                                     Value.Tuple [ idx ]));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -7790,7 +7822,10 @@ Module signature.
                                                               [
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -7817,7 +7852,10 @@ Module signature.
                                                                     Value.Tuple [ idx ]));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -7838,7 +7876,10 @@ Module signature.
                                                                     Value.Tuple [ idx ]));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -7859,7 +7900,10 @@ Module signature.
                                                                     Value.Tuple [ idx ]));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -7880,7 +7924,10 @@ Module signature.
                                                                     Value.Tuple [ idx ]));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -7901,7 +7948,10 @@ Module signature.
                                                                     Value.Tuple [ idx ]));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -7922,7 +7972,10 @@ Module signature.
                                                                     Value.Tuple [ idx ]));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -7949,7 +8002,10 @@ Module signature.
                                                                     Value.Tuple [ idx ]));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8423,7 +8479,10 @@ Module signature.
                                                               [
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8432,7 +8491,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8441,7 +8503,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8451,7 +8516,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8461,7 +8529,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8471,7 +8542,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8481,7 +8555,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8491,7 +8568,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8501,7 +8581,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8511,7 +8594,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8521,7 +8607,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8531,7 +8620,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8541,7 +8633,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8550,7 +8645,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8559,7 +8657,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8568,7 +8669,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8577,7 +8681,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8586,7 +8693,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8595,7 +8705,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8604,7 +8717,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8613,7 +8729,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8623,7 +8742,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8633,7 +8755,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8643,7 +8768,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8652,7 +8780,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8661,7 +8792,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8670,7 +8804,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8679,7 +8816,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8688,7 +8828,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8697,7 +8840,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8706,7 +8852,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8715,7 +8864,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8724,7 +8876,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8733,7 +8888,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8742,7 +8900,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8751,7 +8912,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8760,7 +8924,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8769,7 +8936,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8778,7 +8948,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8787,7 +8960,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8796,7 +8972,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8805,7 +8984,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8814,7 +8996,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8823,7 +9008,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8832,7 +9020,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8841,7 +9032,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8851,7 +9045,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8861,7 +9058,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8871,7 +9071,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8881,7 +9084,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8891,7 +9097,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8901,7 +9110,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8911,7 +9123,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8921,7 +9136,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8931,7 +9149,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8941,7 +9162,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8951,7 +9175,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let γ1_0 :=
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         γ,
@@ -8961,7 +9188,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -8970,7 +9200,10 @@ Module signature.
                                                                     Value.Tuple []));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let _ :=
                                                                       M.is_struct_tuple (|
                                                                         γ,
@@ -9486,7 +9719,7 @@ Module signature.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -9662,7 +9895,7 @@ Module signature.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -9724,7 +9957,7 @@ Module signature.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                   let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   let idx :=
@@ -10353,7 +10586,7 @@ Module signature.
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -10471,7 +10704,7 @@ Module signature.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -10481,7 +10714,7 @@ Module signature.
                                   Value.Tuple []));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -10491,7 +10724,7 @@ Module signature.
                                   Value.Tuple []));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 :=
                                     M.SubPointer.get_struct_tuple_field (|
                                       γ,
@@ -10501,7 +10734,7 @@ Module signature.
                                   Value.Tuple []));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let _ :=
                                     M.is_struct_tuple (|
                                       γ,
@@ -10510,7 +10743,7 @@ Module signature.
                                   Value.Tuple []));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let _ :=
                                     M.is_struct_tuple (|
                                       γ,
@@ -10519,7 +10752,7 @@ Module signature.
                                   Value.Tuple []));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let _ :=
                                     M.is_struct_tuple (|
                                       γ,
@@ -10528,7 +10761,7 @@ Module signature.
                                   Value.Tuple []));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let _ :=
                                     M.is_struct_tuple (|
                                       γ,
@@ -10537,7 +10770,7 @@ Module signature.
                                   Value.Tuple []));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let _ :=
                                     M.is_struct_tuple (|
                                       γ,
@@ -10546,7 +10779,7 @@ Module signature.
                                   Value.Tuple []));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let _ :=
                                     M.is_struct_tuple (|
                                       γ,
@@ -10555,7 +10788,7 @@ Module signature.
                                   Value.Tuple []));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let _ :=
                                     M.is_struct_tuple (|
                                       γ,
@@ -10564,7 +10797,7 @@ Module signature.
                                   Value.Tuple []));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let _ :=
                                     M.is_struct_tuple (|
                                       γ,
@@ -10573,7 +10806,7 @@ Module signature.
                                   Value.Tuple []));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
+                                  (let γ := M.deref (| M.read (| γ |) |) in
                                   let _ :=
                                     M.is_struct_tuple (|
                                       γ,
@@ -10845,7 +11078,8 @@ Module signature.
                                                           [
                                                             fun γ =>
                                                               ltac:(M.monadic
-                                                                (let γ := M.read (| γ |) in
+                                                                (let γ :=
+                                                                  M.deref (| M.read (| γ |) |) in
                                                                 let γ1_0 :=
                                                                   M.SubPointer.get_struct_tuple_field (|
                                                                     γ,
@@ -10874,7 +11108,8 @@ Module signature.
                                                                 Value.Tuple [ inner ]));
                                                             fun γ =>
                                                               ltac:(M.monadic
-                                                                (let γ := M.read (| γ |) in
+                                                                (let γ :=
+                                                                  M.deref (| M.read (| γ |) |) in
                                                                 let γ1_0 :=
                                                                   M.SubPointer.get_struct_tuple_field (|
                                                                     γ,
@@ -11717,7 +11952,7 @@ Module signature.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let _ :=
                             M.is_struct_tuple (|
                               γ,
@@ -11726,7 +11961,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let _ :=
                             M.is_struct_tuple (|
                               γ,
@@ -11735,7 +11970,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let _ :=
                             M.is_struct_tuple (|
                               γ,
@@ -11744,7 +11979,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let _ :=
                             M.is_struct_tuple (|
                               γ,
@@ -11753,7 +11988,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let _ :=
                             M.is_struct_tuple (|
                               γ,
@@ -11762,7 +11997,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let _ :=
                             M.is_struct_tuple (|
                               γ,
@@ -11771,7 +12006,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let _ :=
                             M.is_struct_tuple (|
                               γ,
@@ -11780,7 +12015,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let _ :=
                             M.is_struct_tuple (|
                               γ,
@@ -11789,7 +12024,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let _ :=
                             M.is_struct_tuple (|
                               γ,
@@ -11798,7 +12033,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -11808,7 +12043,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -11837,7 +12072,7 @@ Module signature.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -11847,7 +12082,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -11917,7 +12152,7 @@ Module signature.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -11961,7 +12196,7 @@ Module signature.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -12024,7 +12259,7 @@ Module signature.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                           let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let type_arguments :=
@@ -13459,7 +13694,7 @@ Module signature.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
+                  (let γ := M.deref (| M.read (| γ |) |) in
                   let γ1_0 :=
                     M.SubPointer.get_struct_tuple_field (|
                       γ,
@@ -13522,7 +13757,7 @@ Module signature.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                           let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let idx :=
@@ -13673,7 +13908,7 @@ Module signature.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -13683,7 +13918,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -13693,7 +13928,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -13703,7 +13938,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -13713,7 +13948,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let γ1_0 :=
                             M.SubPointer.get_struct_tuple_field (|
                               γ,
@@ -13723,7 +13958,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let _ :=
                             M.is_struct_tuple (|
                               γ,
@@ -13732,7 +13967,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let _ :=
                             M.is_struct_tuple (|
                               γ,
@@ -13741,7 +13976,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let _ :=
                             M.is_struct_tuple (|
                               γ,
@@ -13750,7 +13985,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let _ :=
                             M.is_struct_tuple (|
                               γ,
@@ -13759,7 +13994,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let _ :=
                             M.is_struct_tuple (|
                               γ,
@@ -13768,7 +14003,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let _ :=
                             M.is_struct_tuple (|
                               γ,
@@ -13777,7 +14012,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let _ :=
                             M.is_struct_tuple (|
                               γ,
@@ -13786,7 +14021,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let _ :=
                             M.is_struct_tuple (|
                               γ,
@@ -13795,7 +14030,7 @@ Module signature.
                           Value.Tuple []));
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
+                          (let γ := M.deref (| M.read (| γ |) |) in
                           let _ :=
                             M.is_struct_tuple (|
                               γ,

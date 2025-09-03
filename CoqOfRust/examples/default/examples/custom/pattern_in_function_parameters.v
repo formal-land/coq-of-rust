@@ -71,7 +71,7 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
         [
           fun γ =>
             ltac:(M.monadic
-              (let γ := M.read (| γ |) in
+              (let γ := M.deref (| M.read (| γ |) |) in
               let start :=
                 M.copy (|
                   Ty.path "Type for variables in patterns in function parameters is not handled",
@@ -83,7 +83,7 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let end_ :=
                         M.copy (|
                           Ty.path

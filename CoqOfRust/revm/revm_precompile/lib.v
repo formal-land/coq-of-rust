@@ -3474,43 +3474,43 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::HOMESTEAD" |) in
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "HOMESTEAD" |) |) |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::BYZANTIUM" |) in
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BYZANTIUM" |) |) |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::ISTANBUL" |) in
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ISTANBUL" |) |) |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::BERLIN" |) in
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BERLIN" |) |) |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::CANCUN" |) in
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CANCUN" |) |) |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::PRAGUE" |) in
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PRAGUE" |) |) |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::LATEST" |) in
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LATEST" |) |) |)))

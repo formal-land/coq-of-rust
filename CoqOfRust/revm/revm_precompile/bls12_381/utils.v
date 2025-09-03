@@ -822,7 +822,10 @@ Module bls12_381.
                                                               [
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (let γ := M.read (| γ |) in
+                                                                    (let γ :=
+                                                                      M.deref (|
+                                                                        M.read (| γ |)
+                                                                      |) in
                                                                     let x :=
                                                                       M.copy (|
                                                                         Ty.path "u8",

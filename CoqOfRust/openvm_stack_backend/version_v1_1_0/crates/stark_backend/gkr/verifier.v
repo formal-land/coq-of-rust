@@ -183,7 +183,7 @@ Module gkr.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
+                      (let γ := M.deref (| M.read (| γ |) |) in
                       let γ1_0 :=
                         M.SubPointer.get_struct_record_field (|
                           γ,
@@ -2795,8 +2795,10 @@ Module gkr.
                                                                                                     claims_to_verify in
                                                                                                   let
                                                                                                         γ :=
-                                                                                                    M.read (|
-                                                                                                      γ
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        γ
+                                                                                                      |)
                                                                                                     |) in
                                                                                                   let
                                                                                                         γ1_0 :=
@@ -3812,8 +3814,10 @@ Module gkr.
                                                                                                         |) in
                                                                                                       let
                                                                                                             γ0_0 :=
-                                                                                                        M.read (|
-                                                                                                          γ0_0
+                                                                                                        M.deref (|
+                                                                                                          M.read (|
+                                                                                                            γ0_0
+                                                                                                          |)
                                                                                                         |) in
                                                                                                       let
                                                                                                             instance :=
@@ -5165,8 +5169,10 @@ Module gkr.
                                                                                                         |) in
                                                                                                       let
                                                                                                             γ0_0 :=
-                                                                                                        M.read (|
-                                                                                                          γ0_0
+                                                                                                        M.deref (|
+                                                                                                          M.read (|
+                                                                                                            γ0_0
+                                                                                                          |)
                                                                                                         |) in
                                                                                                       let
                                                                                                             instance :=

@@ -100,7 +100,7 @@ Module Impl_core_fmt_Debug_for_move_bytecode_verifier_meter_Scope.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (|
                         γ,
@@ -109,19 +109,19 @@ Module Impl_core_fmt_Debug_for_move_bytecode_verifier_meter_Scope.
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Transaction" |) |) |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_bytecode_verifier_meter::Scope::Package" |) in
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Package" |) |) |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_bytecode_verifier_meter::Scope::Module" |) in
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Module" |) |) |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_bytecode_verifier_meter::Scope::Function" |) in
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Function" |) |) |)))

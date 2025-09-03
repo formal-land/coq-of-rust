@@ -206,7 +206,7 @@ Module iter.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let γ := M.read (| γ |) in
+                                      (let γ := M.deref (| M.read (| γ |) |) in
                                       let elt := M.copy (| T, γ |) in
                                       M.call_closure (|
                                         Acc,
@@ -267,7 +267,7 @@ Module iter.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let γ := M.read (| γ |) in
+                                      (let γ := M.deref (| M.read (| γ |) |) in
                                       let elt := M.copy (| T, γ |) in
                                       M.call_closure (|
                                         R,

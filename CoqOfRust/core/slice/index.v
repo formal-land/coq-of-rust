@@ -6428,7 +6428,7 @@ Module slice.
                           "core::ops::range::Bound::Included",
                           0
                         |) in
-                      let γ0_0 := M.read (| γ0_0 |) in
+                      let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                       let start := M.copy (| Ty.path "usize", γ0_0 |) in
                       M.read (| start |)));
                   fun γ =>
@@ -6583,7 +6583,7 @@ Module slice.
                           "core::ops::range::Bound::Excluded",
                           0
                         |) in
-                      let γ0_0 := M.read (| γ0_0 |) in
+                      let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                       let end_ := M.copy (| Ty.path "usize", γ0_0 |) in
                       M.read (| end_ |)));
                   fun γ =>
@@ -6749,7 +6749,7 @@ Module slice.
                               "core::ops::range::Bound::Included",
                               0
                             |) in
-                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                           let start := M.copy (| Ty.path "usize", γ0_0 |) in
                           M.read (| start |)));
                       fun γ =>
@@ -7057,7 +7057,7 @@ Module slice.
                               "core::ops::range::Bound::Excluded",
                               0
                             |) in
-                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                           let end_ := M.copy (| Ty.path "usize", γ0_0 |) in
                           M.read (| end_ |)));
                       fun γ =>

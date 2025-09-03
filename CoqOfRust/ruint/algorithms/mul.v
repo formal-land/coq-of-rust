@@ -1009,7 +1009,7 @@ Module algorithms.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ := a in
-                                  let γ := M.read (| γ |) in
+                                  let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                                   let γ1_rest := M.SubPointer.get_slice_rest (| γ, 1, 0 |) in
                                   let _ :=
@@ -1043,7 +1043,7 @@ Module algorithms.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ := lhs in
-                                              let γ := M.read (| γ |) in
+                                              let γ := M.deref (| M.read (| γ |) |) in
                                               let γ1_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                                               let γ1_rest :=
                                                 M.SubPointer.get_slice_rest (| γ, 1, 0 |) in
@@ -1104,7 +1104,7 @@ Module algorithms.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ := a in
-                                  let γ := M.read (| γ |) in
+                                  let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_rest := M.SubPointer.get_slice_rest (| γ, 0, 1 |) in
                                   let γ1_rev0 := M.SubPointer.get_slice_rev_index (| γ, 0 |) in
                                   let rest :=
@@ -1159,7 +1159,7 @@ Module algorithms.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ := b in
-                                  let γ := M.read (| γ |) in
+                                  let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                                   let γ1_rest := M.SubPointer.get_slice_rest (| γ, 1, 0 |) in
                                   let _ :=
@@ -1193,7 +1193,7 @@ Module algorithms.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ := lhs in
-                                              let γ := M.read (| γ |) in
+                                              let γ := M.deref (| M.read (| γ |) |) in
                                               let γ1_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                                               let γ1_rest :=
                                                 M.SubPointer.get_slice_rest (| γ, 1, 0 |) in
@@ -1254,7 +1254,7 @@ Module algorithms.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ := b in
-                                  let γ := M.read (| γ |) in
+                                  let γ := M.deref (| M.read (| γ |) |) in
                                   let γ1_rest := M.SubPointer.get_slice_rest (| γ, 0, 1 |) in
                                   let γ1_rev0 := M.SubPointer.get_slice_rev_index (| γ, 0 |) in
                                   let rest :=
@@ -1588,7 +1588,8 @@ Module algorithms.
                                                                 "core::option::Option::Some",
                                                                 0
                                                               |) in
-                                                            let γ0_0 := M.read (| γ0_0 |) in
+                                                            let γ0_0 :=
+                                                              M.deref (| M.read (| γ0_0 |) |) in
                                                             let b :=
                                                               M.copy (| Ty.path "u64", γ0_0 |) in
                                                             M.read (|

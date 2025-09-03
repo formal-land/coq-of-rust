@@ -50,17 +50,17 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ := M.is_struct_tuple (| γ, "combinators_map::Food::Apple" |) in
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Apple" |) |) |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ := M.is_struct_tuple (| γ, "combinators_map::Food::Carrot" |) in
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Carrot" |) |) |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ := M.is_struct_tuple (| γ, "combinators_map::Food::Potato" |) in
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Potato" |) |) |)))
               ]

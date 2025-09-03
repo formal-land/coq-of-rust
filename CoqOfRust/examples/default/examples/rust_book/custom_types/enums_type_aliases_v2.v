@@ -56,7 +56,7 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
           [
             fun γ =>
               ltac:(M.monadic
-                (let γ := M.read (| γ |) in
+                (let γ := M.deref (| M.read (| γ |) |) in
                 let _ :=
                   M.is_struct_tuple (|
                     γ,
@@ -69,7 +69,7 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
                 |)));
             fun γ =>
               ltac:(M.monadic
-                (let γ := M.read (| γ |) in
+                (let γ := M.deref (| M.read (| γ |) |) in
                 let _ :=
                   M.is_struct_tuple (|
                     γ,

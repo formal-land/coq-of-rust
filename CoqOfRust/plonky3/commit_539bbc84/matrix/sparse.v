@@ -1077,8 +1077,8 @@ Module sparse.
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let γ := M.read (| γ |) in
-                                        let γ := M.read (| γ |) in
+                                        (let γ := M.deref (| M.read (| γ |) |) in
+                                        let γ := M.deref (| M.read (| γ |) |) in
                                         let γ2_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                         let γ2_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                         let col :=
@@ -1115,7 +1115,7 @@ Module sparse.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let γ := M.read (| γ |) in
+                                    (let γ := M.deref (| M.read (| γ |) |) in
                                     let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                     let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                     let val :=
@@ -1338,7 +1338,7 @@ Module sparse.
                                                 "core::option::Option::Some",
                                                 0
                                               |) in
-                                            let γ0_0 := M.read (| γ0_0 |) in
+                                            let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                             let γ2_0 :=
                                               M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                             let γ2_1 :=

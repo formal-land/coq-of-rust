@@ -4877,7 +4877,7 @@ Module prover.
                                                       ],
                                                     γ0_1
                                                   |) in
-                                                let γ0_2 := M.read (| γ0_2 |) in
+                                                let γ0_2 := M.deref (| M.read (| γ0_2 |) |) in
                                                 let quotient_degree :=
                                                   M.copy (| Ty.path "u8", γ0_2 |) in
                                                 M.call_closure (|

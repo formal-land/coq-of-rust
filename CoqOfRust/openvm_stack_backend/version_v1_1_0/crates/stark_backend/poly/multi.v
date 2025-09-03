@@ -914,9 +914,9 @@ Module poly.
                                                         M.SubPointer.get_tuple_field (| γ, 0 |) in
                                                       let γ0_1 :=
                                                         M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                                      let γ0_0 := M.read (| γ0_0 |) in
+                                                      let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                                       let lhs_eval := M.copy (| F, γ0_0 |) in
-                                                      let γ0_1 := M.read (| γ0_1 |) in
+                                                      let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                                                       let rhs_eval := M.copy (| F, γ0_1 |) in
                                                       M.call_closure (|
                                                         F,
@@ -1412,9 +1412,9 @@ Module poly.
                                       ltac:(M.monadic
                                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                        let γ0_0 := M.read (| γ0_0 |) in
+                                        let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                         let xi := M.copy (| F, γ0_0 |) in
-                                        let γ0_1 := M.read (| γ0_1 |) in
+                                        let γ0_1 := M.deref (| M.read (| γ0_1 |) |) in
                                         let yi := M.copy (| F, γ0_1 |) in
                                         M.call_closure (|
                                           F,

@@ -2078,8 +2078,10 @@ Module str.
                                                                                     0
                                                                                   |) in
                                                                                 let γ0_0 :=
-                                                                                  M.read (|
-                                                                                    γ0_0
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      γ0_0
+                                                                                    |)
                                                                                   |) in
                                                                                 let b :=
                                                                                   M.copy (|

@@ -1160,7 +1160,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                         "core::option::Option::Some",
                                         0
                                       |) in
-                                    let γ0_0 := M.read (| γ0_0 |) in
+                                    let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                     let γ2_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                     let γ2_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                     let count :=
@@ -1637,7 +1637,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
+                        (let γ := M.deref (| M.read (| γ |) |) in
                         let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                         let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let count :=
@@ -2141,7 +2141,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let γ := M.read (| γ |) in
+                                        (let γ := M.deref (| M.read (| γ |) |) in
                                         let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                         let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                         let count :=
@@ -2795,7 +2795,7 @@ Module Impl_core_fmt_Debug_for_move_abstract_stack_AbsStackError.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (|
                         γ,
@@ -2804,13 +2804,13 @@ Module Impl_core_fmt_Debug_for_move_abstract_stack_AbsStackError.
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ElementNotEqual" |) |) |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_abstract_stack::AbsStackError::Underflow" |) in
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Underflow" |) |) |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
+                    (let γ := M.deref (| M.read (| γ |) |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "move_abstract_stack::AbsStackError::Overflow" |) in
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Overflow" |) |) |)))
@@ -2864,7 +2864,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
           [
             fun γ =>
               ltac:(M.monadic
-                (let γ := M.read (| γ |) in
+                (let γ := M.deref (| M.read (| γ |) |) in
                 let _ :=
                   M.is_struct_tuple (|
                     γ,
@@ -2914,7 +2914,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                 |)));
             fun γ =>
               ltac:(M.monadic
-                (let γ := M.read (| γ |) in
+                (let γ := M.deref (| M.read (| γ |) |) in
                 let _ :=
                   M.is_struct_tuple (| γ, "move_abstract_stack::AbsStackError::Underflow" |) in
                 M.call_closure (|
@@ -2961,7 +2961,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                 |)));
             fun γ =>
               ltac:(M.monadic
-                (let γ := M.read (| γ |) in
+                (let γ := M.deref (| M.read (| γ |) |) in
                 let _ :=
                   M.is_struct_tuple (| γ, "move_abstract_stack::AbsStackError::Overflow" |) in
                 M.call_closure (|

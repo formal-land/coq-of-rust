@@ -294,7 +294,7 @@ Module fmt.
                                                       "core::option::Option::Some",
                                                       0
                                                     |) in
-                                                  let γ0_0 := M.read (| γ0_0 |) in
+                                                  let γ0_0 := M.deref (| M.read (| γ0_0 |) |) in
                                                   let b := M.copy (| Ty.path "u8", γ0_0 |) in
                                                   M.match_operator (|
                                                     Ty.tuple [],

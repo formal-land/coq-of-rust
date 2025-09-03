@@ -7872,8 +7872,10 @@ Module keygen.
                                                                                                                                                                                                                       ltac:(M.monadic
                                                                                                                                                                                                                         (let
                                                                                                                                                                                                                               γ :=
-                                                                                                                                                                                                                          M.read (|
-                                                                                                                                                                                                                            γ
+                                                                                                                                                                                                                          M.deref (|
+                                                                                                                                                                                                                            M.read (|
+                                                                                                                                                                                                                              γ
+                                                                                                                                                                                                                            |)
                                                                                                                                                                                                                           |) in
                                                                                                                                                                                                                         let
                                                                                                                                                                                                                               x :=
@@ -11150,7 +11152,7 @@ Module keygen.
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let γ := M.read (| γ |) in
+                                            (let γ := M.deref (| M.read (| γ |) |) in
                                             let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                             let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                             let bus_index :=
