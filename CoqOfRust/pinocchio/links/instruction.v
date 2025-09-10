@@ -280,8 +280,6 @@ Module Impl_From_ref_slice_u8_for_Seed.
     { From.from := run_from }.
 End Impl_From_ref_slice_u8_for_Seed.
 
-Print pinocchio.instruction.instruction.Impl_core_convert_From_ref__array_SIZE_u8_for_pinocchio_instruction_Seed.
-
 Module Impl_From_ref_array_u8_SIZE_for_Seed.
   Definition run_from
     : forall (SIZE : Usize.t),
@@ -385,3 +383,4 @@ Module Impl_From_ref_array_Seed_SIZE_for_Signer.
     { constructor.
       admit. }
   Admitted.
+End Impl_From_ref_array_Seed_SIZE_for_Signer.
