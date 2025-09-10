@@ -18,12 +18,32 @@ Defined.
 Instance run_invoke 
   (ACCOUNTS : Usize.t) 
   (instruction : Ref.t Pointer.Kind.Ref Instruction.t)
-  (account_infos : Ref.t Pointer.Kind.Ref (array.t (Ref.t Pointer.Kind.Ref AccountInfo.t) ACCOUNTS)) :
+  (account_infos : 
+    Ref.t Pointer.Kind.Ref (array.t (Ref.t Pointer.Kind.Ref AccountInfo.t) ACCOUNTS)) :
   Run.Trait
-    cpi.invoke [φ ACCOUNTS] [] [φ instruction; φ account_infos]
+    cpi.invoke 
+    [φ ACCOUNTS] 
+    [] 
+    [φ instruction; φ account_infos]
     ProgramResult.t.
 Proof.
   constructor.
   run_symbolic.
+  admit.
+Admitted.
+
+Instance run_invoke_with_bounds
+  (MAX_ACCOUNTS : Usize.t)
+  (instruction : Ref.t Pointer.Kind.Ref Instruction.t)
+  (account_infos :
+     Ref.t Pointer.Kind.Ref (array.t (Ref.t Pointer.Kind.Ref AccountInfo.t) MAX_ACCOUNTS)) :
+  Run.Trait
+    cpi.invoke_with_bounds
+    [φ MAX_ACCOUNTS]              
+    []                            
+    [φ instruction; φ account_infos] 
+    ProgramResult.t.
+Proof.
+  constructor.
   admit.
 Admitted.
