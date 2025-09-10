@@ -1,10 +1,12 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import core.mem.links.maybe_uninit.
 
 Require Import pinocchio.cpi.
 Require Import pinocchio.links.instruction.
 Require Import pinocchio.links.account_info.
 Require Import pinocchio.links.lib.
+Require Import pinocchio.links.pubkey.
 
 Instance run_MAX_CPI_ACCOUNTS :
   Run.Trait
@@ -188,7 +190,36 @@ Proof.
   admit.
 Admitted.
 
-(*
+Instance run_MAX_RETURN_DATA :
+  Run.Trait
+  cpi.value_MAX_RETURN_DATA [] [] []
+    (Ref.t Pointer.Kind.Raw Usize.t).
+Proof.
+  constructor.
+  run_symbolic.
+Defined.
+
+Module ReturnData.
+
+  Parameter (MAX_RETURN_DATA : Usize.t).
+
+  Record t : Set := {
+    program_id : Pubkey.t;
+    data : array.t U8.t MAX_RETURN_DATA;
+    size : Usize.t
+  }.
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "pinocchio::cpi::ReturnData";
+    φ x :=
+      Value.StructRecord "pinocchio::cpi::ReturnData" [] [] [
+        ("program_id", φ x.(program_id));
+        ("data", φ x.(data));
+        ("size", φ x.(size))
+      ];
+  }.
+End ReturnData.
+
 Instance run_get_return_data :
   Run.Trait
     cpi.get_return_data
@@ -200,4 +231,4 @@ Proof.
   constructor.
   admit.
 Admitted.
-*)
+
