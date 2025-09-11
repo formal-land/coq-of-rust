@@ -8,6 +8,9 @@ Require Import pinocchio.links.account_info.
 Require Import pinocchio.links.lib.
 Require Import pinocchio.links.pubkey.
 
+(*
+pub const MAX_CPI_ACCOUNTS: usize = 64;
+*)
 Instance run_MAX_CPI_ACCOUNTS :
   Run.Trait
   cpi.value_MAX_CPI_ACCOUNTS [] [] []
@@ -17,6 +20,14 @@ Proof.
   run_symbolic.
 Defined.
 
+(*
+pub fn invoke<const ACCOUNTS: usize>(
+    instruction: &Instruction,
+    account_infos: &[&AccountInfo; ACCOUNTS],
+) -> ProgramResult {
+    invoke_signed::<ACCOUNTS>(instruction, account_infos, &[])
+}
+*)
 Instance run_invoke 
   (ACCOUNTS : Usize.t) 
   (instruction : Ref.t Pointer.Kind.Ref Instruction.t)
@@ -33,6 +44,14 @@ Proof.
   admit.
 Admitted.
 
+(*
+pub fn invoke_with_bounds<const MAX_ACCOUNTS: usize>(
+    instruction: &Instruction,
+    account_infos: &[&AccountInfo],
+) -> ProgramResult {
+    invoke_signed_with_bounds::<MAX_ACCOUNTS>(instruction, account_infos, &[])
+}
+*)
 Instance run_invoke_with_bounds
   (MAX_ACCOUNTS : Usize.t)
   (instruction : Ref.t Pointer.Kind.Ref Instruction.t)
@@ -49,6 +68,11 @@ Proof.
   admit.
 Admitted.
 
+(*
+pub fn slice_invoke(instruction: &Instruction, account_infos: &[&AccountInfo]) -> ProgramResult {
+    slice_invoke_signed(instruction, account_infos, &[])
+}
+*)
 Instance run_slice_invoke
   (MAX_CPI_ACCOUNTS : Usize.t)
   (instruction : Ref.t Pointer.Kind.Ref Instruction.t)
@@ -65,6 +89,13 @@ Proof.
   admit.
 Admitted.
 
+(*
+pub fn invoke_signed<const ACCOUNTS: usize>(
+    instruction: &Instruction,
+    account_infos: &[&AccountInfo; ACCOUNTS],
+    signers_seeds: &[Signer],
+) -> ProgramResult { ... }
+*)
 Instance run_invoke_signed
   (ACCOUNTS : Usize.t)
   (SIGNERS : Usize.t)
@@ -84,6 +115,13 @@ Proof.
   admit.
 Admitted.
 
+(*
+pub fn invoke_signed_with_bounds<const MAX_ACCOUNTS: usize>(
+    instruction: &Instruction,
+    account_infos: &[&AccountInfo],
+    signers_seeds: &[Signer],
+) -> ProgramResult {
+*)
 Instance run_invoke_signed_with_bounds
   (MAX_ACCOUNTS : Usize.t)
   (SIGNERS : Usize.t)
@@ -103,6 +141,13 @@ Proof.
   admit.
 Admitted.
 
+(*
+pub fn slice_invoke_signed(
+    instruction: &Instruction,
+    account_infos: &[&AccountInfo],
+    signers_seeds: &[Signer],
+) -> ProgramResult { ... }
+*)
 Instance run_slice_invoke_signed
   (MAX_CPI_ACCOUNTS : Usize.t)
   (SIGNERS : Usize.t)
@@ -122,6 +167,13 @@ Proof.
   admit.
 Admitted.
 
+(*
+unsafe fn inner_invoke_signed_with_bounds<const MAX_ACCOUNTS: usize>(
+    instruction: &Instruction,
+    account_infos: &[&AccountInfo],
+    signers_seeds: &[Signer],
+) -> ProgramResult { ... }
+*)
 Instance run_inner_invoke_signed_with_bounds
   (MAX_ACCOUNTS : Usize.t)
   (SIGNERS : Usize.t)
@@ -141,6 +193,11 @@ Proof.
   admit.
 Admitted.
 
+(*
+pub unsafe fn invoke_unchecked(instruction: &Instruction, accounts: &[Account]) {
+    invoke_signed_unchecked(instruction, accounts, &[])
+}
+*)
 Instance run_invoke_unchecked
   (ACCOUNTS : Usize.t)
   (instruction : Ref.t Pointer.Kind.Ref Instruction.t)
@@ -157,6 +214,15 @@ Proof.
   admit.
 Admitted.
 
+(*
+pub unsafe fn invoke_signed_unchecked(
+    instruction: &Instruction,
+    accounts: &[Account],
+    signers_seeds: &[Signer],
+) {
+    ...
+  }
+*)
 Instance run_invoke_signed_unchecked
   (ACCOUNTS : Usize.t)
   (SIGNERS : Usize.t)
@@ -176,6 +242,16 @@ Proof.
   admit.
 Admitted.
 
+(* pub fn set_return_data(data: &[u8]) {
+    #[cfg(target_os = "solana")]
+    unsafe {
+        crate::syscalls::sol_set_return_data(data.as_ptr(), data.len() as u64)
+    };
+
+    #[cfg(not(target_os = "solana"))]
+    core::hint::black_box(data);
+}
+*)
 Instance run_set_return_data
   (N : Usize.t)
   (data : Ref.t Pointer.Kind.Ref (array.t U8.t N)) :
@@ -190,6 +266,11 @@ Proof.
   admit.
 Admitted.
 
+(*
+pub fn get_return_data() -> Option<ReturnData> {
+    ...
+}
+*)
 Instance run_MAX_RETURN_DATA :
   Run.Trait
   cpi.value_MAX_RETURN_DATA [] [] []
@@ -198,6 +279,16 @@ Proof.
   constructor.
   run_symbolic.
 Defined.
+
+(*
+pub struct ReturnData {
+    program_id: Pubkey,
+
+    data: [MaybeUninit<u8>; MAX_RETURN_DATA],
+
+    size: usize,
+}
+*)
 
 Module ReturnData.
 
@@ -232,6 +323,19 @@ Proof.
   admit.
 Admitted.
 
+(*
+impl ReturnData {
+    /// Returns the program that most recently set the return data.
+    pub fn program_id(&self) -> &Pubkey {
+        &self.program_id
+    }
+
+    /// Return the data set by the program.
+    pub fn as_slice(&self) -> &[u8] {
+        unsafe { from_raw_parts(self.data.as_ptr() as _, self.size) }
+    }
+}
+*)
 Module Impl_ReturnData.
   Definition Self : Set := ReturnData.t.
 
@@ -262,6 +366,15 @@ Module Impl_ReturnData.
   Admitted.
 End Impl_ReturnData.
 
+(* 
+impl Deref for ReturnData {
+    type Target = [u8];
+
+    fn deref(&self) -> &Self::Target {
+        self.as_slice()
+    }
+}
+*)
 Module Impl_Deref_for_ReturnData.
 
   Definition Self : Set := ReturnData.t.
