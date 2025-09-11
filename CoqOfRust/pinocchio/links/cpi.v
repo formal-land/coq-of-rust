@@ -1,7 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.mem.links.maybe_uninit.
-
+Require Import core.ops.links.deref.
 Require Import pinocchio.cpi.
 Require Import pinocchio.links.instruction.
 Require Import pinocchio.links.account_info.
@@ -231,4 +231,54 @@ Proof.
   constructor.
   admit.
 Admitted.
+
+Module Impl_ReturnData.
+  Definition Self : Set := ReturnData.t.
+
+  Instance run_program_id
+    (self : Ref.t Pointer.Kind.Ref Self) :
+    Run.Trait
+      pinocchio.cpi.cpi.Impl_pinocchio_cpi_ReturnData.program_id
+      [] []
+      [ φ self ]
+      (Ref.t Pointer.Kind.Ref Pubkey.t).
+  Proof.
+    constructor.
+    run_symbolic.
+    admit.
+  Admitted.
+
+  Instance run_as_slice
+    (self : Ref.t Pointer.Kind.Ref Self) :
+    Run.Trait
+      pinocchio.cpi.cpi.Impl_pinocchio_cpi_ReturnData.as_slice
+      [] []
+      [ φ self ]
+      (list (Integer.t IntegerKind.U8)).
+  Proof.
+    constructor.
+    run_symbolic.
+    admit.
+  Admitted.
+End Impl_ReturnData.
+
+Module Impl_Deref_for_ReturnData.
+
+  Definition Self : Set := ReturnData.t.
+  
+  Definition run_deref
+    : Deref.Run_deref Self (list (Integer.t IntegerKind.U8)).
+  Proof.
+    eexists.
+    { eapply IsTraitMethod.Defined.
+      { apply pinocchio.cpi.cpi.Impl_core_ops_deref_Deref_for_pinocchio_cpi_ReturnData.Implements. }
+      { reflexivity. } }
+    { constructor.
+      admit. }
+  Admitted.
+
+  Instance run
+    : Deref.Run ReturnData.t (list (Integer.t IntegerKind.U8)) :=
+    { Deref.deref := run_deref }.
+End Impl_Deref_for_ReturnData.
 
