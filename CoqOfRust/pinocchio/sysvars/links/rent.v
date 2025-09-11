@@ -6,8 +6,9 @@ Require Import pinocchio.links.lib.
 Require Import pinocchio.sysvars.rent.
 Require Import core.links.clone.
 Require Import core.links.marker.
-
-Print pinocchio.sysvars.rent.sysvars.rent.sysvars.rent.
+Require Import core.links.result.
+Require Import core.links.default.
+Require Import pinocchio.links.program_error.
 
 Instance run_RENT_ID :
   Run.Trait
@@ -27,15 +28,15 @@ Instance run_DEFAULT_LAMPORTS_PER_BYTE_YEAR :
 Proof.
   constructor. run_symbolic.
 Defined.
-(*
+
 Instance run_DEFAULT_EXEMPTION_THRESHOLD :
   Run.Trait
     pinocchio.sysvars.rent.sysvars.rent.value_DEFAULT_EXEMPTION_THRESHOLD [] [] []
     (Ref.t Pointer.Kind.Raw F64.t).
 Proof.
-  constructor. run_symbolic.
-Defined.
-*)
+  constructor. admit.
+Admitted.
+
 Instance run_DEFAULT_EXEMPTION_THRESHOLD_AS_U64 :
   Run.Trait
     pinocchio.sysvars.rent.sysvars.rent.value_DEFAULT_EXEMPTION_THRESHOLD_AS_U64 [] [] []
@@ -67,7 +68,7 @@ Instance run_ACCOUNT_STORAGE_OVERHEAD :
 Proof.
   constructor. run_symbolic.
 Defined.
-(*
+
 Module Rent.
   Record t : Set := {
     lamports_per_byte_year : U64.t;
@@ -85,7 +86,7 @@ Module Rent.
       ];
   }.
 End Rent.
-*)
+
 Module RentDue.
   Inductive t : Set :=
   | Exempt
@@ -105,7 +106,7 @@ Module RentDue.
   }.
 End RentDue.
 
-(*
+
 Module Impl_Rent.
   Definition Self : Set := Rent.t.
 
@@ -115,7 +116,7 @@ Module Impl_Rent.
       pinocchio.sysvars.rent.sysvars.rent.Impl_pinocchio_sysvars_rent_Rent.from_account_info
       [] []
       [φ account_info]
-      (result (Ref.t Pointer.Kind.Ref Self) ProgramError.t).
+      (Result.t (Ref.t Pointer.Kind.Ref Self) ProgramError.t).
   Proof.
     constructor. admit.
   Admitted.
@@ -126,7 +127,7 @@ Module Impl_Rent.
       pinocchio.sysvars.rent.sysvars.rent.Impl_pinocchio_sysvars_rent_Rent.from_account_info_unchecked
       [] []
       [φ account_info]
-      (result (Ref.t Pointer.Kind.Ref Self) ProgramError.t).
+      (Result.t (Ref.t Pointer.Kind.Ref Self) ProgramError.t).
   Proof.
     constructor. admit.
   Admitted.
@@ -137,7 +138,7 @@ Module Impl_Rent.
       pinocchio.sysvars.rent.sysvars.rent.Impl_pinocchio_sysvars_rent_Rent.from_bytes
       [] []
       [φ bytes]
-      (result (Ref.t Pointer.Kind.Ref Self) ProgramError.t).
+      (Result.t (Ref.t Pointer.Kind.Ref Self) ProgramError.t).
   Proof.
     constructor. admit.
   Admitted.
@@ -228,7 +229,6 @@ Module Impl_Rent.
     constructor. admit.
   Admitted.
 End Impl_Rent.
-*)
 
 Module Impl_RentDue.
   Definition Self : Set := RentDue.t.
@@ -256,7 +256,6 @@ Module Impl_RentDue.
   Admitted.
 End Impl_RentDue.
 
-(*
 Module Impl_Default_for_Rent.
   Definition Self : Set := Rent.t.
 
@@ -286,7 +285,6 @@ Module Impl_Clone_for_Rent.
 
   Instance run : Clone.Run Self := { Clone.clone := run_clone }.
 End Impl_Clone_for_Rent.
-*)
 
 Module Impl_Clone_for_RentDue.
   Definition Self : Set := RentDue.t.
