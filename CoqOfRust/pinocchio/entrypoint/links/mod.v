@@ -9,7 +9,7 @@ Module entrypoint.
 
     Parameter MAX_ACCOUNTS : Usize.t.
 
-    Definition Self : Set := (Ref.t Pointer.Kind.Raw U8.t *
+    Definition Self : Set := (Ref.t Pointer.Kind.Ref U8.t *
                               Usize.t *
                               Ref.t Pointer.Kind.Ref (list U8.t))%type.
 
@@ -18,13 +18,15 @@ Module entrypoint.
       (accounts : Ref.t Pointer.Kind.Ref (array.t AccountInfo.t MAX_ACCOUNTS)) :
       Run.Trait
         pinocchio.entrypoint.mod.entrypoint.deserialize
-        [] []
+        [φ MAX_ACCOUNTS] []
         [ φ input; φ accounts ]
         Self.
     Proof.
       constructor.
       run_symbolic.
-      admit. 
+      - admit. 
+      - admit.
+      - admit.
     Admitted.
   End deserialize.
 
@@ -40,13 +42,15 @@ Module entrypoint.
       (accounts : Ref.t Pointer.Kind.Ref (array.t AccountInfo.t MAX_ACCOUNTS)) :
       Run.Trait
         pinocchio.entrypoint.mod.entrypoint.parse
-        [] []
+        [φ MAX_ACCOUNTS] []
         [ φ input; φ accounts ]
         Self.
     Proof.
       constructor.
       run_symbolic.
-      admit. 
+      - admit. 
+      - admit.
+      - admit. 
     Admitted.
   End parse.
 End entrypoint.
