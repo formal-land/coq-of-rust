@@ -19,13 +19,13 @@ Module instruction.
     We monomorphize to a concrete carrier that just stores the byte slice.
   *)
   Module Instructions.
-    Record t : Set := { data : list (Integer.t IntegerKind.U8) }.
+    Record t (T : Set) : Set := { data : T}.
 
-    Global Instance IsLink : Link t := {
+    Global Instance IsLink (T : Set) `{Link T} : Link (t T) := {
       Φ := Ty.path "pinocchio::sysvars::instruction::Instructions";
       φ x :=
         Value.StructRecord "pinocchio::sysvars::instruction::Instructions" [] [] [
-          ("data", φ x.(data))
+          ("data", φ x.(data T))
         ];
     }.
   End Instructions.
@@ -105,22 +105,23 @@ Module instruction.
     We expose methods on our monomorphized Instructions.t
   *)
   Module Impl_Instructions.
-    Definition Self : Set := Instructions.t.
+    Definition Self (T : Set) : Set := Instructions.t T.
     
   Instance run_new_unchecked
     {T : Set} `{Link T}
     (run_Deref_for_T : Deref.Run T (list (Integer.t IntegerKind.U8)))
     (data : T) :
   Run.Trait
-  sysvars.instructions.Impl_pinocchio_sysvars_instructions_Instructions_T.new_unchecked
+  (sysvars.instructions.Impl_pinocchio_sysvars_instructions_Instructions_T.new_unchecked ((Φ T)))
     [] 
-    [Φ T] 
+    [] 
     [φ data]
     (Instructions.t T).
 Proof.
   constructor.
   run_symbolic.
-  admit.
+  - admit.
+  - admit.
 Admitted.
 End Impl_Instructions.
   (*  
