@@ -106,177 +106,149 @@ Module instruction.
   *)
   Module Impl_Instructions.
     Definition Self (T : Set) : Set := Instructions.t T.
-    
-  Instance run_new_unchecked
-    {T : Set} `{Link T}
-    (run_Deref_for_T : Deref.Run T (list (Integer.t IntegerKind.U8)))
-    (data : T) :
-  Run.Trait
-  (sysvars.instructions.Impl_pinocchio_sysvars_instructions_Instructions_T.new_unchecked ((Φ T)))
-    [] 
-    [] 
-    [φ data]
-    (Instructions.t T).
-Proof.
-  constructor.
-  run_symbolic.
-  - admit.
-  - admit.
-Admitted.
-End Impl_Instructions.
-  (*  
-    Instance run_load_current_index
-      (self : Ref.t Pointer.Kind.Ref Self) :
+  
+    Instance run_new_unchecked
+      {T : Set} `{Link T}
+      (run_Deref_for_T : Deref.Run T (list (Integer.t IntegerKind.U8)))
+      (data : T) :
       Run.Trait
-      pinocchio.sysvars.instructions.sysvars.instructions.Impl_pinocchio_sysvars_instructions_Instructions_T.load_current_index
-        [] [] [ φ self ]
+        (sysvars.instructions.Impl_pinocchio_sysvars_instructions_Instructions_T.new_unchecked (Φ T))
+        [] [] [φ data]
+        (Instructions.t T).
+    Proof.
+      constructor. admit. 
+    Admitted.
+  
+    Instance run_load_current_index
+      {T : Set} `{Link T}
+      (run_Deref_for_T : Deref.Run T (list (Integer.t IntegerKind.U8)))
+      (self : Ref.t Pointer.Kind.Ref (Self T)) :
+      Run.Trait
+        (sysvars.instructions.Impl_pinocchio_sysvars_instructions_Instructions_T.load_current_index (Φ T))
+        [] [] [φ self]
         U16.t.
     Proof.
       constructor. run_symbolic. admit.
     Admitted.
-    
-
+  
     Instance run_deserialize_instruction_unchecked
-      (self : Ref.t Pointer.Kind.Ref Self)
+      {T : Set} `{Link T}
+      (run_Deref_for_T : Deref.Run T (list (Integer.t IntegerKind.U8)))
+      (self : Ref.t Pointer.Kind.Ref (Self T))
       (index : Usize.t) :
       Run.Trait
-      pinocchio.sysvars.instructions.sysvars.instructions.Impl_pinocchio_sysvars_instructions_Instructions_T.deserialize_instruction_unchecked
-        [] [] [ φ self; φ index ]
+        (sysvars.instructions.Impl_pinocchio_sysvars_instructions_Instructions_T.deserialize_instruction_unchecked (Φ T))
+        [] [] [φ self; φ index]
         IntrospectedInstruction.t.
     Proof.
       constructor. run_symbolic. admit.
     Admitted.
-
+  
     Instance run_load_instruction_at
-      (self : Ref.t Pointer.Kind.Ref Self)
+      {T : Set} `{Link T}
+      (run_Deref_for_T : Deref.Run T (list (Integer.t IntegerKind.U8)))
+      (self : Ref.t Pointer.Kind.Ref (Self T))
       (index : Usize.t) :
       Run.Trait
-        instruction.instruction.Impl_pinocchio_sysvars_instruction_Instructions.load_instruction_at
-        [] [] [ φ self; φ index ]
+        (sysvars.instructions.Impl_pinocchio_sysvars_instructions_Instructions_T.load_instruction_at (Φ T))
+        [] [] [φ self; φ index]
         (Result.t IntrospectedInstruction.t ProgramError.t).
     Proof.
       constructor. run_symbolic. admit.
     Admitted.
-
+  
     Instance run_get_instruction_relative
-      (self : Ref.t Pointer.Kind.Ref Self)
+      {T : Set} `{Link T}
+      (run_Deref_for_T : Deref.Run T (list (Integer.t IntegerKind.U8)))
+      (self : Ref.t Pointer.Kind.Ref (Self T))
       (index_rel : I64.t) :
       Run.Trait
-        instruction.instruction.Impl_pinocchio_sysvars_instruction_Instructions.get_instruction_relative
-        [] [] [ φ self; φ index_rel ]
+        (sysvars.instructions.Impl_pinocchio_sysvars_instructions_Instructions_T.get_instruction_relative (Φ T))
+        [] [] [φ self; φ index_rel]
         (Result.t IntrospectedInstruction.t ProgramError.t).
     Proof.
       constructor. run_symbolic. admit.
     Admitted.
   End Impl_Instructions.
-  *)
-  (*
-    impl<'a> TryFrom<&'a AccountInfo> for Instructions<Ref<'a,[u8]>>
-
-  Module Impl_TryFrom_ref_AccountInfo_for_Instructions.
-    Definition Self : Set := Instructions.t.
-
-    Definition run_try_from :
-      TryFrom.Run_try_from (Ref.t Pointer.Kind.Ref AccountInfo.t)
-                           (Result.t Self ProgramError.t).
-    Proof.
-      eexists.
-      { eapply IsTraitMethod.Defined.
-        { apply instruction.instruction.Impl_core_convert_TryFrom_ref__pinocchio_account_info_AccountInfo_for_pinocchio_sysvars_instruction_Instructions.Implements. }
-        { reflexivity. } }
-      { constructor. admit. }
-    Admitted.
-
-    Instance run :
-      TryFrom.Run (Ref.t Pointer.Kind.Ref AccountInfo.t) (Result.t Self ProgramError.t) :=
-      { TryFrom.try_from := run_try_from }.
-  End Impl_TryFrom_ref_AccountInfo_for_Instructions.
-
-  
-    impl IntrospectedInstruction { methods ... }
   
   Module Impl_IntrospectedInstruction.
     Definition Self : Set := IntrospectedInstruction.t.
-    
+  
     Instance run_get_account_meta_at_unchecked
       (self : Ref.t Pointer.Kind.Ref Self)
       (index : Usize.t) :
       Run.Trait
-      pinocchio.sysvars.instructions.sysvars.instructions.Impl_core_cmp_Eq_for_pinocchio_sysvars_instructions_IntrospectedInstruction
-      .get_account_meta_at_unchecked
-        [] [] [ φ self; φ index ]
+        sysvars.instructions.Impl_pinocchio_sysvars_instructions_IntrospectedInstruction.get_account_meta_at_unchecked
+        [] [] [φ self; φ index]
         (Ref.t Pointer.Kind.Ref IntrospectedAccountMeta.t).
     Proof.
       constructor. run_symbolic. admit.
     Admitted.
-
+  
     Instance run_get_account_meta_at
       (self : Ref.t Pointer.Kind.Ref Self)
       (index : Usize.t) :
       Run.Trait
-        instruction.instruction.Impl_pinocchio_sysvars_instruction_IntrospectedInstruction.get_account_meta_at
-        [] [] [ φ self; φ index ]
+        sysvars.instructions.Impl_pinocchio_sysvars_instructions_IntrospectedInstruction.get_account_meta_at
+        [] [] [φ self; φ index]
         (Result.t (Ref.t Pointer.Kind.Ref IntrospectedAccountMeta.t) ProgramError.t).
     Proof.
       constructor. run_symbolic. admit.
     Admitted.
-
+  
     Instance run_get_program_id
       (self : Ref.t Pointer.Kind.Ref Self) :
       Run.Trait
-        instruction.instruction.Impl_pinocchio_sysvars_instruction_IntrospectedInstruction.get_program_id
-        [] [] [ φ self ]
+        sysvars.instructions.Impl_pinocchio_sysvars_instructions_IntrospectedInstruction.get_program_id
+        [] [] [φ self]
         (Ref.t Pointer.Kind.Ref Pubkey.t).
     Proof.
       constructor. run_symbolic. admit.
     Admitted.
-
+  
     Instance run_get_instruction_data
       (self : Ref.t Pointer.Kind.Ref Self) :
       Run.Trait
-        instruction.instruction.Impl_pinocchio_sysvars_instruction_IntrospectedInstruction.get_instruction_data
-        [] [] [ φ self ]
+        sysvars.instructions.Impl_pinocchio_sysvars_instructions_IntrospectedInstruction.get_instruction_data
+        [] [] [φ self]
         (list (Integer.t IntegerKind.U8)).
     Proof.
       constructor. run_symbolic. admit.
     Admitted.
   End Impl_IntrospectedInstruction.
-
-  (*
-    impl IntrospectedAccountMeta { is_writable, is_signer, to_account_meta }
-  *)
+  
   Module Impl_IntrospectedAccountMeta.
     Definition Self : Set := IntrospectedAccountMeta.t.
-
+  
     Instance run_is_writable
       (self : Ref.t Pointer.Kind.Ref Self) :
       Run.Trait
-        instruction.instruction.Impl_pinocchio_sysvars_instruction_IntrospectedAccountMeta.is_writable
-        [] [] [ φ self ]
+        sysvars.instructions.Impl_pinocchio_sysvars_instructions_IntrospectedAccountMeta.is_writable
+        [] [] [φ self]
         bool.
     Proof.
       constructor. run_symbolic. admit.
     Admitted.
-
+  
     Instance run_is_signer
       (self : Ref.t Pointer.Kind.Ref Self) :
       Run.Trait
-        instruction.instruction.Impl_pinocchio_sysvars_instruction_IntrospectedAccountMeta.is_signer
-        [] [] [ φ self ]
+        sysvars.instructions.Impl_pinocchio_sysvars_instructions_IntrospectedAccountMeta.is_signer
+        [] [] [φ self]
         bool.
     Proof.
       constructor. run_symbolic. admit.
     Admitted.
-
+  
     Instance run_to_account_meta
       (self : Ref.t Pointer.Kind.Ref Self) :
       Run.Trait
-        instruction.instruction.Impl_pinocchio_sysvars_instruction_IntrospectedAccountMeta.to_account_meta
-        [] [] [ φ self ]
+        sysvars.instructions.Impl_pinocchio_sysvars_instructions_IntrospectedAccountMeta.to_account_meta
+        [] [] [φ self]
         AccountMeta.t.
     Proof.
       constructor. run_symbolic. admit.
     Admitted.
   End Impl_IntrospectedAccountMeta.
-*)
+  
 End instruction.
