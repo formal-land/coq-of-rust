@@ -29,7 +29,6 @@ Module Sysvar.
     get : Run_get Self;
   }.
 End Sysvar.
-Print pinocchio.sysvars.mod.sysvars.
 (*
 pub unsafe fn get_sysvar_unchecked(
     dst: *mut u8,
