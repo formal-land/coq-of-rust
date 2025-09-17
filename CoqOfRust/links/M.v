@@ -380,6 +380,17 @@ Module Str.
   Smpl Add apply of_value : of_value.
 End Str.
 
+Module F64.
+  Parameter t : Set.
+
+  Parameter to_value : t -> Value.t.
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "f64";
+    φ x := to_value x
+  }.
+End F64.
+
 (** A general type for references. Can be used for mutable or non-mutable references, as well as
     for unsafe pointers (we assume that the `unsafe` code is safe). *)
 Module Ref.
