@@ -106,16 +106,24 @@ Module instruction.
   *)
   Module Impl_Instructions.
     Definition Self : Set := Instructions.t.
-  End Impl_Instructions.
-    (*Instance run_new_unchecked
-      (data : list (Integer.t IntegerKind.U8)) :
-      Run.Trait
-      pinocchio.sysvars.instructions.sysvars.instructions.Impl_pinocchio_sysvars_instructions_Instructions_T.new_unchecked
-        [] [] [ φ data ] Self.
-    Proof.
-      constructor. run_symbolic. admit.
-    Admitted.
     
+  Instance run_new_unchecked
+    {T : Set} `{Link T}
+    (run_Deref_for_T : Deref.Run T (list (Integer.t IntegerKind.U8)))
+    (data : T) :
+  Run.Trait
+  sysvars.instructions.Impl_pinocchio_sysvars_instructions_Instructions_T.new_unchecked
+    [] 
+    [Φ T] 
+    [φ data]
+    (Instructions.t T).
+Proof.
+  constructor.
+  run_symbolic.
+  admit.
+Admitted.
+End Impl_Instructions.
+  (*  
     Instance run_load_current_index
       (self : Ref.t Pointer.Kind.Ref Self) :
       Run.Trait
