@@ -162,6 +162,9 @@ Module Impl_Eof.
   (* pub fn decode(raw: Bytes) -> Result<Self, EofDecodeError> *)
   Instance run_decode (raw : Bytes.t) :
     Run.Trait eof.Impl_revm_bytecode_eof_Eof.decode [] [] [φ raw] (Result.t Self EofDecodeError.t).
+  Proof.
+    constructor.
+    run_symbolic.
   Admitted.
 End Impl_Eof.
 Export Impl_Eof.
