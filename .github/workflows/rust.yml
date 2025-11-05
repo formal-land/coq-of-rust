@@ -216,50 +216,6 @@ jobs:
             cd ..
             cd ../../..
           endGroup
-          startGroup "Translate Plonky3"
-            cd third-party/Plonky3
-            git checkout -- .
-            cp ../../rust-toolchain ./
-            # Add a line at the beginning of the file to enable its translation
-            sed -i '1i#![feature(const_swap)]' util/src/lib.rs
-            cargo coq-of-rust
-            touch air/src/lib.rs
-            touch blake3-air/src/lib.rs
-            touch field/src/lib.rs
-            touch keccak-air/src/lib.rs
-            touch matrix/src/lib.rs
-            touch maybe-rayon/src/lib.rs
-            touch util/src/lib.rs
-            cargo coq-of-rust
-            rsync -rcv ./air/src/ ../../CoqOfRust/plonky3/commit_539bbc84/air --include='*/' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./blake3-air/src/ ../../CoqOfRust/plonky3/commit_539bbc84/blake3_air --include='*/' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./field/src/ ../../CoqOfRust/plonky3/commit_539bbc84/field --include='*/' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./keccak-air/src/ ../../CoqOfRust/plonky3/commit_539bbc84/keccak_air --include='*/' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./matrix/src/ ../../CoqOfRust/plonky3/commit_539bbc84/matrix --include='*/' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./maybe-rayon/src/ ../../CoqOfRust/plonky3/commit_539bbc84/maybe-rayon --include='*/' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./util/src/ ../../CoqOfRust/plonky3/commit_539bbc84/util --include='*/' --include='*.v' --include='*.rs' --exclude='*'
-            cd ../..
-          endGroup
-          startGroup "Translate OpenVM"
-            cd third-party/openvm
-            cp ../../rust-toolchain ./
-            cargo coq-of-rust
-            touch crates/vm/src/lib.rs
-            touch extensions/rv32im/circuit/src/lib.rs
-            cargo coq-of-rust
-            rsync -rcv ./crates/vm/src/ ../../CoqOfRust/openvm/version_v1_2_0/crates/vm --include='*/' --include='*.v' --include='*.rs' --exclude='*'
-            rsync -rcv ./extensions/rv32im/circuit/src/ ../../CoqOfRust/openvm/version_v1_2_0/extensions/rv32im/circuit --include='*/' --include='*.v' --include='*.rs' --exclude='*'
-            cd ../..
-          endGroup
-          startGroup "Translate StackBackend of OpenVM"
-            cd third-party/stark-backend
-            cp ../../rust-toolchain ./
-            cargo coq-of-rust
-            touch crates/stark-backend/src/lib.rs
-            cargo coq-of-rust
-            rsync -rcv ./crates/stark-backend/src/ ../../CoqOfRust/openvm_stack_backend/version_v1_1_0/crates/stark_backend --include='*/' --include='*.v' --include='*.rs' --exclude='*'
-            cd ../..
-          endGroup
           startGroup "Translate Pinocchio"
             cd third-party/anza-xyz-pinocchio/sdk/pinocchio
             cp ../../../../rust-toolchain ./

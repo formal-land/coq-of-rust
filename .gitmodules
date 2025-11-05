@@ -19,15 +19,6 @@
 [submodule "third-party/bytes"]
 	path = third-party/bytes
 	url = https://github.com/tokio-rs/bytes.git
-[submodule "third-party/Plonky3"]
-	path = third-party/Plonky3
-	url = https://github.com/Plonky3/Plonky3.git
-[submodule "third-party/openvm"]
-	path = third-party/openvm
-	url = https://github.com/openvm-org/openvm.git
-[submodule "third-party/stark-backend"]
-	path = third-party/stark-backend
-	url = https://github.com/openvm-org/stark-backend.git
 [submodule "third-party/anza-xyz-pinocchio"]
 	path = third-party/anza-xyz-pinocchio
 	url = https://github.com/anza-xyz/pinocchio.git
