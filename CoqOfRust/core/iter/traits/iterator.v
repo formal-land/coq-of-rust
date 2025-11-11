@@ -2052,20 +2052,24 @@ Module iter.
                   ]
                 |),
                 ltac:(M.monadic
-                  (UnOp.not (|
-                    M.call_closure (|
-                      Ty.path "bool",
-                      M.get_trait_method (|
-                        "core::iter::traits::iterator::Iterator",
-                        Self,
-                        [],
-                        [],
-                        "any",
-                        [],
-                        [ P ]
-                      |),
-                      [ M.borrow (| Pointer.Kind.MutRef, self |); M.read (| predicate |) ]
-                    |)
+                  (M.call_closure (|
+                    Ty.path "bool",
+                    UnOp.not,
+                    [
+                      M.call_closure (|
+                        Ty.path "bool",
+                        M.get_trait_method (|
+                          "core::iter::traits::iterator::Iterator",
+                          Self,
+                          [],
+                          [],
+                          "any",
+                          [],
+                          [ P ]
+                        |),
+                        [ M.borrow (| Pointer.Kind.MutRef, self |); M.read (| predicate |) ]
+                      |)
+                    ]
                   |)))
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -5833,20 +5837,24 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| Self, self |) in
               let other := M.alloc (| I, other |) in
-              UnOp.not (|
-                M.call_closure (|
-                  Ty.path "bool",
-                  M.get_trait_method (|
-                    "core::iter::traits::iterator::Iterator",
-                    Self,
-                    [],
-                    [],
-                    "eq",
-                    [],
-                    [ I ]
-                  |),
-                  [ M.read (| self |); M.read (| other |) ]
-                |)
+              M.call_closure (|
+                Ty.path "bool",
+                UnOp.not,
+                [
+                  M.call_closure (|
+                    Ty.path "bool",
+                    M.get_trait_method (|
+                      "core::iter::traits::iterator::Iterator",
+                      Self,
+                      [],
+                      [],
+                      "eq",
+                      [],
+                      [ I ]
+                    |),
+                    [ M.read (| self |); M.read (| other |) ]
+                  |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

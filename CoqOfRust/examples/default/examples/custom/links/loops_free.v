@@ -8,3 +8,10 @@ Proof.
   constructor.
   run_symbolic.
 Defined.
+
+(* pub fn abs_i32(x: i32) -> i32 *)
+Instance run_abs_i32 (x : I32.t) : Run.Trait abs_i32 [] [] [φ x] I32.t.
+Proof.
+  constructor.
+  run_symbolic.
+Defined.

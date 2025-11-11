@@ -995,19 +995,23 @@ Module boxed.
                                             M.use
                                               (M.alloc (|
                                                 Ty.path "bool",
-                                                UnOp.not (|
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    BinOp.eq,
-                                                    [
-                                                      M.read (|
-                                                        M.deref (| M.read (| left_val |) |)
-                                                      |);
-                                                      M.read (|
-                                                        M.deref (| M.read (| right_val |) |)
-                                                      |)
-                                                    ]
-                                                  |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  UnOp.not,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.eq,
+                                                      [
+                                                        M.read (|
+                                                          M.deref (| M.read (| left_val |) |)
+                                                        |);
+                                                        M.read (|
+                                                          M.deref (| M.read (| right_val |) |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=
@@ -1667,22 +1671,26 @@ Module boxed.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              M.get_associated_function (|
-                                                Ty.dyn [ ("core::any::Any::Trait", []) ],
-                                                "is",
-                                                [],
-                                                [ T ]
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| self |) |)
-                                                |)
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                M.get_associated_function (|
+                                                  Ty.dyn [ ("core::any::Any::Trait", []) ],
+                                                  "is",
+                                                  [],
+                                                  [ T ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -2014,26 +2022,30 @@ Module boxed.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              M.get_associated_function (|
-                                                Ty.dyn
-                                                  [
-                                                    ("core::any::Any::Trait", []);
-                                                    ("core::marker::Send::AutoTrait", [])
-                                                  ],
-                                                "is",
-                                                [],
-                                                [ T ]
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| self |) |)
-                                                |)
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                M.get_associated_function (|
+                                                  Ty.dyn
+                                                    [
+                                                      ("core::any::Any::Trait", []);
+                                                      ("core::marker::Send::AutoTrait", [])
+                                                    ],
+                                                  "is",
+                                                  [],
+                                                  [ T ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -2449,27 +2461,31 @@ Module boxed.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              M.get_associated_function (|
-                                                Ty.dyn
-                                                  [
-                                                    ("core::any::Any::Trait", []);
-                                                    ("core::marker::Sync::AutoTrait", []);
-                                                    ("core::marker::Send::AutoTrait", [])
-                                                  ],
-                                                "is",
-                                                [],
-                                                [ T ]
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| self |) |)
-                                                |)
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                M.get_associated_function (|
+                                                  Ty.dyn
+                                                    [
+                                                      ("core::any::Any::Trait", []);
+                                                      ("core::marker::Sync::AutoTrait", []);
+                                                      ("core::marker::Send::AutoTrait", [])
+                                                    ],
+                                                  "is",
+                                                  [],
+                                                  [ T ]
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=

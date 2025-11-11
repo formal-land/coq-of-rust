@@ -3877,25 +3877,31 @@ Module instantiation_loops.
                                                     ],
                                                   γ1_1
                                                 |) in
-                                              UnOp.not (|
-                                                M.call_closure (|
-                                                  Ty.path "bool",
-                                                  M.get_associated_function (|
-                                                    Ty.path
-                                                      "move_binary_format::file_format::FunctionDefinition",
-                                                    "is_native",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.read (| M.deref (| M.read (| def |) |) |)
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                UnOp.not,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    M.get_associated_function (|
+                                                      Ty.path
+                                                        "move_binary_format::file_format::FunctionDefinition",
+                                                      "is_native",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.read (|
+                                                            M.deref (| M.read (| def |) |)
+                                                          |)
+                                                        |)
                                                       |)
-                                                    |)
-                                                  ]
-                                                |)
+                                                    ]
+                                                  |)
+                                                ]
                                               |)))
                                         ]
                                       |)))

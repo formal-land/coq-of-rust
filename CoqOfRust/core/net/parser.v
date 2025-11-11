@@ -2133,19 +2133,23 @@ Module net.
                                                                         M.use
                                                                           (M.alloc (|
                                                                             Ty.path "bool",
-                                                                            UnOp.not (|
-                                                                              M.call_closure (|
-                                                                                Ty.path "bool",
-                                                                                BinOp.lt,
-                                                                                [
-                                                                                  M.read (|
-                                                                                    max_digits
-                                                                                  |);
-                                                                                  Value.Integer
-                                                                                    IntegerKind.Usize
-                                                                                    10
-                                                                                ]
-                                                                              |)
+                                                                            M.call_closure (|
+                                                                              Ty.path "bool",
+                                                                              UnOp.not,
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  Ty.path "bool",
+                                                                                  BinOp.lt,
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      max_digits
+                                                                                    |);
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      10
+                                                                                  ]
+                                                                                |)
+                                                                              ]
                                                                             |)
                                                                           |)) in
                                                                       let _ :=
@@ -3415,8 +3419,10 @@ Module net.
                                                             Ty.path "bool",
                                                             LogicalOp.and (|
                                                               LogicalOp.and (|
-                                                                UnOp.not (|
-                                                                  M.read (| allow_zero_prefix |)
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  UnOp.not,
+                                                                  [ M.read (| allow_zero_prefix |) ]
                                                                 |),
                                                                 ltac:(M.monadic
                                                                   (M.read (| has_leading_zero |)))

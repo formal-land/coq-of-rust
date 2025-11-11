@@ -159,14 +159,18 @@ Module Impl_basic_contract_caller_OtherContract.
                 "basic_contract_caller::OtherContract",
                 "value"
               |),
-              UnOp.not (|
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "basic_contract_caller::OtherContract",
-                    "value"
+              M.call_closure (|
+                Ty.path "bool",
+                UnOp.not,
+                [
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "basic_contract_caller::OtherContract",
+                      "value"
+                    |)
                   |)
-                |)
+                ]
               |)
             |) in
           M.alloc (| Ty.tuple [], Value.Tuple [] |)

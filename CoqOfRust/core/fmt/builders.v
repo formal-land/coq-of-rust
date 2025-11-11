@@ -1467,16 +1467,20 @@ Module fmt.
                                                                   M.use
                                                                     (M.alloc (|
                                                                       Ty.path "bool",
-                                                                      UnOp.not (|
-                                                                        M.read (|
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            M.deref (|
-                                                                              M.read (| self |)
-                                                                            |),
-                                                                            "core::fmt::builders::DebugStruct",
-                                                                            "has_fields"
+                                                                      M.call_closure (|
+                                                                        Ty.path "bool",
+                                                                        UnOp.not,
+                                                                        [
+                                                                          M.read (|
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.deref (|
+                                                                                M.read (| self |)
+                                                                              |),
+                                                                              "core::fmt::builders::DebugStruct",
+                                                                              "has_fields"
+                                                                            |)
                                                                           |)
-                                                                        |)
+                                                                        ]
                                                                       |)
                                                                     |)) in
                                                                 let _ :=
@@ -5605,27 +5609,31 @@ Module fmt.
                                                                             |)))
                                                                         |),
                                                                         ltac:(M.monadic
-                                                                          (UnOp.not (|
-                                                                            M.call_closure (|
-                                                                              Ty.path "bool",
-                                                                              M.get_associated_function (|
-                                                                                Ty.path
-                                                                                  "core::fmt::builders::DebugTuple",
-                                                                                "is_pretty",
-                                                                                [],
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.borrow (|
-                                                                                  Pointer.Kind.Ref,
-                                                                                  M.deref (|
-                                                                                    M.read (|
-                                                                                      self
+                                                                          (M.call_closure (|
+                                                                            Ty.path "bool",
+                                                                            UnOp.not,
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                Ty.path "bool",
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::builders::DebugTuple",
+                                                                                  "is_pretty",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        self
+                                                                                      |)
                                                                                     |)
                                                                                   |)
-                                                                                |)
-                                                                              ]
-                                                                            |)
+                                                                                ]
+                                                                              |)
+                                                                            ]
                                                                           |)))
                                                                       |)
                                                                     |)) in
@@ -6098,16 +6106,20 @@ Module fmt.
                                                               M.use
                                                                 (M.alloc (|
                                                                   Ty.path "bool",
-                                                                  UnOp.not (|
-                                                                    M.read (|
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.deref (|
-                                                                          M.read (| self |)
-                                                                        |),
-                                                                        "core::fmt::builders::DebugInner",
-                                                                        "has_fields"
+                                                                  M.call_closure (|
+                                                                    Ty.path "bool",
+                                                                    UnOp.not,
+                                                                    [
+                                                                      M.read (|
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.deref (|
+                                                                            M.read (| self |)
+                                                                          |),
+                                                                          "core::fmt::builders::DebugInner",
+                                                                          "has_fields"
+                                                                        |)
                                                                       |)
-                                                                    |)
+                                                                    ]
                                                                   |)
                                                                 |)) in
                                                             let _ :=
@@ -9597,18 +9609,26 @@ Module fmt.
                                                           M.use
                                                             (M.alloc (|
                                                               Ty.path "bool",
-                                                              UnOp.not (|
-                                                                UnOp.not (|
-                                                                  M.read (|
-                                                                    M.SubPointer.get_struct_record_field (|
-                                                                      M.deref (|
-                                                                        M.read (| self |)
-                                                                      |),
-                                                                      "core::fmt::builders::DebugMap",
-                                                                      "has_key"
-                                                                    |)
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                UnOp.not,
+                                                                [
+                                                                  M.call_closure (|
+                                                                    Ty.path "bool",
+                                                                    UnOp.not,
+                                                                    [
+                                                                      M.read (|
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.deref (|
+                                                                            M.read (| self |)
+                                                                          |),
+                                                                          "core::fmt::builders::DebugMap",
+                                                                          "has_key"
+                                                                        |)
+                                                                      |)
+                                                                    ]
                                                                   |)
-                                                                |)
+                                                                ]
                                                               |)
                                                             |)) in
                                                         let _ :=
@@ -9723,16 +9743,22 @@ Module fmt.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           Ty.path "bool",
-                                                                          UnOp.not (|
-                                                                            M.read (|
-                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                M.deref (|
-                                                                                  M.read (| self |)
-                                                                                |),
-                                                                                "core::fmt::builders::DebugMap",
-                                                                                "has_fields"
+                                                                          M.call_closure (|
+                                                                            Ty.path "bool",
+                                                                            UnOp.not,
+                                                                            [
+                                                                              M.read (|
+                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      self
+                                                                                    |)
+                                                                                  |),
+                                                                                  "core::fmt::builders::DebugMap",
+                                                                                  "has_fields"
+                                                                                |)
                                                                               |)
-                                                                            |)
+                                                                            ]
                                                                           |)
                                                                         |)) in
                                                                     let _ :=
@@ -11263,14 +11289,20 @@ Module fmt.
                                                           M.use
                                                             (M.alloc (|
                                                               Ty.path "bool",
-                                                              UnOp.not (|
-                                                                M.read (|
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.deref (| M.read (| self |) |),
-                                                                    "core::fmt::builders::DebugMap",
-                                                                    "has_key"
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                UnOp.not,
+                                                                [
+                                                                  M.read (|
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.deref (|
+                                                                        M.read (| self |)
+                                                                      |),
+                                                                      "core::fmt::builders::DebugMap",
+                                                                      "has_key"
+                                                                    |)
                                                                   |)
-                                                                |)
+                                                                ]
                                                               |)
                                                             |)) in
                                                         let _ :=
@@ -12402,16 +12434,26 @@ Module fmt.
                                                       M.use
                                                         (M.alloc (|
                                                           Ty.path "bool",
-                                                          UnOp.not (|
-                                                            UnOp.not (|
-                                                              M.read (|
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  M.deref (| M.read (| self |) |),
-                                                                  "core::fmt::builders::DebugMap",
-                                                                  "has_key"
-                                                                |)
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            UnOp.not,
+                                                            [
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                UnOp.not,
+                                                                [
+                                                                  M.read (|
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.deref (|
+                                                                        M.read (| self |)
+                                                                      |),
+                                                                      "core::fmt::builders::DebugMap",
+                                                                      "has_key"
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
-                                                            |)
+                                                            ]
                                                           |)
                                                         |)) in
                                                     let _ :=
@@ -13023,16 +13065,26 @@ Module fmt.
                                                       M.use
                                                         (M.alloc (|
                                                           Ty.path "bool",
-                                                          UnOp.not (|
-                                                            UnOp.not (|
-                                                              M.read (|
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  M.deref (| M.read (| self |) |),
-                                                                  "core::fmt::builders::DebugMap",
-                                                                  "has_key"
-                                                                |)
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            UnOp.not,
+                                                            [
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                UnOp.not,
+                                                                [
+                                                                  M.read (|
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.deref (|
+                                                                        M.read (| self |)
+                                                                      |),
+                                                                      "core::fmt::builders::DebugMap",
+                                                                      "has_key"
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
-                                                            |)
+                                                            ]
                                                           |)
                                                         |)) in
                                                     let _ :=

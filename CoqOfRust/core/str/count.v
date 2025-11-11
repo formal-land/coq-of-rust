@@ -1315,34 +1315,39 @@ Module str.
                                                                                     (M.alloc (|
                                                                                       Ty.path
                                                                                         "bool",
-                                                                                      UnOp.not (|
-                                                                                        M.call_closure (|
-                                                                                          Ty.path
-                                                                                            "bool",
-                                                                                          M.get_associated_function (|
-                                                                                            Ty.apply
-                                                                                              (Ty.path
-                                                                                                "slice")
+                                                                                      M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "bool",
+                                                                                        UnOp.not,
+                                                                                        [
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
+                                                                                            M.get_associated_function (|
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "slice")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "usize"
+                                                                                                ],
+                                                                                              "is_empty",
+                                                                                              [],
                                                                                               []
-                                                                                              [
-                                                                                                Ty.path
-                                                                                                  "usize"
-                                                                                              ],
-                                                                                            "is_empty",
-                                                                                            [],
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            M.borrow (|
-                                                                                              Pointer.Kind.Ref,
-                                                                                              M.deref (|
-                                                                                                M.read (|
-                                                                                                  remainder
+                                                                                            |),
+                                                                                            [
+                                                                                              M.borrow (|
+                                                                                                Pointer.Kind.Ref,
+                                                                                                M.deref (|
+                                                                                                  M.read (|
+                                                                                                    remainder
+                                                                                                  |)
                                                                                                 |)
                                                                                               |)
-                                                                                            |)
-                                                                                          ]
-                                                                                        |)
+                                                                                            ]
+                                                                                          |)
+                                                                                        ]
                                                                                       |)
                                                                                     |)) in
                                                                                 let _ :=
@@ -1703,7 +1708,10 @@ Module str.
                   M.call_closure (|
                     Ty.path "usize",
                     BinOp.Wrap.shr,
-                    [ UnOp.not (| M.read (| w |) |); Value.Integer IntegerKind.I32 7 ]
+                    [
+                      M.call_closure (| Ty.path "usize", UnOp.not, [ M.read (| w |) ] |);
+                      Value.Integer IntegerKind.I32 7
+                    ]
                   |);
                   M.call_closure (|
                     Ty.path "usize",
@@ -1971,16 +1979,20 @@ Module str.
                                     (let γ := M.deref (| M.read (| γ |) |) in
                                     let γ := M.deref (| M.read (| γ |) |) in
                                     let byte := M.copy (| Ty.path "u8", γ |) in
-                                    UnOp.not (|
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        M.get_function (|
-                                          "core::str::validations::utf8_is_cont_byte",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| byte |) ]
-                                      |)
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_function (|
+                                            "core::str::validations::utf8_is_cont_byte",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| byte |) ]
+                                        |)
+                                      ]
                                     |)))
                               ]
                             |)))

@@ -546,54 +546,58 @@ Module slice.
                                   |) in
                                 M.read (|
                                   let~ consume_left : Ty.path "bool" :=
-                                    UnOp.not (|
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        M.get_trait_method (|
-                                          "core::ops::function::FnMut",
-                                          F,
-                                          [],
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply (Ty.path "&") [] [ T ];
-                                                Ty.apply (Ty.path "&") [] [ T ]
-                                              ]
-                                          ],
-                                          "call_mut",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.deref (| M.read (| is_less |) |)
-                                          |);
-                                          Value.Tuple
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_trait_method (|
+                                            "core::ops::function::FnMut",
+                                            F,
+                                            [],
                                             [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| right |) |)
+                                              Ty.tuple
+                                                [
+                                                  Ty.apply (Ty.path "&") [] [ T ];
+                                                  Ty.apply (Ty.path "&") [] [ T ]
+                                                ]
+                                            ],
+                                            "call_mut",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| is_less |) |)
+                                            |);
+                                            Value.Tuple
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| right |) |)
+                                                    |)
                                                   |)
-                                                |)
-                                              |);
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      M.read (| M.deref (| M.read (| left |) |) |)
+                                                |);
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.read (| M.deref (| M.read (| left |) |) |)
+                                                      |)
                                                     |)
                                                   |)
                                                 |)
-                                              |)
-                                            ]
-                                        ]
-                                      |)
+                                              ]
+                                          ]
+                                        |)
+                                      ]
                                     |) in
                                   let~ src : Ty.apply (Ty.path "*const") [] [ T ] :=
                                     M.match_operator (|
@@ -665,7 +669,11 @@ Module slice.
                                           M.read (| right |);
                                           M.cast
                                             (Ty.path "usize")
-                                            (UnOp.not (| M.read (| consume_left |) |))
+                                            (M.call_closure (|
+                                              Ty.path "bool",
+                                              UnOp.not,
+                                              [ M.read (| consume_left |) ]
+                                            |))
                                         ]
                                       |)
                                     |) in
@@ -910,7 +918,13 @@ Module slice.
                             |),
                             [
                               M.read (| left |);
-                              M.cast (Ty.path "usize") (UnOp.not (| M.read (| consume_left |) |))
+                              M.cast
+                                (Ty.path "usize")
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [ M.read (| consume_left |) ]
+                                |))
                             ]
                           |)
                         |) in

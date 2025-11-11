@@ -1165,7 +1165,11 @@ Module num.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
-                            M.use (M.alloc (| Ty.path "bool", UnOp.not (| Value.Bool false |) |)) in
+                            M.use
+                              (M.alloc (|
+                                Ty.path "bool",
+                                M.call_closure (| Ty.path "bool", UnOp.not, [ Value.Bool false ] |)
+                              |)) in
                           let _ :=
                             is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.match_operator (|

@@ -67,7 +67,7 @@ Definition abs_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                     |)
                   |)) in
               let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-              UnOp.neg (| M.read (| x |) |)));
+              M.call_closure (| Ty.path "i32", UnOp.neg, [ M.read (| x |) ] |)));
           fun γ => ltac:(M.monadic (M.read (| x |)))
         ]
       |)))

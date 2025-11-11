@@ -721,12 +721,16 @@ Module f16.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| Ty.path "f16", self |) in
-          UnOp.not (|
-            M.call_closure (|
-              Ty.path "bool",
-              M.get_associated_function (| Ty.path "f16", "is_sign_negative", [], [] |),
-              [ M.read (| self |) ]
-            |)
+          M.call_closure (|
+            Ty.path "bool",
+            UnOp.not,
+            [
+              M.call_closure (|
+                Ty.path "bool",
+                M.get_associated_function (| Ty.path "f16", "is_sign_negative", [], [] |),
+                [ M.read (| self |) ]
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -872,10 +876,14 @@ Module f16.
                     BinOp.Wrap.bit_and,
                     [
                       M.read (| bits |);
-                      UnOp.not (|
-                        M.read (|
-                          get_associated_constant (| Ty.path "f16", "SIGN_MASK", Ty.path "u16" |)
-                        |)
+                      M.call_closure (|
+                        Ty.path "u16",
+                        UnOp.not,
+                        [
+                          M.read (|
+                            get_associated_constant (| Ty.path "f16", "SIGN_MASK", Ty.path "u16" |)
+                          |)
+                        ]
                       |)
                     ]
                   |) in
@@ -1049,10 +1057,14 @@ Module f16.
                     BinOp.Wrap.bit_and,
                     [
                       M.read (| bits |);
-                      UnOp.not (|
-                        M.read (|
-                          get_associated_constant (| Ty.path "f16", "SIGN_MASK", Ty.path "u16" |)
-                        |)
+                      M.call_closure (|
+                        Ty.path "u16",
+                        UnOp.not,
+                        [
+                          M.read (|
+                            get_associated_constant (| Ty.path "f16", "SIGN_MASK", Ty.path "u16" |)
+                          |)
+                        ]
                       |)
                     ]
                   |) in
@@ -2245,18 +2257,22 @@ Module f16.
                         M.use
                           (M.alloc (|
                             Ty.path "bool",
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_function (| "core::intrinsics::likely", [], [] |),
-                                [
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.le,
-                                    [ M.read (| min |); M.read (| max |) ]
-                                  |)
-                                ]
-                              |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              UnOp.not,
+                              [
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_function (| "core::intrinsics::likely", [], [] |),
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.le,
+                                      [ M.read (| min |); M.read (| max |) ]
+                                    |)
+                                  ]
+                                |)
+                              ]
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2353,12 +2369,16 @@ Module f16.
                     M.get_associated_function (| Ty.path "f16", "to_bits", [], [] |),
                     [ M.read (| self |) ]
                   |);
-                  UnOp.not (|
-                    M.call_closure (|
-                      Ty.path "u16",
-                      BinOp.Wrap.shl,
-                      [ Value.Integer IntegerKind.U16 1; Value.Integer IntegerKind.I32 15 ]
-                    |)
+                  M.call_closure (|
+                    Ty.path "u16",
+                    UnOp.not,
+                    [
+                      M.call_closure (|
+                        Ty.path "u16",
+                        BinOp.Wrap.shl,
+                        [ Value.Integer IntegerKind.U16 1; Value.Integer IntegerKind.I32 15 ]
+                      |)
+                    ]
                   |)
                 ]
               |)

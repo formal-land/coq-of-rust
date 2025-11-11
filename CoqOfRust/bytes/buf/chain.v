@@ -1051,40 +1051,44 @@ Module buf.
                                               M.use
                                                 (M.alloc (|
                                                   Ty.path "bool",
-                                                  UnOp.not (|
-                                                    M.call_closure (|
-                                                      Ty.path "bool",
-                                                      BinOp.le,
-                                                      [
-                                                        M.call_closure (|
-                                                          Ty.path "usize",
-                                                          BinOp.Wrap.sub,
-                                                          [ M.read (| len |); M.read (| a_rem |) ]
-                                                        |);
-                                                        M.call_closure (|
-                                                          Ty.path "usize",
-                                                          M.get_trait_method (|
-                                                            "bytes::buf::buf_impl::Buf",
-                                                            U,
-                                                            [],
-                                                            [],
-                                                            "remaining",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                M.deref (| M.read (| self |) |),
-                                                                "bytes::buf::chain::Chain",
-                                                                "b"
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    UnOp.not,
+                                                    [
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        BinOp.le,
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "usize",
+                                                            BinOp.Wrap.sub,
+                                                            [ M.read (| len |); M.read (| a_rem |) ]
+                                                          |);
+                                                          M.call_closure (|
+                                                            Ty.path "usize",
+                                                            M.get_trait_method (|
+                                                              "bytes::buf::buf_impl::Buf",
+                                                              U,
+                                                              [],
+                                                              [],
+                                                              "remaining",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (| M.read (| self |) |),
+                                                                  "bytes::buf::chain::Chain",
+                                                                  "b"
+                                                                |)
                                                               |)
-                                                            |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                    |)
+                                                            ]
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
                                                   |)
                                                 |)) in
                                             let _ :=

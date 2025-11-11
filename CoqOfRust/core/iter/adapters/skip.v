@@ -3289,26 +3289,30 @@ Module iter.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.tuple [];
+                                            Ty.apply
+                                              (Ty.path "core::num::nonzero::NonZero")
+                                              []
+                                              [ Ty.path "usize" ]
+                                          ],
+                                        "is_ok",
+                                        [],
                                         []
-                                        [
-                                          Ty.tuple [];
-                                          Ty.apply
-                                            (Ty.path "core::num::nonzero::NonZero")
-                                            []
-                                            [ Ty.path "usize" ]
-                                        ],
-                                      "is_ok",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, rem |) ]
-                                  |)
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, rem |) ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=

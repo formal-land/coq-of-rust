@@ -1438,20 +1438,31 @@ Module boxed.
                                                               M.use
                                                                 (M.alloc (|
                                                                   Ty.path "bool",
-                                                                  UnOp.not (|
-                                                                    LogicalOp.and (|
+                                                                  M.call_closure (|
+                                                                    Ty.path "bool",
+                                                                    UnOp.not,
+                                                                    [
                                                                       LogicalOp.and (|
-                                                                        M.call_closure (|
-                                                                          Ty.path "bool",
-                                                                          BinOp.eq,
-                                                                          [
-                                                                            M.read (|
-                                                                              value_offset
-                                                                            |);
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              0
-                                                                          ]
+                                                                        LogicalOp.and (|
+                                                                          M.call_closure (|
+                                                                            Ty.path "bool",
+                                                                            BinOp.eq,
+                                                                            [
+                                                                              M.read (|
+                                                                                value_offset
+                                                                              |);
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                0
+                                                                            ]
+                                                                          |),
+                                                                          ltac:(M.monadic
+                                                                            (M.read (|
+                                                                              get_constant (|
+                                                                                "core::mem::SizedTypeProperties::IS_ZST",
+                                                                                Ty.path "bool"
+                                                                              |)
+                                                                            |)))
                                                                         |),
                                                                         ltac:(M.monadic
                                                                           (M.read (|
@@ -1460,15 +1471,8 @@ Module boxed.
                                                                               Ty.path "bool"
                                                                             |)
                                                                           |)))
-                                                                      |),
-                                                                      ltac:(M.monadic
-                                                                        (M.read (|
-                                                                          get_constant (|
-                                                                            "core::mem::SizedTypeProperties::IS_ZST",
-                                                                            Ty.path "bool"
-                                                                          |)
-                                                                        |)))
-                                                                    |)
+                                                                      |)
+                                                                    ]
                                                                   |)
                                                                 |)) in
                                                             let _ :=
@@ -1898,20 +1902,44 @@ Module boxed.
                                                                   M.use
                                                                     (M.alloc (|
                                                                       Ty.path "bool",
-                                                                      UnOp.not (|
-                                                                        LogicalOp.and (|
+                                                                      M.call_closure (|
+                                                                        Ty.path "bool",
+                                                                        UnOp.not,
+                                                                        [
                                                                           LogicalOp.and (|
-                                                                            M.call_closure (|
-                                                                              Ty.path "bool",
-                                                                              BinOp.eq,
-                                                                              [
-                                                                                M.read (|
-                                                                                  value_offset
-                                                                                |);
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  0
-                                                                              ]
+                                                                            LogicalOp.and (|
+                                                                              M.call_closure (|
+                                                                                Ty.path "bool",
+                                                                                BinOp.eq,
+                                                                                [
+                                                                                  M.read (|
+                                                                                    value_offset
+                                                                                  |);
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    0
+                                                                                ]
+                                                                              |),
+                                                                              ltac:(M.monadic
+                                                                                (M.call_closure (|
+                                                                                  Ty.path "bool",
+                                                                                  BinOp.eq,
+                                                                                  [
+                                                                                    M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "usize",
+                                                                                      M.get_function (|
+                                                                                        "core::mem::size_of",
+                                                                                        [],
+                                                                                        [ T ]
+                                                                                      |),
+                                                                                      []
+                                                                                    |);
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      0
+                                                                                  ]
+                                                                                |)))
                                                                             |),
                                                                             ltac:(M.monadic
                                                                               (M.call_closure (|
@@ -1923,7 +1951,7 @@ Module boxed.
                                                                                     M.get_function (|
                                                                                       "core::mem::size_of",
                                                                                       [],
-                                                                                      [ T ]
+                                                                                      [ H ]
                                                                                     |),
                                                                                     []
                                                                                   |);
@@ -1932,27 +1960,8 @@ Module boxed.
                                                                                     0
                                                                                 ]
                                                                               |)))
-                                                                          |),
-                                                                          ltac:(M.monadic
-                                                                            (M.call_closure (|
-                                                                              Ty.path "bool",
-                                                                              BinOp.eq,
-                                                                              [
-                                                                                M.call_closure (|
-                                                                                  Ty.path "usize",
-                                                                                  M.get_function (|
-                                                                                    "core::mem::size_of",
-                                                                                    [],
-                                                                                    [ H ]
-                                                                                  |),
-                                                                                  []
-                                                                                |);
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  0
-                                                                              ]
-                                                                            |)))
-                                                                        |)
+                                                                          |)
+                                                                        ]
                                                                       |)
                                                                     |)) in
                                                                 let _ :=
@@ -2293,19 +2302,23 @@ Module boxed.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.eq,
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_function (| "core::mem::size_of", [], [ T ] |),
-                                      []
-                                    |);
-                                    Value.Integer IntegerKind.Usize 0
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_function (| "core::mem::size_of", [], [ T ] |),
+                                        []
+                                      |);
+                                      Value.Integer IntegerKind.Usize 0
+                                    ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2392,17 +2405,21 @@ Module boxed.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              M.get_associated_function (|
-                                                Ty.apply (Ty.path "*mut") [] [ T ],
-                                                "is_aligned",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.read (| value_ptr |) ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "*mut") [] [ T ],
+                                                  "is_aligned",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| value_ptr |) ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -2690,17 +2707,21 @@ Module boxed.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              M.get_associated_function (|
-                                                Ty.apply (Ty.path "*mut") [] [ H ],
-                                                "is_aligned",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.read (| hp |) ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "*mut") [] [ H ],
+                                                  "is_aligned",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| hp |) ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=

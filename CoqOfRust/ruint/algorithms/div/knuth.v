@@ -96,29 +96,36 @@ Module algorithms.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.ge,
-                                              [
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
-                                                    "len",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (| M.read (| divisor |) |)
-                                                    |)
-                                                  ]
-                                                |);
-                                                Value.Integer IntegerKind.Usize 2
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.ge,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u64" ],
+                                                      "len",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| divisor |) |)
+                                                      |)
+                                                    ]
+                                                  |);
+                                                  Value.Integer IntegerKind.Usize 2
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -162,43 +169,53 @@ Module algorithms.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.ge,
-                                              [
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
-                                                    "len",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (| M.read (| numerator |) |)
-                                                    |)
-                                                  ]
-                                                |);
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
-                                                    "len",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (| M.read (| divisor |) |)
-                                                    |)
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.ge,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u64" ],
+                                                      "len",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| numerator |) |)
+                                                      |)
+                                                    ]
+                                                  |);
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u64" ],
+                                                      "len",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| divisor |) |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -246,31 +263,19 @@ Module algorithms.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.ge,
-                                              [
-                                                M.read (|
-                                                  M.deref (|
-                                                    M.call_closure (|
-                                                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path "core::option::Option")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [ Ty.path "u64" ]
-                                                          ],
-                                                        "unwrap",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.ge,
+                                                [
+                                                  M.read (|
+                                                    M.deref (|
+                                                      M.call_closure (|
+                                                        Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                                        M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
                                                             []
@@ -280,36 +285,52 @@ Module algorithms.
                                                                 []
                                                                 [ Ty.path "u64" ]
                                                             ],
-                                                          M.get_associated_function (|
+                                                          "unwrap",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
                                                             Ty.apply
-                                                              (Ty.path "slice")
+                                                              (Ty.path "core::option::Option")
                                                               []
-                                                              [ Ty.path "u64" ],
-                                                            "last",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (| M.read (| divisor |) |)
-                                                            |)
-                                                          ]
-                                                        |)
-                                                      ]
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [ Ty.path "u64" ]
+                                                              ],
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                []
+                                                                [ Ty.path "u64" ],
+                                                              "last",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| divisor |) |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        ]
+                                                      |)
                                                     |)
+                                                  |);
+                                                  M.call_closure (|
+                                                    Ty.path "u64",
+                                                    BinOp.Wrap.shl,
+                                                    [
+                                                      Value.Integer IntegerKind.U64 1;
+                                                      Value.Integer IntegerKind.I32 63
+                                                    ]
                                                   |)
-                                                |);
-                                                M.call_closure (|
-                                                  Ty.path "u64",
-                                                  BinOp.Wrap.shl,
-                                                  [
-                                                    Value.Integer IntegerKind.U64 1;
-                                                    Value.Integer IntegerKind.I32 63
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -674,15 +695,19 @@ Module algorithms.
                                                                     M.use
                                                                       (M.alloc (|
                                                                         Ty.path "bool",
-                                                                        UnOp.not (|
-                                                                          M.call_closure (|
-                                                                            Ty.path "bool",
-                                                                            BinOp.le,
-                                                                            [
-                                                                              M.read (| n21 |);
-                                                                              M.read (| d |)
-                                                                            ]
-                                                                          |)
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          UnOp.not,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "bool",
+                                                                              BinOp.le,
+                                                                              [
+                                                                                M.read (| n21 |);
+                                                                                M.read (| d |)
+                                                                              ]
+                                                                            |)
+                                                                          ]
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
@@ -1552,28 +1577,33 @@ Module algorithms.
                                                                                                                   (M.alloc (|
                                                                                                                     Ty.path
                                                                                                                       "bool",
-                                                                                                                    UnOp.not (|
-                                                                                                                      M.call_closure (|
-                                                                                                                        Ty.path
-                                                                                                                          "bool",
-                                                                                                                        BinOp.eq,
-                                                                                                                        [
-                                                                                                                          M.read (|
-                                                                                                                            M.deref (|
-                                                                                                                              M.read (|
-                                                                                                                                left_val
+                                                                                                                    M.call_closure (|
+                                                                                                                      Ty.path
+                                                                                                                        "bool",
+                                                                                                                      UnOp.not,
+                                                                                                                      [
+                                                                                                                        M.call_closure (|
+                                                                                                                          Ty.path
+                                                                                                                            "bool",
+                                                                                                                          BinOp.eq,
+                                                                                                                          [
+                                                                                                                            M.read (|
+                                                                                                                              M.deref (|
+                                                                                                                                M.read (|
+                                                                                                                                  left_val
+                                                                                                                                |)
+                                                                                                                              |)
+                                                                                                                            |);
+                                                                                                                            M.read (|
+                                                                                                                              M.deref (|
+                                                                                                                                M.read (|
+                                                                                                                                  right_val
+                                                                                                                                |)
                                                                                                                               |)
                                                                                                                             |)
-                                                                                                                          |);
-                                                                                                                          M.read (|
-                                                                                                                            M.deref (|
-                                                                                                                              M.read (|
-                                                                                                                                right_val
-                                                                                                                              |)
-                                                                                                                            |)
-                                                                                                                          |)
-                                                                                                                        ]
-                                                                                                                      |)
+                                                                                                                          ]
+                                                                                                                        |)
+                                                                                                                      ]
                                                                                                                     |)
                                                                                                                   |)) in
                                                                                                               let
@@ -1874,29 +1904,36 @@ Module algorithms.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.ge,
-                                              [
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
-                                                    "len",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (| M.read (| divisor |) |)
-                                                    |)
-                                                  ]
-                                                |);
-                                                Value.Integer IntegerKind.Usize 3
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.ge,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u64" ],
+                                                      "len",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| divisor |) |)
+                                                      |)
+                                                    ]
+                                                  |);
+                                                  Value.Integer IntegerKind.Usize 3
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -1940,43 +1977,53 @@ Module algorithms.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.ge,
-                                              [
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
-                                                    "len",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (| M.read (| numerator |) |)
-                                                    |)
-                                                  ]
-                                                |);
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
-                                                    "len",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (| M.read (| divisor |) |)
-                                                    |)
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.ge,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u64" ],
+                                                      "len",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| numerator |) |)
+                                                      |)
+                                                    ]
+                                                  |);
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u64" ],
+                                                      "len",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| divisor |) |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -2024,31 +2071,19 @@ Module algorithms.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.ge,
-                                              [
-                                                M.read (|
-                                                  M.deref (|
-                                                    M.call_closure (|
-                                                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path "core::option::Option")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [ Ty.path "u64" ]
-                                                          ],
-                                                        "unwrap",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.ge,
+                                                [
+                                                  M.read (|
+                                                    M.deref (|
+                                                      M.call_closure (|
+                                                        Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                                        M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
                                                             []
@@ -2058,29 +2093,45 @@ Module algorithms.
                                                                 []
                                                                 [ Ty.path "u64" ]
                                                             ],
-                                                          M.get_associated_function (|
+                                                          "unwrap",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
                                                             Ty.apply
-                                                              (Ty.path "slice")
+                                                              (Ty.path "core::option::Option")
                                                               []
-                                                              [ Ty.path "u64" ],
-                                                            "last",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (| M.read (| divisor |) |)
-                                                            |)
-                                                          ]
-                                                        |)
-                                                      ]
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [ Ty.path "u64" ]
+                                                              ],
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                []
+                                                                [ Ty.path "u64" ],
+                                                              "last",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| divisor |) |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        ]
+                                                      |)
                                                     |)
-                                                  |)
-                                                |);
-                                                Value.Integer IntegerKind.U64 1
-                                              ]
-                                            |)
+                                                  |);
+                                                  Value.Integer IntegerKind.U64 1
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -2312,22 +2363,26 @@ Module algorithms.
                                                   M.use
                                                     (M.alloc (|
                                                       Ty.path "bool",
-                                                      UnOp.not (|
-                                                        M.call_closure (|
-                                                          Ty.path "bool",
-                                                          BinOp.ge,
-                                                          [
-                                                            M.read (| d |);
-                                                            M.call_closure (|
-                                                              Ty.path "u128",
-                                                              BinOp.Wrap.shl,
-                                                              [
-                                                                Value.Integer IntegerKind.U128 1;
-                                                                Value.Integer IntegerKind.I32 127
-                                                              ]
-                                                            |)
-                                                          ]
-                                                        |)
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        UnOp.not,
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.ge,
+                                                            [
+                                                              M.read (| d |);
+                                                              M.call_closure (|
+                                                                Ty.path "u128",
+                                                                BinOp.Wrap.shl,
+                                                                [
+                                                                  Value.Integer IntegerKind.U128 1;
+                                                                  Value.Integer IntegerKind.I32 127
+                                                                ]
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        ]
                                                       |)
                                                     |)) in
                                                 let _ :=
@@ -2907,20 +2962,25 @@ Module algorithms.
                                                                                               (M.alloc (|
                                                                                                 Ty.path
                                                                                                   "bool",
-                                                                                                UnOp.not (|
-                                                                                                  M.call_closure (|
-                                                                                                    Ty.path
-                                                                                                      "bool",
-                                                                                                    BinOp.le,
-                                                                                                    [
-                                                                                                      M.read (|
-                                                                                                        n21
-                                                                                                      |);
-                                                                                                      M.read (|
-                                                                                                        d
-                                                                                                      |)
-                                                                                                    ]
-                                                                                                  |)
+                                                                                                M.call_closure (|
+                                                                                                  Ty.path
+                                                                                                    "bool",
+                                                                                                  UnOp.not,
+                                                                                                  [
+                                                                                                    M.call_closure (|
+                                                                                                      Ty.path
+                                                                                                        "bool",
+                                                                                                      BinOp.le,
+                                                                                                      [
+                                                                                                        M.read (|
+                                                                                                          n21
+                                                                                                        |);
+                                                                                                        M.read (|
+                                                                                                          d
+                                                                                                        |)
+                                                                                                      ]
+                                                                                                    |)
+                                                                                                  ]
                                                                                                 |)
                                                                                               |)) in
                                                                                           let _ :=
@@ -4220,28 +4280,33 @@ Module algorithms.
                                                                                                                                                   (M.alloc (|
                                                                                                                                                     Ty.path
                                                                                                                                                       "bool",
-                                                                                                                                                    UnOp.not (|
-                                                                                                                                                      M.call_closure (|
-                                                                                                                                                        Ty.path
-                                                                                                                                                          "bool",
-                                                                                                                                                        BinOp.eq,
-                                                                                                                                                        [
-                                                                                                                                                          M.read (|
-                                                                                                                                                            M.deref (|
-                                                                                                                                                              M.read (|
-                                                                                                                                                                left_val
+                                                                                                                                                    M.call_closure (|
+                                                                                                                                                      Ty.path
+                                                                                                                                                        "bool",
+                                                                                                                                                      UnOp.not,
+                                                                                                                                                      [
+                                                                                                                                                        M.call_closure (|
+                                                                                                                                                          Ty.path
+                                                                                                                                                            "bool",
+                                                                                                                                                          BinOp.eq,
+                                                                                                                                                          [
+                                                                                                                                                            M.read (|
+                                                                                                                                                              M.deref (|
+                                                                                                                                                                M.read (|
+                                                                                                                                                                  left_val
+                                                                                                                                                                |)
+                                                                                                                                                              |)
+                                                                                                                                                            |);
+                                                                                                                                                            M.read (|
+                                                                                                                                                              M.deref (|
+                                                                                                                                                                M.read (|
+                                                                                                                                                                  right_val
+                                                                                                                                                                |)
                                                                                                                                                               |)
                                                                                                                                                             |)
-                                                                                                                                                          |);
-                                                                                                                                                          M.read (|
-                                                                                                                                                            M.deref (|
-                                                                                                                                                              M.read (|
-                                                                                                                                                                right_val
-                                                                                                                                                              |)
-                                                                                                                                                            |)
-                                                                                                                                                          |)
-                                                                                                                                                        ]
-                                                                                                                                                      |)
+                                                                                                                                                          ]
+                                                                                                                                                        |)
+                                                                                                                                                      ]
                                                                                                                                                     |)
                                                                                                                                                   |)) in
                                                                                                                                               let

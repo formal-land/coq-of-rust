@@ -2604,20 +2604,24 @@ Module task.
                       M.use
                         (M.alloc (|
                           Ty.path "bool",
-                          UnOp.not (|
-                            M.call_closure (|
-                              Ty.path "bool",
-                              M.get_associated_function (|
-                                Ty.path "core::task::wake::Waker",
-                                "will_wake",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |)
-                              ]
-                            |)
+                          M.call_closure (|
+                            Ty.path "bool",
+                            UnOp.not,
+                            [
+                              M.call_closure (|
+                                Ty.path "bool",
+                                M.get_associated_function (|
+                                  Ty.path "core::task::wake::Waker",
+                                  "will_wake",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |)
+                                ]
+                              |)
+                            ]
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3505,20 +3509,24 @@ Module task.
                       M.use
                         (M.alloc (|
                           Ty.path "bool",
-                          UnOp.not (|
-                            M.call_closure (|
-                              Ty.path "bool",
-                              M.get_associated_function (|
-                                Ty.path "core::task::wake::LocalWaker",
-                                "will_wake",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |)
-                              ]
-                            |)
+                          M.call_closure (|
+                            Ty.path "bool",
+                            UnOp.not,
+                            [
+                              M.call_closure (|
+                                Ty.path "bool",
+                                M.get_associated_function (|
+                                  Ty.path "core::task::wake::LocalWaker",
+                                  "will_wake",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |)
+                                ]
+                              |)
+                            ]
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

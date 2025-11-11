@@ -837,26 +837,30 @@ Module cell.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Self,
-                                      "is_nonoverlapping.swap",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.ConstPointer,
-                                        M.deref (| M.read (| self |) |)
-                                      |);
-                                      M.borrow (|
-                                        Pointer.Kind.ConstPointer,
-                                        M.deref (| M.read (| other |) |)
-                                      |)
-                                    ]
-                                  |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Self,
+                                        "is_nonoverlapping.swap",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.ConstPointer,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.ConstPointer,
+                                          M.deref (| M.read (| other |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -3081,32 +3085,36 @@ Module cell.
                     M.use
                       (M.alloc (|
                         Ty.path "bool",
-                        UnOp.not (|
-                          M.call_closure (|
-                            Ty.path "bool",
-                            M.get_function (| "core::cell::is_writing", [], [] |),
-                            [
-                              M.call_closure (|
-                                Ty.path "isize",
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "isize" ],
-                                  "get",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::cell::RefCell",
-                                      "borrow"
+                        M.call_closure (|
+                          Ty.path "bool",
+                          UnOp.not,
+                          [
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_function (| "core::cell::is_writing", [], [] |),
+                              [
+                                M.call_closure (|
+                                  Ty.path "isize",
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "isize" ],
+                                    "get",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::cell::RefCell",
+                                        "borrow"
+                                      |)
                                     |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                          |)
+                                  ]
+                                |)
+                              ]
+                            |)
+                          ]
                         |)
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4344,12 +4352,16 @@ Module cell.
                         M.use
                           (M.alloc (|
                             Ty.path "bool",
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_function (| "core::cell::is_reading", [], [] |),
-                                [ M.read (| b |) ]
-                              |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              UnOp.not,
+                              [
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_function (| "core::cell::is_reading", [], [] |),
+                                  [ M.read (| b |) ]
+                                |)
+                              ]
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4473,12 +4485,16 @@ Module cell.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            M.get_function (| "core::cell::is_reading", [], [] |),
-                                            [ M.read (| borrow |) ]
-                                          |)
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              M.get_function (| "core::cell::is_reading", [], [] |),
+                                              [ M.read (| borrow |) ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -4612,12 +4628,16 @@ Module cell.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            M.get_function (| "core::cell::is_reading", [], [] |),
-                                            [ M.read (| borrow |) ]
-                                          |)
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              M.get_function (| "core::cell::is_reading", [], [] |),
+                                              [ M.read (| borrow |) ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -4651,21 +4671,25 @@ Module cell.
                         M.use
                           (M.alloc (|
                             Ty.path "bool",
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                BinOp.ne,
-                                [
-                                  M.read (| borrow |);
-                                  M.read (|
-                                    get_associated_constant (|
-                                      Ty.path "isize",
-                                      "MAX",
-                                      Ty.path "isize"
+                            M.call_closure (|
+                              Ty.path "bool",
+                              UnOp.not,
+                              [
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ne,
+                                  [
+                                    M.read (| borrow |);
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "isize",
+                                        "MAX",
+                                        Ty.path "isize"
+                                      |)
                                     |)
-                                  |)
-                                ]
-                              |)
+                                  ]
+                                |)
+                              ]
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6025,12 +6049,16 @@ Module cell.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            M.get_function (| "core::cell::is_writing", [], [] |),
-                                            [ M.read (| borrow |) ]
-                                          |)
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              M.get_function (| "core::cell::is_writing", [], [] |),
+                                              [ M.read (| borrow |) ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -6270,12 +6298,16 @@ Module cell.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            M.get_function (| "core::cell::is_writing", [], [] |),
-                                            [ M.read (| borrow |) ]
-                                          |)
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              M.get_function (| "core::cell::is_writing", [], [] |),
+                                              [ M.read (| borrow |) ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -6309,21 +6341,25 @@ Module cell.
                         M.use
                           (M.alloc (|
                             Ty.path "bool",
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                BinOp.ne,
-                                [
-                                  M.read (| borrow |);
-                                  M.read (|
-                                    get_associated_constant (|
-                                      Ty.path "isize",
-                                      "MIN",
-                                      Ty.path "isize"
+                            M.call_closure (|
+                              Ty.path "bool",
+                              UnOp.not,
+                              [
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ne,
+                                  [
+                                    M.read (| borrow |);
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "isize",
+                                        "MIN",
+                                        Ty.path "isize"
+                                      |)
                                     |)
-                                  |)
-                                ]
-                              |)
+                                  ]
+                                |)
+                              ]
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

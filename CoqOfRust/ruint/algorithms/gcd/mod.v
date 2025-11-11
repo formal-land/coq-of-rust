@@ -158,34 +158,41 @@ Module algorithms.
                                                         M.use
                                                           (M.alloc (|
                                                             Ty.path "bool",
-                                                            UnOp.not (|
-                                                              M.call_closure (|
-                                                                Ty.path "bool",
-                                                                M.get_trait_method (|
-                                                                  "core::cmp::PartialOrd",
-                                                                  Ty.apply
-                                                                    (Ty.path "ruint::Uint")
-                                                                    [ BITS; LIMBS ]
-                                                                    [],
-                                                                  [],
-                                                                  [
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              UnOp.not,
+                                                              [
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  M.get_trait_method (|
+                                                                    "core::cmp::PartialOrd",
                                                                     Ty.apply
                                                                       (Ty.path "ruint::Uint")
                                                                       [ BITS; LIMBS ]
-                                                                      []
-                                                                  ],
-                                                                  "ge",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    a
-                                                                  |);
-                                                                  M.borrow (| Pointer.Kind.Ref, b |)
-                                                                ]
-                                                              |)
+                                                                      [],
+                                                                    [],
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "ruint::Uint")
+                                                                        [ BITS; LIMBS ]
+                                                                        []
+                                                                    ],
+                                                                    "ge",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      a
+                                                                    |);
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      b
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              ]
                                                             |)
                                                           |)) in
                                                       let _ :=
@@ -676,37 +683,41 @@ Module algorithms.
                                                             M.use
                                                               (M.alloc (|
                                                                 Ty.path "bool",
-                                                                UnOp.not (|
-                                                                  M.call_closure (|
-                                                                    Ty.path "bool",
-                                                                    M.get_trait_method (|
-                                                                      "core::cmp::PartialOrd",
-                                                                      Ty.apply
-                                                                        (Ty.path "ruint::Uint")
-                                                                        [ BITS; LIMBS ]
-                                                                        [],
-                                                                      [],
-                                                                      [
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  UnOp.not,
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      M.get_trait_method (|
+                                                                        "core::cmp::PartialOrd",
                                                                         Ty.apply
                                                                           (Ty.path "ruint::Uint")
                                                                           [ BITS; LIMBS ]
-                                                                          []
-                                                                      ],
-                                                                      "ge",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        a
-                                                                      |);
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        b
-                                                                      |)
-                                                                    ]
-                                                                  |)
+                                                                          [],
+                                                                        [],
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "ruint::Uint")
+                                                                            [ BITS; LIMBS ]
+                                                                            []
+                                                                        ],
+                                                                        "ge",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          a
+                                                                        |);
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          b
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
                                                                 |)
                                                               |)) in
                                                           let _ :=
@@ -1056,7 +1067,11 @@ Module algorithms.
                                                 let~ _ : Ty.tuple [] :=
                                                   M.write (|
                                                     even,
-                                                    UnOp.not (| M.read (| even |) |)
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      UnOp.not,
+                                                      [ M.read (| even |) ]
+                                                    |)
                                                   |) in
                                                 M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                               |)));
@@ -1150,14 +1165,18 @@ Module algorithms.
                                                       BinOp.Wrap.bit_xor,
                                                       [
                                                         M.read (| β |);
-                                                        UnOp.not (|
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              m,
-                                                              "ruint::algorithms::gcd::matrix::Matrix",
-                                                              4
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          UnOp.not,
+                                                          [
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                m,
+                                                                "ruint::algorithms::gcd::matrix::Matrix",
+                                                                4
+                                                              |)
                                                             |)
-                                                          |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -1285,7 +1304,10 @@ Module algorithms.
                                 ]
                               |) in
                             let~ _ : Ty.tuple [] :=
-                              M.write (| even, UnOp.not (| M.read (| even |) |) |) in
+                              M.write (|
+                                even,
+                                M.call_closure (| Ty.path "bool", UnOp.not, [ M.read (| even |) ] |)
+                              |) in
                             M.alloc (| Ty.tuple [], Value.Tuple [] |)
                           |)));
                       fun γ => ltac:(M.monadic (Value.Tuple []))
@@ -1630,37 +1652,41 @@ Module algorithms.
                                                             M.use
                                                               (M.alloc (|
                                                                 Ty.path "bool",
-                                                                UnOp.not (|
-                                                                  M.call_closure (|
-                                                                    Ty.path "bool",
-                                                                    M.get_trait_method (|
-                                                                      "core::cmp::PartialOrd",
-                                                                      Ty.apply
-                                                                        (Ty.path "ruint::Uint")
-                                                                        [ BITS; LIMBS ]
-                                                                        [],
-                                                                      [],
-                                                                      [
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  UnOp.not,
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      M.get_trait_method (|
+                                                                        "core::cmp::PartialOrd",
                                                                         Ty.apply
                                                                           (Ty.path "ruint::Uint")
                                                                           [ BITS; LIMBS ]
-                                                                          []
-                                                                      ],
-                                                                      "ge",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        a
-                                                                      |);
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        b
-                                                                      |)
-                                                                    ]
-                                                                  |)
+                                                                          [],
+                                                                        [],
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "ruint::Uint")
+                                                                            [ BITS; LIMBS ]
+                                                                            []
+                                                                        ],
+                                                                        "ge",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          a
+                                                                        |);
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          b
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
                                                                 |)
                                                               |)) in
                                                           let _ :=
@@ -1934,7 +1960,11 @@ Module algorithms.
                                                 let~ _ : Ty.tuple [] :=
                                                   M.write (|
                                                     even,
-                                                    UnOp.not (| M.read (| even |) |)
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      UnOp.not,
+                                                      [ M.read (| even |) ]
+                                                    |)
                                                   |) in
                                                 M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                               |)));
@@ -2002,14 +2032,18 @@ Module algorithms.
                                                       BinOp.Wrap.bit_xor,
                                                       [
                                                         M.read (| β |);
-                                                        UnOp.not (|
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              m,
-                                                              "ruint::algorithms::gcd::matrix::Matrix",
-                                                              4
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          UnOp.not,
+                                                          [
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                m,
+                                                                "ruint::algorithms::gcd::matrix::Matrix",
+                                                                4
+                                                              |)
                                                             |)
-                                                          |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)

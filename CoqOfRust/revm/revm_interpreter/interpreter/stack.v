@@ -3369,50 +3369,54 @@ Module interpreter.
                               M.use
                                 (M.alloc (|
                                   Ty.path "bool",
-                                  UnOp.not (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      BinOp.eq,
-                                      [
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "alloc::vec::Vec")
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    UnOp.not,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::Vec")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 256;
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ]
+                                                    [];
+                                                  Ty.path "alloc::alloc::Global"
+                                                ],
+                                              "capacity",
+                                              [],
                                               []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "ruint::Uint")
-                                                  [
-                                                    Value.Integer IntegerKind.Usize 256;
-                                                    Value.Integer IntegerKind.Usize 4
-                                                  ]
-                                                  [];
-                                                Ty.path "alloc::alloc::Global"
-                                              ],
-                                            "capacity",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "revm_interpreter::interpreter::stack::Stack",
-                                                "data"
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "revm_interpreter::interpreter::stack::Stack",
+                                                  "data"
+                                                |)
                                               |)
+                                            ]
+                                          |);
+                                          M.read (|
+                                            get_constant (|
+                                              "revm_interpreter::interpreter::stack::STACK_LIMIT",
+                                              Ty.path "usize"
                                             |)
-                                          ]
-                                        |);
-                                        M.read (|
-                                          get_constant (|
-                                            "revm_interpreter::interpreter::stack::STACK_LIMIT",
-                                            Ty.path "usize"
                                           |)
-                                        |)
-                                      ]
-                                    |)
+                                        ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -3898,12 +3902,16 @@ Module interpreter.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.gt,
-                                  [ M.read (| n |); Value.Integer IntegerKind.Usize 0 ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.gt,
+                                    [ M.read (| n |); Value.Integer IntegerKind.Usize 0 ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4421,12 +4429,16 @@ Module interpreter.
                               M.use
                                 (M.alloc (|
                                   Ty.path "bool",
-                                  UnOp.not (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      BinOp.gt,
-                                      [ M.read (| m |); Value.Integer IntegerKind.Usize 0 ]
-                                    |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    UnOp.not,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.gt,
+                                        [ M.read (| m |); Value.Integer IntegerKind.Usize 0 ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -6189,22 +6201,26 @@ Module interpreter.
                                   M.use
                                     (M.alloc (|
                                       Ty.path "bool",
-                                      UnOp.not (|
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                            "is_empty",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| partial_last_limb |) |)
-                                            |)
-                                          ]
-                                        |)
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        UnOp.not,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                              "is_empty",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| partial_last_limb |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
                                       |)
                                     |)) in
                                 let _ :=
@@ -6424,23 +6440,27 @@ Module interpreter.
                                                       M.use
                                                         (M.alloc (|
                                                           Ty.path "bool",
-                                                          UnOp.not (|
-                                                            M.call_closure (|
-                                                              Ty.path "bool",
-                                                              BinOp.eq,
-                                                              [
-                                                                M.read (|
-                                                                  M.deref (|
-                                                                    M.read (| left_val |)
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            UnOp.not,
+                                                            [
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                BinOp.eq,
+                                                                [
+                                                                  M.read (|
+                                                                    M.deref (|
+                                                                      M.read (| left_val |)
+                                                                    |)
+                                                                  |);
+                                                                  M.read (|
+                                                                    M.deref (|
+                                                                      M.read (| right_val |)
+                                                                    |)
                                                                   |)
-                                                                |);
-                                                                M.read (|
-                                                                  M.deref (|
-                                                                    M.read (| right_val |)
-                                                                  |)
-                                                                |)
-                                                              ]
-                                                            |)
+                                                                ]
+                                                              |)
+                                                            ]
                                                           |)
                                                         |)) in
                                                     let _ :=

@@ -884,27 +884,31 @@ Module kzg_point_evaluation.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_function (|
-                                    "revm_precompile::kzg_point_evaluation::verify_kzg_proof",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| commitment |) |)
-                                    |);
-                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| z |) |) |);
-                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| y |) |) |);
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| proof |) |)
-                                    |)
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_function (|
+                                      "revm_precompile::kzg_point_evaluation::verify_kzg_proof",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| commitment |) |)
+                                      |);
+                                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| z |) |) |);
+                                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| y |) |) |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| proof |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

@@ -950,42 +950,54 @@ Module slice.
                                                     M.use
                                                       (M.alloc (|
                                                         Ty.path "bool",
-                                                        UnOp.not (|
-                                                          M.call_closure (|
-                                                            Ty.path "bool",
-                                                            M.get_trait_method (|
-                                                              "core::ops::function::FnMut",
-                                                              F,
-                                                              [],
-                                                              [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.apply (Ty.path "&") [] [ T ];
-                                                                    Ty.apply (Ty.path "&") [] [ T ]
-                                                                  ]
-                                                              ],
-                                                              "call_mut",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.borrow (|
-                                                                Pointer.Kind.MutRef,
-                                                                M.deref (| M.read (| is_less |) |)
-                                                              |);
-                                                              Value.Tuple
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          UnOp.not,
+                                                          [
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              M.get_trait_method (|
+                                                                "core::ops::function::FnMut",
+                                                                F,
+                                                                [],
                                                                 [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (| M.read (| p |) |)
-                                                                  |);
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (| M.read (| pivot |) |)
-                                                                  |)
-                                                                ]
-                                                            ]
-                                                          |)
+                                                                  Ty.tuple
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ T ];
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ T ]
+                                                                    ]
+                                                                ],
+                                                                "call_mut",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  M.deref (| M.read (| is_less |) |)
+                                                                |);
+                                                                Value.Tuple
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (| M.read (| p |) |)
+                                                                    |);
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (| pivot |)
+                                                                      |)
+                                                                    |)
+                                                                  ]
+                                                              ]
+                                                            |)
+                                                          ]
                                                         |)
                                                       |)) in
                                                   let _ :=
@@ -1088,67 +1100,72 @@ Module slice.
                                                                                                     ],
                                                                                                   γ
                                                                                                 |) in
-                                                                                              UnOp.not (|
-                                                                                                M.call_closure (|
-                                                                                                  Ty.path
-                                                                                                    "bool",
-                                                                                                  M.get_trait_method (|
-                                                                                                    "core::ops::function::FnMut",
-                                                                                                    F,
-                                                                                                    [],
-                                                                                                    [
-                                                                                                      Ty.tuple
-                                                                                                        [
-                                                                                                          Ty.apply
-                                                                                                            (Ty.path
-                                                                                                              "&")
-                                                                                                            []
-                                                                                                            [
-                                                                                                              T
-                                                                                                            ];
-                                                                                                          Ty.apply
-                                                                                                            (Ty.path
-                                                                                                              "&")
-                                                                                                            []
-                                                                                                            [
-                                                                                                              T
-                                                                                                            ]
-                                                                                                        ]
-                                                                                                    ],
-                                                                                                    "call_mut",
-                                                                                                    [],
-                                                                                                    []
-                                                                                                  |),
-                                                                                                  [
-                                                                                                    M.borrow (|
-                                                                                                      Pointer.Kind.MutRef,
-                                                                                                      M.deref (|
-                                                                                                        M.read (|
-                                                                                                          is_less
-                                                                                                        |)
-                                                                                                      |)
-                                                                                                    |);
-                                                                                                    Value.Tuple
+                                                                                              M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
+                                                                                                UnOp.not,
+                                                                                                [
+                                                                                                  M.call_closure (|
+                                                                                                    Ty.path
+                                                                                                      "bool",
+                                                                                                    M.get_trait_method (|
+                                                                                                      "core::ops::function::FnMut",
+                                                                                                      F,
+                                                                                                      [],
                                                                                                       [
-                                                                                                        M.borrow (|
-                                                                                                          Pointer.Kind.Ref,
-                                                                                                          M.deref (|
-                                                                                                            M.read (|
-                                                                                                              b
-                                                                                                            |)
-                                                                                                          |)
-                                                                                                        |);
-                                                                                                        M.borrow (|
-                                                                                                          Pointer.Kind.Ref,
-                                                                                                          M.deref (|
-                                                                                                            M.read (|
-                                                                                                              a
-                                                                                                            |)
+                                                                                                        Ty.tuple
+                                                                                                          [
+                                                                                                            Ty.apply
+                                                                                                              (Ty.path
+                                                                                                                "&")
+                                                                                                              []
+                                                                                                              [
+                                                                                                                T
+                                                                                                              ];
+                                                                                                            Ty.apply
+                                                                                                              (Ty.path
+                                                                                                                "&")
+                                                                                                              []
+                                                                                                              [
+                                                                                                                T
+                                                                                                              ]
+                                                                                                          ]
+                                                                                                      ],
+                                                                                                      "call_mut",
+                                                                                                      [],
+                                                                                                      []
+                                                                                                    |),
+                                                                                                    [
+                                                                                                      M.borrow (|
+                                                                                                        Pointer.Kind.MutRef,
+                                                                                                        M.deref (|
+                                                                                                          M.read (|
+                                                                                                            is_less
                                                                                                           |)
                                                                                                         |)
-                                                                                                      ]
-                                                                                                  ]
-                                                                                                |)
+                                                                                                      |);
+                                                                                                      Value.Tuple
+                                                                                                        [
+                                                                                                          M.borrow (|
+                                                                                                            Pointer.Kind.Ref,
+                                                                                                            M.deref (|
+                                                                                                              M.read (|
+                                                                                                                b
+                                                                                                              |)
+                                                                                                            |)
+                                                                                                          |);
+                                                                                                          M.borrow (|
+                                                                                                            Pointer.Kind.Ref,
+                                                                                                            M.deref (|
+                                                                                                              M.read (|
+                                                                                                                a
+                                                                                                              |)
+                                                                                                            |)
+                                                                                                          |)
+                                                                                                        ]
+                                                                                                    ]
+                                                                                                  |)
+                                                                                                ]
                                                                                               |)))
                                                                                         ]
                                                                                       |)))
@@ -2180,29 +2197,33 @@ Module slice.
                                           M.use
                                             (M.alloc (|
                                               Ty.path "bool",
-                                              UnOp.not (|
-                                                M.call_closure (|
-                                                  Ty.path "bool",
-                                                  BinOp.lt,
-                                                  [
-                                                    M.read (| k |);
-                                                    M.call_closure (|
-                                                      Ty.path "usize",
-                                                      M.get_associated_function (|
-                                                        Ty.apply (Ty.path "slice") [] [ T ],
-                                                        "len",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (| M.read (| v |) |)
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
-                                                |)
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                UnOp.not,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.lt,
+                                                    [
+                                                      M.read (| k |);
+                                                      M.call_closure (|
+                                                        Ty.path "usize",
+                                                        M.get_associated_function (|
+                                                          Ty.apply (Ty.path "slice") [] [ T ],
+                                                          "len",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| v |) |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
                                               |)
                                             |)) in
                                         let _ :=
@@ -2247,15 +2268,23 @@ Module slice.
                                           M.use
                                             (M.alloc (|
                                               Ty.path "bool",
-                                              UnOp.not (|
-                                                UnOp.not (|
-                                                  M.read (|
-                                                    get_constant (|
-                                                      "core::mem::SizedTypeProperties::IS_ZST",
-                                                      Ty.path "bool"
-                                                    |)
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                UnOp.not,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    UnOp.not,
+                                                    [
+                                                      M.read (|
+                                                        get_constant (|
+                                                          "core::mem::SizedTypeProperties::IS_ZST",
+                                                          Ty.path "bool"
+                                                        |)
+                                                      |)
+                                                    ]
                                                   |)
-                                                |)
+                                                ]
                                               |)
                                             |)) in
                                         let _ :=

@@ -337,8 +337,10 @@ Module num.
                                                       M.use
                                                         (M.alloc (|
                                                           Ty.path "bool",
-                                                          UnOp.not (|
-                                                            M.read (| inside_safe_exponent |)
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            UnOp.not,
+                                                            [ M.read (| inside_safe_exponent |) ]
                                                           |)
                                                         |)) in
                                                     let _ :=
@@ -486,8 +488,10 @@ Module num.
                                                                   Ty.path "i32",
                                                                   BinOp.Wrap.add,
                                                                   [
-                                                                    UnOp.neg (|
-                                                                      M.read (| power2 |)
+                                                                    M.call_closure (|
+                                                                      Ty.path "i32",
+                                                                      UnOp.neg,
+                                                                      [ M.read (| power2 |) ]
                                                                     |);
                                                                     Value.Integer IntegerKind.I32 1
                                                                   ]
@@ -522,7 +526,11 @@ Module num.
                                                       Ty.path "i32",
                                                       BinOp.Wrap.add,
                                                       [
-                                                        UnOp.neg (| M.read (| power2 |) |);
+                                                        M.call_closure (|
+                                                          Ty.path "i32",
+                                                          UnOp.neg,
+                                                          [ M.read (| power2 |) ]
+                                                        |);
                                                         Value.Integer IntegerKind.I32 1
                                                       ]
                                                     |)
@@ -738,7 +746,11 @@ Module num.
                                                 BinOp.Wrap.bit_and,
                                                 [
                                                   M.read (| β |);
-                                                  UnOp.not (| Value.Integer IntegerKind.U64 1 |)
+                                                  M.call_closure (|
+                                                    Ty.path "u64",
+                                                    UnOp.not,
+                                                    [ Value.Integer IntegerKind.U64 1 ]
+                                                  |)
                                                 ]
                                               |)
                                             |) in
@@ -853,20 +865,24 @@ Module num.
                                     BinOp.Wrap.bit_and,
                                     [
                                       M.read (| β |);
-                                      UnOp.not (|
-                                        M.call_closure (|
-                                          Ty.path "u64",
-                                          BinOp.Wrap.shl,
-                                          [
-                                            Value.Integer IntegerKind.U64 1;
-                                            M.read (|
-                                              get_constant (|
-                                                "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS",
-                                                Ty.path "usize"
+                                      M.call_closure (|
+                                        Ty.path "u64",
+                                        UnOp.not,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "u64",
+                                            BinOp.Wrap.shl,
+                                            [
+                                              Value.Integer IntegerKind.U64 1;
+                                              M.read (|
+                                                get_constant (|
+                                                  "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS",
+                                                  Ty.path "usize"
+                                                |)
                                               |)
-                                            |)
-                                          ]
-                                        |)
+                                            ]
+                                          |)
+                                        ]
                                       |)
                                     ]
                                   |)
@@ -1086,22 +1102,26 @@ Module num.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.ge,
-                                              [
-                                                M.read (| q |);
-                                                M.cast
-                                                  (Ty.path "i64")
-                                                  (M.read (|
-                                                    get_constant (|
-                                                      "core::num::dec2flt::table::SMALLEST_POWER_OF_FIVE",
-                                                      Ty.path "i32"
-                                                    |)
-                                                  |))
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.ge,
+                                                [
+                                                  M.read (| q |);
+                                                  M.cast
+                                                    (Ty.path "i64")
+                                                    (M.read (|
+                                                      get_constant (|
+                                                        "core::num::dec2flt::table::SMALLEST_POWER_OF_FIVE",
+                                                        Ty.path "i32"
+                                                      |)
+                                                    |))
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -1149,22 +1169,26 @@ Module num.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.le,
-                                              [
-                                                M.read (| q |);
-                                                M.cast
-                                                  (Ty.path "i64")
-                                                  (M.read (|
-                                                    get_constant (|
-                                                      "core::num::dec2flt::table::LARGEST_POWER_OF_FIVE",
-                                                      Ty.path "i32"
-                                                    |)
-                                                  |))
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.le,
+                                                [
+                                                  M.read (| q |);
+                                                  M.cast
+                                                    (Ty.path "i64")
+                                                    (M.read (|
+                                                      get_constant (|
+                                                        "core::num::dec2flt::table::LARGEST_POWER_OF_FIVE",
+                                                        Ty.path "i32"
+                                                      |)
+                                                    |))
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -1212,15 +1236,19 @@ Module num.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.le,
-                                              [
-                                                M.read (| precision |);
-                                                Value.Integer IntegerKind.Usize 64
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.le,
+                                                [
+                                                  M.read (| precision |);
+                                                  Value.Integer IntegerKind.Usize 64
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=

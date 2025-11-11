@@ -810,7 +810,14 @@ Module unicode.
                                         ]
                                       |) in
                                     let~ _ : Ty.tuple [] :=
-                                      M.write (| current, UnOp.not (| M.read (| current |) |) |) in
+                                      M.write (|
+                                        current,
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [ M.read (| current |) ]
+                                        |)
+                                      |) in
                                     M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                   |)));
                               fun γ =>

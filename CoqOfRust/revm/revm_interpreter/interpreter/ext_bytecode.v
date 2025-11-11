@@ -2224,28 +2224,36 @@ Module interpreter.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                UnOp.not (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
                                   M.call_closure (|
                                     Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.path "revm_bytecode::bytecode::Bytecode",
-                                      "is_eof",
-                                      [],
-                                      []
-                                    |),
+                                    UnOp.not,
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "revm_interpreter::interpreter::ext_bytecode::ExtBytecode",
-                                          "base"
-                                        |)
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_associated_function (|
+                                          Ty.path "revm_bytecode::bytecode::Bytecode",
+                                          "is_eof",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "revm_interpreter::interpreter::ext_bytecode::ExtBytecode",
+                                              "base"
+                                            |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                   |)
-                                |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2423,28 +2431,36 @@ Module interpreter.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                UnOp.not (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
                                   M.call_closure (|
                                     Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.path "revm_bytecode::bytecode::Bytecode",
-                                      "is_eof",
-                                      [],
-                                      []
-                                    |),
+                                    UnOp.not,
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "revm_interpreter::interpreter::ext_bytecode::ExtBytecode",
-                                          "base"
-                                        |)
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_associated_function (|
+                                          Ty.path "revm_bytecode::bytecode::Bytecode",
+                                          "is_eof",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "revm_interpreter::interpreter::ext_bytecode::ExtBytecode",
+                                              "base"
+                                            |)
+                                          |)
+                                        ]
                                       |)
                                     ]
                                   |)
-                                |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

@@ -222,15 +222,19 @@ Module num.
                                             M.use
                                               (M.alloc (|
                                                 Ty.path "bool",
-                                                UnOp.not (|
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    BinOp.lt,
-                                                    [
-                                                      M.read (| n |);
-                                                      Value.Integer IntegerKind.Usize 512
-                                                    ]
-                                                  |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  UnOp.not,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.lt,
+                                                      [
+                                                        M.read (| n |);
+                                                        Value.Integer IntegerKind.Usize 512
+                                                      ]
+                                                    |)
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=
@@ -1668,29 +1672,33 @@ Module num.
                                         M.use
                                           (M.alloc (|
                                             Ty.path "bool",
-                                            UnOp.not (|
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                M.get_trait_method (|
-                                                  "core::cmp::PartialOrd",
-                                                  Ty.path "core::num::bignum::Big32x40",
-                                                  [],
-                                                  [ Ty.path "core::num::bignum::Big32x40" ],
-                                                  "lt",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| x |) |)
-                                                  |);
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| scale |) |)
-                                                  |)
-                                                ]
-                                              |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              UnOp.not,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  M.get_trait_method (|
+                                                    "core::cmp::PartialOrd",
+                                                    Ty.path "core::num::bignum::Big32x40",
+                                                    [],
+                                                    [ Ty.path "core::num::bignum::Big32x40" ],
+                                                    "lt",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| x |) |)
+                                                    |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| scale |) |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              ]
                                             |)
                                           |)) in
                                       let _ :=
@@ -1933,21 +1941,25 @@ Module num.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.gt,
-                                    [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| d |) |),
-                                          "core::num::flt2dec::decoder::Decoded",
-                                          "mant"
-                                        |)
-                                      |);
-                                      Value.Integer IntegerKind.U64 0
-                                    ]
-                                  |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.gt,
+                                      [
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| d |) |),
+                                            "core::num::flt2dec::decoder::Decoded",
+                                            "mant"
+                                          |)
+                                        |);
+                                        Value.Integer IntegerKind.U64 0
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -1973,21 +1985,25 @@ Module num.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.gt,
-                                    [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| d |) |),
-                                          "core::num::flt2dec::decoder::Decoded",
-                                          "minus"
-                                        |)
-                                      |);
-                                      Value.Integer IntegerKind.U64 0
-                                    ]
-                                  |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.gt,
+                                      [
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| d |) |),
+                                            "core::num::flt2dec::decoder::Decoded",
+                                            "minus"
+                                          |)
+                                        |);
+                                        Value.Integer IntegerKind.U64 0
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -2013,21 +2029,25 @@ Module num.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.gt,
-                                    [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| d |) |),
-                                          "core::num::flt2dec::decoder::Decoded",
-                                          "plus"
-                                        |)
-                                      |);
-                                      Value.Integer IntegerKind.U64 0
-                                    ]
-                                  |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.gt,
+                                      [
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| d |) |),
+                                            "core::num::flt2dec::decoder::Decoded",
+                                            "plus"
+                                          |)
+                                        |);
+                                        Value.Integer IntegerKind.U64 0
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -2053,58 +2073,62 @@ Module num.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::option::Option")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "u64" ],
+                                        "is_some",
+                                        [],
                                         []
-                                        [ Ty.path "u64" ],
-                                      "is_some",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            []
-                                            [ Ty.path "u64" ],
-                                          M.call_closure (|
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.path "u64" ],
-                                            M.get_associated_function (|
-                                              Ty.path "u64",
-                                              "checked_add",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| d |) |),
-                                                  "core::num::flt2dec::decoder::Decoded",
-                                                  "mant"
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "u64" ],
+                                              M.get_associated_function (|
+                                                Ty.path "u64",
+                                                "checked_add",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| d |) |),
+                                                    "core::num::flt2dec::decoder::Decoded",
+                                                    "mant"
+                                                  |)
+                                                |);
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| d |) |),
+                                                    "core::num::flt2dec::decoder::Decoded",
+                                                    "plus"
+                                                  |)
                                                 |)
-                                              |);
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| d |) |),
-                                                  "core::num::flt2dec::decoder::Decoded",
-                                                  "plus"
-                                                |)
-                                              |)
-                                            ]
+                                              ]
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    ]
-                                  |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -2134,58 +2158,62 @@ Module num.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::option::Option")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "u64" ],
+                                        "is_some",
+                                        [],
                                         []
-                                        [ Ty.path "u64" ],
-                                      "is_some",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            []
-                                            [ Ty.path "u64" ],
-                                          M.call_closure (|
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.path "u64" ],
-                                            M.get_associated_function (|
-                                              Ty.path "u64",
-                                              "checked_sub",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| d |) |),
-                                                  "core::num::flt2dec::decoder::Decoded",
-                                                  "mant"
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "u64" ],
+                                              M.get_associated_function (|
+                                                Ty.path "u64",
+                                                "checked_sub",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| d |) |),
+                                                    "core::num::flt2dec::decoder::Decoded",
+                                                    "mant"
+                                                  |)
+                                                |);
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| d |) |),
+                                                    "core::num::flt2dec::decoder::Decoded",
+                                                    "minus"
+                                                  |)
                                                 |)
-                                              |);
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| d |) |),
-                                                  "core::num::flt2dec::decoder::Decoded",
-                                                  "minus"
-                                                |)
-                                              |)
-                                            ]
+                                              ]
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    ]
-                                  |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -2215,42 +2243,46 @@ Module num.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.ge,
-                                    [
-                                      M.call_closure (|
-                                        Ty.path "usize",
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "slice")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.ge,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
+                                                  [ Ty.path "u8" ]
+                                              ],
+                                            "len",
+                                            [],
                                             []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                                []
-                                                [ Ty.path "u8" ]
-                                            ],
-                                          "len",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| buf |) |)
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| buf |) |)
+                                            |)
+                                          ]
+                                        |);
+                                        M.read (|
+                                          get_constant (|
+                                            "core::num::flt2dec::MAX_SIG_DIGITS",
+                                            Ty.path "usize"
                                           |)
-                                        ]
-                                      |);
-                                      M.read (|
-                                        get_constant (|
-                                          "core::num::flt2dec::MAX_SIG_DIGITS",
-                                          Ty.path "usize"
                                         |)
-                                      |)
-                                    ]
-                                  |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -2441,14 +2473,18 @@ Module num.
                                   M.borrow (| Pointer.Kind.MutRef, scale |);
                                   M.cast
                                     (Ty.path "usize")
-                                    (UnOp.neg (|
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| d |) |),
-                                          "core::num::flt2dec::decoder::Decoded",
-                                          "exp"
+                                    (M.call_closure (|
+                                      Ty.path "i16",
+                                      UnOp.neg,
+                                      [
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| d |) |),
+                                            "core::num::flt2dec::decoder::Decoded",
+                                            "exp"
+                                          |)
                                         |)
-                                      |)
+                                      ]
                                     |))
                                 ]
                               |) in
@@ -2616,7 +2652,13 @@ Module num.
                                     Pointer.Kind.MutRef,
                                     M.deref (| M.borrow (| Pointer.Kind.MutRef, mant |) |)
                                   |);
-                                  M.cast (Ty.path "usize") (UnOp.neg (| M.read (| k |) |))
+                                  M.cast
+                                    (Ty.path "usize")
+                                    (M.call_closure (|
+                                      Ty.path "i16",
+                                      UnOp.neg,
+                                      [ M.read (| k |) ]
+                                    |))
                                 ]
                               |) in
                             let~ _ :
@@ -2639,7 +2681,13 @@ Module num.
                                     Pointer.Kind.MutRef,
                                     M.deref (| M.borrow (| Pointer.Kind.MutRef, minus |) |)
                                   |);
-                                  M.cast (Ty.path "usize") (UnOp.neg (| M.read (| k |) |))
+                                  M.cast
+                                    (Ty.path "usize")
+                                    (M.call_closure (|
+                                      Ty.path "i16",
+                                      UnOp.neg,
+                                      [ M.read (| k |) ]
+                                    |))
                                 ]
                               |) in
                             let~ _ :
@@ -2662,7 +2710,13 @@ Module num.
                                     Pointer.Kind.MutRef,
                                     M.deref (| M.borrow (| Pointer.Kind.MutRef, plus |) |)
                                   |);
-                                  M.cast (Ty.path "usize") (UnOp.neg (| M.read (| k |) |))
+                                  M.cast
+                                    (Ty.path "usize")
+                                    (M.call_closure (|
+                                      Ty.path "i16",
+                                      UnOp.neg,
+                                      [ M.read (| k |) ]
+                                    |))
                                 ]
                               |) in
                             M.alloc (| Ty.tuple [], Value.Tuple [] |)
@@ -3017,17 +3071,21 @@ Module num.
                                                             M.use
                                                               (M.alloc (|
                                                                 Ty.path "bool",
-                                                                UnOp.not (|
-                                                                  M.call_closure (|
-                                                                    Ty.path "bool",
-                                                                    BinOp.lt,
-                                                                    [
-                                                                      M.read (| d |);
-                                                                      Value.Integer
-                                                                        IntegerKind.U8
-                                                                        10
-                                                                    ]
-                                                                  |)
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  UnOp.not,
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      BinOp.lt,
+                                                                      [
+                                                                        M.read (| d |);
+                                                                        Value.Integer
+                                                                          IntegerKind.U8
+                                                                          10
+                                                                      ]
+                                                                    |)
+                                                                  ]
                                                                 |)
                                                               |)) in
                                                           let _ :=
@@ -3349,7 +3407,11 @@ Module num.
                                   M.read (| up |),
                                   ltac:(M.monadic
                                     (LogicalOp.or (|
-                                      UnOp.not (| M.read (| down |) |),
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        UnOp.not,
+                                        [ M.read (| down |) ]
+                                      |),
                                       ltac:(M.monadic
                                         (M.call_closure (|
                                           Ty.path "bool",
@@ -3843,21 +3905,25 @@ Module num.
                                 M.use
                                   (M.alloc (|
                                     Ty.path "bool",
-                                    UnOp.not (|
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        BinOp.gt,
-                                        [
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| d |) |),
-                                              "core::num::flt2dec::decoder::Decoded",
-                                              "mant"
-                                            |)
-                                          |);
-                                          Value.Integer IntegerKind.U64 0
-                                        ]
-                                      |)
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.gt,
+                                          [
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| d |) |),
+                                                "core::num::flt2dec::decoder::Decoded",
+                                                "mant"
+                                              |)
+                                            |);
+                                            Value.Integer IntegerKind.U64 0
+                                          ]
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -3883,21 +3949,25 @@ Module num.
                                 M.use
                                   (M.alloc (|
                                     Ty.path "bool",
-                                    UnOp.not (|
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        BinOp.gt,
-                                        [
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| d |) |),
-                                              "core::num::flt2dec::decoder::Decoded",
-                                              "minus"
-                                            |)
-                                          |);
-                                          Value.Integer IntegerKind.U64 0
-                                        ]
-                                      |)
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.gt,
+                                          [
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| d |) |),
+                                                "core::num::flt2dec::decoder::Decoded",
+                                                "minus"
+                                              |)
+                                            |);
+                                            Value.Integer IntegerKind.U64 0
+                                          ]
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -3923,21 +3993,25 @@ Module num.
                                 M.use
                                   (M.alloc (|
                                     Ty.path "bool",
-                                    UnOp.not (|
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        BinOp.gt,
-                                        [
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| d |) |),
-                                              "core::num::flt2dec::decoder::Decoded",
-                                              "plus"
-                                            |)
-                                          |);
-                                          Value.Integer IntegerKind.U64 0
-                                        ]
-                                      |)
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.gt,
+                                          [
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| d |) |),
+                                                "core::num::flt2dec::decoder::Decoded",
+                                                "plus"
+                                              |)
+                                            |);
+                                            Value.Integer IntegerKind.U64 0
+                                          ]
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -3963,58 +4037,62 @@ Module num.
                                 M.use
                                   (M.alloc (|
                                     Ty.path "bool",
-                                    UnOp.not (|
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "u64" ],
+                                            "is_some",
+                                            [],
                                             []
-                                            [ Ty.path "u64" ],
-                                          "is_some",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.alloc (|
-                                              Ty.apply
-                                                (Ty.path "core::option::Option")
-                                                []
-                                                [ Ty.path "u64" ],
-                                              M.call_closure (|
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
                                                   []
                                                   [ Ty.path "u64" ],
-                                                M.get_associated_function (|
-                                                  Ty.path "u64",
-                                                  "checked_add",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.deref (| M.read (| d |) |),
-                                                      "core::num::flt2dec::decoder::Decoded",
-                                                      "mant"
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "u64" ],
+                                                  M.get_associated_function (|
+                                                    Ty.path "u64",
+                                                    "checked_add",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| d |) |),
+                                                        "core::num::flt2dec::decoder::Decoded",
+                                                        "mant"
+                                                      |)
+                                                    |);
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| d |) |),
+                                                        "core::num::flt2dec::decoder::Decoded",
+                                                        "plus"
+                                                      |)
                                                     |)
-                                                  |);
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.deref (| M.read (| d |) |),
-                                                      "core::num::flt2dec::decoder::Decoded",
-                                                      "plus"
-                                                    |)
-                                                  |)
-                                                ]
+                                                  ]
+                                                |)
                                               |)
                                             |)
-                                          |)
-                                        ]
-                                      |)
+                                          ]
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -4044,58 +4122,62 @@ Module num.
                                 M.use
                                   (M.alloc (|
                                     Ty.path "bool",
-                                    UnOp.not (|
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "u64" ],
+                                            "is_some",
+                                            [],
                                             []
-                                            [ Ty.path "u64" ],
-                                          "is_some",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.alloc (|
-                                              Ty.apply
-                                                (Ty.path "core::option::Option")
-                                                []
-                                                [ Ty.path "u64" ],
-                                              M.call_closure (|
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
                                                   []
                                                   [ Ty.path "u64" ],
-                                                M.get_associated_function (|
-                                                  Ty.path "u64",
-                                                  "checked_sub",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.deref (| M.read (| d |) |),
-                                                      "core::num::flt2dec::decoder::Decoded",
-                                                      "mant"
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "u64" ],
+                                                  M.get_associated_function (|
+                                                    Ty.path "u64",
+                                                    "checked_sub",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| d |) |),
+                                                        "core::num::flt2dec::decoder::Decoded",
+                                                        "mant"
+                                                      |)
+                                                    |);
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| d |) |),
+                                                        "core::num::flt2dec::decoder::Decoded",
+                                                        "minus"
+                                                      |)
                                                     |)
-                                                  |);
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.deref (| M.read (| d |) |),
-                                                      "core::num::flt2dec::decoder::Decoded",
-                                                      "minus"
-                                                    |)
-                                                  |)
-                                                ]
+                                                  ]
+                                                |)
                                               |)
                                             |)
-                                          |)
-                                        ]
-                                      |)
+                                          ]
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -4218,14 +4300,18 @@ Module num.
                                       M.borrow (| Pointer.Kind.MutRef, scale |);
                                       M.cast
                                         (Ty.path "usize")
-                                        (UnOp.neg (|
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| d |) |),
-                                              "core::num::flt2dec::decoder::Decoded",
-                                              "exp"
+                                        (M.call_closure (|
+                                          Ty.path "i16",
+                                          UnOp.neg,
+                                          [
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| d |) |),
+                                                "core::num::flt2dec::decoder::Decoded",
+                                                "exp"
+                                              |)
                                             |)
-                                          |)
+                                          ]
                                         |))
                                     ]
                                   |) in
@@ -4335,7 +4421,13 @@ Module num.
                                         Pointer.Kind.MutRef,
                                         M.deref (| M.borrow (| Pointer.Kind.MutRef, mant |) |)
                                       |);
-                                      M.cast (Ty.path "usize") (UnOp.neg (| M.read (| k |) |))
+                                      M.cast
+                                        (Ty.path "usize")
+                                        (M.call_closure (|
+                                          Ty.path "i16",
+                                          UnOp.neg,
+                                          [ M.read (| k |) ]
+                                        |))
                                     ]
                                   |) in
                                 M.alloc (| Ty.tuple [], Value.Tuple [] |)
@@ -5890,34 +5982,39 @@ Module num.
                                                                                         (M.alloc (|
                                                                                           Ty.path
                                                                                             "bool",
-                                                                                          UnOp.not (|
-                                                                                            M.call_closure (|
-                                                                                              Ty.path
-                                                                                                "bool",
-                                                                                              M.get_trait_method (|
-                                                                                                "core::cmp::PartialOrd",
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
+                                                                                            UnOp.not,
+                                                                                            [
+                                                                                              M.call_closure (|
                                                                                                 Ty.path
-                                                                                                  "core::num::bignum::Big32x40",
-                                                                                                [],
-                                                                                                [
+                                                                                                  "bool",
+                                                                                                M.get_trait_method (|
+                                                                                                  "core::cmp::PartialOrd",
                                                                                                   Ty.path
-                                                                                                    "core::num::bignum::Big32x40"
-                                                                                                ],
-                                                                                                "lt",
-                                                                                                [],
-                                                                                                []
-                                                                                              |),
-                                                                                              [
-                                                                                                M.borrow (|
-                                                                                                  Pointer.Kind.Ref,
-                                                                                                  mant
-                                                                                                |);
-                                                                                                M.borrow (|
-                                                                                                  Pointer.Kind.Ref,
-                                                                                                  scale
-                                                                                                |)
-                                                                                              ]
-                                                                                            |)
+                                                                                                    "core::num::bignum::Big32x40",
+                                                                                                  [],
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "core::num::bignum::Big32x40"
+                                                                                                  ],
+                                                                                                  "lt",
+                                                                                                  [],
+                                                                                                  []
+                                                                                                |),
+                                                                                                [
+                                                                                                  M.borrow (|
+                                                                                                    Pointer.Kind.Ref,
+                                                                                                    mant
+                                                                                                  |);
+                                                                                                  M.borrow (|
+                                                                                                    Pointer.Kind.Ref,
+                                                                                                    scale
+                                                                                                  |)
+                                                                                                ]
+                                                                                              |)
+                                                                                            ]
                                                                                           |)
                                                                                         |)) in
                                                                                     let _ :=
@@ -5997,20 +6094,25 @@ Module num.
                                                                                         (M.alloc (|
                                                                                           Ty.path
                                                                                             "bool",
-                                                                                          UnOp.not (|
-                                                                                            M.call_closure (|
-                                                                                              Ty.path
-                                                                                                "bool",
-                                                                                              BinOp.lt,
-                                                                                              [
-                                                                                                M.read (|
-                                                                                                  d
-                                                                                                |);
-                                                                                                Value.Integer
-                                                                                                  IntegerKind.U8
-                                                                                                  10
-                                                                                              ]
-                                                                                            |)
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
+                                                                                            UnOp.not,
+                                                                                            [
+                                                                                              M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
+                                                                                                BinOp.lt,
+                                                                                                [
+                                                                                                  M.read (|
+                                                                                                    d
+                                                                                                  |);
+                                                                                                  Value.Integer
+                                                                                                    IntegerKind.U8
+                                                                                                    10
+                                                                                                ]
+                                                                                              |)
+                                                                                            ]
                                                                                           |)
                                                                                         |)) in
                                                                                     let _ :=

@@ -765,17 +765,21 @@ Module char.
                               M.use
                                 (M.alloc (|
                                   Ty.path "bool",
-                                  UnOp.not (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_associated_function (|
-                                        Ty.path "u16",
-                                        "is_utf16_surrogate",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| u |) ]
-                                    |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    UnOp.not,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_associated_function (|
+                                          Ty.path "u16",
+                                          "is_utf16_surrogate",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| u |) ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -1277,17 +1281,21 @@ Module char.
                                 let γ :=
                                   M.alloc (|
                                     Ty.path "bool",
-                                    UnOp.not (|
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        M.get_associated_function (|
-                                          Ty.path "u16",
-                                          "is_utf16_surrogate",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| u |) ]
-                                      |)
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_associated_function (|
+                                            Ty.path "u16",
+                                            "is_utf16_surrogate",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| u |) ]
+                                        |)
+                                      ]
                                     |)
                                   |) in
                                 let _ :=

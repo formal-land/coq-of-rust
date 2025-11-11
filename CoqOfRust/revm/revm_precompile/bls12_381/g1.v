@@ -1614,21 +1614,25 @@ Module bls12_381.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            M.get_function (|
-                                              "blst::blst_p1_affine_in_g1",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.ConstPointer,
-                                                M.deref (| M.borrow (| Pointer.Kind.Ref, out |) |)
-                                              |)
-                                            ]
-                                          |)
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              M.get_function (|
+                                                "blst::blst_p1_affine_in_g1",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.ConstPointer,
+                                                  M.deref (| M.borrow (| Pointer.Kind.Ref, out |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -1690,21 +1694,25 @@ Module bls12_381.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            M.get_function (|
-                                              "blst::blst_p1_affine_on_curve",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.ConstPointer,
-                                                M.deref (| M.borrow (| Pointer.Kind.Ref, out |) |)
-                                              |)
-                                            ]
-                                          |)
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              M.get_function (|
+                                                "blst::blst_p1_affine_on_curve",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.ConstPointer,
+                                                  M.deref (| M.borrow (| Pointer.Kind.Ref, out |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=

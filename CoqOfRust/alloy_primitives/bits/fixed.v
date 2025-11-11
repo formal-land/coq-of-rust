@@ -5009,22 +5009,26 @@ Module bits.
                                       [ N; Value.Integer IntegerKind.Usize 4 ]
                                     |),
                                     ltac:(M.monadic
-                                      (UnOp.not (|
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Formatter",
-                                            "alternate",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| f |) |)
-                                            |)
-                                          ]
-                                        |)
+                                      (M.call_closure (|
+                                        Ty.path "bool",
+                                        UnOp.not,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::Formatter",
+                                              "alternate",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| f |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
                                       |)))
                                   |)
                                 |)) in
@@ -6373,7 +6377,11 @@ Module bits.
                                         |) in
                                       M.write (|
                                         M.deref (| M.read (| byte |) |),
-                                        UnOp.not (| M.read (| M.deref (| M.read (| byte |) |) |) |)
+                                        M.call_closure (|
+                                          Ty.path "u8",
+                                          UnOp.not,
+                                          [ M.read (| M.deref (| M.read (| byte |) |) |) ]
+                                        |)
                                       |)))
                                 ]
                               |)))
@@ -6680,15 +6688,23 @@ Module bits.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.eq,
-                                  [
-                                    M.call_closure (| Ty.path "usize", BinOp.Wrap.add, [ N; M_ ] |);
-                                    Z
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.add,
+                                        [ N; M_ ]
+                                      |);
+                                      Z
+                                    ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7107,12 +7123,16 @@ Module bits.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.le,
-                                  [ M.read (| len |); N ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.le,
+                                    [ M.read (| len |); N ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7334,12 +7354,16 @@ Module bits.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.le,
-                                  [ M.read (| len |); N ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.le,
+                                    [ M.read (| len |); N ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -8618,7 +8642,13 @@ Module bits.
                                     Ty.path "usize",
                                     BinOp.Wrap.mul,
                                     [
-                                      M.cast (Ty.path "usize") (UnOp.not (| M.read (| prefix |) |));
+                                      M.cast
+                                        (Ty.path "usize")
+                                        (M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [ M.read (| prefix |) ]
+                                        |));
                                       Value.Integer IntegerKind.Usize 2
                                     ]
                                   |))

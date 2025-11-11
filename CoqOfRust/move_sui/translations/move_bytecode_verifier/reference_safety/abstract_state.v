@@ -515,17 +515,22 @@ Module reference_safety.
                   ],
                 self
               |) in
-            UnOp.not (|
-              M.call_closure (|
-                Ty.path "bool",
-                M.get_associated_function (|
-                  Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
-                  "is_reference",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-              |)
+            M.call_closure (|
+              Ty.path "bool",
+              UnOp.not,
+              [
+                M.call_closure (|
+                  Ty.path "bool",
+                  M.get_associated_function (|
+                    Ty.path
+                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
+                    "is_reference",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3692,18 +3697,22 @@ Module reference_safety.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_associated_function (|
-                                    Ty.path
-                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                    "is_canonical",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, state |) ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_associated_function (|
+                                      Ty.path
+                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                      "is_canonical",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, state |) ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4717,24 +4726,28 @@ Module reference_safety.
                           ],
                         γ0_1
                       |) in
-                    UnOp.not (|
-                      M.call_closure (|
-                        Ty.path "bool",
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    M.call_closure (|
+                      Ty.path "bool",
+                      UnOp.not,
+                      [
+                        M.call_closure (|
+                          Ty.path "bool",
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::map::BTreeMap")
+                              []
+                              [
+                                Ty.path "move_borrow_graph::references::RefID";
+                                Ty.tuple [];
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            "is_empty",
+                            [],
                             []
-                            [
-                              Ty.path "move_borrow_graph::references::RefID";
-                              Ty.tuple [];
-                              Ty.path "alloc::alloc::Global"
-                            ],
-                          "is_empty",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, full_borrows |) ]
-                      |)
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, full_borrows |) ]
+                        |)
+                      ]
                     |)))
               ]
             |)))
@@ -4903,24 +4916,28 @@ Module reference_safety.
                         γ0_1
                       |) in
                     LogicalOp.or (|
-                      UnOp.not (|
-                        M.call_closure (|
-                          Ty.path "bool",
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::map::BTreeMap")
+                      M.call_closure (|
+                        Ty.path "bool",
+                        UnOp.not,
+                        [
+                          M.call_closure (|
+                            Ty.path "bool",
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                []
+                                [
+                                  Ty.path "move_borrow_graph::references::RefID";
+                                  Ty.tuple [];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              "is_empty",
+                              [],
                               []
-                              [
-                                Ty.path "move_borrow_graph::references::RefID";
-                                Ty.tuple [];
-                                Ty.path "alloc::alloc::Global"
-                              ],
-                            "is_empty",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, full_borrows |) ]
-                        |)
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, full_borrows |) ]
+                          |)
+                        ]
                       |),
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -5082,31 +5099,35 @@ Module reference_safety.
                                                             ],
                                                           γ
                                                         |) in
-                                                      UnOp.not (|
-                                                        M.call_closure (|
-                                                          Ty.path "bool",
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "alloc::collections::btree::map::BTreeMap")
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        UnOp.not,
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "alloc::collections::btree::map::BTreeMap")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_borrow_graph::references::RefID";
+                                                                  Ty.tuple [];
+                                                                  Ty.path "alloc::alloc::Global"
+                                                                ],
+                                                              "is_empty",
+                                                              [],
                                                               []
-                                                              [
-                                                                Ty.path
-                                                                  "move_borrow_graph::references::RefID";
-                                                                Ty.tuple [];
-                                                                Ty.path "alloc::alloc::Global"
-                                                              ],
-                                                            "is_empty",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (| M.read (| borrows |) |)
-                                                            |)
-                                                          ]
-                                                        |)
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| borrows |) |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        ]
                                                       |)))
                                                 ]
                                               |)))
@@ -5290,31 +5311,37 @@ Module reference_safety.
                                                                 ],
                                                               γ
                                                             |) in
-                                                          UnOp.not (|
-                                                            M.call_closure (|
-                                                              Ty.path "bool",
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "alloc::collections::btree::map::BTreeMap")
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            UnOp.not,
+                                                            [
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                M.get_associated_function (|
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "alloc::collections::btree::map::BTreeMap")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_borrow_graph::references::RefID";
+                                                                      Ty.tuple [];
+                                                                      Ty.path "alloc::alloc::Global"
+                                                                    ],
+                                                                  "is_empty",
+                                                                  [],
                                                                   []
-                                                                  [
-                                                                    Ty.path
-                                                                      "move_borrow_graph::references::RefID";
-                                                                    Ty.tuple [];
-                                                                    Ty.path "alloc::alloc::Global"
-                                                                  ],
-                                                                "is_empty",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (| M.read (| borrows |) |)
-                                                                |)
-                                                              ]
-                                                            |)
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (| borrows |)
+                                                                    |)
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            ]
                                                           |)))
                                                     ]
                                                   |)))
@@ -5501,24 +5528,28 @@ Module reference_safety.
                         γ0_1
                       |) in
                     LogicalOp.or (|
-                      UnOp.not (|
-                        M.call_closure (|
-                          Ty.path "bool",
-                          M.get_associated_function (|
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                            "all_immutable",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, full_borrows |) |)
-                            |)
-                          ]
-                        |)
+                      M.call_closure (|
+                        Ty.path "bool",
+                        UnOp.not,
+                        [
+                          M.call_closure (|
+                            Ty.path "bool",
+                            M.get_associated_function (|
+                              Ty.path
+                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                              "all_immutable",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, full_borrows |) |)
+                              |)
+                            ]
+                          |)
+                        ]
                       |),
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -5680,27 +5711,31 @@ Module reference_safety.
                                                             ],
                                                           γ
                                                         |) in
-                                                      UnOp.not (|
-                                                        M.call_closure (|
-                                                          Ty.path "bool",
-                                                          M.get_associated_function (|
-                                                            Ty.path
-                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                                            "all_immutable",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (| M.read (| self |) |)
-                                                            |);
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (| M.read (| borrows |) |)
-                                                            |)
-                                                          ]
-                                                        |)
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        UnOp.not,
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                                              "all_immutable",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| self |) |)
+                                                              |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| borrows |) |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        ]
                                                       |)))
                                                 ]
                                               |)))
@@ -5884,27 +5919,33 @@ Module reference_safety.
                                                                 ],
                                                               γ
                                                             |) in
-                                                          UnOp.not (|
-                                                            M.call_closure (|
-                                                              Ty.path "bool",
-                                                              M.get_associated_function (|
-                                                                Ty.path
-                                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                                                "all_immutable",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (| M.read (| self |) |)
-                                                                |);
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (| M.read (| borrows |) |)
-                                                                |)
-                                                              ]
-                                                            |)
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            UnOp.not,
+                                                            [
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                M.get_associated_function (|
+                                                                  Ty.path
+                                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                                                  "all_immutable",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| self |) |)
+                                                                  |);
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (|
+                                                                      M.read (| borrows |)
+                                                                    |)
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            ]
                                                           |)))
                                                     ]
                                                   |)))
@@ -5965,34 +6006,38 @@ Module reference_safety.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                                        []
+                                        [
+                                          Ty.tuple [];
+                                          Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                                        ],
+                                      "is_mutable",
+                                      [],
                                       []
-                                      [
-                                        Ty.tuple [];
-                                        Ty.path
-                                          "move_bytecode_verifier::reference_safety::abstract_state::Label"
-                                      ],
-                                    "is_mutable",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                        "borrow_graph"
-                                      |)
-                                    |);
-                                    M.read (| id |)
-                                  ]
-                                |)
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                          "borrow_graph"
+                                        |)
+                                      |);
+                                      M.read (| id |)
+                                    ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6008,27 +6053,33 @@ Module reference_safety.
                 |) in
               M.alloc (|
                 Ty.path "bool",
-                UnOp.not (|
-                  M.call_closure (|
-                    Ty.path "bool",
-                    M.get_associated_function (|
-                      Ty.path
-                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                      "has_consistent_borrows",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                      M.read (| id |);
-                      Value.StructTuple
-                        "core::option::Option::None"
+                M.call_closure (|
+                  Ty.path "bool",
+                  UnOp.not,
+                  [
+                    M.call_closure (|
+                      Ty.path "bool",
+                      M.get_associated_function (|
+                        Ty.path
+                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                        "has_consistent_borrows",
+                        [],
                         []
-                        [ Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label"
-                        ]
-                        []
-                    ]
-                  |)
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                        M.read (| id |);
+                        Value.StructTuple
+                          "core::option::Option::None"
+                          []
+                          [
+                            Ty.path
+                              "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                          ]
+                          []
+                      ]
+                    |)
+                  ]
                 |)
               |)
             |)))
@@ -6082,34 +6133,38 @@ Module reference_safety.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                                        []
+                                        [
+                                          Ty.tuple [];
+                                          Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                                        ],
+                                      "is_mutable",
+                                      [],
                                       []
-                                      [
-                                        Ty.tuple [];
-                                        Ty.path
-                                          "move_bytecode_verifier::reference_safety::abstract_state::Label"
-                                      ],
-                                    "is_mutable",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                        "borrow_graph"
-                                      |)
-                                    |);
-                                    M.read (| id |)
-                                  ]
-                                |)
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                          "borrow_graph"
+                                        |)
+                                      |);
+                                      M.read (| id |)
+                                    ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6125,53 +6180,57 @@ Module reference_safety.
                 |) in
               M.alloc (|
                 Ty.path "bool",
-                UnOp.not (|
-                  M.call_closure (|
-                    Ty.path "bool",
-                    M.get_associated_function (|
-                      Ty.path
-                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                      "has_consistent_mutable_borrows",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                      M.read (| id |);
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::Label"
-                          ],
-                        M.get_associated_function (|
+                M.call_closure (|
+                  Ty.path "bool",
+                  UnOp.not,
+                  [
+                    M.call_closure (|
+                      Ty.path "bool",
+                      M.get_associated_function (|
+                        Ty.path
+                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                        "has_consistent_mutable_borrows",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                        M.read (| id |);
+                        M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
                             []
-                            [ Ty.path "move_binary_format::file_format::FieldHandleIndex" ],
-                          "map",
-                          [],
+                            [
+                              Ty.path
+                                "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                            ],
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_binary_format::file_format::FieldHandleIndex" ],
+                            "map",
+                            [],
+                            [
+                              Ty.path
+                                "move_bytecode_verifier::reference_safety::abstract_state::Label";
+                              Ty.function
+                                [ Ty.path "move_binary_format::file_format::FieldHandleIndex" ]
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::Label")
+                            ]
+                          |),
                           [
-                            Ty.path
-                              "move_bytecode_verifier::reference_safety::abstract_state::Label";
-                            Ty.function
-                              [ Ty.path "move_binary_format::file_format::FieldHandleIndex" ]
-                              (Ty.path
-                                "move_bytecode_verifier::reference_safety::abstract_state::Label")
+                            M.read (| at_field_opt |);
+                            M.constructor_as_closure
+                              "move_bytecode_verifier::reference_safety::abstract_state::Label::Field"
+                              []
+                              []
                           ]
-                        |),
-                        [
-                          M.read (| at_field_opt |);
-                          M.constructor_as_closure
-                            "move_bytecode_verifier::reference_safety::abstract_state::Label::Field"
-                            []
-                            []
-                        ]
-                      |)
-                    ]
-                  |)
+                        |)
+                      ]
+                    |)
+                  ]
                 |)
               |)
             |)))
@@ -6244,7 +6303,7 @@ Module reference_safety.
               M.alloc (|
                 Ty.path "bool",
                 LogicalOp.or (|
-                  UnOp.not (| M.read (| is_mutable |) |),
+                  M.call_closure (| Ty.path "bool", UnOp.not, [ M.read (| is_mutable |) ] |),
                   ltac:(M.monadic
                     (M.call_closure (|
                       Ty.path "bool",
@@ -6564,35 +6623,40 @@ Module reference_safety.
                   ],
                 self
               |) in
-            UnOp.not (|
-              M.call_closure (|
-                Ty.path "bool",
-                M.get_associated_function (|
-                  Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                  "has_consistent_borrows",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                  M.call_closure (|
-                    Ty.path "move_borrow_graph::references::RefID",
-                    M.get_associated_function (|
-                      Ty.path
-                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                      "frame_root",
-                      [],
+            M.call_closure (|
+              Ty.path "bool",
+              UnOp.not,
+              [
+                M.call_closure (|
+                  Ty.path "bool",
+                  M.get_associated_function (|
+                    Ty.path
+                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                    "has_consistent_borrows",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                    M.call_closure (|
+                      Ty.path "move_borrow_graph::references::RefID",
+                      M.get_associated_function (|
+                        Ty.path
+                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                        "frame_root",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |);
+                    Value.StructTuple
+                      "core::option::Option::None"
                       []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |);
-                  Value.StructTuple
-                    "core::option::Option::None"
-                    []
-                    [ Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label" ]
-                    []
-                ]
-              |)
+                      [ Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label" ]
+                      []
+                  ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8657,32 +8721,36 @@ Module reference_safety.
                               M.use
                                 (M.alloc (|
                                   Ty.path "bool",
-                                  UnOp.not (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_associated_function (|
-                                        Ty.path
-                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                        "is_freezable",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| self |) |)
-                                        |);
-                                        M.read (| id |);
-                                        Value.StructTuple
-                                          "core::option::Option::None"
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    UnOp.not,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_associated_function (|
+                                          Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                          "is_freezable",
+                                          [],
                                           []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::FieldHandleIndex"
-                                          ]
-                                          []
-                                      ]
-                                    |)
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |);
+                                          M.read (| id |);
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::FieldHandleIndex"
+                                            ]
+                                            []
+                                        ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -8909,35 +8977,10 @@ Module reference_safety.
                               M.alloc (|
                                 Ty.path "bool",
                                 LogicalOp.or (|
-                                  UnOp.not (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_associated_function (|
-                                        Ty.path
-                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                        "is_readable",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| self |) |)
-                                        |);
-                                        M.read (| id1 |);
-                                        Value.StructTuple
-                                          "core::option::Option::None"
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::FieldHandleIndex"
-                                          ]
-                                          []
-                                      ]
-                                    |)
-                                  |),
-                                  ltac:(M.monadic
-                                    (UnOp.not (|
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    UnOp.not,
+                                    [
                                       M.call_closure (|
                                         Ty.path "bool",
                                         M.get_associated_function (|
@@ -8952,7 +8995,7 @@ Module reference_safety.
                                             Pointer.Kind.Ref,
                                             M.deref (| M.read (| self |) |)
                                           |);
-                                          M.read (| id2 |);
+                                          M.read (| id1 |);
                                           Value.StructTuple
                                             "core::option::Option::None"
                                             []
@@ -8963,6 +9006,39 @@ Module reference_safety.
                                             []
                                         ]
                                       |)
+                                    ]
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                            "is_readable",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| self |) |)
+                                            |);
+                                            M.read (| id2 |);
+                                            Value.StructTuple
+                                              "core::option::Option::None"
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::FieldHandleIndex"
+                                              ]
+                                              []
+                                          ]
+                                        |)
+                                      ]
                                     |)))
                                 |)
                               |) in
@@ -9094,18 +9170,22 @@ Module reference_safety.
                                           M.use
                                             (M.alloc (|
                                               Ty.path "bool",
-                                              UnOp.not (|
-                                                M.call_closure (|
-                                                  Ty.path "bool",
-                                                  M.get_associated_function (|
-                                                    Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
-                                                    "is_value",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.borrow (| Pointer.Kind.Ref, v1 |) ]
-                                                |)
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                UnOp.not,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    M.get_associated_function (|
+                                                      Ty.path
+                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
+                                                      "is_value",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.borrow (| Pointer.Kind.Ref, v1 |) ]
+                                                  |)
+                                                ]
                                               |)
                                             |)) in
                                         let _ :=
@@ -9134,18 +9214,22 @@ Module reference_safety.
                                           M.use
                                             (M.alloc (|
                                               Ty.path "bool",
-                                              UnOp.not (|
-                                                M.call_closure (|
-                                                  Ty.path "bool",
-                                                  M.get_associated_function (|
-                                                    Ty.path
-                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
-                                                    "is_value",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.borrow (| Pointer.Kind.Ref, v2 |) ]
-                                                |)
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                UnOp.not,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    M.get_associated_function (|
+                                                      Ty.path
+                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
+                                                      "is_value",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.borrow (| Pointer.Kind.Ref, v2 |) ]
+                                                  |)
+                                                ]
                                               |)
                                             |)) in
                                         let _ :=
@@ -9250,32 +9334,36 @@ Module reference_safety.
                               M.use
                                 (M.alloc (|
                                   Ty.path "bool",
-                                  UnOp.not (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_associated_function (|
-                                        Ty.path
-                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                        "is_readable",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| self |) |)
-                                        |);
-                                        M.read (| id |);
-                                        Value.StructTuple
-                                          "core::option::Option::None"
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    UnOp.not,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_associated_function (|
+                                          Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                          "is_readable",
+                                          [],
                                           []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::FieldHandleIndex"
-                                          ]
-                                          []
-                                      ]
-                                    |)
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |);
+                                          M.read (| id |);
+                                          Value.StructTuple
+                                            "core::option::Option::None"
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::FieldHandleIndex"
+                                            ]
+                                            []
+                                        ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -9416,24 +9504,28 @@ Module reference_safety.
                               M.use
                                 (M.alloc (|
                                   Ty.path "bool",
-                                  UnOp.not (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_associated_function (|
-                                        Ty.path
-                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                        "is_writable",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| self |) |)
-                                        |);
-                                        M.read (| id |)
-                                      ]
-                                    |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    UnOp.not,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_associated_function (|
+                                          Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                          "is_writable",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |);
+                                          M.read (| id |)
+                                        ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -9572,7 +9664,11 @@ Module reference_safety.
                                 (M.alloc (|
                                   Ty.path "bool",
                                   LogicalOp.and (|
-                                    UnOp.not (| M.read (| mut_ |) |),
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [ M.read (| mut_ |) ]
+                                    |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
                                         Ty.path "bool",
@@ -9809,34 +9905,42 @@ Module reference_safety.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (LogicalOp.and (|
-                                        UnOp.not (| M.read (| mut_ |) |),
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [ M.read (| mut_ |) ]
+                                        |),
                                         ltac:(M.monadic
-                                          (UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                                "is_readable",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| self |) |)
-                                                |);
-                                                M.read (| id |);
-                                                Value.StructTuple
-                                                  "core::option::Option::Some"
+                                          (M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                                  "is_readable",
+                                                  [],
                                                   []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::FieldHandleIndex"
-                                                  ]
-                                                  [ M.read (| field |) ]
-                                              ]
-                                            |)
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |);
+                                                  M.read (| id |);
+                                                  Value.StructTuple
+                                                    "core::option::Option::Some"
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::FieldHandleIndex"
+                                                    ]
+                                                    [ M.read (| field |) ]
+                                                ]
+                                              |)
+                                            ]
                                           |)))
                                       |)))
                                 ]
@@ -10691,24 +10795,28 @@ Module reference_safety.
                                   LogicalOp.and (|
                                     M.read (| mut_ |),
                                     ltac:(M.monadic
-                                      (UnOp.not (|
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          M.get_associated_function (|
-                                            Ty.path
-                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                            "is_writable",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| self |) |)
-                                            |);
-                                            M.read (| id |)
-                                          ]
-                                        |)
+                                      (M.call_closure (|
+                                        Ty.path "bool",
+                                        UnOp.not,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            M.get_associated_function (|
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                              "is_writable",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |);
+                                              M.read (| id |)
+                                            ]
+                                          |)
+                                        ]
                                       |)))
                                   |)
                                 |)) in
@@ -11138,24 +11246,28 @@ Module reference_safety.
                                   LogicalOp.and (|
                                     M.read (| mut_ |),
                                     ltac:(M.monadic
-                                      (UnOp.not (|
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          M.get_associated_function (|
-                                            Ty.path
-                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                            "is_writable",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| self |) |)
-                                            |);
-                                            M.read (| vec_id |)
-                                          ]
-                                        |)
+                                      (M.call_closure (|
+                                        Ty.path "bool",
+                                        UnOp.not,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            M.get_associated_function (|
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                              "is_writable",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |);
+                                              M.read (| vec_id |)
+                                            ]
+                                          |)
+                                        ]
                                       |)))
                                   |)
                                 |)) in
@@ -12390,30 +12502,35 @@ Module reference_safety.
                                                                             M.use
                                                                               (M.alloc (|
                                                                                 Ty.path "bool",
-                                                                                UnOp.not (|
-                                                                                  M.call_closure (|
-                                                                                    Ty.path "bool",
-                                                                                    M.get_associated_function (|
+                                                                                M.call_closure (|
+                                                                                  Ty.path "bool",
+                                                                                  UnOp.not,
+                                                                                  [
+                                                                                    M.call_closure (|
                                                                                       Ty.path
-                                                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                                                                      "is_writable",
-                                                                                      [],
-                                                                                      []
-                                                                                    |),
-                                                                                    [
-                                                                                      M.borrow (|
-                                                                                        Pointer.Kind.Ref,
-                                                                                        M.deref (|
-                                                                                          M.read (|
-                                                                                            self
+                                                                                        "bool",
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.path
+                                                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                                                                        "is_writable",
+                                                                                        [],
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              self
+                                                                                            |)
                                                                                           |)
+                                                                                        |);
+                                                                                        M.read (|
+                                                                                          id
                                                                                         |)
-                                                                                      |);
-                                                                                      M.read (|
-                                                                                        id
-                                                                                      |)
-                                                                                    ]
-                                                                                  |)
+                                                                                      ]
+                                                                                    |)
+                                                                                  ]
                                                                                 |)
                                                                               |)) in
                                                                           let _ :=
@@ -14194,23 +14311,27 @@ Module reference_safety.
                               M.use
                                 (M.alloc (|
                                   Ty.path "bool",
-                                  UnOp.not (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_associated_function (|
-                                        Ty.path
-                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                        "is_frame_safe_to_destroy",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| self |) |)
-                                        |)
-                                      ]
-                                    |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    UnOp.not,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_associated_function (|
+                                          Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                          "is_frame_safe_to_destroy",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -14625,26 +14746,30 @@ Module reference_safety.
                                                                     ]
                                                                   |),
                                                                   ltac:(M.monadic
-                                                                    (UnOp.not (|
-                                                                      M.call_closure (|
-                                                                        Ty.path "bool",
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                                                          "is_writable",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.borrow (|
-                                                                            Pointer.Kind.Ref,
-                                                                            M.deref (|
-                                                                              M.read (| self |)
-                                                                            |)
-                                                                          |);
-                                                                          M.read (| id |)
-                                                                        ]
-                                                                      |)
+                                                                    (M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      UnOp.not,
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                                                            "is_writable",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.deref (|
+                                                                                M.read (| self |)
+                                                                              |)
+                                                                            |);
+                                                                            M.read (| id |)
+                                                                          ]
+                                                                        |)
+                                                                      ]
                                                                     |)))
                                                                 |)
                                                               |)) in
@@ -15268,56 +15393,60 @@ Module reference_safety.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.eq,
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                              Ty.path "alloc::alloc::Global"
+                                            ],
+                                          "len",
+                                          [],
                                           []
-                                          [
-                                            Ty.path
-                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
-                                            Ty.path "alloc::alloc::Global"
-                                          ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                            "locals"
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                              "locals"
+                                            |)
                                           |)
-                                        |)
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
+                                        ]
+                                      |);
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                              Ty.path "alloc::alloc::Global"
+                                            ],
+                                          "len",
+                                          [],
                                           []
-                                          [
-                                            Ty.path
-                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
-                                            Ty.path "alloc::alloc::Global"
-                                          ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, locals |) ]
-                                    |)
-                                  ]
-                                |)
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, locals |) ]
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -15460,18 +15589,22 @@ Module reference_safety.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_associated_function (|
-                                    Ty.path
-                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                    "is_canonical",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, canonical_state |) ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_associated_function (|
+                                      Ty.path
+                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                      "is_canonical",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, canonical_state |) ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -15532,115 +15665,123 @@ Module reference_safety.
                   ],
                 borrows
               |) in
-            UnOp.not (|
-              M.call_closure (|
-                Ty.path "bool",
-                M.get_trait_method (|
-                  "core::iter::traits::iterator::Iterator",
-                  Ty.apply
-                    (Ty.path "alloc::collections::btree::map::Keys")
-                    []
-                    [ Ty.path "move_borrow_graph::references::RefID"; Ty.tuple [] ],
-                  [],
-                  [],
-                  "any",
-                  [],
+            M.call_closure (|
+              Ty.path "bool",
+              UnOp.not,
+              [
+                M.call_closure (|
+                  Ty.path "bool",
+                  M.get_trait_method (|
+                    "core::iter::traits::iterator::Iterator",
+                    Ty.apply
+                      (Ty.path "alloc::collections::btree::map::Keys")
+                      []
+                      [ Ty.path "move_borrow_graph::references::RefID"; Ty.tuple [] ],
+                    [],
+                    [],
+                    "any",
+                    [],
+                    [
+                      Ty.function
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_borrow_graph::references::RefID" ]
+                        ]
+                        (Ty.path "bool")
+                    ]
+                  |),
                   [
-                    Ty.function
-                      [ Ty.apply (Ty.path "&") [] [ Ty.path "move_borrow_graph::references::RefID" ]
-                      ]
-                      (Ty.path "bool")
-                  ]
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.MutRef,
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "alloc::collections::btree::map::Keys")
-                        []
-                        [ Ty.path "move_borrow_graph::references::RefID"; Ty.tuple [] ],
-                      M.call_closure (|
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.alloc (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::map::Keys")
                           []
                           [ Ty.path "move_borrow_graph::references::RefID"; Ty.tuple [] ],
-                        M.get_associated_function (|
+                        M.call_closure (|
                           Ty.apply
-                            (Ty.path "alloc::collections::btree::map::BTreeMap")
+                            (Ty.path "alloc::collections::btree::map::Keys")
                             []
-                            [
-                              Ty.path "move_borrow_graph::references::RefID";
-                              Ty.tuple [];
-                              Ty.path "alloc::alloc::Global"
-                            ],
-                          "keys",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| borrows |) |) |) ]
-                      |)
-                    |)
-                  |);
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              Ty.path "bool",
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_borrow_graph::references::RefID" ],
-                                α0
-                              |),
+                            [ Ty.path "move_borrow_graph::references::RefID"; Ty.tuple [] ],
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::map::BTreeMap")
+                              []
                               [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let x :=
-                                      M.copy (|
-                                        Ty.apply
-                                          (Ty.path "&")
+                                Ty.path "move_borrow_graph::references::RefID";
+                                Ty.tuple [];
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            "keys",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| borrows |) |) |) ]
+                        |)
+                      |)
+                    |);
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.path "bool",
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_borrow_graph::references::RefID" ],
+                                  α0
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let x :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "move_borrow_graph::references::RefID" ],
+                                          γ
+                                        |) in
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "move_borrow_graph::graph::BorrowGraph")
+                                            []
+                                            [
+                                              Ty.tuple [];
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::Label"
+                                            ],
+                                          "is_mutable",
+                                          [],
                                           []
-                                          [ Ty.path "move_borrow_graph::references::RefID" ],
-                                        γ
-                                      |) in
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "move_borrow_graph::graph::BorrowGraph")
-                                          []
-                                          [
-                                            Ty.tuple [];
-                                            Ty.path
-                                              "move_bytecode_verifier::reference_safety::abstract_state::Label"
-                                          ],
-                                        "is_mutable",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                            "borrow_graph"
-                                          |)
-                                        |);
-                                        M.read (| M.deref (| M.read (| x |) |) |)
-                                      ]
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
-                ]
-              |)
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                              "borrow_graph"
+                                            |)
+                                          |);
+                                          M.read (| M.deref (| M.read (| x |) |) |)
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -16138,51 +16279,55 @@ Module reference_safety.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [
-                                        Ty.path
-                                          "move_binary_format::file_format::FunctionDefinitionIndex"
-                                      ],
-                                    [],
-                                    [
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
                                       Ty.apply
                                         (Ty.path "core::option::Option")
                                         []
                                         [
                                           Ty.path
                                             "move_binary_format::file_format::FunctionDefinitionIndex"
-                                        ]
-                                    ],
-                                    "eq",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                        "current_function"
+                                        ],
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::FunctionDefinitionIndex"
+                                          ]
+                                      ],
+                                      "eq",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                          "current_function"
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| other |) |),
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                          "current_function"
+                                        |)
                                       |)
-                                    |);
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| other |) |),
-                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                        "current_function"
-                                      |)
-                                    |)
-                                  ]
-                                |)
+                                    ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -16211,26 +16356,12 @@ Module reference_safety.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                LogicalOp.and (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.path
-                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                      "is_canonical",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| self |) |)
-                                      |)
-                                    ]
-                                  |),
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  LogicalOp.and (|
+                                    M.call_closure (|
                                       Ty.path "bool",
                                       M.get_associated_function (|
                                         Ty.path
@@ -16242,11 +16373,29 @@ Module reference_safety.
                                       [
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| other |) |)
+                                          M.deref (| M.read (| self |) |)
                                         |)
                                       ]
-                                    |)))
-                                |)
+                                    |),
+                                    ltac:(M.monadic
+                                      (M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_associated_function (|
+                                          Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                          "is_canonical",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| other |) |)
+                                          |)
+                                        ]
+                                      |)))
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -16275,27 +16424,31 @@ Module reference_safety.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.eq,
-                                  [
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                        "next_id"
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                          "next_id"
+                                        |)
+                                      |);
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| other |) |),
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                          "next_id"
+                                        |)
                                       |)
-                                    |);
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| other |) |),
-                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                        "next_id"
-                                      |)
-                                    |)
-                                  ]
-                                |)
+                                    ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -16320,65 +16473,69 @@ Module reference_safety.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.eq,
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                              Ty.path "alloc::alloc::Global"
+                                            ],
+                                          "len",
+                                          [],
                                           []
-                                          [
-                                            Ty.path
-                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
-                                            Ty.path "alloc::alloc::Global"
-                                          ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                            "locals"
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                              "locals"
+                                            |)
                                           |)
-                                        |)
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
+                                        ]
+                                      |);
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                              Ty.path "alloc::alloc::Global"
+                                            ],
+                                          "len",
+                                          [],
                                           []
-                                          [
-                                            Ty.path
-                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
-                                            Ty.path "alloc::alloc::Global"
-                                          ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| other |) |),
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                            "locals"
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| other |) |),
+                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                              "locals"
+                                            |)
                                           |)
-                                        |)
-                                      ]
-                                    |)
-                                  ]
-                                |)
+                                        ]
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -17044,43 +17201,47 @@ Module reference_safety.
                                                                 M.use
                                                                   (M.alloc (|
                                                                     Ty.path "bool",
-                                                                    UnOp.not (|
-                                                                      M.call_closure (|
-                                                                        Ty.path "bool",
-                                                                        M.get_trait_method (|
-                                                                          "core::cmp::PartialEq",
-                                                                          Ty.apply
-                                                                            (Ty.path "&")
-                                                                            []
-                                                                            [
-                                                                              Ty.path
-                                                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                                            ],
-                                                                          [],
-                                                                          [
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      UnOp.not,
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          M.get_trait_method (|
+                                                                            "core::cmp::PartialEq",
                                                                             Ty.apply
                                                                               (Ty.path "&")
                                                                               []
                                                                               [
                                                                                 Ty.path
                                                                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
-                                                                              ]
-                                                                          ],
-                                                                          "eq",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.borrow (|
-                                                                            Pointer.Kind.Ref,
-                                                                            v1
-                                                                          |);
-                                                                          M.borrow (|
-                                                                            Pointer.Kind.Ref,
-                                                                            v2
-                                                                          |)
-                                                                        ]
-                                                                      |)
+                                                                              ],
+                                                                            [],
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"
+                                                                                ]
+                                                                            ],
+                                                                            "eq",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              v1
+                                                                            |);
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              v2
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      ]
                                                                     |)
                                                                   |)) in
                                                               let _ :=
@@ -17298,18 +17459,22 @@ Module reference_safety.
                               M.use
                                 (M.alloc (|
                                   Ty.path "bool",
-                                  UnOp.not (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_associated_function (|
-                                        Ty.path
-                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                        "is_canonical",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, joined |) ]
-                                    |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    UnOp.not,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_associated_function (|
+                                          Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                          "is_canonical",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, joined |) ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -17335,65 +17500,69 @@ Module reference_safety.
                               M.use
                                 (M.alloc (|
                                   Ty.path "bool",
-                                  UnOp.not (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      BinOp.eq,
-                                      [
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "alloc::vec::Vec")
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    UnOp.not,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::Vec")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ],
+                                              "len",
+                                              [],
                                               []
-                                              [
-                                                Ty.path
-                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
-                                                Ty.path "alloc::alloc::Global"
-                                              ],
-                                            "len",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                                "locals"
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                                  "locals"
+                                                |)
                                               |)
-                                            |)
-                                          ]
-                                        |);
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "alloc::vec::Vec")
+                                            ]
+                                          |);
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::Vec")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ],
+                                              "len",
+                                              [],
                                               []
-                                              [
-                                                Ty.path
-                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
-                                                Ty.path "alloc::alloc::Global"
-                                              ],
-                                            "len",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.SubPointer.get_struct_record_field (|
-                                                joined,
-                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                                                "locals"
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  joined,
+                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
+                                                  "locals"
+                                                |)
                                               |)
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                    |)
+                                            ]
+                                          |)
+                                        ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=

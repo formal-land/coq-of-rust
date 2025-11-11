@@ -175,41 +175,45 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
                                   M.use
                                     (M.alloc (|
                                       Ty.path "bool",
-                                      UnOp.not (|
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          BinOp.Wrap.bit_or,
-                                          [
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.eq,
-                                              [
-                                                M.read (|
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    source,
-                                                    "subtle::Choice",
-                                                    0
-                                                  |)
-                                                |);
-                                                Value.Integer IntegerKind.U8 0
-                                              ]
-                                            |);
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.eq,
-                                              [
-                                                M.read (|
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    source,
-                                                    "subtle::Choice",
-                                                    0
-                                                  |)
-                                                |);
-                                                Value.Integer IntegerKind.U8 1
-                                              ]
-                                            |)
-                                          ]
-                                        |)
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        UnOp.not,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.Wrap.bit_or,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.eq,
+                                                [
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      source,
+                                                      "subtle::Choice",
+                                                      0
+                                                    |)
+                                                  |);
+                                                  Value.Integer IntegerKind.U8 0
+                                                ]
+                                              |);
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.eq,
+                                                [
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      source,
+                                                      "subtle::Choice",
+                                                      0
+                                                    |)
+                                                  |);
+                                                  Value.Integer IntegerKind.U8 1
+                                                ]
+                                              |)
+                                            ]
+                                          |)
+                                        ]
                                       |)
                                     |)) in
                                 let _ :=
@@ -590,8 +594,11 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
               BinOp.Wrap.bit_and,
               [
                 Value.Integer IntegerKind.U8 1;
-                UnOp.not (|
-                  M.read (| M.SubPointer.get_struct_tuple_field (| self, "subtle::Choice", 0 |) |)
+                M.call_closure (|
+                  Ty.path "u8",
+                  UnOp.not,
+                  [ M.read (| M.SubPointer.get_struct_tuple_field (| self, "subtle::Choice", 0 |) |)
+                  ]
                 |)
               ]
             |)
@@ -653,23 +660,27 @@ Definition black_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                 M.use
                                   (M.alloc (|
                                     Ty.path "bool",
-                                    UnOp.not (|
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        BinOp.Wrap.bit_or,
-                                        [
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.eq,
-                                            [ M.read (| input |); Value.Integer IntegerKind.U8 0 ]
-                                          |);
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.eq,
-                                            [ M.read (| input |); Value.Integer IntegerKind.U8 1 ]
-                                          |)
-                                        ]
-                                      |)
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.Wrap.bit_or,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.eq,
+                                              [ M.read (| input |); Value.Integer IntegerKind.U8 0 ]
+                                            |);
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.eq,
+                                              [ M.read (| input |); Value.Integer IntegerKind.U8 1 ]
+                                            |)
+                                          ]
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -2171,14 +2182,18 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
           let~ mask : Ty.path "u8" :=
             M.cast
               (Ty.path "u8")
-              (UnOp.neg (|
-                M.cast
-                  (Ty.path "i8")
-                  (M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                  |))
+              (M.call_closure (|
+                Ty.path "i8",
+                UnOp.neg,
+                [
+                  M.cast
+                    (Ty.path "i8")
+                    (M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                    |))
+                ]
               |)) in
           M.alloc (|
             Ty.path "u8",
@@ -2241,14 +2256,18 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
           let~ mask : Ty.path "u8" :=
             M.cast
               (Ty.path "u8")
-              (UnOp.neg (|
-                M.cast
-                  (Ty.path "i8")
-                  (M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                  |))
+              (M.call_closure (|
+                Ty.path "i8",
+                UnOp.neg,
+                [
+                  M.cast
+                    (Ty.path "i8")
+                    (M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                    |))
+                ]
               |)) in
           let~ _ : Ty.tuple [] :=
             let β := M.deref (| M.read (| self |) |) in
@@ -2303,14 +2322,18 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
           let~ mask : Ty.path "u8" :=
             M.cast
               (Ty.path "u8")
-              (UnOp.neg (|
-                M.cast
-                  (Ty.path "i8")
-                  (M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                  |))
+              (M.call_closure (|
+                Ty.path "i8",
+                UnOp.neg,
+                [
+                  M.cast
+                    (Ty.path "i8")
+                    (M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                    |))
+                ]
               |)) in
           let~ t : Ty.path "u8" :=
             M.call_closure (|
@@ -2391,19 +2414,23 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
               M.use
                 (M.alloc (|
                   Ty.path "i8",
-                  UnOp.neg (|
-                    M.cast
-                      (Ty.path "i8")
-                      (M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (|
-                          Ty.path "subtle::Choice",
-                          "unwrap_u8",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                      |))
+                  M.call_closure (|
+                    Ty.path "i8",
+                    UnOp.neg,
+                    [
+                      M.cast
+                        (Ty.path "i8")
+                        (M.call_closure (|
+                          Ty.path "u8",
+                          M.get_associated_function (|
+                            Ty.path "subtle::Choice",
+                            "unwrap_u8",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                        |))
+                    ]
                   |)
                 |))
             |) in
@@ -2470,19 +2497,23 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
               M.use
                 (M.alloc (|
                   Ty.path "i8",
-                  UnOp.neg (|
-                    M.cast
-                      (Ty.path "i8")
-                      (M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (|
-                          Ty.path "subtle::Choice",
-                          "unwrap_u8",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                      |))
+                  M.call_closure (|
+                    Ty.path "i8",
+                    UnOp.neg,
+                    [
+                      M.cast
+                        (Ty.path "i8")
+                        (M.call_closure (|
+                          Ty.path "u8",
+                          M.get_associated_function (|
+                            Ty.path "subtle::Choice",
+                            "unwrap_u8",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                        |))
+                    ]
                   |)
                 |))
             |) in
@@ -2541,19 +2572,23 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
               M.use
                 (M.alloc (|
                   Ty.path "i8",
-                  UnOp.neg (|
-                    M.cast
-                      (Ty.path "i8")
-                      (M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (|
-                          Ty.path "subtle::Choice",
-                          "unwrap_u8",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                      |))
+                  M.call_closure (|
+                    Ty.path "i8",
+                    UnOp.neg,
+                    [
+                      M.cast
+                        (Ty.path "i8")
+                        (M.call_closure (|
+                          Ty.path "u8",
+                          M.get_associated_function (|
+                            Ty.path "subtle::Choice",
+                            "unwrap_u8",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                        |))
+                    ]
                   |)
                 |))
             |) in
@@ -2634,14 +2669,18 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
           let~ mask : Ty.path "u16" :=
             M.cast
               (Ty.path "u16")
-              (UnOp.neg (|
-                M.cast
-                  (Ty.path "i16")
-                  (M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                  |))
+              (M.call_closure (|
+                Ty.path "i16",
+                UnOp.neg,
+                [
+                  M.cast
+                    (Ty.path "i16")
+                    (M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                    |))
+                ]
               |)) in
           M.alloc (|
             Ty.path "u16",
@@ -2704,14 +2743,18 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
           let~ mask : Ty.path "u16" :=
             M.cast
               (Ty.path "u16")
-              (UnOp.neg (|
-                M.cast
-                  (Ty.path "i16")
-                  (M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                  |))
+              (M.call_closure (|
+                Ty.path "i16",
+                UnOp.neg,
+                [
+                  M.cast
+                    (Ty.path "i16")
+                    (M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                    |))
+                ]
               |)) in
           let~ _ : Ty.tuple [] :=
             let β := M.deref (| M.read (| self |) |) in
@@ -2766,14 +2809,18 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
           let~ mask : Ty.path "u16" :=
             M.cast
               (Ty.path "u16")
-              (UnOp.neg (|
-                M.cast
-                  (Ty.path "i16")
-                  (M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                  |))
+              (M.call_closure (|
+                Ty.path "i16",
+                UnOp.neg,
+                [
+                  M.cast
+                    (Ty.path "i16")
+                    (M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                    |))
+                ]
               |)) in
           let~ t : Ty.path "u16" :=
             M.call_closure (|
@@ -2854,19 +2901,23 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
               M.use
                 (M.alloc (|
                   Ty.path "i16",
-                  UnOp.neg (|
-                    M.cast
-                      (Ty.path "i16")
-                      (M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (|
-                          Ty.path "subtle::Choice",
-                          "unwrap_u8",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                      |))
+                  M.call_closure (|
+                    Ty.path "i16",
+                    UnOp.neg,
+                    [
+                      M.cast
+                        (Ty.path "i16")
+                        (M.call_closure (|
+                          Ty.path "u8",
+                          M.get_associated_function (|
+                            Ty.path "subtle::Choice",
+                            "unwrap_u8",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                        |))
+                    ]
                   |)
                 |))
             |) in
@@ -2933,19 +2984,23 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
               M.use
                 (M.alloc (|
                   Ty.path "i16",
-                  UnOp.neg (|
-                    M.cast
-                      (Ty.path "i16")
-                      (M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (|
-                          Ty.path "subtle::Choice",
-                          "unwrap_u8",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                      |))
+                  M.call_closure (|
+                    Ty.path "i16",
+                    UnOp.neg,
+                    [
+                      M.cast
+                        (Ty.path "i16")
+                        (M.call_closure (|
+                          Ty.path "u8",
+                          M.get_associated_function (|
+                            Ty.path "subtle::Choice",
+                            "unwrap_u8",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                        |))
+                    ]
                   |)
                 |))
             |) in
@@ -3004,19 +3059,23 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
               M.use
                 (M.alloc (|
                   Ty.path "i16",
-                  UnOp.neg (|
-                    M.cast
-                      (Ty.path "i16")
-                      (M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (|
-                          Ty.path "subtle::Choice",
-                          "unwrap_u8",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                      |))
+                  M.call_closure (|
+                    Ty.path "i16",
+                    UnOp.neg,
+                    [
+                      M.cast
+                        (Ty.path "i16")
+                        (M.call_closure (|
+                          Ty.path "u8",
+                          M.get_associated_function (|
+                            Ty.path "subtle::Choice",
+                            "unwrap_u8",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                        |))
+                    ]
                   |)
                 |))
             |) in
@@ -3097,14 +3156,18 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
           let~ mask : Ty.path "u32" :=
             M.cast
               (Ty.path "u32")
-              (UnOp.neg (|
-                M.cast
-                  (Ty.path "i32")
-                  (M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                  |))
+              (M.call_closure (|
+                Ty.path "i32",
+                UnOp.neg,
+                [
+                  M.cast
+                    (Ty.path "i32")
+                    (M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                    |))
+                ]
               |)) in
           M.alloc (|
             Ty.path "u32",
@@ -3167,14 +3230,18 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
           let~ mask : Ty.path "u32" :=
             M.cast
               (Ty.path "u32")
-              (UnOp.neg (|
-                M.cast
-                  (Ty.path "i32")
-                  (M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                  |))
+              (M.call_closure (|
+                Ty.path "i32",
+                UnOp.neg,
+                [
+                  M.cast
+                    (Ty.path "i32")
+                    (M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                    |))
+                ]
               |)) in
           let~ _ : Ty.tuple [] :=
             let β := M.deref (| M.read (| self |) |) in
@@ -3229,14 +3296,18 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
           let~ mask : Ty.path "u32" :=
             M.cast
               (Ty.path "u32")
-              (UnOp.neg (|
-                M.cast
-                  (Ty.path "i32")
-                  (M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                  |))
+              (M.call_closure (|
+                Ty.path "i32",
+                UnOp.neg,
+                [
+                  M.cast
+                    (Ty.path "i32")
+                    (M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                    |))
+                ]
               |)) in
           let~ t : Ty.path "u32" :=
             M.call_closure (|
@@ -3317,19 +3388,23 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
               M.use
                 (M.alloc (|
                   Ty.path "i32",
-                  UnOp.neg (|
-                    M.cast
-                      (Ty.path "i32")
-                      (M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (|
-                          Ty.path "subtle::Choice",
-                          "unwrap_u8",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                      |))
+                  M.call_closure (|
+                    Ty.path "i32",
+                    UnOp.neg,
+                    [
+                      M.cast
+                        (Ty.path "i32")
+                        (M.call_closure (|
+                          Ty.path "u8",
+                          M.get_associated_function (|
+                            Ty.path "subtle::Choice",
+                            "unwrap_u8",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                        |))
+                    ]
                   |)
                 |))
             |) in
@@ -3396,19 +3471,23 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
               M.use
                 (M.alloc (|
                   Ty.path "i32",
-                  UnOp.neg (|
-                    M.cast
-                      (Ty.path "i32")
-                      (M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (|
-                          Ty.path "subtle::Choice",
-                          "unwrap_u8",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                      |))
+                  M.call_closure (|
+                    Ty.path "i32",
+                    UnOp.neg,
+                    [
+                      M.cast
+                        (Ty.path "i32")
+                        (M.call_closure (|
+                          Ty.path "u8",
+                          M.get_associated_function (|
+                            Ty.path "subtle::Choice",
+                            "unwrap_u8",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                        |))
+                    ]
                   |)
                 |))
             |) in
@@ -3467,19 +3546,23 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
               M.use
                 (M.alloc (|
                   Ty.path "i32",
-                  UnOp.neg (|
-                    M.cast
-                      (Ty.path "i32")
-                      (M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (|
-                          Ty.path "subtle::Choice",
-                          "unwrap_u8",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                      |))
+                  M.call_closure (|
+                    Ty.path "i32",
+                    UnOp.neg,
+                    [
+                      M.cast
+                        (Ty.path "i32")
+                        (M.call_closure (|
+                          Ty.path "u8",
+                          M.get_associated_function (|
+                            Ty.path "subtle::Choice",
+                            "unwrap_u8",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                        |))
+                    ]
                   |)
                 |))
             |) in
@@ -3560,14 +3643,18 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
           let~ mask : Ty.path "u64" :=
             M.cast
               (Ty.path "u64")
-              (UnOp.neg (|
-                M.cast
-                  (Ty.path "i64")
-                  (M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                  |))
+              (M.call_closure (|
+                Ty.path "i64",
+                UnOp.neg,
+                [
+                  M.cast
+                    (Ty.path "i64")
+                    (M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                    |))
+                ]
               |)) in
           M.alloc (|
             Ty.path "u64",
@@ -3630,14 +3717,18 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
           let~ mask : Ty.path "u64" :=
             M.cast
               (Ty.path "u64")
-              (UnOp.neg (|
-                M.cast
-                  (Ty.path "i64")
-                  (M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                  |))
+              (M.call_closure (|
+                Ty.path "i64",
+                UnOp.neg,
+                [
+                  M.cast
+                    (Ty.path "i64")
+                    (M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                    |))
+                ]
               |)) in
           let~ _ : Ty.tuple [] :=
             let β := M.deref (| M.read (| self |) |) in
@@ -3692,14 +3783,18 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
           let~ mask : Ty.path "u64" :=
             M.cast
               (Ty.path "u64")
-              (UnOp.neg (|
-                M.cast
-                  (Ty.path "i64")
-                  (M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
-                    [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                  |))
+              (M.call_closure (|
+                Ty.path "i64",
+                UnOp.neg,
+                [
+                  M.cast
+                    (Ty.path "i64")
+                    (M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (| Ty.path "subtle::Choice", "unwrap_u8", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                    |))
+                ]
               |)) in
           let~ t : Ty.path "u64" :=
             M.call_closure (|
@@ -3780,19 +3875,23 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
               M.use
                 (M.alloc (|
                   Ty.path "i64",
-                  UnOp.neg (|
-                    M.cast
-                      (Ty.path "i64")
-                      (M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (|
-                          Ty.path "subtle::Choice",
-                          "unwrap_u8",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                      |))
+                  M.call_closure (|
+                    Ty.path "i64",
+                    UnOp.neg,
+                    [
+                      M.cast
+                        (Ty.path "i64")
+                        (M.call_closure (|
+                          Ty.path "u8",
+                          M.get_associated_function (|
+                            Ty.path "subtle::Choice",
+                            "unwrap_u8",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                        |))
+                    ]
                   |)
                 |))
             |) in
@@ -3859,19 +3958,23 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
               M.use
                 (M.alloc (|
                   Ty.path "i64",
-                  UnOp.neg (|
-                    M.cast
-                      (Ty.path "i64")
-                      (M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (|
-                          Ty.path "subtle::Choice",
-                          "unwrap_u8",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                      |))
+                  M.call_closure (|
+                    Ty.path "i64",
+                    UnOp.neg,
+                    [
+                      M.cast
+                        (Ty.path "i64")
+                        (M.call_closure (|
+                          Ty.path "u8",
+                          M.get_associated_function (|
+                            Ty.path "subtle::Choice",
+                            "unwrap_u8",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                        |))
+                    ]
                   |)
                 |))
             |) in
@@ -3930,19 +4033,23 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
               M.use
                 (M.alloc (|
                   Ty.path "i64",
-                  UnOp.neg (|
-                    M.cast
-                      (Ty.path "i64")
-                      (M.call_closure (|
-                        Ty.path "u8",
-                        M.get_associated_function (|
-                          Ty.path "subtle::Choice",
-                          "unwrap_u8",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, choice |) ]
-                      |))
+                  M.call_closure (|
+                    Ty.path "i64",
+                    UnOp.neg,
+                    [
+                      M.cast
+                        (Ty.path "i64")
+                        (M.call_closure (|
+                          Ty.path "u8",
+                          M.get_associated_function (|
+                            Ty.path "subtle::Choice",
+                            "unwrap_u8",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, choice |) ]
+                        |))
+                    ]
                   |)
                 |))
             |) in
@@ -4553,15 +4660,19 @@ Module Impl_subtle_CtOption_T.
                               M.use
                                 (M.alloc (|
                                   Ty.path "bool",
-                                  UnOp.not (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      BinOp.eq,
-                                      [
-                                        M.read (| M.deref (| M.read (| left_val |) |) |);
-                                        M.read (| M.deref (| M.read (| right_val |) |) |)
-                                      ]
-                                    |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    UnOp.not,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [
+                                          M.read (| M.deref (| M.read (| left_val |) |) |);
+                                          M.read (| M.deref (| M.read (| right_val |) |) |)
+                                        ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -4776,15 +4887,19 @@ Module Impl_subtle_CtOption_T.
                               M.use
                                 (M.alloc (|
                                   Ty.path "bool",
-                                  UnOp.not (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      BinOp.eq,
-                                      [
-                                        M.read (| M.deref (| M.read (| left_val |) |) |);
-                                        M.read (| M.deref (| M.read (| right_val |) |) |)
-                                      ]
-                                    |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    UnOp.not,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [
+                                          M.read (| M.deref (| M.read (| left_val |) |) |);
+                                          M.read (| M.deref (| M.read (| right_val |) |) |)
+                                        ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -5865,7 +5980,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
             M.call_closure (|
               Ty.path "u8",
               BinOp.Wrap.bit_and,
-              [ M.read (| gtb |); UnOp.not (| M.read (| ltb |) |) ]
+              [ M.read (| gtb |); M.call_closure (| Ty.path "u8", UnOp.not, [ M.read (| ltb |) ] |)
+              ]
             |) in
           let~ pow : Ty.path "i32" := Value.Integer IntegerKind.I32 1 in
           let~ _ : Ty.tuple [] :=
@@ -6143,7 +6259,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
             M.call_closure (|
               Ty.path "u16",
               BinOp.Wrap.bit_and,
-              [ M.read (| gtb |); UnOp.not (| M.read (| ltb |) |) ]
+              [ M.read (| gtb |); M.call_closure (| Ty.path "u16", UnOp.not, [ M.read (| ltb |) ] |)
+              ]
             |) in
           let~ pow : Ty.path "i32" := Value.Integer IntegerKind.I32 1 in
           let~ _ : Ty.tuple [] :=
@@ -6417,7 +6534,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
             M.call_closure (|
               Ty.path "u32",
               BinOp.Wrap.bit_and,
-              [ M.read (| gtb |); UnOp.not (| M.read (| ltb |) |) ]
+              [ M.read (| gtb |); M.call_closure (| Ty.path "u32", UnOp.not, [ M.read (| ltb |) ] |)
+              ]
             |) in
           let~ pow : Ty.path "i32" := Value.Integer IntegerKind.I32 1 in
           let~ _ : Ty.tuple [] :=
@@ -6691,7 +6809,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
             M.call_closure (|
               Ty.path "u64",
               BinOp.Wrap.bit_and,
-              [ M.read (| gtb |); UnOp.not (| M.read (| ltb |) |) ]
+              [ M.read (| gtb |); M.call_closure (| Ty.path "u64", UnOp.not, [ M.read (| ltb |) ] |)
+              ]
             |) in
           let~ pow : Ty.path "i32" := Value.Integer IntegerKind.I32 1 in
           let~ _ : Ty.tuple [] :=

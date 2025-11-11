@@ -5767,44 +5767,49 @@ Module collections.
                                                                                             (M.alloc (|
                                                                                               Ty.path
                                                                                                 "bool",
-                                                                                              UnOp.not (|
-                                                                                                M.call_closure (|
-                                                                                                  Ty.path
-                                                                                                    "bool",
-                                                                                                  M.get_associated_function (|
-                                                                                                    Ty.apply
-                                                                                                      (Ty.path
-                                                                                                        "alloc::collections::btree::set::BTreeSet")
-                                                                                                      []
+                                                                                              M.call_closure (|
+                                                                                                Ty.path
+                                                                                                  "bool",
+                                                                                                UnOp.not,
+                                                                                                [
+                                                                                                  M.call_closure (|
+                                                                                                    Ty.path
+                                                                                                      "bool",
+                                                                                                    M.get_associated_function (|
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "alloc::collections::btree::set::BTreeSet")
+                                                                                                        []
+                                                                                                        [
+                                                                                                          T;
+                                                                                                          A
+                                                                                                        ],
+                                                                                                      "contains",
+                                                                                                      [],
                                                                                                       [
-                                                                                                        T;
-                                                                                                        A
-                                                                                                      ],
-                                                                                                    "contains",
-                                                                                                    [],
+                                                                                                        T
+                                                                                                      ]
+                                                                                                    |),
                                                                                                     [
-                                                                                                      T
+                                                                                                      M.borrow (|
+                                                                                                        Pointer.Kind.Ref,
+                                                                                                        M.deref (|
+                                                                                                          M.read (|
+                                                                                                            other
+                                                                                                          |)
+                                                                                                        |)
+                                                                                                      |);
+                                                                                                      M.borrow (|
+                                                                                                        Pointer.Kind.Ref,
+                                                                                                        M.deref (|
+                                                                                                          M.read (|
+                                                                                                            next
+                                                                                                          |)
+                                                                                                        |)
+                                                                                                      |)
                                                                                                     ]
-                                                                                                  |),
-                                                                                                  [
-                                                                                                    M.borrow (|
-                                                                                                      Pointer.Kind.Ref,
-                                                                                                      M.deref (|
-                                                                                                        M.read (|
-                                                                                                          other
-                                                                                                        |)
-                                                                                                      |)
-                                                                                                    |);
-                                                                                                    M.borrow (|
-                                                                                                      Pointer.Kind.Ref,
-                                                                                                      M.deref (|
-                                                                                                        M.read (|
-                                                                                                          next
-                                                                                                        |)
-                                                                                                      |)
-                                                                                                    |)
-                                                                                                  ]
-                                                                                                |)
+                                                                                                  |)
+                                                                                                ]
                                                                                               |)
                                                                                             |)) in
                                                                                         let _ :=
@@ -7465,29 +7470,34 @@ Module collections.
                                           ltac:(M.monadic
                                             (let v :=
                                               M.copy (| Ty.apply (Ty.path "&") [] [ T ], γ |) in
-                                            UnOp.not (|
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                M.get_trait_method (|
-                                                  "core::ops::function::FnMut",
-                                                  F,
-                                                  [],
-                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-                                                  "call_mut",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (| Pointer.Kind.MutRef, f |);
-                                                  Value.Tuple
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (| M.read (| v |) |)
-                                                      |)
-                                                    ]
-                                                ]
-                                              |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              UnOp.not,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  M.get_trait_method (|
+                                                    "core::ops::function::FnMut",
+                                                    F,
+                                                    [],
+                                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                                    ],
+                                                    "call_mut",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (| Pointer.Kind.MutRef, f |);
+                                                    Value.Tuple
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| v |) |)
+                                                        |)
+                                                      ]
+                                                  ]
+                                                |)
+                                              ]
                                             |)))
                                       ]
                                     |)))
@@ -13341,43 +13351,47 @@ Module collections.
                                               M.use
                                                 (M.alloc (|
                                                   Ty.path "bool",
-                                                  UnOp.not (|
-                                                    M.call_closure (|
-                                                      Ty.path "bool",
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "alloc::collections::btree::set::BTreeSet")
-                                                          []
-                                                          [ T; A ],
-                                                        "contains",
-                                                        [],
-                                                        [ T ]
-                                                      |),
-                                                      [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (|
-                                                            M.read (|
-                                                              M.deref (| M.read (| other_set |) |)
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    UnOp.not,
+                                                    [
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloc::collections::btree::set::BTreeSet")
+                                                            []
+                                                            [ T; A ],
+                                                          "contains",
+                                                          [],
+                                                          [ T ]
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.read (|
+                                                                M.deref (| M.read (| other_set |) |)
+                                                              |)
                                                             |)
-                                                          |)
-                                                        |);
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (|
-                                                            M.read (|
-                                                              M.deref (|
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  self_next
+                                                          |);
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.read (|
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    self_next
+                                                                  |)
                                                                 |)
                                                               |)
                                                             |)
                                                           |)
-                                                        |)
-                                                      ]
-                                                    |)
+                                                        ]
+                                                      |)
+                                                    ]
                                                   |)
                                                 |)) in
                                             let _ :=

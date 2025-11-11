@@ -595,23 +595,27 @@ Module ptr.
                                 |),
                                 ltac:(M.monadic
                                   (LogicalOp.or (|
-                                    UnOp.not (|
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        M.get_associated_function (|
-                                          Ty.path "usize",
-                                          "is_power_of_two",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.call_closure (|
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_associated_function (|
                                             Ty.path "usize",
-                                            M.get_function (| "core::mem::size_of", [], [ T ] |),
+                                            "is_power_of_two",
+                                            [],
                                             []
-                                          |)
-                                        ]
-                                      |)
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              M.get_function (| "core::mem::size_of", [], [ T ] |),
+                                              []
+                                            |)
+                                          ]
+                                        |)
+                                      ]
                                     |),
                                     ltac:(M.monadic
                                       (M.call_closure (|

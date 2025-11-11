@@ -95,12 +95,16 @@ Module root.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.gt,
-                                    [ M.read (| degree |); Value.Integer IntegerKind.Usize 0 ]
-                                  |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.gt,
+                                      [ M.read (| degree |); Value.Integer IntegerKind.Usize 0 ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=

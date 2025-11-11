@@ -611,17 +611,17 @@ pub(crate) fn compile_expr<'a>(
             .alloc(ty)
         }
         thir::ExprKind::Unary { op, arg } => {
-            let (path, kind) = match op {
-                UnOp::Not => ("UnOp.not", CallKind::Effectful),
-                UnOp::Neg => ("UnOp.neg", CallKind::Effectful),
-                UnOp::PtrMetadata => ("UnOp.ptr_metadata", CallKind::Effectful),
+            let path = match op {
+                UnOp::Not => "UnOp.not",
+                UnOp::Neg => "UnOp.neg",
+                UnOp::PtrMetadata => "UnOp.ptr_metadata",
             };
             let arg = compile_expr(env, generics, thir, arg);
 
             Rc::new(Expr::Call {
                 func: Expr::local_var(path),
                 args: vec![arg.read()],
-                kind,
+                kind: CallKind::Closure(ty.clone()),
             })
             .alloc(ty)
         }

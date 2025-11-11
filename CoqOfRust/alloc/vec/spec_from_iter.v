@@ -139,7 +139,11 @@ Module vec.
                                 (M.alloc (|
                                   Ty.path "bool",
                                   LogicalOp.or (|
-                                    UnOp.not (| M.read (| has_advanced |) |),
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [ M.read (| has_advanced |) ]
+                                    |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
                                         Ty.path "bool",

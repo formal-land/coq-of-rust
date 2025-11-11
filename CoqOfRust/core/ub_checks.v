@@ -22,7 +22,12 @@ Module hint.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.use (M.alloc (| Ty.path "bool", UnOp.not (| Value.Bool false |) |)) in
+                  (let γ :=
+                    M.use
+                      (M.alloc (|
+                        Ty.path "bool",
+                        M.call_closure (| Ty.path "bool", UnOp.not, [ Value.Bool false ] |)
+                      |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.never_to_any (|
                     M.call_closure (|
@@ -69,7 +74,11 @@ Module hint.
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
-                    M.use (M.alloc (| Ty.path "bool", UnOp.not (| M.read (| cond |) |) |)) in
+                    M.use
+                      (M.alloc (|
+                        Ty.path "bool",
+                        M.call_closure (| Ty.path "bool", UnOp.not, [ M.read (| cond |) ] |)
+                      |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.never_to_any (|
                     M.call_closure (|
@@ -125,44 +134,71 @@ Module intrinsics.
                     M.use
                       (M.alloc (|
                         Ty.path "bool",
-                        UnOp.not (|
-                          M.read (|
-                            let~ zero_size : Ty.path "bool" :=
-                              LogicalOp.or (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.eq,
-                                  [ M.read (| count |); Value.Integer IntegerKind.Usize 0 ]
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.eq,
-                                    [ M.read (| size |); Value.Integer IntegerKind.Usize 0 ]
-                                  |)))
-                              |) in
-                            M.alloc (|
-                              Ty.path "bool",
-                              LogicalOp.and (|
-                                LogicalOp.and (|
+                        M.call_closure (|
+                          Ty.path "bool",
+                          UnOp.not,
+                          [
+                            M.read (|
+                              let~ zero_size : Ty.path "bool" :=
+                                LogicalOp.or (|
                                   M.call_closure (|
                                     Ty.path "bool",
-                                    M.get_function (|
-                                      "core::ub_checks::maybe_is_aligned_and_not_null",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| src |); M.read (| align |); M.read (| zero_size |) ]
+                                    BinOp.eq,
+                                    [ M.read (| count |); Value.Integer IntegerKind.Usize 0 ]
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [ M.read (| size |); Value.Integer IntegerKind.Usize 0 ]
+                                    |)))
+                                |) in
+                              M.alloc (|
+                                Ty.path "bool",
+                                LogicalOp.and (|
+                                  LogicalOp.and (|
+                                    M.call_closure (|
                                       Ty.path "bool",
                                       M.get_function (|
                                         "core::ub_checks::maybe_is_aligned_and_not_null",
                                         [],
                                         []
                                       |),
+                                      [ M.read (| src |); M.read (| align |); M.read (| zero_size |)
+                                      ]
+                                    |),
+                                    ltac:(M.monadic
+                                      (M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_function (|
+                                          "core::ub_checks::maybe_is_aligned_and_not_null",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                                            M.pointer_coercion
+                                              M.PointerCoercion.MutToConstPointer
+                                              (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                              (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
+                                            [ M.read (| dst |) ]
+                                          |);
+                                          M.read (| align |);
+                                          M.read (| zero_size |)
+                                        ]
+                                      |)))
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_function (|
+                                        "core::ub_checks::maybe_is_nonoverlapping",
+                                        [],
+                                        []
+                                      |),
                                       [
+                                        M.read (| src |);
                                         M.call_closure (|
                                           Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
                                           M.pointer_coercion
@@ -171,36 +207,14 @@ Module intrinsics.
                                             (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
                                           [ M.read (| dst |) ]
                                         |);
-                                        M.read (| align |);
-                                        M.read (| zero_size |)
+                                        M.read (| size |);
+                                        M.read (| count |)
                                       ]
                                     |)))
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_function (|
-                                      "core::ub_checks::maybe_is_nonoverlapping",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.read (| src |);
-                                      M.call_closure (|
-                                        Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
-                                        M.pointer_coercion
-                                          M.PointerCoercion.MutToConstPointer
-                                          (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
-                                          (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
-                                        [ M.read (| dst |) ]
-                                      |);
-                                      M.read (| size |);
-                                      M.read (| count |)
-                                    ]
-                                  |)))
+                                |)
                               |)
                             |)
-                          |)
+                          ]
                         |)
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -255,39 +269,43 @@ Module intrinsics.
                     M.use
                       (M.alloc (|
                         Ty.path "bool",
-                        UnOp.not (|
-                          LogicalOp.and (|
-                            M.call_closure (|
-                              Ty.path "bool",
-                              M.get_function (|
-                                "core::ub_checks::maybe_is_aligned_and_not_null",
-                                [],
-                                []
-                              |),
-                              [ M.read (| src |); M.read (| align |); M.read (| zero_size |) ]
-                            |),
-                            ltac:(M.monadic
-                              (M.call_closure (|
+                        M.call_closure (|
+                          Ty.path "bool",
+                          UnOp.not,
+                          [
+                            LogicalOp.and (|
+                              M.call_closure (|
                                 Ty.path "bool",
                                 M.get_function (|
                                   "core::ub_checks::maybe_is_aligned_and_not_null",
                                   [],
                                   []
                                 |),
-                                [
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
-                                    M.pointer_coercion
-                                      M.PointerCoercion.MutToConstPointer
-                                      (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
-                                      (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
-                                    [ M.read (| dst |) ]
-                                  |);
-                                  M.read (| align |);
-                                  M.read (| zero_size |)
-                                ]
-                              |)))
-                          |)
+                                [ M.read (| src |); M.read (| align |); M.read (| zero_size |) ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_function (|
+                                    "core::ub_checks::maybe_is_aligned_and_not_null",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                                      M.pointer_coercion
+                                        M.PointerCoercion.MutToConstPointer
+                                        (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                        (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
+                                      [ M.read (| dst |) ]
+                                    |);
+                                    M.read (| align |);
+                                    M.read (| zero_size |)
+                                  ]
+                                |)))
+                            |)
+                          ]
                         |)
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -341,16 +359,20 @@ Module intrinsics.
                     M.use
                       (M.alloc (|
                         Ty.path "bool",
-                        UnOp.not (|
-                          M.call_closure (|
-                            Ty.path "bool",
-                            M.get_function (|
-                              "core::ub_checks::maybe_is_aligned_and_not_null",
-                              [],
-                              []
-                            |),
-                            [ M.read (| addr |); M.read (| align |); M.read (| zero_size |) ]
-                          |)
+                        M.call_closure (|
+                          Ty.path "bool",
+                          UnOp.not,
+                          [
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_function (|
+                                "core::ub_checks::maybe_is_aligned_and_not_null",
+                                [],
+                                []
+                              |),
+                              [ M.read (| addr |); M.read (| align |); M.read (| zero_size |) ]
+                            |)
+                          ]
                         |)
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -408,48 +430,30 @@ Module ptr.
                     M.use
                       (M.alloc (|
                         Ty.path "bool",
-                        UnOp.not (|
-                          M.read (|
-                            let~ zero_size : Ty.path "bool" :=
-                              LogicalOp.or (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.eq,
-                                  [ M.read (| size |); Value.Integer IntegerKind.Usize 0 ]
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.eq,
-                                    [ M.read (| count |); Value.Integer IntegerKind.Usize 0 ]
-                                  |)))
-                              |) in
-                            M.alloc (|
-                              Ty.path "bool",
-                              LogicalOp.and (|
-                                LogicalOp.and (|
+                        M.call_closure (|
+                          Ty.path "bool",
+                          UnOp.not,
+                          [
+                            M.read (|
+                              let~ zero_size : Ty.path "bool" :=
+                                LogicalOp.or (|
                                   M.call_closure (|
                                     Ty.path "bool",
-                                    M.get_function (|
-                                      "core::ub_checks::maybe_is_aligned_and_not_null",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
-                                        M.pointer_coercion
-                                          M.PointerCoercion.MutToConstPointer
-                                          (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
-                                          (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
-                                        [ M.read (| x |) ]
-                                      |);
-                                      M.read (| align |);
-                                      M.read (| zero_size |)
-                                    ]
+                                    BinOp.eq,
+                                    [ M.read (| size |); Value.Integer IntegerKind.Usize 0 ]
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [ M.read (| count |); Value.Integer IntegerKind.Usize 0 ]
+                                    |)))
+                                |) in
+                              M.alloc (|
+                                Ty.path "bool",
+                                LogicalOp.and (|
+                                  LogicalOp.and (|
+                                    M.call_closure (|
                                       Ty.path "bool",
                                       M.get_function (|
                                         "core::ub_checks::maybe_is_aligned_and_not_null",
@@ -463,45 +467,67 @@ Module ptr.
                                             M.PointerCoercion.MutToConstPointer
                                             (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
                                             (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
-                                          [ M.read (| y |) ]
+                                          [ M.read (| x |) ]
                                         |);
                                         M.read (| align |);
                                         M.read (| zero_size |)
                                       ]
-                                    |)))
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_function (|
-                                      "core::ub_checks::maybe_is_nonoverlapping",
-                                      [],
-                                      []
                                     |),
-                                    [
-                                      M.call_closure (|
-                                        Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
-                                        M.pointer_coercion
-                                          M.PointerCoercion.MutToConstPointer
-                                          (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
-                                          (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
-                                        [ M.read (| x |) ]
-                                      |);
-                                      M.call_closure (|
-                                        Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
-                                        M.pointer_coercion
-                                          M.PointerCoercion.MutToConstPointer
-                                          (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
-                                          (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
-                                        [ M.read (| y |) ]
-                                      |);
-                                      M.read (| size |);
-                                      M.read (| count |)
-                                    ]
-                                  |)))
+                                    ltac:(M.monadic
+                                      (M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_function (|
+                                          "core::ub_checks::maybe_is_aligned_and_not_null",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                                            M.pointer_coercion
+                                              M.PointerCoercion.MutToConstPointer
+                                              (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                              (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
+                                            [ M.read (| y |) ]
+                                          |);
+                                          M.read (| align |);
+                                          M.read (| zero_size |)
+                                        ]
+                                      |)))
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_function (|
+                                        "core::ub_checks::maybe_is_nonoverlapping",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                                          M.pointer_coercion
+                                            M.PointerCoercion.MutToConstPointer
+                                            (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                            (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
+                                          [ M.read (| x |) ]
+                                        |);
+                                        M.call_closure (|
+                                          Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                                          M.pointer_coercion
+                                            M.PointerCoercion.MutToConstPointer
+                                            (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                            (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
+                                          [ M.read (| y |) ]
+                                        |);
+                                        M.read (| size |);
+                                        M.read (| count |)
+                                      ]
+                                    |)))
+                                |)
                               |)
                             |)
-                          |)
+                          ]
                         |)
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -555,16 +581,20 @@ Module ptr.
                     M.use
                       (M.alloc (|
                         Ty.path "bool",
-                        UnOp.not (|
-                          M.call_closure (|
-                            Ty.path "bool",
-                            M.get_function (|
-                              "core::ub_checks::maybe_is_aligned_and_not_null",
-                              [],
-                              []
-                            |),
-                            [ M.read (| addr |); M.read (| align |); M.read (| is_zst |) ]
-                          |)
+                        M.call_closure (|
+                          Ty.path "bool",
+                          UnOp.not,
+                          [
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_function (|
+                                "core::ub_checks::maybe_is_aligned_and_not_null",
+                                [],
+                                []
+                              |),
+                              [ M.read (| addr |); M.read (| align |); M.read (| is_zst |) ]
+                            |)
+                          ]
                         |)
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -618,16 +648,20 @@ Module ptr.
                     M.use
                       (M.alloc (|
                         Ty.path "bool",
-                        UnOp.not (|
-                          M.call_closure (|
-                            Ty.path "bool",
-                            M.get_function (|
-                              "core::ub_checks::maybe_is_aligned_and_not_null",
-                              [],
-                              []
-                            |),
-                            [ M.read (| addr |); M.read (| align |); M.read (| is_zst |) ]
-                          |)
+                        M.call_closure (|
+                          Ty.path "bool",
+                          UnOp.not,
+                          [
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_function (|
+                                "core::ub_checks::maybe_is_aligned_and_not_null",
+                                [],
+                                []
+                              |),
+                              [ M.read (| addr |); M.read (| align |); M.read (| is_zst |) ]
+                            |)
+                          ]
                         |)
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -681,27 +715,31 @@ Module ptr.
                     M.use
                       (M.alloc (|
                         Ty.path "bool",
-                        UnOp.not (|
-                          M.call_closure (|
-                            Ty.path "bool",
-                            M.get_function (|
-                              "core::ub_checks::maybe_is_aligned_and_not_null",
-                              [],
-                              []
-                            |),
-                            [
-                              M.call_closure (|
-                                Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
-                                M.pointer_coercion
-                                  M.PointerCoercion.MutToConstPointer
-                                  (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
-                                  (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
-                                [ M.read (| addr |) ]
-                              |);
-                              M.read (| align |);
-                              M.read (| is_zst |)
-                            ]
-                          |)
+                        M.call_closure (|
+                          Ty.path "bool",
+                          UnOp.not,
+                          [
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_function (|
+                                "core::ub_checks::maybe_is_aligned_and_not_null",
+                                [],
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.MutToConstPointer
+                                    (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                    (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
+                                  [ M.read (| addr |) ]
+                                |);
+                                M.read (| align |);
+                                M.read (| is_zst |)
+                              ]
+                            |)
+                          ]
                         |)
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -755,16 +793,20 @@ Module ptr.
                     M.use
                       (M.alloc (|
                         Ty.path "bool",
-                        UnOp.not (|
-                          M.call_closure (|
-                            Ty.path "bool",
-                            M.get_function (|
-                              "core::ub_checks::maybe_is_aligned_and_not_null",
-                              [],
-                              []
-                            |),
-                            [ M.read (| addr |); M.read (| align |); M.read (| is_zst |) ]
-                          |)
+                        M.call_closure (|
+                          Ty.path "bool",
+                          UnOp.not,
+                          [
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_function (|
+                                "core::ub_checks::maybe_is_aligned_and_not_null",
+                                [],
+                                []
+                              |),
+                              [ M.read (| addr |); M.read (| align |); M.read (| is_zst |) ]
+                            |)
+                          ]
                         |)
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -818,27 +860,31 @@ Module ptr.
                     M.use
                       (M.alloc (|
                         Ty.path "bool",
-                        UnOp.not (|
-                          M.call_closure (|
-                            Ty.path "bool",
-                            M.get_function (|
-                              "core::ub_checks::maybe_is_aligned_and_not_null",
-                              [],
-                              []
-                            |),
-                            [
-                              M.call_closure (|
-                                Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
-                                M.pointer_coercion
-                                  M.PointerCoercion.MutToConstPointer
-                                  (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
-                                  (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
-                                [ M.read (| addr |) ]
-                              |);
-                              M.read (| align |);
-                              M.read (| is_zst |)
-                            ]
-                          |)
+                        M.call_closure (|
+                          Ty.path "bool",
+                          UnOp.not,
+                          [
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_function (|
+                                "core::ub_checks::maybe_is_aligned_and_not_null",
+                                [],
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.MutToConstPointer
+                                    (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                    (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
+                                  [ M.read (| addr |) ]
+                                |);
+                                M.read (| align |);
+                                M.read (| is_zst |)
+                              ]
+                            |)
+                          ]
                         |)
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1162,31 +1208,28 @@ Module char.
                       M.use
                         (M.alloc (|
                           Ty.path "bool",
-                          UnOp.not (|
-                            M.call_closure (|
-                              Ty.path "bool",
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
+                          M.call_closure (|
+                            Ty.path "bool",
+                            UnOp.not,
+                            [
+                              M.call_closure (|
+                                Ty.path "bool",
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "char";
+                                      Ty.path "core::char::convert::CharTryFromError"
+                                    ],
+                                  "is_ok",
+                                  [],
                                   []
-                                  [ Ty.path "char"; Ty.path "core::char::convert::CharTryFromError"
-                                  ],
-                                "is_ok",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "char";
-                                        Ty.path "core::char::convert::CharTryFromError"
-                                      ],
-                                    M.call_closure (|
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
@@ -1194,17 +1237,26 @@ Module char.
                                           Ty.path "char";
                                           Ty.path "core::char::convert::CharTryFromError"
                                         ],
-                                      M.get_function (|
-                                        "core::char::convert::char_try_from_u32",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| i |) ]
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "char";
+                                            Ty.path "core::char::convert::CharTryFromError"
+                                          ],
+                                        M.get_function (|
+                                          "core::char::convert::char_try_from_u32",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| i |) ]
+                                      |)
                                     |)
                                   |)
-                                |)
-                              ]
-                            |)
+                                ]
+                              |)
+                            ]
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1261,39 +1313,43 @@ Module slice.
                       M.use
                         (M.alloc (|
                           Ty.path "bool",
-                          UnOp.not (|
-                            LogicalOp.and (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_function (|
-                                  "core::ub_checks::maybe_is_aligned_and_not_null",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
-                                    M.pointer_coercion
-                                      M.PointerCoercion.MutToConstPointer
-                                      (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
-                                      (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
-                                    [ M.read (| data |) ]
-                                  |);
-                                  M.read (| align |);
-                                  Value.Bool false
-                                ]
-                              |),
-                              ltac:(M.monadic
-                                (M.call_closure (|
+                          M.call_closure (|
+                            Ty.path "bool",
+                            UnOp.not,
+                            [
+                              LogicalOp.and (|
+                                M.call_closure (|
                                   Ty.path "bool",
                                   M.get_function (|
-                                    "core::ub_checks::is_valid_allocation_size",
+                                    "core::ub_checks::maybe_is_aligned_and_not_null",
                                     [],
                                     []
                                   |),
-                                  [ M.read (| size |); M.read (| len |) ]
-                                |)))
-                            |)
+                                  [
+                                    M.call_closure (|
+                                      Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                                      M.pointer_coercion
+                                        M.PointerCoercion.MutToConstPointer
+                                        (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                        (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
+                                      [ M.read (| data |) ]
+                                    |);
+                                    M.read (| align |);
+                                    Value.Bool false
+                                  ]
+                                |),
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_function (|
+                                      "core::ub_checks::is_valid_allocation_size",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.read (| size |); M.read (| len |) ]
+                                  |)))
+                              |)
+                            ]
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1348,39 +1404,43 @@ Module slice.
                       M.use
                         (M.alloc (|
                           Ty.path "bool",
-                          UnOp.not (|
-                            LogicalOp.and (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_function (|
-                                  "core::ub_checks::maybe_is_aligned_and_not_null",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
-                                    M.pointer_coercion
-                                      M.PointerCoercion.MutToConstPointer
-                                      (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
-                                      (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
-                                    [ M.read (| data |) ]
-                                  |);
-                                  M.read (| align |);
-                                  Value.Bool false
-                                ]
-                              |),
-                              ltac:(M.monadic
-                                (M.call_closure (|
+                          M.call_closure (|
+                            Ty.path "bool",
+                            UnOp.not,
+                            [
+                              LogicalOp.and (|
+                                M.call_closure (|
                                   Ty.path "bool",
                                   M.get_function (|
-                                    "core::ub_checks::is_valid_allocation_size",
+                                    "core::ub_checks::maybe_is_aligned_and_not_null",
                                     [],
                                     []
                                   |),
-                                  [ M.read (| size |); M.read (| len |) ]
-                                |)))
-                            |)
+                                  [
+                                    M.call_closure (|
+                                      Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                                      M.pointer_coercion
+                                        M.PointerCoercion.MutToConstPointer
+                                        (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                        (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
+                                      [ M.read (| data |) ]
+                                    |);
+                                    M.read (| align |);
+                                    Value.Bool false
+                                  ]
+                                |),
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_function (|
+                                      "core::ub_checks::is_valid_allocation_size",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.read (| size |); M.read (| len |) ]
+                                  |)))
+                              |)
+                            ]
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

@@ -662,14 +662,18 @@ Module algorithms.
                           4
                         |)
                       |);
-                      UnOp.not (|
-                        M.read (|
-                          M.SubPointer.get_struct_tuple_field (|
-                            other,
-                            "ruint::algorithms::gcd::matrix::Matrix",
-                            4
+                      M.call_closure (|
+                        Ty.path "bool",
+                        UnOp.not,
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              other,
+                              "ruint::algorithms::gcd::matrix::Matrix",
+                              4
+                            |)
                           |)
-                        |)
+                        ]
                       |)
                     ]
                   |)
@@ -1486,23 +1490,27 @@ Module algorithms.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialOrd",
-                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                      [],
-                                      [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                                      "ge",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (| Pointer.Kind.Ref, a |);
-                                      M.borrow (| Pointer.Kind.Ref, b |)
-                                    ]
-                                  |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_trait_method (|
+                                        "core::cmp::PartialOrd",
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                        [],
+                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
+                                        "ge",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (| Pointer.Kind.Ref, a |);
+                                        M.borrow (| Pointer.Kind.Ref, b |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -1984,12 +1992,16 @@ Module algorithms.
                                             M.use
                                               (M.alloc (|
                                                 Ty.path "bool",
-                                                UnOp.not (|
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    BinOp.ge,
-                                                    [ M.read (| r0 |); M.read (| r1 |) ]
-                                                  |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  UnOp.not,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.ge,
+                                                      [ M.read (| r0 |); M.read (| r1 |) ]
+                                                    |)
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=
@@ -2425,22 +2437,26 @@ Module algorithms.
                                             M.use
                                               (M.alloc (|
                                                 Ty.path "bool",
-                                                UnOp.not (|
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    BinOp.ge,
-                                                    [
-                                                      M.read (| a0 |);
-                                                      M.call_closure (|
-                                                        Ty.path "u64",
-                                                        BinOp.Wrap.shl,
-                                                        [
-                                                          Value.Integer IntegerKind.U64 1;
-                                                          Value.Integer IntegerKind.I32 63
-                                                        ]
-                                                      |)
-                                                    ]
-                                                  |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  UnOp.not,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.ge,
+                                                      [
+                                                        M.read (| a0 |);
+                                                        M.call_closure (|
+                                                          Ty.path "u64",
+                                                          BinOp.Wrap.shl,
+                                                          [
+                                                            Value.Integer IntegerKind.U64 1;
+                                                            Value.Integer IntegerKind.I32 63
+                                                          ]
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=
@@ -2485,12 +2501,16 @@ Module algorithms.
                                             M.use
                                               (M.alloc (|
                                                 Ty.path "bool",
-                                                UnOp.not (|
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    BinOp.ge,
-                                                    [ M.read (| a0 |); M.read (| a1 |) ]
-                                                  |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  UnOp.not,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.ge,
+                                                      [ M.read (| a0 |); M.read (| a1 |) ]
+                                                    |)
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=
@@ -2828,15 +2848,19 @@ Module algorithms.
                                                                 M.use
                                                                   (M.alloc (|
                                                                     Ty.path "bool",
-                                                                    UnOp.not (|
-                                                                      M.call_closure (|
-                                                                        Ty.path "bool",
-                                                                        BinOp.lt,
-                                                                        [
-                                                                          M.read (| a2 |);
-                                                                          M.read (| a3 |)
-                                                                        ]
-                                                                      |)
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      UnOp.not,
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.lt,
+                                                                          [
+                                                                            M.read (| a2 |);
+                                                                            M.read (| a3 |)
+                                                                          ]
+                                                                        |)
+                                                                      ]
                                                                     |)
                                                                   |)) in
                                                               let _ :=
@@ -2897,17 +2921,21 @@ Module algorithms.
                                                                 M.use
                                                                   (M.alloc (|
                                                                     Ty.path "bool",
-                                                                    UnOp.not (|
-                                                                      M.call_closure (|
-                                                                        Ty.path "bool",
-                                                                        BinOp.gt,
-                                                                        [
-                                                                          M.read (| a2 |);
-                                                                          Value.Integer
-                                                                            IntegerKind.U64
-                                                                            0
-                                                                        ]
-                                                                      |)
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      UnOp.not,
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.gt,
+                                                                          [
+                                                                            M.read (| a2 |);
+                                                                            Value.Integer
+                                                                              IntegerKind.U64
+                                                                              0
+                                                                          ]
+                                                                        |)
+                                                                      ]
                                                                     |)
                                                                   |)) in
                                                               let _ :=
@@ -3055,15 +3083,19 @@ Module algorithms.
                                                                 M.use
                                                                   (M.alloc (|
                                                                     Ty.path "bool",
-                                                                    UnOp.not (|
-                                                                      M.call_closure (|
-                                                                        Ty.path "bool",
-                                                                        BinOp.lt,
-                                                                        [
-                                                                          M.read (| a2 |);
-                                                                          M.read (| a3 |)
-                                                                        ]
-                                                                      |)
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      UnOp.not,
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.lt,
+                                                                          [
+                                                                            M.read (| a2 |);
+                                                                            M.read (| a3 |)
+                                                                          ]
+                                                                        |)
+                                                                      ]
                                                                     |)
                                                                   |)) in
                                                               let _ :=
@@ -3124,17 +3156,21 @@ Module algorithms.
                                                                 M.use
                                                                   (M.alloc (|
                                                                     Ty.path "bool",
-                                                                    UnOp.not (|
-                                                                      M.call_closure (|
-                                                                        Ty.path "bool",
-                                                                        BinOp.gt,
-                                                                        [
-                                                                          M.read (| a2 |);
-                                                                          Value.Integer
-                                                                            IntegerKind.U64
-                                                                            0
-                                                                        ]
-                                                                      |)
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      UnOp.not,
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.gt,
+                                                                          [
+                                                                            M.read (| a2 |);
+                                                                            Value.Integer
+                                                                              IntegerKind.U64
+                                                                              0
+                                                                          ]
+                                                                        |)
+                                                                      ]
                                                                     |)
                                                                   |)) in
                                                               let _ :=
@@ -3323,20 +3359,24 @@ Module algorithms.
                                             M.use
                                               (M.alloc (|
                                                 Ty.path "bool",
-                                                UnOp.not (|
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    BinOp.ge,
-                                                    [
-                                                      M.read (| a2 |);
-                                                      M.read (|
-                                                        get_constant (|
-                                                          "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
-                                                          Ty.path "u64"
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  UnOp.not,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.ge,
+                                                      [
+                                                        M.read (| a2 |);
+                                                        M.read (|
+                                                          get_constant (|
+                                                            "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                                            Ty.path "u64"
+                                                          |)
                                                         |)
-                                                      |)
-                                                    ]
-                                                  |)
+                                                      ]
+                                                    |)
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=
@@ -3381,20 +3421,24 @@ Module algorithms.
                                             M.use
                                               (M.alloc (|
                                                 Ty.path "bool",
-                                                UnOp.not (|
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    BinOp.lt,
-                                                    [
-                                                      M.read (| a3 |);
-                                                      M.read (|
-                                                        get_constant (|
-                                                          "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
-                                                          Ty.path "u64"
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  UnOp.not,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.lt,
+                                                      [
+                                                        M.read (| a3 |);
+                                                        M.read (|
+                                                          get_constant (|
+                                                            "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                                            Ty.path "u64"
+                                                          |)
                                                         |)
-                                                      |)
-                                                    ]
-                                                  |)
+                                                      ]
+                                                    |)
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=
@@ -3455,12 +3499,17 @@ Module algorithms.
                                                         M.use
                                                           (M.alloc (|
                                                             Ty.path "bool",
-                                                            UnOp.not (|
-                                                              M.call_closure (|
-                                                                Ty.path "bool",
-                                                                BinOp.ge,
-                                                                [ M.read (| a2 |); M.read (| v2 |) ]
-                                                              |)
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              UnOp.not,
+                                                              [
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  BinOp.ge,
+                                                                  [ M.read (| a2 |); M.read (| v2 |)
+                                                                  ]
+                                                                |)
+                                                              ]
                                                             |)
                                                           |)) in
                                                       let _ :=
@@ -3639,12 +3688,17 @@ Module algorithms.
                                                         M.use
                                                           (M.alloc (|
                                                             Ty.path "bool",
-                                                            UnOp.not (|
-                                                              M.call_closure (|
-                                                                Ty.path "bool",
-                                                                BinOp.ge,
-                                                                [ M.read (| a2 |); M.read (| u2 |) ]
-                                                              |)
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              UnOp.not,
+                                                              [
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  BinOp.ge,
+                                                                  [ M.read (| a2 |); M.read (| u2 |)
+                                                                  ]
+                                                                |)
+                                                              ]
                                                             |)
                                                           |)) in
                                                       let _ :=
@@ -3865,12 +3919,16 @@ Module algorithms.
                                             M.use
                                               (M.alloc (|
                                                 Ty.path "bool",
-                                                UnOp.not (|
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    BinOp.ge,
-                                                    [ M.read (| r0 |); M.read (| r1 |) ]
-                                                  |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  UnOp.not,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.ge,
+                                                      [ M.read (| r0 |); M.read (| r1 |) ]
+                                                    |)
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=

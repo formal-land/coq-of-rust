@@ -2206,37 +2206,41 @@ Module signature.
                                                               M.use
                                                                 (M.alloc (|
                                                                   Ty.path "bool",
-                                                                  UnOp.not (|
-                                                                    M.call_closure (|
-                                                                      Ty.path "bool",
-                                                                      M.get_associated_function (|
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "alloc::vec::Vec")
+                                                                  M.call_closure (|
+                                                                    Ty.path "bool",
+                                                                    UnOp.not,
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        Ty.path "bool",
+                                                                        M.get_associated_function (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::vec::Vec")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::AbilitySet";
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ],
+                                                                          "is_empty",
+                                                                          [],
                                                                           []
-                                                                          [
-                                                                            Ty.path
-                                                                              "move_binary_format::file_format::AbilitySet";
-                                                                            Ty.path
-                                                                              "alloc::alloc::Global"
-                                                                          ],
-                                                                        "is_empty",
-                                                                        [],
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            M.deref (|
-                                                                              M.read (| fh |)
-                                                                            |),
-                                                                            "move_binary_format::file_format::FunctionHandle",
-                                                                            "type_parameters"
+                                                                        |),
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.deref (|
+                                                                                M.read (| fh |)
+                                                                              |),
+                                                                              "move_binary_format::file_format::FunctionHandle",
+                                                                              "type_parameters"
+                                                                            |)
                                                                           |)
-                                                                        |)
-                                                                      ]
-                                                                    |)
+                                                                        ]
+                                                                      |)
+                                                                    ]
                                                                   |)
                                                                 |)) in
                                                             let _ :=
@@ -10619,7 +10623,11 @@ Module signature.
                                             |)
                                           |),
                                           ltac:(M.monadic
-                                            (UnOp.not (| M.read (| is_phantom_pos |) |)))
+                                            (M.call_closure (|
+                                              Ty.path "bool",
+                                              UnOp.not,
+                                              [ M.read (| is_phantom_pos |) ]
+                                            |)))
                                         |)
                                       |)) in
                                   let _ :=
@@ -14859,21 +14867,25 @@ Module signature.
                                                               M.use
                                                                 (M.alloc (|
                                                                   Ty.path "bool",
-                                                                  UnOp.not (|
-                                                                    M.call_closure (|
-                                                                      Ty.path "bool",
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "move_binary_format::file_format::AbilitySet",
-                                                                        "is_subset",
-                                                                        [],
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        M.read (| constraint |);
-                                                                        M.read (| given |)
-                                                                      ]
-                                                                    |)
+                                                                  M.call_closure (|
+                                                                    Ty.path "bool",
+                                                                    UnOp.not,
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        Ty.path "bool",
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::AbilitySet",
+                                                                          "is_subset",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.read (| constraint |);
+                                                                          M.read (| given |)
+                                                                        ]
+                                                                      |)
+                                                                    ]
                                                                   |)
                                                                 |)) in
                                                             let _ :=

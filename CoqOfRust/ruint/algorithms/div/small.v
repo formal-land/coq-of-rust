@@ -52,22 +52,26 @@ Module algorithms.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.ge,
-                                              [
-                                                M.read (| d |);
-                                                M.call_closure (|
-                                                  Ty.path "u64",
-                                                  BinOp.Wrap.shl,
-                                                  [
-                                                    Value.Integer IntegerKind.U64 1;
-                                                    Value.Integer IntegerKind.I32 63
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.ge,
+                                                [
+                                                  M.read (| d |);
+                                                  M.call_closure (|
+                                                    Ty.path "u64",
+                                                    BinOp.Wrap.shl,
+                                                    [
+                                                      Value.Integer IntegerKind.U64 1;
+                                                      Value.Integer IntegerKind.I32 63
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -432,15 +436,19 @@ Module algorithms.
                                           M.use
                                             (M.alloc (|
                                               Ty.path "bool",
-                                              UnOp.not (|
-                                                M.call_closure (|
-                                                  Ty.path "bool",
-                                                  BinOp.ne,
-                                                  [
-                                                    M.read (| divisor |);
-                                                    Value.Integer IntegerKind.U64 0
-                                                  ]
-                                                |)
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                UnOp.not,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.ne,
+                                                    [
+                                                      M.read (| divisor |);
+                                                      Value.Integer IntegerKind.U64 0
+                                                    ]
+                                                  |)
+                                                ]
                                               |)
                                             |)) in
                                         let _ :=
@@ -485,27 +493,35 @@ Module algorithms.
                                           M.use
                                             (M.alloc (|
                                               Ty.path "bool",
-                                              UnOp.not (|
-                                                UnOp.not (|
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                UnOp.not,
+                                                [
                                                   M.call_closure (|
                                                     Ty.path "bool",
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "slice")
-                                                        []
-                                                        [ Ty.path "u64" ],
-                                                      "is_empty",
-                                                      [],
-                                                      []
-                                                    |),
+                                                    UnOp.not,
                                                     [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (| M.read (| limbs |) |)
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [ Ty.path "u64" ],
+                                                          "is_empty",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| limbs |) |)
+                                                          |)
+                                                        ]
                                                       |)
                                                     ]
                                                   |)
-                                                |)
+                                                ]
                                               |)
                                             |)) in
                                         let _ :=
@@ -550,34 +566,22 @@ Module algorithms.
                                           M.use
                                             (M.alloc (|
                                               Ty.path "bool",
-                                              UnOp.not (|
-                                                M.call_closure (|
-                                                  Ty.path "bool",
-                                                  BinOp.ne,
-                                                  [
-                                                    M.read (|
-                                                      M.deref (|
-                                                        M.call_closure (|
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [ Ty.path "u64" ],
-                                                          M.get_associated_function (|
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                UnOp.not,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.ne,
+                                                    [
+                                                      M.read (|
+                                                        M.deref (|
+                                                          M.call_closure (|
                                                             Ty.apply
-                                                              (Ty.path "core::option::Option")
+                                                              (Ty.path "&")
                                                               []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [ Ty.path "u64" ]
-                                                              ],
-                                                            "unwrap",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.call_closure (|
+                                                              [ Ty.path "u64" ],
+                                                            M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "core::option::Option")
                                                                 []
@@ -587,29 +591,45 @@ Module algorithms.
                                                                     []
                                                                     [ Ty.path "u64" ]
                                                                 ],
-                                                              M.get_associated_function (|
+                                                              "unwrap",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
                                                                 Ty.apply
-                                                                  (Ty.path "slice")
+                                                                  (Ty.path "core::option::Option")
                                                                   []
-                                                                  [ Ty.path "u64" ],
-                                                                "last",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (| M.read (| limbs |) |)
-                                                                |)
-                                                              ]
-                                                            |)
-                                                          ]
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [ Ty.path "u64" ]
+                                                                  ],
+                                                                M.get_associated_function (|
+                                                                  Ty.apply
+                                                                    (Ty.path "slice")
+                                                                    []
+                                                                    [ Ty.path "u64" ],
+                                                                  "last",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| limbs |) |)
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            ]
+                                                          |)
                                                         |)
-                                                      |)
-                                                    |);
-                                                    Value.Integer IntegerKind.U64 0
-                                                  ]
-                                                |)
+                                                      |);
+                                                      Value.Integer IntegerKind.U64 0
+                                                    ]
+                                                  |)
+                                                ]
                                               |)
                                             |)) in
                                         let _ :=
@@ -1273,22 +1293,26 @@ Module algorithms.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.ge,
-                                              [
-                                                M.read (| d |);
-                                                M.call_closure (|
-                                                  Ty.path "u128",
-                                                  BinOp.Wrap.shl,
-                                                  [
-                                                    Value.Integer IntegerKind.U128 1;
-                                                    Value.Integer IntegerKind.I32 127
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.ge,
+                                                [
+                                                  M.read (| d |);
+                                                  M.call_closure (|
+                                                    Ty.path "u128",
+                                                    BinOp.Wrap.shl,
+                                                    [
+                                                      Value.Integer IntegerKind.U128 1;
+                                                      Value.Integer IntegerKind.I32 127
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -1619,22 +1643,26 @@ Module algorithms.
                                           M.use
                                             (M.alloc (|
                                               Ty.path "bool",
-                                              UnOp.not (|
-                                                M.call_closure (|
-                                                  Ty.path "bool",
-                                                  BinOp.ge,
-                                                  [
-                                                    M.read (| divisor |);
-                                                    M.call_closure (|
-                                                      Ty.path "u128",
-                                                      BinOp.Wrap.shl,
-                                                      [
-                                                        Value.Integer IntegerKind.U128 1;
-                                                        Value.Integer IntegerKind.I32 64
-                                                      ]
-                                                    |)
-                                                  ]
-                                                |)
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                UnOp.not,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.ge,
+                                                    [
+                                                      M.read (| divisor |);
+                                                      M.call_closure (|
+                                                        Ty.path "u128",
+                                                        BinOp.Wrap.shl,
+                                                        [
+                                                          Value.Integer IntegerKind.U128 1;
+                                                          Value.Integer IntegerKind.I32 64
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
                                               |)
                                             |)) in
                                         let _ :=
@@ -1679,27 +1707,35 @@ Module algorithms.
                                           M.use
                                             (M.alloc (|
                                               Ty.path "bool",
-                                              UnOp.not (|
-                                                UnOp.not (|
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                UnOp.not,
+                                                [
                                                   M.call_closure (|
                                                     Ty.path "bool",
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "slice")
-                                                        []
-                                                        [ Ty.path "u64" ],
-                                                      "is_empty",
-                                                      [],
-                                                      []
-                                                    |),
+                                                    UnOp.not,
                                                     [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (| M.read (| limbs |) |)
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [ Ty.path "u64" ],
+                                                          "is_empty",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| limbs |) |)
+                                                          |)
+                                                        ]
                                                       |)
                                                     ]
                                                   |)
-                                                |)
+                                                ]
                                               |)
                                             |)) in
                                         let _ :=
@@ -1744,34 +1780,22 @@ Module algorithms.
                                           M.use
                                             (M.alloc (|
                                               Ty.path "bool",
-                                              UnOp.not (|
-                                                M.call_closure (|
-                                                  Ty.path "bool",
-                                                  BinOp.ne,
-                                                  [
-                                                    M.read (|
-                                                      M.deref (|
-                                                        M.call_closure (|
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [ Ty.path "u64" ],
-                                                          M.get_associated_function (|
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                UnOp.not,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.ne,
+                                                    [
+                                                      M.read (|
+                                                        M.deref (|
+                                                          M.call_closure (|
                                                             Ty.apply
-                                                              (Ty.path "core::option::Option")
+                                                              (Ty.path "&")
                                                               []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [ Ty.path "u64" ]
-                                                              ],
-                                                            "unwrap",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.call_closure (|
+                                                              [ Ty.path "u64" ],
+                                                            M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "core::option::Option")
                                                                 []
@@ -1781,29 +1805,45 @@ Module algorithms.
                                                                     []
                                                                     [ Ty.path "u64" ]
                                                                 ],
-                                                              M.get_associated_function (|
+                                                              "unwrap",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
                                                                 Ty.apply
-                                                                  (Ty.path "slice")
+                                                                  (Ty.path "core::option::Option")
                                                                   []
-                                                                  [ Ty.path "u64" ],
-                                                                "last",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (| M.read (| limbs |) |)
-                                                                |)
-                                                              ]
-                                                            |)
-                                                          ]
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [ Ty.path "u64" ]
+                                                                  ],
+                                                                M.get_associated_function (|
+                                                                  Ty.apply
+                                                                    (Ty.path "slice")
+                                                                    []
+                                                                    [ Ty.path "u64" ],
+                                                                  "last",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| limbs |) |)
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            ]
+                                                          |)
                                                         |)
-                                                      |)
-                                                    |);
-                                                    Value.Integer IntegerKind.U64 0
-                                                  ]
-                                                |)
+                                                      |);
+                                                      Value.Integer IntegerKind.U64 0
+                                                    ]
+                                                  |)
+                                                ]
                                               |)
                                             |)) in
                                         let _ :=
@@ -2462,22 +2502,26 @@ Module algorithms.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.ge,
-                                              [
-                                                M.read (| d |);
-                                                M.call_closure (|
-                                                  Ty.path "u64",
-                                                  BinOp.Wrap.shl,
-                                                  [
-                                                    Value.Integer IntegerKind.U64 1;
-                                                    Value.Integer IntegerKind.I32 63
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.ge,
+                                                [
+                                                  M.read (| d |);
+                                                  M.call_closure (|
+                                                    Ty.path "u64",
+                                                    BinOp.Wrap.shl,
+                                                    [
+                                                      Value.Integer IntegerKind.U64 1;
+                                                      Value.Integer IntegerKind.I32 63
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -2521,32 +2565,38 @@ Module algorithms.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.lt,
-                                              [
-                                                M.call_closure (|
-                                                  Ty.path "u128",
-                                                  BinOp.Wrap.shr,
-                                                  [ M.read (| u |); Value.Integer IntegerKind.I32 64
-                                                  ]
-                                                |);
-                                                M.call_closure (|
-                                                  Ty.path "u128",
-                                                  M.get_trait_method (|
-                                                    "core::convert::From",
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.lt,
+                                                [
+                                                  M.call_closure (|
                                                     Ty.path "u128",
-                                                    [],
-                                                    [ Ty.path "u64" ],
-                                                    "from",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.read (| d |) ]
-                                                |)
-                                              ]
-                                            |)
+                                                    BinOp.Wrap.shr,
+                                                    [
+                                                      M.read (| u |);
+                                                      Value.Integer IntegerKind.I32 64
+                                                    ]
+                                                  |);
+                                                  M.call_closure (|
+                                                    Ty.path "u128",
+                                                    M.get_trait_method (|
+                                                      "core::convert::From",
+                                                      Ty.path "u128",
+                                                      [],
+                                                      [ Ty.path "u64" ],
+                                                      "from",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.read (| d |) ]
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -2665,22 +2715,26 @@ Module algorithms.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.ge,
-                                              [
-                                                M.read (| d |);
-                                                M.call_closure (|
-                                                  Ty.path "u64",
-                                                  BinOp.Wrap.shl,
-                                                  [
-                                                    Value.Integer IntegerKind.U64 1;
-                                                    Value.Integer IntegerKind.I32 63
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.ge,
+                                                [
+                                                  M.read (| d |);
+                                                  M.call_closure (|
+                                                    Ty.path "u64",
+                                                    BinOp.Wrap.shl,
+                                                    [
+                                                      Value.Integer IntegerKind.U64 1;
+                                                      Value.Integer IntegerKind.I32 63
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -2724,32 +2778,38 @@ Module algorithms.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.lt,
-                                              [
-                                                M.call_closure (|
-                                                  Ty.path "u128",
-                                                  BinOp.Wrap.shr,
-                                                  [ M.read (| u |); Value.Integer IntegerKind.I32 64
-                                                  ]
-                                                |);
-                                                M.call_closure (|
-                                                  Ty.path "u128",
-                                                  M.get_trait_method (|
-                                                    "core::convert::From",
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.lt,
+                                                [
+                                                  M.call_closure (|
                                                     Ty.path "u128",
-                                                    [],
-                                                    [ Ty.path "u64" ],
-                                                    "from",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.read (| d |) ]
-                                                |)
-                                              ]
-                                            |)
+                                                    BinOp.Wrap.shr,
+                                                    [
+                                                      M.read (| u |);
+                                                      Value.Integer IntegerKind.I32 64
+                                                    ]
+                                                  |);
+                                                  M.call_closure (|
+                                                    Ty.path "u128",
+                                                    M.get_trait_method (|
+                                                      "core::convert::From",
+                                                      Ty.path "u128",
+                                                      [],
+                                                      [ Ty.path "u64" ],
+                                                      "from",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.read (| d |) ]
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -2837,19 +2897,23 @@ Module algorithms.
                                               M.use
                                                 (M.alloc (|
                                                   Ty.path "bool",
-                                                  UnOp.not (|
-                                                    M.call_closure (|
-                                                      Ty.path "bool",
-                                                      BinOp.eq,
-                                                      [
-                                                        M.read (|
-                                                          M.deref (| M.read (| left_val |) |)
-                                                        |);
-                                                        M.read (|
-                                                          M.deref (| M.read (| right_val |) |)
-                                                        |)
-                                                      ]
-                                                    |)
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    UnOp.not,
+                                                    [
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        BinOp.eq,
+                                                        [
+                                                          M.read (|
+                                                            M.deref (| M.read (| left_val |) |)
+                                                          |);
+                                                          M.read (|
+                                                            M.deref (| M.read (| right_val |) |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
                                                   |)
                                                 |)) in
                                             let _ :=
@@ -3194,22 +3258,26 @@ Module algorithms.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.ge,
-                                              [
-                                                M.read (| d |);
-                                                M.call_closure (|
-                                                  Ty.path "u128",
-                                                  BinOp.Wrap.shl,
-                                                  [
-                                                    Value.Integer IntegerKind.U128 1;
-                                                    Value.Integer IntegerKind.I32 127
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.ge,
+                                                [
+                                                  M.read (| d |);
+                                                  M.call_closure (|
+                                                    Ty.path "u128",
+                                                    BinOp.Wrap.shl,
+                                                    [
+                                                      Value.Integer IntegerKind.U128 1;
+                                                      Value.Integer IntegerKind.I32 127
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -3253,12 +3321,16 @@ Module algorithms.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.lt,
-                                              [ M.read (| n21 |); M.read (| d |) ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.lt,
+                                                [ M.read (| n21 |); M.read (| d |) ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -3355,12 +3427,16 @@ Module algorithms.
                                                   M.use
                                                     (M.alloc (|
                                                       Ty.path "bool",
-                                                      UnOp.not (|
-                                                        M.call_closure (|
-                                                          Ty.path "bool",
-                                                          BinOp.lt,
-                                                          [ M.read (| n1 |); M.read (| d0 |) ]
-                                                        |)
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        UnOp.not,
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.lt,
+                                                            [ M.read (| n1 |); M.read (| d0 |) ]
+                                                          |)
+                                                        ]
                                                       |)
                                                     |)) in
                                                 let _ :=
@@ -3647,7 +3723,11 @@ Module algorithms.
                                                           M.use
                                                             (M.alloc (|
                                                               Ty.path "bool",
-                                                              UnOp.not (| M.read (| overflow |) |)
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                UnOp.not,
+                                                                [ M.read (| overflow |) ]
+                                                              |)
                                                             |)) in
                                                         let _ :=
                                                           is_constant_or_break_match (|
@@ -3860,22 +3940,26 @@ Module algorithms.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.ge,
-                                              [
-                                                M.read (| d |);
-                                                M.call_closure (|
-                                                  Ty.path "u128",
-                                                  BinOp.Wrap.shl,
-                                                  [
-                                                    Value.Integer IntegerKind.U128 1;
-                                                    Value.Integer IntegerKind.I32 127
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.ge,
+                                                [
+                                                  M.read (| d |);
+                                                  M.call_closure (|
+                                                    Ty.path "u128",
+                                                    BinOp.Wrap.shl,
+                                                    [
+                                                      Value.Integer IntegerKind.U128 1;
+                                                      Value.Integer IntegerKind.I32 127
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -3919,12 +4003,16 @@ Module algorithms.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.lt,
-                                              [ M.read (| u21 |); M.read (| d |) ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.lt,
+                                                [ M.read (| u21 |); M.read (| d |) ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -4011,19 +4099,23 @@ Module algorithms.
                                               M.use
                                                 (M.alloc (|
                                                   Ty.path "bool",
-                                                  UnOp.not (|
-                                                    M.call_closure (|
-                                                      Ty.path "bool",
-                                                      BinOp.eq,
-                                                      [
-                                                        M.read (|
-                                                          M.deref (| M.read (| left_val |) |)
-                                                        |);
-                                                        M.read (|
-                                                          M.deref (| M.read (| right_val |) |)
-                                                        |)
-                                                      ]
-                                                    |)
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    UnOp.not,
+                                                    [
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        BinOp.eq,
+                                                        [
+                                                          M.read (|
+                                                            M.deref (| M.read (| left_val |) |)
+                                                          |);
+                                                          M.read (|
+                                                            M.deref (| M.read (| right_val |) |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
                                                   |)
                                                 |)) in
                                             let _ :=
