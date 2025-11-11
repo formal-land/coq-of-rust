@@ -271,7 +271,11 @@ Module slice.
                                         (M.alloc (|
                                           Ty.path "bool",
                                           LogicalOp.and (|
-                                            UnOp.not (| Value.Bool false |),
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              UnOp.not,
+                                              [ Value.Bool false ]
+                                            |),
                                             ltac:(M.monadic
                                               (LogicalOp.or (|
                                                 M.call_closure (|
@@ -1019,7 +1023,11 @@ Module slice.
                                                 (M.alloc (|
                                                   Ty.path "bool",
                                                   LogicalOp.and (|
-                                                    UnOp.not (| Value.Bool false |),
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      UnOp.not,
+                                                      [ Value.Bool false ]
+                                                    |),
                                                     ltac:(M.monadic
                                                       (M.call_closure (|
                                                         Ty.path "bool",

@@ -1910,17 +1910,21 @@ Module signed.
                 self
               |) in
             LogicalOp.and (|
-              UnOp.not (|
-                M.call_closure (|
-                  Ty.path "bool",
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
-                    "is_zero",
-                    [],
-                    []
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+              M.call_closure (|
+                Ty.path "bool",
+                UnOp.not,
+                [
+                  M.call_closure (|
+                    Ty.path "bool",
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
+                      "is_zero",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                ]
               |),
               ltac:(M.monadic
                 (M.match_operator (|

@@ -132,25 +132,29 @@ Module identifier.
                                               M.use
                                                 (M.alloc (|
                                                   Ty.path "bool",
-                                                  UnOp.not (|
-                                                    M.call_closure (|
-                                                      Ty.path "bool",
-                                                      M.get_function (|
-                                                        "move_core_types::identifier::is_valid_identifier_char",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.cast
-                                                          (Ty.path "char")
-                                                          (M.read (|
-                                                            M.SubPointer.get_array_field (|
-                                                              M.deref (| M.read (| b |) |),
-                                                              M.read (| i |)
-                                                            |)
-                                                          |))
-                                                      ]
-                                                    |)
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    UnOp.not,
+                                                    [
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        M.get_function (|
+                                                          "move_core_types::identifier::is_valid_identifier_char",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.cast
+                                                            (Ty.path "char")
+                                                            (M.read (|
+                                                              M.SubPointer.get_array_field (|
+                                                                M.deref (| M.read (| b |) |),
+                                                                M.read (| i |)
+                                                              |)
+                                                            |))
+                                                        ]
+                                                      |)
+                                                    ]
                                                   |)
                                                 |)) in
                                             let _ :=

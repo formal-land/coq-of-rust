@@ -1778,14 +1778,18 @@ Module num.
               []
               [ Ty.path "usize" ]
               [
-                UnOp.not (|
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "usize",
+                  UnOp.not,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3372,14 +3376,18 @@ Module num.
               []
               [ Ty.path "u8" ]
               [
-                UnOp.not (|
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "u8",
+                  UnOp.not,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4942,14 +4950,18 @@ Module num.
               []
               [ Ty.path "u16" ]
               [
-                UnOp.not (|
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "u16",
+                  UnOp.not,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -6512,14 +6524,18 @@ Module num.
               []
               [ Ty.path "u32" ]
               [
-                UnOp.not (|
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "u32",
+                  UnOp.not,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -8082,14 +8098,18 @@ Module num.
               []
               [ Ty.path "u64" ]
               [
-                UnOp.not (|
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "u64",
+                  UnOp.not,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -9652,14 +9672,18 @@ Module num.
               []
               [ Ty.path "u128" ]
               [
-                UnOp.not (|
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "u128",
+                  UnOp.not,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -11262,14 +11286,18 @@ Module num.
               []
               [ Ty.path "isize" ]
               [
-                UnOp.not (|
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "isize",
+                  UnOp.not,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -12856,14 +12884,18 @@ Module num.
               []
               [ Ty.path "i8" ]
               [
-                UnOp.not (|
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "i8",
+                  UnOp.not,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -14426,14 +14458,18 @@ Module num.
               []
               [ Ty.path "i16" ]
               [
-                UnOp.not (|
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "i16",
+                  UnOp.not,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -15996,14 +16032,18 @@ Module num.
               []
               [ Ty.path "i32" ]
               [
-                UnOp.not (|
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "i32",
+                  UnOp.not,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -17566,14 +17606,18 @@ Module num.
               []
               [ Ty.path "i64" ]
               [
-                UnOp.not (|
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "i64",
+                  UnOp.not,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -19136,14 +19180,18 @@ Module num.
               []
               [ Ty.path "i128" ]
               [
-                UnOp.not (|
-                  M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "i128",
+                  UnOp.not,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"

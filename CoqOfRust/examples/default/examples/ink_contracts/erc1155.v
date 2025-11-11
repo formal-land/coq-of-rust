@@ -1232,21 +1232,25 @@ Module Impl_erc1155_Contract.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.le,
-                                  [
-                                    M.read (| token_id |);
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "erc1155::Contract",
-                                        "token_id_nonce"
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.le,
+                                    [
+                                      M.read (| token_id |);
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "erc1155::Contract",
+                                          "token_id_nonce"
+                                        |)
                                       |)
-                                    |)
-                                  ]
-                                |)
+                                    ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2020,27 +2024,31 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              M.get_trait_method (|
-                                                "erc1155::Erc1155",
-                                                Ty.path "erc1155::Contract",
-                                                [],
-                                                [],
-                                                "is_approved_for_all",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| self |) |)
-                                                |);
-                                                M.read (| from |);
-                                                M.read (| caller |)
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                M.get_trait_method (|
+                                                  "erc1155::Erc1155",
+                                                  Ty.path "erc1155::Contract",
+                                                  [],
+                                                  [],
+                                                  "is_approved_for_all",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |);
+                                                  M.read (| from |);
+                                                  M.read (| caller |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -2098,33 +2106,37 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
-                                    Ty.path "erc1155::AccountId",
-                                    [],
-                                    [ Ty.path "erc1155::AccountId" ],
-                                    "ne",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (| Pointer.Kind.Ref, to |);
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Ty.path "erc1155::AccountId",
-                                        M.call_closure (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.path "erc1155::AccountId",
+                                      [],
+                                      [ Ty.path "erc1155::AccountId" ],
+                                      "ne",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, to |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
                                           Ty.path "erc1155::AccountId",
-                                          M.get_function (| "erc1155::zero_address", [], [] |),
-                                          []
+                                          M.call_closure (|
+                                            Ty.path "erc1155::AccountId",
+                                            M.get_function (| "erc1155::zero_address", [], [] |),
+                                            []
+                                          |)
                                         |)
                                       |)
-                                    |)
-                                  ]
-                                |)
+                                    ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2191,12 +2203,16 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.ge,
-                                  [ M.read (| balance |); M.read (| value |) ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.ge,
+                                    [ M.read (| balance |); M.read (| value |) ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2427,27 +2443,31 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              M.get_trait_method (|
-                                                "erc1155::Erc1155",
-                                                Ty.path "erc1155::Contract",
-                                                [],
-                                                [],
-                                                "is_approved_for_all",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| self |) |)
-                                                |);
-                                                M.read (| from |);
-                                                M.read (| caller |)
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                M.get_trait_method (|
+                                                  "erc1155::Erc1155",
+                                                  Ty.path "erc1155::Contract",
+                                                  [],
+                                                  [],
+                                                  "is_approved_for_all",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |);
+                                                  M.read (| from |);
+                                                  M.read (| caller |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -2505,33 +2525,37 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
-                                    Ty.path "erc1155::AccountId",
-                                    [],
-                                    [ Ty.path "erc1155::AccountId" ],
-                                    "ne",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (| Pointer.Kind.Ref, to |);
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Ty.path "erc1155::AccountId",
-                                        M.call_closure (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.path "erc1155::AccountId",
+                                      [],
+                                      [ Ty.path "erc1155::AccountId" ],
+                                      "ne",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, to |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
                                           Ty.path "erc1155::AccountId",
-                                          M.get_function (| "erc1155::zero_address", [], [] |),
-                                          []
+                                          M.call_closure (|
+                                            Ty.path "erc1155::AccountId",
+                                            M.get_function (| "erc1155::zero_address", [], [] |),
+                                            []
+                                          |)
                                         |)
                                       |)
-                                    |)
-                                  ]
-                                |)
+                                    ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2580,22 +2604,30 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                UnOp.not (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
                                   M.call_closure (|
                                     Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
-                                        [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
-                                      "is_empty",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, token_ids |) ]
+                                    UnOp.not,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
+                                          "is_empty",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, token_ids |) ]
+                                      |)
+                                    ]
                                   |)
-                                |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2644,39 +2676,43 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.eq,
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
+                                          "len",
+                                          [],
                                           []
-                                          [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, token_ids |) ]
-                                    |);
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, token_ids |) ]
+                                      |);
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
+                                          "len",
+                                          [],
                                           []
-                                          [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, values |) ]
-                                    |)
-                                  ]
-                                |)
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, values |) ]
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3032,15 +3068,19 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                             M.use
                                                               (M.alloc (|
                                                                 Ty.path "bool",
-                                                                UnOp.not (|
-                                                                  M.call_closure (|
-                                                                    Ty.path "bool",
-                                                                    BinOp.ge,
-                                                                    [
-                                                                      M.read (| balance |);
-                                                                      M.read (| v |)
-                                                                    ]
-                                                                  |)
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  UnOp.not,
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      BinOp.ge,
+                                                                      [
+                                                                        M.read (| balance |);
+                                                                        M.read (| v |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
                                                                 |)
                                                               |)) in
                                                           let _ :=
@@ -3822,23 +3862,27 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
-                                    Ty.path "erc1155::AccountId",
-                                    [],
-                                    [ Ty.path "erc1155::AccountId" ],
-                                    "ne",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (| Pointer.Kind.Ref, operator |);
-                                    M.borrow (| Pointer.Kind.Ref, caller |)
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.path "erc1155::AccountId",
+                                      [],
+                                      [ Ty.path "erc1155::AccountId" ],
+                                      "ne",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, operator |);
+                                      M.borrow (| Pointer.Kind.Ref, caller |)
+                                    ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

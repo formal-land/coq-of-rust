@@ -311,30 +311,34 @@ Module log.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialEq",
-                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                      [],
-                                      [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                                      "ne",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (| Pointer.Kind.Ref, self |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        get_associated_constant (|
-                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                          "ZERO",
-                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_trait_method (|
+                                        "core::cmp::PartialEq",
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                        [],
+                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
+                                        "ne",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (| Pointer.Kind.Ref, self |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          get_associated_constant (|
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                            "ZERO",
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                          |)
                                         |)
-                                      |)
-                                    ]
-                                  |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -360,38 +364,42 @@ Module log.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialOrd",
-                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                      [],
-                                      [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                                      "ge",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (| Pointer.Kind.Ref, base |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                          M.call_closure (|
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_trait_method (|
+                                        "core::cmp::PartialOrd",
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                        [],
+                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
+                                        "ge",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (| Pointer.Kind.Ref, base |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
                                             Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                            M.get_associated_function (|
+                                            M.call_closure (|
                                               Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                              "from",
-                                              [],
-                                              [ Ty.path "i32" ]
-                                            |),
-                                            [ Value.Integer IntegerKind.I32 2 ]
+                                              M.get_associated_function (|
+                                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                                "from",
+                                                [],
+                                                [ Ty.path "i32" ]
+                                              |),
+                                              [ Value.Integer IntegerKind.I32 2 ]
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    ]
-                                  |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -551,17 +559,21 @@ Module log.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.path "f64",
-                                      "is_normal",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| result |) ]
-                                  |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.path "f64",
+                                        "is_normal",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.read (| result |) ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -715,47 +727,51 @@ Module log.
                                                           M.use
                                                             (M.alloc (|
                                                               Ty.path "bool",
-                                                              UnOp.not (|
-                                                                M.call_closure (|
-                                                                  Ty.path "bool",
-                                                                  M.get_trait_method (|
-                                                                    "core::cmp::PartialEq",
-                                                                    Ty.apply
-                                                                      (Ty.path "ruint::Uint")
-                                                                      [ BITS; LIMBS ]
-                                                                      [],
-                                                                    [],
-                                                                    [
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                UnOp.not,
+                                                                [
+                                                                  M.call_closure (|
+                                                                    Ty.path "bool",
+                                                                    M.get_trait_method (|
+                                                                      "core::cmp::PartialEq",
                                                                       Ty.apply
                                                                         (Ty.path "ruint::Uint")
                                                                         [ BITS; LIMBS ]
-                                                                        []
-                                                                    ],
-                                                                    "ne",
-                                                                    [],
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      result
-                                                                    |);
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      get_associated_constant (|
-                                                                        Ty.apply
-                                                                          (Ty.path "ruint::Uint")
-                                                                          [ BITS; LIMBS ]
-                                                                          [],
-                                                                        "ZERO",
+                                                                        [],
+                                                                      [],
+                                                                      [
                                                                         Ty.apply
                                                                           (Ty.path "ruint::Uint")
                                                                           [ BITS; LIMBS ]
                                                                           []
+                                                                      ],
+                                                                      "ne",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        result
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        get_associated_constant (|
+                                                                          Ty.apply
+                                                                            (Ty.path "ruint::Uint")
+                                                                            [ BITS; LIMBS ]
+                                                                            [],
+                                                                          "ZERO",
+                                                                          Ty.apply
+                                                                            (Ty.path "ruint::Uint")
+                                                                            [ BITS; LIMBS ]
+                                                                            []
+                                                                        |)
                                                                       |)
-                                                                    |)
-                                                                  ]
-                                                                |)
+                                                                    ]
+                                                                  |)
+                                                                ]
                                                               |)
                                                             |)) in
                                                         let _ :=

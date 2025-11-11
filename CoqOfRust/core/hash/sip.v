@@ -1293,12 +1293,17 @@ Module hash.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.lt,
-                                            [ M.read (| len |); Value.Integer IntegerKind.Usize 8 ]
-                                          |)
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.lt,
+                                              [ M.read (| len |); Value.Integer IntegerKind.Usize 8
+                                              ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -1381,56 +1386,60 @@ Module hash.
                                                         M.use
                                                           (M.alloc (|
                                                             Ty.path "bool",
-                                                            UnOp.not (|
-                                                              M.call_closure (|
-                                                                Ty.path "bool",
-                                                                BinOp.le,
-                                                                [
-                                                                  M.call_closure (|
-                                                                    Ty.path "usize",
-                                                                    BinOp.Wrap.add,
-                                                                    [
-                                                                      M.call_closure (|
-                                                                        Ty.path "usize",
-                                                                        BinOp.Wrap.add,
-                                                                        [
-                                                                          M.read (| start |);
-                                                                          M.read (| i |)
-                                                                        ]
-                                                                      |);
-                                                                      M.call_closure (|
-                                                                        Ty.path "usize",
-                                                                        M.get_function (|
-                                                                          "core::mem::size_of",
-                                                                          [],
-                                                                          [ Ty.path "u32" ]
-                                                                        |),
-                                                                        []
-                                                                      |)
-                                                                    ]
-                                                                  |);
-                                                                  M.call_closure (|
-                                                                    Ty.path "usize",
-                                                                    M.get_associated_function (|
-                                                                      Ty.apply
-                                                                        (Ty.path "slice")
-                                                                        []
-                                                                        [ Ty.path "u8" ],
-                                                                      "len",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        M.deref (|
-                                                                          M.read (| buf |)
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              UnOp.not,
+                                                              [
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  BinOp.le,
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      Ty.path "usize",
+                                                                      BinOp.Wrap.add,
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          Ty.path "usize",
+                                                                          BinOp.Wrap.add,
+                                                                          [
+                                                                            M.read (| start |);
+                                                                            M.read (| i |)
+                                                                          ]
+                                                                        |);
+                                                                        M.call_closure (|
+                                                                          Ty.path "usize",
+                                                                          M.get_function (|
+                                                                            "core::mem::size_of",
+                                                                            [],
+                                                                            [ Ty.path "u32" ]
+                                                                          |),
+                                                                          []
                                                                         |)
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                ]
-                                                              |)
+                                                                      ]
+                                                                    |);
+                                                                    M.call_closure (|
+                                                                      Ty.path "usize",
+                                                                      M.get_associated_function (|
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [ Ty.path "u8" ],
+                                                                        "len",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.read (| buf |)
+                                                                          |)
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              ]
                                                             |)
                                                           |)) in
                                                       let _ :=
@@ -1628,58 +1637,63 @@ Module hash.
                                                                 M.use
                                                                   (M.alloc (|
                                                                     Ty.path "bool",
-                                                                    UnOp.not (|
-                                                                      M.call_closure (|
-                                                                        Ty.path "bool",
-                                                                        BinOp.le,
-                                                                        [
-                                                                          M.call_closure (|
-                                                                            Ty.path "usize",
-                                                                            BinOp.Wrap.add,
-                                                                            [
-                                                                              M.call_closure (|
-                                                                                Ty.path "usize",
-                                                                                BinOp.Wrap.add,
-                                                                                [
-                                                                                  M.read (|
-                                                                                    start
-                                                                                  |);
-                                                                                  M.read (| i |)
-                                                                                ]
-                                                                              |);
-                                                                              M.call_closure (|
-                                                                                Ty.path "usize",
-                                                                                M.get_function (|
-                                                                                  "core::mem::size_of",
-                                                                                  [],
-                                                                                  [ Ty.path "u16" ]
-                                                                                |),
-                                                                                []
-                                                                              |)
-                                                                            ]
-                                                                          |);
-                                                                          M.call_closure (|
-                                                                            Ty.path "usize",
-                                                                            M.get_associated_function (|
-                                                                              Ty.apply
-                                                                                (Ty.path "slice")
-                                                                                []
-                                                                                [ Ty.path "u8" ],
-                                                                              "len",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.read (| buf |)
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      UnOp.not,
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.le,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "usize",
+                                                                              BinOp.Wrap.add,
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  Ty.path "usize",
+                                                                                  BinOp.Wrap.add,
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      start
+                                                                                    |);
+                                                                                    M.read (| i |)
+                                                                                  ]
+                                                                                |);
+                                                                                M.call_closure (|
+                                                                                  Ty.path "usize",
+                                                                                  M.get_function (|
+                                                                                    "core::mem::size_of",
+                                                                                    [],
+                                                                                    [ Ty.path "u16"
+                                                                                    ]
+                                                                                  |),
+                                                                                  []
                                                                                 |)
-                                                                              |)
-                                                                            ]
-                                                                          |)
-                                                                        ]
-                                                                      |)
+                                                                              ]
+                                                                            |);
+                                                                            M.call_closure (|
+                                                                              Ty.path "usize",
+                                                                              M.get_associated_function (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "slice")
+                                                                                  []
+                                                                                  [ Ty.path "u8" ],
+                                                                                "len",
+                                                                                [],
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.read (| buf |)
+                                                                                  |)
+                                                                                |)
+                                                                              ]
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      ]
                                                                     |)
                                                                   |)) in
                                                               let _ :=
@@ -1933,12 +1947,16 @@ Module hash.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.eq,
-                                            [ M.read (| i |); M.read (| len |) ]
-                                          |)
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.eq,
+                                              [ M.read (| i |); M.read (| len |) ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -3113,50 +3131,60 @@ Module hash.
                                                                   M.use
                                                                     (M.alloc (|
                                                                       Ty.path "bool",
-                                                                      UnOp.not (|
-                                                                        M.call_closure (|
-                                                                          Ty.path "bool",
-                                                                          BinOp.le,
-                                                                          [
-                                                                            M.call_closure (|
-                                                                              Ty.path "usize",
-                                                                              BinOp.Wrap.add,
-                                                                              [
-                                                                                M.read (| i |);
-                                                                                M.call_closure (|
-                                                                                  Ty.path "usize",
-                                                                                  M.get_function (|
-                                                                                    "core::mem::size_of",
-                                                                                    [],
-                                                                                    [ Ty.path "u64"
-                                                                                    ]
-                                                                                  |),
-                                                                                  []
-                                                                                |)
-                                                                              ]
-                                                                            |);
-                                                                            M.call_closure (|
-                                                                              Ty.path "usize",
-                                                                              M.get_associated_function (|
-                                                                                Ty.apply
-                                                                                  (Ty.path "slice")
-                                                                                  []
-                                                                                  [ Ty.path "u8" ],
-                                                                                "len",
-                                                                                [],
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.borrow (|
-                                                                                  Pointer.Kind.Ref,
-                                                                                  M.deref (|
-                                                                                    M.read (| msg |)
+                                                                      M.call_closure (|
+                                                                        Ty.path "bool",
+                                                                        UnOp.not,
+                                                                        [
+                                                                          M.call_closure (|
+                                                                            Ty.path "bool",
+                                                                            BinOp.le,
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                Ty.path "usize",
+                                                                                BinOp.Wrap.add,
+                                                                                [
+                                                                                  M.read (| i |);
+                                                                                  M.call_closure (|
+                                                                                    Ty.path "usize",
+                                                                                    M.get_function (|
+                                                                                      "core::mem::size_of",
+                                                                                      [],
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "u64"
+                                                                                      ]
+                                                                                    |),
+                                                                                    []
                                                                                   |)
-                                                                                |)
-                                                                              ]
-                                                                            |)
-                                                                          ]
-                                                                        |)
+                                                                                ]
+                                                                              |);
+                                                                              M.call_closure (|
+                                                                                Ty.path "usize",
+                                                                                M.get_associated_function (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "slice")
+                                                                                    []
+                                                                                    [ Ty.path "u8"
+                                                                                    ],
+                                                                                  "len",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        msg
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        ]
                                                                       |)
                                                                     |)) in
                                                                 let _ :=

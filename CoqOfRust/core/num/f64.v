@@ -841,12 +841,16 @@ Module f64.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| Ty.path "f64", self |) in
-          UnOp.not (|
-            M.call_closure (|
-              Ty.path "bool",
-              M.get_associated_function (| Ty.path "f64", "is_sign_negative", [], [] |),
-              [ M.read (| self |) ]
-            |)
+          M.call_closure (|
+            Ty.path "bool",
+            UnOp.not,
+            [
+              M.call_closure (|
+                Ty.path "bool",
+                M.get_associated_function (| Ty.path "f64", "is_sign_negative", [], [] |),
+                [ M.read (| self |) ]
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1040,10 +1044,14 @@ Module f64.
                     BinOp.Wrap.bit_and,
                     [
                       M.read (| bits |);
-                      UnOp.not (|
-                        M.read (|
-                          get_associated_constant (| Ty.path "f64", "SIGN_MASK", Ty.path "u64" |)
-                        |)
+                      M.call_closure (|
+                        Ty.path "u64",
+                        UnOp.not,
+                        [
+                          M.read (|
+                            get_associated_constant (| Ty.path "f64", "SIGN_MASK", Ty.path "u64" |)
+                          |)
+                        ]
                       |)
                     ]
                   |) in
@@ -1217,10 +1225,14 @@ Module f64.
                     BinOp.Wrap.bit_and,
                     [
                       M.read (| bits |);
-                      UnOp.not (|
-                        M.read (|
-                          get_associated_constant (| Ty.path "f64", "SIGN_MASK", Ty.path "u64" |)
-                        |)
+                      M.call_closure (|
+                        Ty.path "u64",
+                        UnOp.not,
+                        [
+                          M.read (|
+                            get_associated_constant (| Ty.path "f64", "SIGN_MASK", Ty.path "u64" |)
+                          |)
+                        ]
                       |)
                     ]
                   |) in
@@ -2420,18 +2432,22 @@ Module f64.
                         M.use
                           (M.alloc (|
                             Ty.path "bool",
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_function (| "core::intrinsics::likely", [], [] |),
-                                [
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.le,
-                                    [ M.read (| min |); M.read (| max |) ]
-                                  |)
-                                ]
-                              |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              UnOp.not,
+                              [
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_function (| "core::intrinsics::likely", [], [] |),
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.le,
+                                      [ M.read (| min |); M.read (| max |) ]
+                                    |)
+                                  ]
+                                |)
+                              ]
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

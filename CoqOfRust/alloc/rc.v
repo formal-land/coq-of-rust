@@ -2762,32 +2762,41 @@ Module rc.
                                                     M.use
                                                       (M.alloc (|
                                                         Ty.path "bool",
-                                                        UnOp.not (|
-                                                          M.call_closure (|
-                                                            Ty.path "bool",
-                                                            M.get_trait_method (|
-                                                              "core::cmp::PartialEq",
-                                                              Ty.path "core::alloc::layout::Layout",
-                                                              [],
-                                                              [
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          UnOp.not,
+                                                          [
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              M.get_trait_method (|
+                                                                "core::cmp::PartialEq",
                                                                 Ty.path
-                                                                  "core::alloc::layout::Layout"
-                                                              ],
-                                                              "eq",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.deref (| M.read (| left_val |) |)
-                                                              |);
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.deref (| M.read (| right_val |) |)
-                                                              |)
-                                                            ]
-                                                          |)
+                                                                  "core::alloc::layout::Layout",
+                                                                [],
+                                                                [
+                                                                  Ty.path
+                                                                    "core::alloc::layout::Layout"
+                                                                ],
+                                                                "eq",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| left_val |)
+                                                                  |)
+                                                                |);
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| right_val |)
+                                                                  |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          ]
                                                         |)
                                                       |)) in
                                                   let _ :=
@@ -4228,23 +4237,27 @@ Module rc.
                                                         M.use
                                                           (M.alloc (|
                                                             Ty.path "bool",
-                                                            UnOp.not (|
-                                                              M.call_closure (|
-                                                                Ty.path "bool",
-                                                                BinOp.eq,
-                                                                [
-                                                                  M.read (|
-                                                                    M.deref (|
-                                                                      M.read (| left_val |)
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              UnOp.not,
+                                                              [
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  BinOp.eq,
+                                                                  [
+                                                                    M.read (|
+                                                                      M.deref (|
+                                                                        M.read (| left_val |)
+                                                                      |)
+                                                                    |);
+                                                                    M.read (|
+                                                                      M.deref (|
+                                                                        M.read (| right_val |)
+                                                                      |)
                                                                     |)
-                                                                  |);
-                                                                  M.read (|
-                                                                    M.deref (|
-                                                                      M.read (| right_val |)
-                                                                    |)
-                                                                  |)
-                                                                ]
-                                                              |)
+                                                                  ]
+                                                                |)
+                                                              ]
                                                             |)
                                                           |)) in
                                                       let _ :=
@@ -6520,50 +6533,30 @@ Module rc.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          UnOp.not (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
                                             M.call_closure (|
                                               Ty.path "bool",
-                                              M.get_function (|
-                                                "alloc::rc::is_dangling",
-                                                [],
-                                                [ Ty.apply (Ty.path "alloc::rc::RcInner") [] [ T ] ]
-                                              |),
+                                              UnOp.not,
                                               [
                                                 M.call_closure (|
-                                                  Ty.apply
-                                                    (Ty.path "*const")
-                                                    []
+                                                  Ty.path "bool",
+                                                  M.get_function (|
+                                                    "alloc::rc::is_dangling",
+                                                    [],
                                                     [
                                                       Ty.apply
                                                         (Ty.path "alloc::rc::RcInner")
                                                         []
                                                         [ T ]
-                                                    ],
-                                                  M.pointer_coercion
-                                                    M.PointerCoercion.MutToConstPointer
-                                                    (Ty.apply
-                                                      (Ty.path "*mut")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "alloc::rc::RcInner")
-                                                          []
-                                                          [ T ]
-                                                      ])
-                                                    (Ty.apply
-                                                      (Ty.path "*const")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "alloc::rc::RcInner")
-                                                          []
-                                                          [ T ]
-                                                      ]),
+                                                    ]
+                                                  |),
                                                   [
                                                     M.call_closure (|
                                                       Ty.apply
-                                                        (Ty.path "*mut")
+                                                        (Ty.path "*const")
                                                         []
                                                         [
                                                           Ty.apply
@@ -6571,27 +6564,61 @@ Module rc.
                                                             []
                                                             [ T ]
                                                         ],
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path "core::ptr::non_null::NonNull")
+                                                      M.pointer_coercion
+                                                        M.PointerCoercion.MutToConstPointer
+                                                        (Ty.apply
+                                                          (Ty.path "*mut")
                                                           []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "alloc::rc::RcInner")
                                                               []
                                                               [ T ]
-                                                          ],
-                                                        "as_ptr",
-                                                        [],
-                                                        []
-                                                      |),
+                                                          ])
+                                                        (Ty.apply
+                                                          (Ty.path "*const")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "alloc::rc::RcInner")
+                                                              []
+                                                              [ T ]
+                                                          ]),
                                                       [
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.deref (| M.read (| this |) |),
-                                                            "alloc::rc::Rc",
-                                                            "ptr"
-                                                          |)
+                                                        M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "*mut")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "alloc::rc::RcInner")
+                                                                []
+                                                                [ T ]
+                                                            ],
+                                                          M.get_associated_function (|
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "core::ptr::non_null::NonNull")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "alloc::rc::RcInner")
+                                                                  []
+                                                                  [ T ]
+                                                              ],
+                                                            "as_ptr",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| this |) |),
+                                                                "alloc::rc::Rc",
+                                                                "ptr"
+                                                              |)
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
@@ -6599,7 +6626,7 @@ Module rc.
                                                 |)
                                               ]
                                             |)
-                                          |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -11972,20 +11999,24 @@ Module rc.
               other
             |) in
           LogicalOp.and (|
-            UnOp.not (|
-              M.call_closure (|
-                Ty.path "bool",
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
-                  "ptr_eq",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
-                ]
-              |)
+            M.call_closure (|
+              Ty.path "bool",
+              UnOp.not,
+              [
+                M.call_closure (|
+                  Ty.path "bool",
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                    "ptr_eq",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                  ]
+                |)
+              ]
             |),
             ltac:(M.monadic
               (M.call_closure (|
@@ -14211,23 +14242,27 @@ Module rc.
                                                             M.use
                                                               (M.alloc (|
                                                                 Ty.path "bool",
-                                                                UnOp.not (|
-                                                                  M.call_closure (|
-                                                                    Ty.path "bool",
-                                                                    BinOp.eq,
-                                                                    [
-                                                                      M.read (|
-                                                                        M.deref (|
-                                                                          M.read (| left_val |)
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  UnOp.not,
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      BinOp.eq,
+                                                                      [
+                                                                        M.read (|
+                                                                          M.deref (|
+                                                                            M.read (| left_val |)
+                                                                          |)
+                                                                        |);
+                                                                        M.read (|
+                                                                          M.deref (|
+                                                                            M.read (| right_val |)
+                                                                          |)
                                                                         |)
-                                                                      |);
-                                                                      M.read (|
-                                                                        M.deref (|
-                                                                          M.read (| right_val |)
-                                                                        |)
-                                                                      |)
-                                                                    ]
-                                                                  |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
                                                                 |)
                                                               |)) in
                                                           let _ :=

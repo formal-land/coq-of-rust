@@ -405,28 +405,32 @@ Module num.
                                         M.use
                                           (M.alloc (|
                                             Ty.path "bool",
-                                            UnOp.not (|
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                BinOp.le,
-                                                [
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.deref (| M.read (| self |) |),
-                                                      "core::num::dec2flt::decimal::Decimal",
-                                                      "num_digits"
-                                                    |)
-                                                  |);
-                                                  M.read (|
-                                                    get_associated_constant (|
-                                                      Ty.path
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              UnOp.not,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.le,
+                                                  [
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
                                                         "core::num::dec2flt::decimal::Decimal",
-                                                      "MAX_DIGITS",
-                                                      Ty.path "usize"
+                                                        "num_digits"
+                                                      |)
+                                                    |);
+                                                    M.read (|
+                                                      get_associated_constant (|
+                                                        Ty.path
+                                                          "core::num::dec2flt::decimal::Decimal",
+                                                        "MAX_DIGITS",
+                                                        Ty.path "usize"
+                                                      |)
                                                     |)
-                                                  |)
-                                                ]
-                                              |)
+                                                  ]
+                                                |)
+                                              ]
                                             |)
                                           |)) in
                                       let _ :=
@@ -2128,14 +2132,18 @@ Module num.
                                             "decimal_point"
                                           |)
                                         |);
-                                        UnOp.neg (|
-                                          M.read (|
-                                            get_associated_constant (|
-                                              Ty.path "core::num::dec2flt::decimal::Decimal",
-                                              "DECIMAL_POINT_RANGE",
-                                              Ty.path "i32"
+                                        M.call_closure (|
+                                          Ty.path "i32",
+                                          UnOp.neg,
+                                          [
+                                            M.read (|
+                                              get_associated_constant (|
+                                                Ty.path "core::num::dec2flt::decimal::Decimal",
+                                                "DECIMAL_POINT_RANGE",
+                                                Ty.path "i32"
+                                              |)
                                             |)
-                                          |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -3143,16 +3151,20 @@ Module num.
                                                           M.use
                                                             (M.alloc (|
                                                               Ty.path "bool",
-                                                              UnOp.not (|
-                                                                M.call_closure (|
-                                                                  Ty.path "bool",
-                                                                  M.get_function (|
-                                                                    "core::num::dec2flt::common::is_8digits",
-                                                                    [],
-                                                                    []
-                                                                  |),
-                                                                  [ M.read (| v |) ]
-                                                                |)
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                UnOp.not,
+                                                                [
+                                                                  M.call_closure (|
+                                                                    Ty.path "bool",
+                                                                    M.get_function (|
+                                                                      "core::num::dec2flt::common::is_8digits",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [ M.read (| v |) ]
+                                                                  |)
+                                                                ]
                                                               |)
                                                             |)) in
                                                         let _ :=
@@ -4381,7 +4393,11 @@ Module num.
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
-                                                  UnOp.neg (| M.read (| exp_num |) |)));
+                                                  M.call_closure (|
+                                                    Ty.path "i32",
+                                                    UnOp.neg,
+                                                    [ M.read (| exp_num |) ]
+                                                  |)));
                                               fun γ => ltac:(M.monadic (M.read (| exp_num |)))
                                             ]
                                           |)

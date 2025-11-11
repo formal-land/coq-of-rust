@@ -85,14 +85,18 @@ Module Impl_flipper_Flipper.
                 "flipper::Flipper",
                 "value"
               |),
-              UnOp.not (|
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "flipper::Flipper",
-                    "value"
+              M.call_closure (|
+                Ty.path "bool",
+                UnOp.not,
+                [
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "flipper::Flipper",
+                      "value"
+                    |)
                   |)
-                |)
+                ]
               |)
             |) in
           M.alloc (| Ty.tuple [], Value.Tuple [] |)

@@ -5580,43 +5580,47 @@ Module check_duplication.
                                                             ]
                                                           |),
                                                           ltac:(M.monadic
-                                                            (UnOp.not (|
-                                                              M.call_closure (|
-                                                                Ty.path "bool",
-                                                                M.get_associated_function (|
-                                                                  Ty.apply
-                                                                    (Ty.path
-                                                                      "std::collections::hash::set::HashSet")
-                                                                    []
+                                                            (M.call_closure (|
+                                                              Ty.path "bool",
+                                                              UnOp.not,
+                                                              [
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  M.get_associated_function (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "std::collections::hash::set::HashSet")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::StructHandleIndex";
+                                                                        Ty.path
+                                                                          "std::hash::random::RandomState"
+                                                                      ],
+                                                                    "contains",
+                                                                    [],
                                                                     [
                                                                       Ty.path
-                                                                        "move_binary_format::file_format::StructHandleIndex";
-                                                                      Ty.path
-                                                                        "std::hash::random::RandomState"
-                                                                    ],
-                                                                  "contains",
-                                                                  [],
+                                                                        "move_binary_format::file_format::StructHandleIndex"
+                                                                    ]
+                                                                  |),
                                                                   [
-                                                                    Ty.path
-                                                                      "move_binary_format::file_format::StructHandleIndex"
-                                                                  ]
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    implemented_struct_handles
-                                                                  |);
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        y
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      implemented_struct_handles
+                                                                    |);
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          y
+                                                                        |)
                                                                       |)
                                                                     |)
-                                                                  |)
-                                                                ]
-                                                              |)
+                                                                  ]
+                                                                |)
+                                                              ]
                                                             |)))
                                                         |)
                                                       |)
@@ -7222,43 +7226,47 @@ Module check_duplication.
                                                             ]
                                                           |),
                                                           ltac:(M.monadic
-                                                            (UnOp.not (|
-                                                              M.call_closure (|
-                                                                Ty.path "bool",
-                                                                M.get_associated_function (|
-                                                                  Ty.apply
-                                                                    (Ty.path
-                                                                      "std::collections::hash::set::HashSet")
-                                                                    []
+                                                            (M.call_closure (|
+                                                              Ty.path "bool",
+                                                              UnOp.not,
+                                                              [
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  M.get_associated_function (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "std::collections::hash::set::HashSet")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::FunctionHandleIndex";
+                                                                        Ty.path
+                                                                          "std::hash::random::RandomState"
+                                                                      ],
+                                                                    "contains",
+                                                                    [],
                                                                     [
                                                                       Ty.path
-                                                                        "move_binary_format::file_format::FunctionHandleIndex";
-                                                                      Ty.path
-                                                                        "std::hash::random::RandomState"
-                                                                    ],
-                                                                  "contains",
-                                                                  [],
+                                                                        "move_binary_format::file_format::FunctionHandleIndex"
+                                                                    ]
+                                                                  |),
                                                                   [
-                                                                    Ty.path
-                                                                      "move_binary_format::file_format::FunctionHandleIndex"
-                                                                  ]
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    implemented_function_handles
-                                                                  |);
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        y
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      implemented_function_handles
+                                                                    |);
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          y
+                                                                        |)
                                                                       |)
                                                                     |)
-                                                                  |)
-                                                                ]
-                                                              |)
+                                                                  ]
+                                                                |)
+                                                              ]
                                                             |)))
                                                         |)
                                                       |)
@@ -7635,36 +7643,40 @@ Module check_duplication.
                                                           M.use
                                                             (M.alloc (|
                                                               Ty.path "bool",
-                                                              UnOp.not (|
-                                                                M.call_closure (|
-                                                                  Ty.path "bool",
-                                                                  M.get_associated_function (|
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "std::collections::hash::set::HashSet")
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                UnOp.not,
+                                                                [
+                                                                  M.call_closure (|
+                                                                    Ty.path "bool",
+                                                                    M.get_associated_function (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "std::collections::hash::set::HashSet")
+                                                                        []
+                                                                        [
+                                                                          Ty.associated_in_trait
+                                                                            "core::iter::traits::collect::IntoIterator"
+                                                                            []
+                                                                            []
+                                                                            T
+                                                                            "Item";
+                                                                          Ty.path
+                                                                            "std::hash::random::RandomState"
+                                                                        ],
+                                                                      "insert",
+                                                                      [],
                                                                       []
-                                                                      [
-                                                                        Ty.associated_in_trait
-                                                                          "core::iter::traits::collect::IntoIterator"
-                                                                          []
-                                                                          []
-                                                                          T
-                                                                          "Item";
-                                                                        Ty.path
-                                                                          "std::hash::random::RandomState"
-                                                                      ],
-                                                                    "insert",
-                                                                    [],
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.MutRef,
-                                                                      uniq
-                                                                    |);
-                                                                    M.read (| x |)
-                                                                  ]
-                                                                |)
+                                                                    |),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.MutRef,
+                                                                        uniq
+                                                                      |);
+                                                                      M.read (| x |)
+                                                                    ]
+                                                                  |)
+                                                                ]
                                                               |)
                                                             |)) in
                                                         let _ :=

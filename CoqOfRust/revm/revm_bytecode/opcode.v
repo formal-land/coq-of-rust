@@ -3796,24 +3796,28 @@ Module opcode.
                         M.use
                           (M.alloc (|
                             Ty.path "bool",
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                BinOp.lt,
-                                [
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (| Ty.path "str", "len", [], [] |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| name |) |)
-                                      |)
-                                    ]
-                                  |);
-                                  Value.Integer IntegerKind.Usize 256
-                                ]
-                              |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              UnOp.not,
+                              [
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.lt,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (| Ty.path "str", "len", [], [] |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| name |) |)
+                                        |)
+                                      ]
+                                    |);
+                                    Value.Integer IntegerKind.Usize 256
+                                  ]
+                                |)
+                              ]
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4381,20 +4385,24 @@ Module opcode.
                   M.use
                     (M.alloc (|
                       Ty.path "bool",
-                      UnOp.not (|
-                        LogicalOp.or (|
-                          M.call_closure (|
-                            Ty.path "bool",
-                            BinOp.eq,
-                            [ M.read (| val |); Value.Integer IntegerKind.U8 0 ]
-                          |),
-                          ltac:(M.monadic
-                            (M.call_closure (|
+                      M.call_closure (|
+                        Ty.path "bool",
+                        UnOp.not,
+                        [
+                          LogicalOp.or (|
+                            M.call_closure (|
                               Ty.path "bool",
-                              BinOp.gt,
-                              [ M.read (| val |); M.read (| prev |) ]
-                            |)))
-                        |)
+                              BinOp.eq,
+                              [ M.read (| val |); Value.Integer IntegerKind.U8 0 ]
+                            |),
+                            ltac:(M.monadic
+                              (M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [ M.read (| val |); M.read (| prev |) ]
+                              |)))
+                          |)
+                        ]
                       |)
                     |)) in
                 let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4481,20 +4489,24 @@ Module opcode.
                   M.use
                     (M.alloc (|
                       Ty.path "bool",
-                      UnOp.not (|
-                        LogicalOp.or (|
-                          M.call_closure (|
-                            Ty.path "bool",
-                            BinOp.eq,
-                            [ M.read (| val |); Value.Integer IntegerKind.U8 0 ]
-                          |),
-                          ltac:(M.monadic
-                            (M.call_closure (|
+                      M.call_closure (|
+                        Ty.path "bool",
+                        UnOp.not,
+                        [
+                          LogicalOp.or (|
+                            M.call_closure (|
                               Ty.path "bool",
-                              BinOp.gt,
-                              [ M.read (| val |); M.read (| prev |) ]
-                            |)))
-                        |)
+                              BinOp.eq,
+                              [ M.read (| val |); Value.Integer IntegerKind.U8 0 ]
+                            |),
+                            ltac:(M.monadic
+                              (M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [ M.read (| val |); M.read (| prev |) ]
+                              |)))
+                          |)
+                        ]
                       |)
                     |)) in
                 let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4575,20 +4587,24 @@ Module opcode.
                   M.use
                     (M.alloc (|
                       Ty.path "bool",
-                      UnOp.not (|
-                        LogicalOp.or (|
-                          M.call_closure (|
-                            Ty.path "bool",
-                            BinOp.eq,
-                            [ M.read (| val |); Value.Integer IntegerKind.U8 0 ]
-                          |),
-                          ltac:(M.monadic
-                            (M.call_closure (|
+                      M.call_closure (|
+                        Ty.path "bool",
+                        UnOp.not,
+                        [
+                          LogicalOp.or (|
+                            M.call_closure (|
                               Ty.path "bool",
-                              BinOp.gt,
-                              [ M.read (| val |); M.read (| prev |) ]
-                            |)))
-                        |)
+                              BinOp.eq,
+                              [ M.read (| val |); Value.Integer IntegerKind.U8 0 ]
+                            |),
+                            ltac:(M.monadic
+                              (M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [ M.read (| val |); M.read (| prev |) ]
+                              |)))
+                          |)
+                        ]
                       |)
                     |)) in
                 let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

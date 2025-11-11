@@ -124,22 +124,28 @@ End Integer.
     instead of a panic in debug mode. *)
 
 Module UnOp.
-  Definition not (v : Value.t) : M :=
-    match v with
-    | Value.Bool b => M.pure (Value.Bool (negb b))
-    | Value.Integer kind i => M.pure (Value.Integer kind (Z.lnot i))
-    | _ => M.impossible "unexpected parameter for not"
-    end.
+  Definition not : Value.t :=
+    M.closure (fun args =>
+      match args with
+      | [Value.Bool b] => M.pure (Value.Bool (negb b))
+      | [Value.Integer kind i] => M.pure (Value.Integer kind (Z.lnot i))
+      | _ => M.impossible "unexpected parameter for not"
+      end
+    ).
 
-  Definition neg (v : Value.t) : M :=
-    match v with
-    | Value.Integer kind i =>
-      if Z.eqb i (Integer.min kind) then
-        M.pure v
-      else
-        M.pure (Value.Integer kind (- i))
-    | _ => M.impossible "unexpected parameter for neg"
-    end.
+  Definition neg : Value.t :=
+    M.closure (fun args =>
+      match args with
+      | [Value.Integer kind i] =>
+        M.pure (Value.Integer kind (
+          if Z.eqb i (Integer.min kind) then
+             i
+          else
+            - i
+        ))
+      | _ => M.impossible "unexpected parameters for neg"
+      end
+    ).
 End UnOp.
 
 Module BinOp.

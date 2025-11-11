@@ -1784,63 +1784,67 @@ Module serializer.
                       M.use
                         (M.alloc (|
                           Ty.path "bool",
-                          UnOp.not (|
-                            M.call_closure (|
-                              Ty.path "bool",
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::ops::range::RangeInclusive")
-                                  []
-                                  [ Ty.path "u32" ],
-                                "contains",
-                                [],
-                                [ Ty.path "u32" ]
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Ty.apply
-                                      (Ty.path "core::ops::range::RangeInclusive")
-                                      []
-                                      [ Ty.path "u32" ],
-                                    M.call_closure (|
+                          M.call_closure (|
+                            Ty.path "bool",
+                            UnOp.not,
+                            [
+                              M.call_closure (|
+                                Ty.path "bool",
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::RangeInclusive")
+                                    []
+                                    [ Ty.path "u32" ],
+                                  "contains",
+                                  [],
+                                  [ Ty.path "u32" ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
                                       Ty.apply
                                         (Ty.path "core::ops::range::RangeInclusive")
                                         []
                                         [ Ty.path "u32" ],
-                                      M.get_associated_function (|
+                                      M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeInclusive")
                                           []
                                           [ Ty.path "u32" ],
-                                        "new",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.read (|
-                                          get_constant (|
-                                            "move_binary_format::file_format_common::VERSION_MIN",
-                                            Ty.path "u32"
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::range::RangeInclusive")
+                                            []
+                                            [ Ty.path "u32" ],
+                                          "new",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.read (|
+                                            get_constant (|
+                                              "move_binary_format::file_format_common::VERSION_MIN",
+                                              Ty.path "u32"
+                                            |)
+                                          |);
+                                          M.read (|
+                                            get_constant (|
+                                              "move_binary_format::file_format_common::VERSION_MAX",
+                                              Ty.path "u32"
+                                            |)
                                           |)
-                                        |);
-                                        M.read (|
-                                          get_constant (|
-                                            "move_binary_format::file_format_common::VERSION_MAX",
-                                            Ty.path "u32"
-                                          |)
-                                        |)
-                                      ]
+                                        ]
+                                      |)
                                     |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.borrow (| Pointer.Kind.Ref, version |) |)
                                   |)
-                                |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.borrow (| Pointer.Kind.Ref, version |) |)
-                                |)
-                              ]
-                            |)
+                                ]
+                              |)
+                            ]
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -28563,12 +28567,16 @@ Module serializer.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.ge,
-                                  [ M.read (| offset |); M.read (| start |) ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.ge,
+                                    [ M.read (| offset |); M.read (| start |) ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -30629,21 +30637,25 @@ Module serializer.
                                         M.use
                                           (M.alloc (|
                                             Ty.path "bool",
-                                            UnOp.not (|
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                BinOp.eq,
-                                                [
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.deref (| M.read (| self |) |),
-                                                      "move_binary_format::serializer::CommonSerializer",
-                                                      "table_count"
-                                                    |)
-                                                  |);
-                                                  Value.Integer IntegerKind.U8 0
-                                                ]
-                                              |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              UnOp.not,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.eq,
+                                                  [
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "move_binary_format::serializer::CommonSerializer",
+                                                        "table_count"
+                                                      |)
+                                                    |);
+                                                    Value.Integer IntegerKind.U8 0
+                                                  ]
+                                                |)
+                                              ]
                                             |)
                                           |)) in
                                       let _ :=
@@ -31143,21 +31155,25 @@ Module serializer.
                                         M.use
                                           (M.alloc (|
                                             Ty.path "bool",
-                                            UnOp.not (|
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                BinOp.lt,
-                                                [
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.deref (| M.read (| self |) |),
-                                                      "move_binary_format::serializer::CommonSerializer",
-                                                      "table_count"
-                                                    |)
-                                                  |);
-                                                  Value.Integer IntegerKind.U8 6
-                                                ]
-                                              |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              UnOp.not,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.lt,
+                                                  [
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "move_binary_format::serializer::CommonSerializer",
+                                                        "table_count"
+                                                      |)
+                                                    |);
+                                                    Value.Integer IntegerKind.U8 6
+                                                  ]
+                                                |)
+                                              ]
                                             |)
                                           |)) in
                                       let _ :=
@@ -32233,25 +32249,30 @@ Module serializer.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "slice")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::ModuleHandle"
+                                          ],
+                                        "is_empty",
+                                        [],
                                         []
-                                        [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
-                                      "is_empty",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| module_handles |) |)
-                                      |)
-                                    ]
-                                  |)
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| module_handles |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -33009,25 +33030,30 @@ Module serializer.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "slice")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::StructHandle"
+                                          ],
+                                        "is_empty",
+                                        [],
                                         []
-                                        [ Ty.path "move_binary_format::file_format::StructHandle" ],
-                                      "is_empty",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| struct_handles |) |)
-                                      |)
-                                    ]
-                                  |)
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| struct_handles |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -33790,26 +33816,32 @@ Module serializer.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "slice")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::FunctionHandle"
+                                          ],
+                                        "is_empty",
+                                        [],
                                         []
-                                        [ Ty.path "move_binary_format::file_format::FunctionHandle"
-                                        ],
-                                      "is_empty",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| function_handles |) |)
-                                      |)
-                                    ]
-                                  |)
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| function_handles |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -34574,28 +34606,32 @@ Module serializer.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "slice")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::FunctionInstantiation"
+                                          ],
+                                        "is_empty",
+                                        [],
                                         []
-                                        [
-                                          Ty.path
-                                            "move_binary_format::file_format::FunctionInstantiation"
-                                        ],
-                                      "is_empty",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| function_instantiations |) |)
-                                      |)
-                                    ]
-                                  |)
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| function_instantiations |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -35359,25 +35395,29 @@ Module serializer.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "slice")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_core_types::identifier::Identifier" ],
+                                        "is_empty",
+                                        [],
                                         []
-                                        [ Ty.path "move_core_types::identifier::Identifier" ],
-                                      "is_empty",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| identifiers |) |)
-                                      |)
-                                    ]
-                                  |)
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| identifiers |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -36184,26 +36224,32 @@ Module serializer.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "slice")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_core_types::account_address::AccountAddress"
+                                          ],
+                                        "is_empty",
+                                        [],
                                         []
-                                        [ Ty.path "move_core_types::account_address::AccountAddress"
-                                        ],
-                                      "is_empty",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| addresses |) |)
-                                      |)
-                                    ]
-                                  |)
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| addresses |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -36961,25 +37007,29 @@ Module serializer.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "slice")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::Constant" ],
+                                        "is_empty",
+                                        [],
                                         []
-                                        [ Ty.path "move_binary_format::file_format::Constant" ],
-                                      "is_empty",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| constants |) |)
-                                      |)
-                                    ]
-                                  |)
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| constants |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -37724,25 +37774,29 @@ Module serializer.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "slice")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_core_types::metadata::Metadata" ],
+                                        "is_empty",
+                                        [],
                                         []
-                                        [ Ty.path "move_core_types::metadata::Metadata" ],
-                                      "is_empty",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| metadata |) |)
-                                      |)
-                                    ]
-                                  |)
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| metadata |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -38488,25 +38542,29 @@ Module serializer.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "slice")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::Signature" ],
+                                        "is_empty",
+                                        [],
                                         []
-                                        [ Ty.path "move_binary_format::file_format::Signature" ],
-                                      "is_empty",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| signatures |) |)
-                                      |)
-                                    ]
-                                  |)
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| signatures |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -41515,28 +41573,32 @@ Module serializer.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "slice")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::StructDefinition"
+                                          ],
+                                        "is_empty",
+                                        [],
                                         []
-                                        [
-                                          Ty.path
-                                            "move_binary_format::file_format::StructDefinition"
-                                        ],
-                                      "is_empty",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| struct_definitions |) |)
-                                      |)
-                                    ]
-                                  |)
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| struct_definitions |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -42321,28 +42383,32 @@ Module serializer.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "slice")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::StructDefInstantiation"
+                                          ],
+                                        "is_empty",
+                                        [],
                                         []
-                                        [
-                                          Ty.path
-                                            "move_binary_format::file_format::StructDefInstantiation"
-                                        ],
-                                      "is_empty",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| struct_def_instantiations |) |)
-                                      |)
-                                    ]
-                                  |)
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| struct_def_instantiations |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -43125,25 +43191,30 @@ Module serializer.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "slice")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::FieldHandle"
+                                          ],
+                                        "is_empty",
+                                        [],
                                         []
-                                        [ Ty.path "move_binary_format::file_format::FieldHandle" ],
-                                      "is_empty",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| field_handles |) |)
-                                      |)
-                                    ]
-                                  |)
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| field_handles |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -43908,28 +43979,32 @@ Module serializer.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "slice")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::FieldInstantiation"
+                                          ],
+                                        "is_empty",
+                                        [],
                                         []
-                                        [
-                                          Ty.path
-                                            "move_binary_format::file_format::FieldInstantiation"
-                                        ],
-                                      "is_empty",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| field_instantiations |) |)
-                                      |)
-                                    ]
-                                  |)
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| field_instantiations |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -44697,28 +44772,32 @@ Module serializer.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "slice")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::FunctionDefinition"
+                                          ],
+                                        "is_empty",
+                                        [],
                                         []
-                                        [
-                                          Ty.path
-                                            "move_binary_format::file_format::FunctionDefinition"
-                                        ],
-                                      "is_empty",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| function_definitions |) |)
-                                      |)
-                                    ]
-                                  |)
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| function_definitions |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -46726,25 +46805,30 @@ Module serializer.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "slice")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::ModuleHandle"
+                                          ],
+                                        "is_empty",
+                                        [],
                                         []
-                                        [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
-                                      "is_empty",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| friend_declarations |) |)
-                                      |)
-                                    ]
-                                  |)
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| friend_declarations |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=

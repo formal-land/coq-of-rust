@@ -371,17 +371,21 @@ Module ptr.
                       M.use
                         (M.alloc (|
                           Ty.path "bool",
-                          UnOp.not (|
-                            M.call_closure (|
-                              Ty.path "bool",
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "*mut") [] [ T ],
-                                "is_null",
-                                [],
-                                []
-                              |),
-                              [ M.read (| ptr |) ]
-                            |)
+                          M.call_closure (|
+                            Ty.path "bool",
+                            UnOp.not,
+                            [
+                              M.call_closure (|
+                                Ty.path "bool",
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "*mut") [] [ T ],
+                                  "is_null",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| ptr |) ]
+                              |)
+                            ]
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2478,17 +2482,21 @@ Module ptr.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_associated_function (|
-                                    Ty.path "usize",
-                                    "is_power_of_two",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| align |) ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_associated_function (|
+                                      Ty.path "usize",
+                                      "is_power_of_two",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.read (| align |) ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

@@ -448,17 +448,21 @@ Module control_flow_v5.
                 let γ :=
                   M.alloc (|
                     Ty.path "bool",
-                    UnOp.not (|
-                      M.call_closure (|
-                        Ty.path "bool",
-                        M.get_associated_function (|
-                          Ty.path "move_binary_format::file_format::Bytecode",
-                          "is_unconditional_branch",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| last |) |) |) ]
-                      |)
+                    M.call_closure (|
+                      Ty.path "bool",
+                      UnOp.not,
+                      [
+                        M.call_closure (|
+                          Ty.path "bool",
+                          M.get_associated_function (|
+                            Ty.path "move_binary_format::file_format::Bytecode",
+                            "is_unconditional_branch",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| last |) |) |) ]
+                        |)
+                      ]
                     |)
                   |) in
                 let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5124,23 +5128,27 @@ Module control_flow_v5.
                                                                 (let γ :=
                                                                   M.alloc (|
                                                                     Ty.path "bool",
-                                                                    UnOp.not (|
-                                                                      M.call_closure (|
-                                                                        Ty.path "bool",
-                                                                        M.get_function (|
-                                                                          "move_bytecode_verifier::control_flow_v5::is_back_edge",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [
-                                                                          M.read (| cur_instr |);
-                                                                          M.read (|
-                                                                            M.deref (|
-                                                                              M.read (| target |)
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      UnOp.not,
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          M.get_function (|
+                                                                            "move_bytecode_verifier::control_flow_v5::is_back_edge",
+                                                                            [],
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.read (| cur_instr |);
+                                                                            M.read (|
+                                                                              M.deref (|
+                                                                                M.read (| target |)
+                                                                              |)
                                                                             |)
-                                                                          |)
-                                                                        ]
-                                                                      |)
+                                                                          ]
+                                                                        |)
+                                                                      ]
                                                                     |)
                                                                   |) in
                                                                 let _ :=
@@ -6000,39 +6008,15 @@ Module control_flow_v5.
                                                                     let γ :=
                                                                       M.alloc (|
                                                                         Ty.path "bool",
-                                                                        UnOp.not (|
-                                                                          M.call_closure (|
-                                                                            Ty.path "bool",
-                                                                            M.get_trait_method (|
-                                                                              "core::ops::function::Fn",
-                                                                              Ty.function
-                                                                                [
-                                                                                  Ty.apply
-                                                                                    (Ty.path "&")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "alloc::vec::Vec")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.tuple
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "u16";
-                                                                                              Ty.path
-                                                                                                "u16"
-                                                                                            ];
-                                                                                          Ty.path
-                                                                                            "alloc::alloc::Global"
-                                                                                        ]
-                                                                                    ];
-                                                                                  Ty.path "u16"
-                                                                                ]
-                                                                                (Ty.path "bool"),
-                                                                              [],
-                                                                              [
-                                                                                Ty.tuple
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          UnOp.not,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "bool",
+                                                                              M.get_trait_method (|
+                                                                                "core::ops::function::Fn",
+                                                                                Ty.function
                                                                                   [
                                                                                     Ty.apply
                                                                                       (Ty.path "&")
@@ -6056,34 +6040,65 @@ Module control_flow_v5.
                                                                                       ];
                                                                                     Ty.path "u16"
                                                                                   ]
-                                                                              ],
-                                                                              "call",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                is_break
-                                                                              |);
-                                                                              Value.Tuple
+                                                                                  (Ty.path "bool"),
+                                                                                [],
                                                                                 [
-                                                                                  M.borrow (|
-                                                                                    Pointer.Kind.Ref,
-                                                                                    M.deref (|
-                                                                                      M.read (|
-                                                                                        loop_stack
+                                                                                  Ty.tuple
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "&")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "alloc::vec::Vec")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.tuple
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "u16";
+                                                                                                  Ty.path
+                                                                                                    "u16"
+                                                                                                ];
+                                                                                              Ty.path
+                                                                                                "alloc::alloc::Global"
+                                                                                            ]
+                                                                                        ];
+                                                                                      Ty.path "u16"
+                                                                                    ]
+                                                                                ],
+                                                                                "call",
+                                                                                [],
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  is_break
+                                                                                |);
+                                                                                Value.Tuple
+                                                                                  [
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          loop_stack
+                                                                                        |)
+                                                                                      |)
+                                                                                    |);
+                                                                                    M.read (|
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          j
+                                                                                        |)
                                                                                       |)
                                                                                     |)
-                                                                                  |);
-                                                                                  M.read (|
-                                                                                    M.deref (|
-                                                                                      M.read (| j |)
-                                                                                    |)
-                                                                                  |)
-                                                                                ]
-                                                                            ]
-                                                                          |)
+                                                                                  ]
+                                                                              ]
+                                                                            |)
+                                                                          ]
                                                                         |)
                                                                       |) in
                                                                     let _ :=

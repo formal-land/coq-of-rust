@@ -281,12 +281,16 @@ Module num.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.ge,
-                                            [ M.read (| n |); Value.Integer IntegerKind.I8 0 ]
-                                          |)
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.ge,
+                                              [ M.read (| n |); Value.Integer IntegerKind.I8 0 ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -393,12 +397,16 @@ Module num.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.ge,
-                                            [ M.read (| n |); Value.Integer IntegerKind.I16 0 ]
-                                          |)
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.ge,
+                                              [ M.read (| n |); Value.Integer IntegerKind.I16 0 ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -505,12 +513,16 @@ Module num.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.ge,
-                                            [ M.read (| n |); Value.Integer IntegerKind.I32 0 ]
-                                          |)
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.ge,
+                                              [ M.read (| n |); Value.Integer IntegerKind.I32 0 ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -617,12 +629,16 @@ Module num.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.ge,
-                                            [ M.read (| n |); Value.Integer IntegerKind.I64 0 ]
-                                          |)
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.ge,
+                                              [ M.read (| n |); Value.Integer IntegerKind.I64 0 ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -729,12 +745,16 @@ Module num.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.ge,
-                                            [ M.read (| n |); Value.Integer IntegerKind.I128 0 ]
-                                          |)
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.ge,
+                                              [ M.read (| n |); Value.Integer IntegerKind.I128 0 ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -842,12 +862,16 @@ Module num.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.ne,
-                                            [ M.read (| n |); Value.Integer IntegerKind.U16 0 ]
-                                          |)
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.ne,
+                                              [ M.read (| n |); Value.Integer IntegerKind.U16 0 ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -986,13 +1010,19 @@ Module num.
                                             M.use
                                               (M.alloc (|
                                                 Ty.path "bool",
-                                                UnOp.not (|
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    BinOp.ne,
-                                                    [ M.read (| s |); Value.Integer IntegerKind.U8 0
-                                                    ]
-                                                  |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  UnOp.not,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.ne,
+                                                      [
+                                                        M.read (| s |);
+                                                        Value.Integer IntegerKind.U8 0
+                                                      ]
+                                                    |)
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=
@@ -1345,12 +1375,16 @@ Module num.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.ne,
-                                            [ M.read (| n |); Value.Integer IntegerKind.U32 0 ]
-                                          |)
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.ne,
+                                              [ M.read (| n |); Value.Integer IntegerKind.U32 0 ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -1490,13 +1524,19 @@ Module num.
                                             M.use
                                               (M.alloc (|
                                                 Ty.path "bool",
-                                                UnOp.not (|
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    BinOp.ne,
-                                                    [ M.read (| s |); Value.Integer IntegerKind.U8 0
-                                                    ]
-                                                  |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  UnOp.not,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.ne,
+                                                      [
+                                                        M.read (| s |);
+                                                        Value.Integer IntegerKind.U8 0
+                                                      ]
+                                                    |)
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=
@@ -1842,15 +1882,19 @@ Module num.
                                                     M.use
                                                       (M.alloc (|
                                                         Ty.path "bool",
-                                                        UnOp.not (|
-                                                          M.call_closure (|
-                                                            Ty.path "bool",
-                                                            BinOp.ne,
-                                                            [
-                                                              M.read (| s |);
-                                                              Value.Integer IntegerKind.U16 0
-                                                            ]
-                                                          |)
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          UnOp.not,
+                                                          [
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              BinOp.ne,
+                                                              [
+                                                                M.read (| s |);
+                                                                Value.Integer IntegerKind.U16 0
+                                                              ]
+                                                            |)
+                                                          ]
                                                         |)
                                                       |)) in
                                                   let _ :=
@@ -2349,12 +2393,16 @@ Module num.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.ne,
-                                            [ M.read (| n |); Value.Integer IntegerKind.U64 0 ]
-                                          |)
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.ne,
+                                              [ M.read (| n |); Value.Integer IntegerKind.U64 0 ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -2494,13 +2542,19 @@ Module num.
                                             M.use
                                               (M.alloc (|
                                                 Ty.path "bool",
-                                                UnOp.not (|
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    BinOp.ne,
-                                                    [ M.read (| s |); Value.Integer IntegerKind.U8 0
-                                                    ]
-                                                  |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  UnOp.not,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.ne,
+                                                      [
+                                                        M.read (| s |);
+                                                        Value.Integer IntegerKind.U8 0
+                                                      ]
+                                                    |)
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=
@@ -2847,15 +2901,19 @@ Module num.
                                                     M.use
                                                       (M.alloc (|
                                                         Ty.path "bool",
-                                                        UnOp.not (|
-                                                          M.call_closure (|
-                                                            Ty.path "bool",
-                                                            BinOp.ne,
-                                                            [
-                                                              M.read (| s |);
-                                                              Value.Integer IntegerKind.U16 0
-                                                            ]
-                                                          |)
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          UnOp.not,
+                                                          [
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              BinOp.ne,
+                                                              [
+                                                                M.read (| s |);
+                                                                Value.Integer IntegerKind.U16 0
+                                                              ]
+                                                            |)
+                                                          ]
                                                         |)
                                                       |)) in
                                                   let _ :=
@@ -3215,17 +3273,21 @@ Module num.
                                                             M.use
                                                               (M.alloc (|
                                                                 Ty.path "bool",
-                                                                UnOp.not (|
-                                                                  M.call_closure (|
-                                                                    Ty.path "bool",
-                                                                    BinOp.ne,
-                                                                    [
-                                                                      M.read (| s |);
-                                                                      Value.Integer
-                                                                        IntegerKind.U32
-                                                                        0
-                                                                    ]
-                                                                  |)
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  UnOp.not,
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      BinOp.ne,
+                                                                      [
+                                                                        M.read (| s |);
+                                                                        Value.Integer
+                                                                          IntegerKind.U32
+                                                                          0
+                                                                      ]
+                                                                    |)
+                                                                  ]
                                                                 |)
                                                               |)) in
                                                           let _ :=
@@ -3866,12 +3928,16 @@ Module num.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.ne,
-                                            [ M.read (| n |); Value.Integer IntegerKind.U128 0 ]
-                                          |)
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.ne,
+                                              [ M.read (| n |); Value.Integer IntegerKind.U128 0 ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -4011,13 +4077,19 @@ Module num.
                                             M.use
                                               (M.alloc (|
                                                 Ty.path "bool",
-                                                UnOp.not (|
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    BinOp.ne,
-                                                    [ M.read (| s |); Value.Integer IntegerKind.U8 0
-                                                    ]
-                                                  |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  UnOp.not,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.ne,
+                                                      [
+                                                        M.read (| s |);
+                                                        Value.Integer IntegerKind.U8 0
+                                                      ]
+                                                    |)
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=
@@ -4364,15 +4436,19 @@ Module num.
                                                     M.use
                                                       (M.alloc (|
                                                         Ty.path "bool",
-                                                        UnOp.not (|
-                                                          M.call_closure (|
-                                                            Ty.path "bool",
-                                                            BinOp.ne,
-                                                            [
-                                                              M.read (| s |);
-                                                              Value.Integer IntegerKind.U16 0
-                                                            ]
-                                                          |)
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          UnOp.not,
+                                                          [
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              BinOp.ne,
+                                                              [
+                                                                M.read (| s |);
+                                                                Value.Integer IntegerKind.U16 0
+                                                              ]
+                                                            |)
+                                                          ]
                                                         |)
                                                       |)) in
                                                   let _ :=
@@ -4733,17 +4809,21 @@ Module num.
                                                             M.use
                                                               (M.alloc (|
                                                                 Ty.path "bool",
-                                                                UnOp.not (|
-                                                                  M.call_closure (|
-                                                                    Ty.path "bool",
-                                                                    BinOp.ne,
-                                                                    [
-                                                                      M.read (| s |);
-                                                                      Value.Integer
-                                                                        IntegerKind.U32
-                                                                        0
-                                                                    ]
-                                                                  |)
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  UnOp.not,
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      BinOp.ne,
+                                                                      [
+                                                                        M.read (| s |);
+                                                                        Value.Integer
+                                                                          IntegerKind.U32
+                                                                          0
+                                                                      ]
+                                                                    |)
+                                                                  ]
                                                                 |)
                                                               |)) in
                                                           let _ :=
@@ -5124,17 +5204,21 @@ Module num.
                                                                     M.use
                                                                       (M.alloc (|
                                                                         Ty.path "bool",
-                                                                        UnOp.not (|
-                                                                          M.call_closure (|
-                                                                            Ty.path "bool",
-                                                                            BinOp.ne,
-                                                                            [
-                                                                              M.read (| s |);
-                                                                              Value.Integer
-                                                                                IntegerKind.U64
-                                                                                0
-                                                                            ]
-                                                                          |)
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          UnOp.not,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "bool",
+                                                                              BinOp.ne,
+                                                                              [
+                                                                                M.read (| s |);
+                                                                                Value.Integer
+                                                                                  IntegerKind.U64
+                                                                                  0
+                                                                              ]
+                                                                            |)
+                                                                          ]
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
@@ -6045,7 +6129,10 @@ Module num.
           (α : list Value.t)
           : M :=
         ltac:(M.monadic
-          (M.alloc (| Ty.path "u32", UnOp.not (| Value.Integer IntegerKind.U32 1 |) |))).
+          (M.alloc (|
+            Ty.path "u32",
+            M.call_closure (| Ty.path "u32", UnOp.not, [ Value.Integer IntegerKind.U32 1 ] |)
+          |))).
       
       Global Instance Instance_IsConstant_value_EVEN_MAKING_BITMASK :
         M.IsFunction.C "core::num::int_sqrt::u16::EVEN_MAKING_BITMASK" value_EVEN_MAKING_BITMASK.
@@ -6203,7 +6290,10 @@ Module num.
           (α : list Value.t)
           : M :=
         ltac:(M.monadic
-          (M.alloc (| Ty.path "u32", UnOp.not (| Value.Integer IntegerKind.U32 1 |) |))).
+          (M.alloc (|
+            Ty.path "u32",
+            M.call_closure (| Ty.path "u32", UnOp.not, [ Value.Integer IntegerKind.U32 1 ] |)
+          |))).
       
       Global Instance Instance_IsConstant_value_EVEN_MAKING_BITMASK :
         M.IsFunction.C "core::num::int_sqrt::u32::EVEN_MAKING_BITMASK" value_EVEN_MAKING_BITMASK.
@@ -6361,7 +6451,10 @@ Module num.
           (α : list Value.t)
           : M :=
         ltac:(M.monadic
-          (M.alloc (| Ty.path "u32", UnOp.not (| Value.Integer IntegerKind.U32 1 |) |))).
+          (M.alloc (|
+            Ty.path "u32",
+            M.call_closure (| Ty.path "u32", UnOp.not, [ Value.Integer IntegerKind.U32 1 ] |)
+          |))).
       
       Global Instance Instance_IsConstant_value_EVEN_MAKING_BITMASK :
         M.IsFunction.C "core::num::int_sqrt::u64::EVEN_MAKING_BITMASK" value_EVEN_MAKING_BITMASK.
@@ -6519,7 +6612,10 @@ Module num.
           (α : list Value.t)
           : M :=
         ltac:(M.monadic
-          (M.alloc (| Ty.path "u32", UnOp.not (| Value.Integer IntegerKind.U32 1 |) |))).
+          (M.alloc (|
+            Ty.path "u32",
+            M.call_closure (| Ty.path "u32", UnOp.not, [ Value.Integer IntegerKind.U32 1 ] |)
+          |))).
       
       Global Instance Instance_IsConstant_value_EVEN_MAKING_BITMASK :
         M.IsFunction.C "core::num::int_sqrt::u128::EVEN_MAKING_BITMASK" value_EVEN_MAKING_BITMASK.

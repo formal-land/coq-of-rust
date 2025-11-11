@@ -1146,7 +1146,13 @@ Module num.
                                       "core::option::Option::Some"
                                       []
                                       [ Ty.path "i64" ]
-                                      [ UnOp.neg (| M.read (| exponent |) |) ]));
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "i64",
+                                          UnOp.neg,
+                                          [ M.read (| exponent |) ]
+                                        |)
+                                      ]));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (Value.StructTuple
@@ -1304,27 +1310,35 @@ Module num.
                                           M.use
                                             (M.alloc (|
                                               Ty.path "bool",
-                                              UnOp.not (|
-                                                UnOp.not (|
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                UnOp.not,
+                                                [
                                                   M.call_closure (|
                                                     Ty.path "bool",
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "slice")
-                                                        []
-                                                        [ Ty.path "u8" ],
-                                                      "is_empty",
-                                                      [],
-                                                      []
-                                                    |),
+                                                    UnOp.not,
                                                     [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (| M.read (| s |) |)
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [ Ty.path "u8" ],
+                                                          "is_empty",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| s |) |)
+                                                          |)
+                                                        ]
                                                       |)
                                                     ]
                                                   |)
-                                                |)
+                                                ]
                                               |)
                                             |)) in
                                         let _ :=
@@ -1564,7 +1578,13 @@ Module num.
                               let~ _ : Ty.tuple [] :=
                                 M.write (|
                                   exponent,
-                                  M.cast (Ty.path "i64") (UnOp.neg (| M.read (| n_after_dot |) |))
+                                  M.cast
+                                    (Ty.path "i64")
+                                    (M.call_closure (|
+                                      Ty.path "isize",
+                                      UnOp.neg,
+                                      [ M.read (| n_after_dot |) ]
+                                    |))
                                 |) in
                               M.alloc (| Ty.tuple [], Value.Tuple [] |)
                             |)));
@@ -2341,32 +2361,36 @@ Module num.
                                                 |) in
                                               M.alloc (|
                                                 Ty.path "isize",
-                                                UnOp.neg (|
-                                                  M.call_closure (|
-                                                    Ty.path "isize",
-                                                    M.get_trait_method (|
-                                                      "core::num::dec2flt::common::ByteSlice",
-                                                      Ty.apply
-                                                        (Ty.path "slice")
+                                                M.call_closure (|
+                                                  Ty.path "isize",
+                                                  UnOp.neg,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "isize",
+                                                      M.get_trait_method (|
+                                                        "core::num::dec2flt::common::ByteSlice",
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ],
+                                                        [],
+                                                        [],
+                                                        "offset_from",
+                                                        [],
                                                         []
-                                                        [ Ty.path "u8" ],
-                                                      [],
-                                                      [],
-                                                      "offset_from",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (| M.read (| s |) |)
-                                                      |);
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (| M.read (| before |) |)
-                                                      |)
-                                                    ]
-                                                  |)
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| s |) |)
+                                                        |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| before |) |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
                                                 |)
                                               |)
                                             |)))

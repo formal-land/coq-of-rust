@@ -2889,10 +2889,17 @@ Module blake2.
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.write (|
                         M.SubPointer.get_array_field (| v, Value.Integer IntegerKind.Usize 14 |),
-                        UnOp.not (|
-                          M.read (|
-                            M.SubPointer.get_array_field (| v, Value.Integer IntegerKind.Usize 14 |)
-                          |)
+                        M.call_closure (|
+                          Ty.path "u64",
+                          UnOp.not,
+                          [
+                            M.read (|
+                              M.SubPointer.get_array_field (|
+                                v,
+                                Value.Integer IntegerKind.Usize 14
+                              |)
+                            |)
+                          ]
                         |)
                       |)));
                   fun γ => ltac:(M.monadic (Value.Tuple []))

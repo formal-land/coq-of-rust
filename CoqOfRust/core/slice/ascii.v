@@ -2275,17 +2275,21 @@ Module slice.
                                                                               Ty.path "u8",
                                                                               γ
                                                                             |) in
-                                                                          UnOp.not (|
-                                                                            M.call_closure (|
-                                                                              Ty.path "bool",
-                                                                              M.get_associated_function (|
-                                                                                Self,
-                                                                                "needs_escape.fmt",
-                                                                                [],
-                                                                                []
-                                                                              |),
-                                                                              [ M.read (| b |) ]
-                                                                            |)
+                                                                          M.call_closure (|
+                                                                            Ty.path "bool",
+                                                                            UnOp.not,
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                Ty.path "bool",
+                                                                                M.get_associated_function (|
+                                                                                  Self,
+                                                                                  "needs_escape.fmt",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [ M.read (| b |) ]
+                                                                              |)
+                                                                            ]
                                                                           |)))
                                                                     ]
                                                                   |)))
@@ -3490,22 +3494,26 @@ Module slice.
                                             M.use
                                               (M.alloc (|
                                                 Ty.path "bool",
-                                                UnOp.not (|
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    M.get_associated_function (|
-                                                      Ty.path "u8",
-                                                      "is_ascii",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (| M.read (| last |) |)
-                                                      |)
-                                                    ]
-                                                  |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  UnOp.not,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      M.get_associated_function (|
+                                                        Ty.path "u8",
+                                                        "is_ascii",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| last |) |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=

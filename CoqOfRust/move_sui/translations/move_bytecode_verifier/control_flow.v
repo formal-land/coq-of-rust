@@ -886,17 +886,21 @@ Module control_flow.
                     let γ :=
                       M.alloc (|
                         Ty.path "bool",
-                        UnOp.not (|
-                          M.call_closure (|
-                            Ty.path "bool",
-                            M.get_associated_function (|
-                              Ty.path "move_binary_format::file_format::Bytecode",
-                              "is_unconditional_branch",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| last |) |) |) ]
-                          |)
+                        M.call_closure (|
+                          Ty.path "bool",
+                          UnOp.not,
+                          [
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_associated_function (|
+                                Ty.path "move_binary_format::file_format::Bytecode",
+                                "is_unconditional_branch",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| last |) |) |) ]
+                            |)
+                          ]
                         |)
                       |) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2257,30 +2261,35 @@ Module control_flow.
                                                                                                                 (M.alloc (|
                                                                                                                   Ty.path
                                                                                                                     "bool",
-                                                                                                                  UnOp.not (|
-                                                                                                                    M.call_closure (|
-                                                                                                                      Ty.path
-                                                                                                                        "bool",
-                                                                                                                      M.get_associated_function (|
+                                                                                                                  M.call_closure (|
+                                                                                                                    Ty.path
+                                                                                                                      "bool",
+                                                                                                                    UnOp.not,
+                                                                                                                    [
+                                                                                                                      M.call_closure (|
                                                                                                                         Ty.path
-                                                                                                                          "move_bytecode_verifier::loop_summary::LoopSummary",
-                                                                                                                        "is_descendant",
-                                                                                                                        [],
-                                                                                                                        []
-                                                                                                                      |),
-                                                                                                                      [
-                                                                                                                        M.borrow (|
-                                                                                                                          Pointer.Kind.Ref,
-                                                                                                                          summary
-                                                                                                                        |);
-                                                                                                                        M.read (|
-                                                                                                                          head
-                                                                                                                        |);
-                                                                                                                        M.read (|
-                                                                                                                          pred
-                                                                                                                        |)
-                                                                                                                      ]
-                                                                                                                    |)
+                                                                                                                          "bool",
+                                                                                                                        M.get_associated_function (|
+                                                                                                                          Ty.path
+                                                                                                                            "move_bytecode_verifier::loop_summary::LoopSummary",
+                                                                                                                          "is_descendant",
+                                                                                                                          [],
+                                                                                                                          []
+                                                                                                                        |),
+                                                                                                                        [
+                                                                                                                          M.borrow (|
+                                                                                                                            Pointer.Kind.Ref,
+                                                                                                                            summary
+                                                                                                                          |);
+                                                                                                                          M.read (|
+                                                                                                                            head
+                                                                                                                          |);
+                                                                                                                          M.read (|
+                                                                                                                            pred
+                                                                                                                          |)
+                                                                                                                        ]
+                                                                                                                      |)
+                                                                                                                    ]
                                                                                                                   |)
                                                                                                                 |)) in
                                                                                                             let

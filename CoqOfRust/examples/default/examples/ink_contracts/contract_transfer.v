@@ -496,46 +496,50 @@ Module Impl_contract_transfer_GiveMe.
                       M.use
                         (M.alloc (|
                           Ty.path "bool",
-                          UnOp.not (|
-                            M.call_closure (|
-                              Ty.path "bool",
-                              BinOp.le,
-                              [
-                                M.read (| value |);
-                                M.call_closure (|
-                                  Ty.path "u128",
-                                  M.get_associated_function (|
-                                    Ty.path "contract_transfer::Env",
-                                    "balance",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Ty.path "contract_transfer::Env",
-                                        M.call_closure (|
+                          M.call_closure (|
+                            Ty.path "bool",
+                            UnOp.not,
+                            [
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.le,
+                                [
+                                  M.read (| value |);
+                                  M.call_closure (|
+                                    Ty.path "u128",
+                                    M.get_associated_function (|
+                                      Ty.path "contract_transfer::Env",
+                                      "balance",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
                                           Ty.path "contract_transfer::Env",
-                                          M.get_associated_function (|
-                                            Ty.path "contract_transfer::GiveMe",
-                                            "env",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| self |) |)
-                                            |)
-                                          ]
+                                          M.call_closure (|
+                                            Ty.path "contract_transfer::Env",
+                                            M.get_associated_function (|
+                                              Ty.path "contract_transfer::GiveMe",
+                                              "env",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |)
+                                            ]
+                                          |)
                                         |)
                                       |)
-                                    |)
-                                  ]
-                                |)
-                              ]
-                            |)
+                                    ]
+                                  |)
+                                ]
+                              |)
+                            ]
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -818,46 +822,50 @@ Module Impl_contract_transfer_GiveMe.
                       M.use
                         (M.alloc (|
                           Ty.path "bool",
-                          UnOp.not (|
-                            M.call_closure (|
-                              Ty.path "bool",
-                              BinOp.eq,
-                              [
-                                M.call_closure (|
-                                  Ty.path "u128",
-                                  M.get_associated_function (|
-                                    Ty.path "contract_transfer::Env",
-                                    "transferred_value",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Ty.path "contract_transfer::Env",
-                                        M.call_closure (|
+                          M.call_closure (|
+                            Ty.path "bool",
+                            UnOp.not,
+                            [
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.eq,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u128",
+                                    M.get_associated_function (|
+                                      Ty.path "contract_transfer::Env",
+                                      "transferred_value",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
                                           Ty.path "contract_transfer::Env",
-                                          M.get_associated_function (|
-                                            Ty.path "contract_transfer::GiveMe",
-                                            "env",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| self |) |)
-                                            |)
-                                          ]
+                                          M.call_closure (|
+                                            Ty.path "contract_transfer::Env",
+                                            M.get_associated_function (|
+                                              Ty.path "contract_transfer::GiveMe",
+                                              "env",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |)
+                                            ]
+                                          |)
                                         |)
                                       |)
-                                    |)
-                                  ]
-                                |);
-                                Value.Integer IntegerKind.U128 10
-                              ]
-                            |)
+                                    ]
+                                  |);
+                                  Value.Integer IntegerKind.U128 10
+                                ]
+                              |)
+                            ]
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

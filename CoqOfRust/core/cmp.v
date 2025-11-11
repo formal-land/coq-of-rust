@@ -10,15 +10,19 @@ Module cmp.
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Rhs ], other |) in
-          UnOp.not (|
-            M.call_closure (|
-              Ty.path "bool",
-              M.get_trait_method (| "core::cmp::PartialEq", Self, [], [ Rhs ], "eq", [], [] |),
-              [
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
-              ]
-            |)
+          M.call_closure (|
+            Ty.path "bool",
+            UnOp.not,
+            [
+              M.call_closure (|
+                Ty.path "bool",
+                M.get_trait_method (| "core::cmp::PartialEq", Self, [], [ Rhs ], "eq", [], [] |),
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                ]
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -499,18 +503,22 @@ Module cmp.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| Ty.path "core::cmp::Ordering", self |) in
-          UnOp.not (|
-            M.match_operator (|
-              Ty.path "bool",
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
-                    Value.Bool true));
-                fun γ => ltac:(M.monadic (Value.Bool false))
-              ]
-            |)
+          M.call_closure (|
+            Ty.path "bool",
+            UnOp.not,
+            [
+              M.match_operator (|
+                Ty.path "bool",
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                      Value.Bool true));
+                  fun γ => ltac:(M.monadic (Value.Bool false))
+                ]
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -585,18 +593,22 @@ Module cmp.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| Ty.path "core::cmp::Ordering", self |) in
-          UnOp.not (|
-            M.match_operator (|
-              Ty.path "bool",
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
-                    Value.Bool true));
-                fun γ => ltac:(M.monadic (Value.Bool false))
-              ]
-            |)
+          M.call_closure (|
+            Ty.path "bool",
+            UnOp.not,
+            [
+              M.match_operator (|
+                Ty.path "bool",
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
+                      Value.Bool true));
+                  fun γ => ltac:(M.monadic (Value.Bool false))
+                ]
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -615,18 +627,22 @@ Module cmp.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| Ty.path "core::cmp::Ordering", self |) in
-          UnOp.not (|
-            M.match_operator (|
-              Ty.path "bool",
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
-                    Value.Bool true));
-                fun γ => ltac:(M.monadic (Value.Bool false))
-              ]
-            |)
+          M.call_closure (|
+            Ty.path "bool",
+            UnOp.not,
+            [
+              M.match_operator (|
+                Ty.path "bool",
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
+                      Value.Bool true));
+                  fun γ => ltac:(M.monadic (Value.Bool false))
+                ]
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1527,23 +1543,27 @@ Module cmp.
                         M.use
                           (M.alloc (|
                             Ty.path "bool",
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_trait_method (|
-                                  "core::cmp::PartialOrd",
-                                  Self,
-                                  [],
-                                  [ Self ],
-                                  "le",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (| Pointer.Kind.Ref, min |);
-                                  M.borrow (| Pointer.Kind.Ref, max |)
-                                ]
-                              |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              UnOp.not,
+                              [
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_trait_method (|
+                                    "core::cmp::PartialOrd",
+                                    Self,
+                                    [],
+                                    [ Self ],
+                                    "le",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, min |);
+                                    M.borrow (| Pointer.Kind.Ref, max |)
+                                  ]
+                                |)
+                              ]
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4656,12 +4676,16 @@ Module cmp.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.le,
-                                  [ M.read (| min |); M.read (| max |) ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.le,
+                                    [ M.read (| min |); M.read (| max |) ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

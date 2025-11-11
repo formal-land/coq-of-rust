@@ -5902,37 +5902,41 @@ Module errors.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "core::option::Option")
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "u64" ],
+                                                "is_none",
+                                                [],
                                                 []
-                                                [ Ty.path "u64" ],
-                                              "is_none",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (|
-                                                    M.read (|
-                                                      M.SubPointer.get_struct_tuple_field (|
-                                                        self,
-                                                        "move_binary_format::errors::PartialVMError",
-                                                        0
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (|
+                                                      M.read (|
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          self,
+                                                          "move_binary_format::errors::PartialVMError",
+                                                          0
+                                                        |)
                                                       |)
-                                                    |)
-                                                  |),
-                                                  "move_binary_format::errors::PartialVMError_",
-                                                  "sub_status"
+                                                    |),
+                                                    "move_binary_format::errors::PartialVMError_",
+                                                    "sub_status"
+                                                  |)
                                                 |)
-                                              |)
-                                            ]
-                                          |)
+                                              ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -6022,37 +6026,41 @@ Module errors.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "core::option::Option")
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "alloc::string::String" ],
+                                                "is_none",
+                                                [],
                                                 []
-                                                [ Ty.path "alloc::string::String" ],
-                                              "is_none",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (|
-                                                    M.read (|
-                                                      M.SubPointer.get_struct_tuple_field (|
-                                                        self,
-                                                        "move_binary_format::errors::PartialVMError",
-                                                        0
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (|
+                                                      M.read (|
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          self,
+                                                          "move_binary_format::errors::PartialVMError",
+                                                          0
+                                                        |)
                                                       |)
-                                                    |)
-                                                  |),
-                                                  "move_binary_format::errors::PartialVMError_",
-                                                  "message"
+                                                    |),
+                                                    "move_binary_format::errors::PartialVMError_",
+                                                    "message"
+                                                  |)
                                                 |)
-                                              |)
-                                            ]
-                                          |)
+                                              ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -6142,40 +6150,44 @@ Module errors.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "core::option::Option")
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::errors::ExecutionState"
+                                                  ],
+                                                "is_none",
+                                                [],
                                                 []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::errors::ExecutionState"
-                                                ],
-                                              "is_none",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (|
-                                                    M.read (|
-                                                      M.SubPointer.get_struct_tuple_field (|
-                                                        self,
-                                                        "move_binary_format::errors::PartialVMError",
-                                                        0
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (|
+                                                      M.read (|
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          self,
+                                                          "move_binary_format::errors::PartialVMError",
+                                                          0
+                                                        |)
                                                       |)
-                                                    |)
-                                                  |),
-                                                  "move_binary_format::errors::PartialVMError_",
-                                                  "exec_state"
+                                                    |),
+                                                    "move_binary_format::errors::PartialVMError_",
+                                                    "exec_state"
+                                                  |)
                                                 |)
-                                              |)
-                                            ]
-                                          |)
+                                              ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -6633,22 +6645,26 @@ Module errors.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            M.get_associated_function (|
-                                              Ty.path "alloc::string::String",
-                                              "is_empty",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| msg |) |)
-                                              |)
-                                            ]
-                                          |)
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              M.get_associated_function (|
+                                                Ty.path "alloc::string::String",
+                                                "is_empty",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| msg |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=

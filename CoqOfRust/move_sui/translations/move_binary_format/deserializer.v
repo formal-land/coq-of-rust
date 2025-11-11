@@ -7961,40 +7961,44 @@ Module deserializer.
                                                             M.use
                                                               (M.alloc (|
                                                                 Ty.path "bool",
-                                                                UnOp.not (|
-                                                                  M.call_closure (|
-                                                                    Ty.path "bool",
-                                                                    M.get_associated_function (|
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "std::collections::hash::set::HashSet")
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  UnOp.not,
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      M.get_associated_function (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "std::collections::hash::set::HashSet")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_binary_format::file_format_common::TableType";
+                                                                            Ty.path
+                                                                              "std::hash::random::RandomState"
+                                                                          ],
+                                                                        "insert",
+                                                                        [],
                                                                         []
-                                                                        [
-                                                                          Ty.path
-                                                                            "move_binary_format::file_format_common::TableType";
-                                                                          Ty.path
-                                                                            "std::hash::random::RandomState"
-                                                                        ],
-                                                                      "insert",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.MutRef,
-                                                                        table_types
-                                                                      |);
-                                                                      M.read (|
-                                                                        M.SubPointer.get_struct_record_field (|
-                                                                          M.deref (|
-                                                                            M.read (| table |)
-                                                                          |),
-                                                                          "move_binary_format::deserializer::Table",
-                                                                          "kind"
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.MutRef,
+                                                                          table_types
+                                                                        |);
+                                                                        M.read (|
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.deref (|
+                                                                              M.read (| table |)
+                                                                            |),
+                                                                            "move_binary_format::deserializer::Table",
+                                                                            "kind"
+                                                                          |)
                                                                         |)
-                                                                      |)
-                                                                    ]
-                                                                  |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
                                                                 |)
                                                               |)) in
                                                           let _ :=

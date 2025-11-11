@@ -1461,7 +1461,7 @@ Module alloc.
                         M.read (| align_m1 |)
                       ]
                     |);
-                    UnOp.not (| M.read (| align_m1 |) |)
+                    M.call_closure (| Ty.path "usize", UnOp.not, [ M.read (| align_m1 |) ] |)
                   ]
                 |) in
               size_rounded_up

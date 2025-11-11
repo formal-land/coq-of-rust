@@ -599,14 +599,18 @@ Module num.
                     |)))
                 |),
                 ltac:(M.monadic
-                  (UnOp.not (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::num::dec2flt::number::Number",
-                        "many_digits"
+                  (M.call_closure (|
+                    Ty.path "bool",
+                    UnOp.not,
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::num::dec2flt::number::Number",
+                          "many_digits"
+                        |)
                       |)
-                    |)
+                    ]
                   |)))
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -825,16 +829,20 @@ Module num.
                                                             [
                                                               M.cast
                                                                 (Ty.path "usize")
-                                                                (UnOp.neg (|
-                                                                  M.read (|
-                                                                    M.SubPointer.get_struct_record_field (|
-                                                                      M.deref (|
-                                                                        M.read (| self |)
-                                                                      |),
-                                                                      "core::num::dec2flt::number::Number",
-                                                                      "exponent"
+                                                                (M.call_closure (|
+                                                                  Ty.path "i64",
+                                                                  UnOp.neg,
+                                                                  [
+                                                                    M.read (|
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        M.deref (|
+                                                                          M.read (| self |)
+                                                                        |),
+                                                                        "core::num::dec2flt::number::Number",
+                                                                        "exponent"
+                                                                      |)
                                                                     |)
-                                                                  |)
+                                                                  ]
                                                                 |))
                                                             ]
                                                           |)

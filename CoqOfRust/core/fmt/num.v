@@ -13424,7 +13424,11 @@ Module fmt.
                                   M.use
                                     (M.alloc (|
                                       Ty.path "bool",
-                                      UnOp.not (| M.read (| is_nonnegative |) |)
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        UnOp.not,
+                                        [ M.read (| is_nonnegative |) ]
+                                      |)
                                     |)) in
                                 let _ :=
                                   is_constant_or_break_match (|
@@ -13614,21 +13618,29 @@ Module fmt.
                             Ty.path "u64",
                             M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                             [
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "u64",
-                                  M.get_trait_method (|
-                                    "core::fmt::num::DisplayInt",
-                                    Ty.path "i8",
-                                    [],
-                                    [],
-                                    "to_u64",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "u64",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    M.get_trait_method (|
+                                      "core::fmt::num::DisplayInt",
+                                      Ty.path "i8",
+                                      [],
+                                      [],
+                                      "to_u64",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |);
                               Value.Integer IntegerKind.U64 1
                             ]
@@ -13725,21 +13737,29 @@ Module fmt.
                             Ty.path "u64",
                             M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                             [
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "u64",
-                                  M.get_trait_method (|
-                                    "core::fmt::num::DisplayInt",
-                                    Ty.path "u8",
-                                    [],
-                                    [],
-                                    "to_u64",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "u64",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    M.get_trait_method (|
+                                      "core::fmt::num::DisplayInt",
+                                      Ty.path "u8",
+                                      [],
+                                      [],
+                                      "to_u64",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |);
                               Value.Integer IntegerKind.U64 1
                             ]
@@ -13837,21 +13857,29 @@ Module fmt.
                             Ty.path "u64",
                             M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                             [
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "u64",
-                                  M.get_trait_method (|
-                                    "core::fmt::num::DisplayInt",
-                                    Ty.path "i16",
-                                    [],
-                                    [],
-                                    "to_u64",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "u64",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    M.get_trait_method (|
+                                      "core::fmt::num::DisplayInt",
+                                      Ty.path "i16",
+                                      [],
+                                      [],
+                                      "to_u64",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |);
                               Value.Integer IntegerKind.U64 1
                             ]
@@ -13949,21 +13977,29 @@ Module fmt.
                             Ty.path "u64",
                             M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                             [
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "u64",
-                                  M.get_trait_method (|
-                                    "core::fmt::num::DisplayInt",
-                                    Ty.path "u16",
-                                    [],
-                                    [],
-                                    "to_u64",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "u64",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    M.get_trait_method (|
+                                      "core::fmt::num::DisplayInt",
+                                      Ty.path "u16",
+                                      [],
+                                      [],
+                                      "to_u64",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |);
                               Value.Integer IntegerKind.U64 1
                             ]
@@ -14061,21 +14097,29 @@ Module fmt.
                             Ty.path "u64",
                             M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                             [
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "u64",
-                                  M.get_trait_method (|
-                                    "core::fmt::num::DisplayInt",
-                                    Ty.path "i32",
-                                    [],
-                                    [],
-                                    "to_u64",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "u64",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    M.get_trait_method (|
+                                      "core::fmt::num::DisplayInt",
+                                      Ty.path "i32",
+                                      [],
+                                      [],
+                                      "to_u64",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |);
                               Value.Integer IntegerKind.U64 1
                             ]
@@ -14173,21 +14217,29 @@ Module fmt.
                             Ty.path "u64",
                             M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                             [
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "u64",
-                                  M.get_trait_method (|
-                                    "core::fmt::num::DisplayInt",
-                                    Ty.path "u32",
-                                    [],
-                                    [],
-                                    "to_u64",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "u64",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    M.get_trait_method (|
+                                      "core::fmt::num::DisplayInt",
+                                      Ty.path "u32",
+                                      [],
+                                      [],
+                                      "to_u64",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |);
                               Value.Integer IntegerKind.U64 1
                             ]
@@ -14285,21 +14337,29 @@ Module fmt.
                             Ty.path "u64",
                             M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                             [
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "u64",
-                                  M.get_trait_method (|
-                                    "core::fmt::num::DisplayInt",
-                                    Ty.path "i64",
-                                    [],
-                                    [],
-                                    "to_u64",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "u64",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    M.get_trait_method (|
+                                      "core::fmt::num::DisplayInt",
+                                      Ty.path "i64",
+                                      [],
+                                      [],
+                                      "to_u64",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |);
                               Value.Integer IntegerKind.U64 1
                             ]
@@ -14397,21 +14457,29 @@ Module fmt.
                             Ty.path "u64",
                             M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                             [
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "u64",
-                                  M.get_trait_method (|
-                                    "core::fmt::num::DisplayInt",
+                              M.call_closure (|
+                                Ty.path "u64",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
                                     Ty.path "u64",
-                                    [],
-                                    [],
-                                    "to_u64",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
-                                |)
+                                    M.get_trait_method (|
+                                      "core::fmt::num::DisplayInt",
+                                      Ty.path "u64",
+                                      [],
+                                      [],
+                                      "to_u64",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |);
                               Value.Integer IntegerKind.U64 1
                             ]
@@ -14511,21 +14579,29 @@ Module fmt.
                             Ty.path "u64",
                             M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                             [
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "u64",
-                                  M.get_trait_method (|
-                                    "core::fmt::num::DisplayInt",
-                                    Ty.path "usize",
-                                    [],
-                                    [],
-                                    "to_u64",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "u64",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    M.get_trait_method (|
+                                      "core::fmt::num::DisplayInt",
+                                      Ty.path "usize",
+                                      [],
+                                      [],
+                                      "to_u64",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |);
                               Value.Integer IntegerKind.U64 1
                             ]
@@ -14625,21 +14701,29 @@ Module fmt.
                             Ty.path "u64",
                             M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                             [
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "u64",
-                                  M.get_trait_method (|
-                                    "core::fmt::num::DisplayInt",
-                                    Ty.path "isize",
-                                    [],
-                                    [],
-                                    "to_u64",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "u64",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    M.get_trait_method (|
+                                      "core::fmt::num::DisplayInt",
+                                      Ty.path "isize",
+                                      [],
+                                      [],
+                                      "to_u64",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |);
                               Value.Integer IntegerKind.U64 1
                             ]
@@ -14736,21 +14820,29 @@ Module fmt.
                             Ty.path "u64",
                             M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                             [
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "u64",
-                                  M.get_trait_method (|
-                                    "core::fmt::num::DisplayInt",
-                                    Ty.path "i8",
-                                    [],
-                                    [],
-                                    "to_u64",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "u64",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    M.get_trait_method (|
+                                      "core::fmt::num::DisplayInt",
+                                      Ty.path "i8",
+                                      [],
+                                      [],
+                                      "to_u64",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |);
                               Value.Integer IntegerKind.U64 1
                             ]
@@ -14847,21 +14939,29 @@ Module fmt.
                             Ty.path "u64",
                             M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                             [
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "u64",
-                                  M.get_trait_method (|
-                                    "core::fmt::num::DisplayInt",
-                                    Ty.path "u8",
-                                    [],
-                                    [],
-                                    "to_u64",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "u64",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    M.get_trait_method (|
+                                      "core::fmt::num::DisplayInt",
+                                      Ty.path "u8",
+                                      [],
+                                      [],
+                                      "to_u64",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |);
                               Value.Integer IntegerKind.U64 1
                             ]
@@ -14959,21 +15059,29 @@ Module fmt.
                             Ty.path "u64",
                             M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                             [
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "u64",
-                                  M.get_trait_method (|
-                                    "core::fmt::num::DisplayInt",
-                                    Ty.path "i16",
-                                    [],
-                                    [],
-                                    "to_u64",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "u64",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    M.get_trait_method (|
+                                      "core::fmt::num::DisplayInt",
+                                      Ty.path "i16",
+                                      [],
+                                      [],
+                                      "to_u64",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |);
                               Value.Integer IntegerKind.U64 1
                             ]
@@ -15071,21 +15179,29 @@ Module fmt.
                             Ty.path "u64",
                             M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                             [
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "u64",
-                                  M.get_trait_method (|
-                                    "core::fmt::num::DisplayInt",
-                                    Ty.path "u16",
-                                    [],
-                                    [],
-                                    "to_u64",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "u64",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    M.get_trait_method (|
+                                      "core::fmt::num::DisplayInt",
+                                      Ty.path "u16",
+                                      [],
+                                      [],
+                                      "to_u64",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |);
                               Value.Integer IntegerKind.U64 1
                             ]
@@ -15183,21 +15299,29 @@ Module fmt.
                             Ty.path "u64",
                             M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                             [
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "u64",
-                                  M.get_trait_method (|
-                                    "core::fmt::num::DisplayInt",
-                                    Ty.path "i32",
-                                    [],
-                                    [],
-                                    "to_u64",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "u64",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    M.get_trait_method (|
+                                      "core::fmt::num::DisplayInt",
+                                      Ty.path "i32",
+                                      [],
+                                      [],
+                                      "to_u64",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |);
                               Value.Integer IntegerKind.U64 1
                             ]
@@ -15295,21 +15419,29 @@ Module fmt.
                             Ty.path "u64",
                             M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                             [
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "u64",
-                                  M.get_trait_method (|
-                                    "core::fmt::num::DisplayInt",
-                                    Ty.path "u32",
-                                    [],
-                                    [],
-                                    "to_u64",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "u64",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    M.get_trait_method (|
+                                      "core::fmt::num::DisplayInt",
+                                      Ty.path "u32",
+                                      [],
+                                      [],
+                                      "to_u64",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |);
                               Value.Integer IntegerKind.U64 1
                             ]
@@ -15407,21 +15539,29 @@ Module fmt.
                             Ty.path "u64",
                             M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                             [
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "u64",
-                                  M.get_trait_method (|
-                                    "core::fmt::num::DisplayInt",
-                                    Ty.path "i64",
-                                    [],
-                                    [],
-                                    "to_u64",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "u64",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    M.get_trait_method (|
+                                      "core::fmt::num::DisplayInt",
+                                      Ty.path "i64",
+                                      [],
+                                      [],
+                                      "to_u64",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |);
                               Value.Integer IntegerKind.U64 1
                             ]
@@ -15519,21 +15659,29 @@ Module fmt.
                             Ty.path "u64",
                             M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                             [
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "u64",
-                                  M.get_trait_method (|
-                                    "core::fmt::num::DisplayInt",
+                              M.call_closure (|
+                                Ty.path "u64",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
                                     Ty.path "u64",
-                                    [],
-                                    [],
-                                    "to_u64",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
-                                |)
+                                    M.get_trait_method (|
+                                      "core::fmt::num::DisplayInt",
+                                      Ty.path "u64",
+                                      [],
+                                      [],
+                                      "to_u64",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |);
                               Value.Integer IntegerKind.U64 1
                             ]
@@ -15633,21 +15781,29 @@ Module fmt.
                             Ty.path "u64",
                             M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                             [
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "u64",
-                                  M.get_trait_method (|
-                                    "core::fmt::num::DisplayInt",
-                                    Ty.path "usize",
-                                    [],
-                                    [],
-                                    "to_u64",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "u64",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    M.get_trait_method (|
+                                      "core::fmt::num::DisplayInt",
+                                      Ty.path "usize",
+                                      [],
+                                      [],
+                                      "to_u64",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |);
                               Value.Integer IntegerKind.U64 1
                             ]
@@ -15747,21 +15903,29 @@ Module fmt.
                             Ty.path "u64",
                             M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                             [
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "u64",
-                                  M.get_trait_method (|
-                                    "core::fmt::num::DisplayInt",
-                                    Ty.path "isize",
-                                    [],
-                                    [],
-                                    "to_u64",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "u64",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    M.get_trait_method (|
+                                      "core::fmt::num::DisplayInt",
+                                      Ty.path "isize",
+                                      [],
+                                      [],
+                                      "to_u64",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |);
                               Value.Integer IntegerKind.U64 1
                             ]
@@ -17583,7 +17747,11 @@ Module fmt.
                                 M.use
                                   (M.alloc (|
                                     Ty.path "bool",
-                                    UnOp.not (| M.read (| is_nonnegative |) |)
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [ M.read (| is_nonnegative |) ]
+                                    |)
                                   |)) in
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -17764,20 +17932,25 @@ Module fmt.
                           Ty.path "u128",
                           M.get_associated_function (| Ty.path "u128", "wrapping_add", [], [] |),
                           [
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "u128",
-                                M.get_trait_method (|
-                                  "core::fmt::num::DisplayInt",
-                                  Ty.path "i128",
-                                  [],
-                                  [],
-                                  "to_u128",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                              |)
+                            M.call_closure (|
+                              Ty.path "u128",
+                              UnOp.not,
+                              [
+                                M.call_closure (|
+                                  Ty.path "u128",
+                                  M.get_trait_method (|
+                                    "core::fmt::num::DisplayInt",
+                                    Ty.path "i128",
+                                    [],
+                                    [],
+                                    "to_u128",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
+                                |)
+                              ]
                             |);
                             Value.Integer IntegerKind.U128 1
                           ]
@@ -17873,20 +18046,25 @@ Module fmt.
                           Ty.path "u128",
                           M.get_associated_function (| Ty.path "u128", "wrapping_add", [], [] |),
                           [
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "u128",
-                                M.get_trait_method (|
-                                  "core::fmt::num::DisplayInt",
+                            M.call_closure (|
+                              Ty.path "u128",
+                              UnOp.not,
+                              [
+                                M.call_closure (|
                                   Ty.path "u128",
-                                  [],
-                                  [],
-                                  "to_u128",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                              |)
+                                  M.get_trait_method (|
+                                    "core::fmt::num::DisplayInt",
+                                    Ty.path "u128",
+                                    [],
+                                    [],
+                                    "to_u128",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
+                                |)
+                              ]
                             |);
                             Value.Integer IntegerKind.U128 1
                           ]
@@ -17982,20 +18160,25 @@ Module fmt.
                           Ty.path "u128",
                           M.get_associated_function (| Ty.path "u128", "wrapping_add", [], [] |),
                           [
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "u128",
-                                M.get_trait_method (|
-                                  "core::fmt::num::DisplayInt",
-                                  Ty.path "i128",
-                                  [],
-                                  [],
-                                  "to_u128",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                              |)
+                            M.call_closure (|
+                              Ty.path "u128",
+                              UnOp.not,
+                              [
+                                M.call_closure (|
+                                  Ty.path "u128",
+                                  M.get_trait_method (|
+                                    "core::fmt::num::DisplayInt",
+                                    Ty.path "i128",
+                                    [],
+                                    [],
+                                    "to_u128",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
+                                |)
+                              ]
                             |);
                             Value.Integer IntegerKind.U128 1
                           ]
@@ -18091,20 +18274,25 @@ Module fmt.
                           Ty.path "u128",
                           M.get_associated_function (| Ty.path "u128", "wrapping_add", [], [] |),
                           [
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "u128",
-                                M.get_trait_method (|
-                                  "core::fmt::num::DisplayInt",
+                            M.call_closure (|
+                              Ty.path "u128",
+                              UnOp.not,
+                              [
+                                M.call_closure (|
                                   Ty.path "u128",
-                                  [],
-                                  [],
-                                  "to_u128",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                              |)
+                                  M.get_trait_method (|
+                                    "core::fmt::num::DisplayInt",
+                                    Ty.path "u128",
+                                    [],
+                                    [],
+                                    "to_u128",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
+                                |)
+                              ]
                             |);
                             Value.Integer IntegerKind.U128 1
                           ]
@@ -18381,15 +18569,19 @@ Module fmt.
                         M.use
                           (M.alloc (|
                             Ty.path "bool",
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                BinOp.gt,
-                                [
-                                  M.read (| M.deref (| M.read (| curr |) |) |);
-                                  Value.Integer IntegerKind.Usize 19
-                                ]
-                              |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              UnOp.not,
+                              [
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [
+                                    M.read (| M.deref (| M.read (| curr |) |) |);
+                                    Value.Integer IntegerKind.Usize 19
+                                  ]
+                                |)
+                              ]
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -19780,20 +19972,25 @@ Module fmt.
                           Ty.path "u128",
                           M.get_associated_function (| Ty.path "u128", "wrapping_add", [], [] |),
                           [
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "u128",
-                                M.get_trait_method (|
-                                  "core::fmt::num::DisplayInt",
-                                  Ty.path "i128",
-                                  [],
-                                  [],
-                                  "to_u128",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                              |)
+                            M.call_closure (|
+                              Ty.path "u128",
+                              UnOp.not,
+                              [
+                                M.call_closure (|
+                                  Ty.path "u128",
+                                  M.get_trait_method (|
+                                    "core::fmt::num::DisplayInt",
+                                    Ty.path "i128",
+                                    [],
+                                    [],
+                                    "to_u128",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
+                                |)
+                              ]
                             |);
                             Value.Integer IntegerKind.U128 1
                           ]

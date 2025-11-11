@@ -570,14 +570,18 @@ Module iter.
                                 M.use
                                   (M.alloc (|
                                     Ty.path "bool",
-                                    UnOp.not (|
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "core::iter::adapters::skip_while::SkipWhile",
-                                          "flag"
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::iter::adapters::skip_while::SkipWhile",
+                                            "flag"
+                                          |)
                                         |)
-                                      |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -876,14 +880,18 @@ Module iter.
                                 M.use
                                   (M.alloc (|
                                     Ty.path "bool",
-                                    UnOp.not (|
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          self,
-                                          "core::iter::adapters::skip_while::SkipWhile",
-                                          "flag"
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            self,
+                                            "core::iter::adapters::skip_while::SkipWhile",
+                                            "flag"
+                                          |)
                                         |)
-                                      |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=

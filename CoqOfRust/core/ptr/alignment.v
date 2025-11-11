@@ -517,24 +517,28 @@ Module ptr.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| Ty.path "core::ptr::alignment::Alignment", self |) in
-            UnOp.not (|
-              M.call_closure (|
-                Ty.path "usize",
-                M.get_associated_function (| Ty.path "usize", "unchecked_sub", [], [] |),
-                [
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (|
-                      Ty.path "core::ptr::alignment::Alignment",
-                      "as_usize",
-                      [],
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |);
-                  Value.Integer IntegerKind.Usize 1
-                ]
-              |)
+            M.call_closure (|
+              Ty.path "usize",
+              UnOp.not,
+              [
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (| Ty.path "usize", "unchecked_sub", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "usize",
+                      M.get_associated_function (|
+                        Ty.path "core::ptr::alignment::Alignment",
+                        "as_usize",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |);
+                    Value.Integer IntegerKind.Usize 1
+                  ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

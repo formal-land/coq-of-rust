@@ -6056,28 +6056,33 @@ Module iter.
                                                                                       (M.alloc (|
                                                                                         Ty.path
                                                                                           "bool",
-                                                                                        UnOp.not (|
-                                                                                          M.call_closure (|
-                                                                                            Ty.path
-                                                                                              "bool",
-                                                                                            BinOp.eq,
-                                                                                            [
-                                                                                              M.read (|
-                                                                                                M.deref (|
-                                                                                                  M.read (|
-                                                                                                    left_val
+                                                                                        M.call_closure (|
+                                                                                          Ty.path
+                                                                                            "bool",
+                                                                                          UnOp.not,
+                                                                                          [
+                                                                                            M.call_closure (|
+                                                                                              Ty.path
+                                                                                                "bool",
+                                                                                              BinOp.eq,
+                                                                                              [
+                                                                                                M.read (|
+                                                                                                  M.deref (|
+                                                                                                    M.read (|
+                                                                                                      left_val
+                                                                                                    |)
+                                                                                                  |)
+                                                                                                |);
+                                                                                                M.read (|
+                                                                                                  M.deref (|
+                                                                                                    M.read (|
+                                                                                                      right_val
+                                                                                                    |)
                                                                                                   |)
                                                                                                 |)
-                                                                                              |);
-                                                                                              M.read (|
-                                                                                                M.deref (|
-                                                                                                  M.read (|
-                                                                                                    right_val
-                                                                                                  |)
-                                                                                                |)
-                                                                                              |)
-                                                                                            ]
-                                                                                          |)
+                                                                                              ]
+                                                                                            |)
+                                                                                          ]
                                                                                         |)
                                                                                       |)) in
                                                                                   let _ :=
@@ -8221,7 +8226,11 @@ Module iter.
                                                 M.use
                                                   (M.alloc (|
                                                     Ty.path "bool",
-                                                    UnOp.not (| M.read (| more |) |)
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      UnOp.not,
+                                                      [ M.read (| more |) ]
+                                                    |)
                                                   |)) in
                                               let _ :=
                                                 is_constant_or_break_match (|

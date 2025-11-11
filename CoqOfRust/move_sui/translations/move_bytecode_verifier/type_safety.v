@@ -3901,17 +3901,21 @@ Module type_safety.
                               LogicalOp.and (|
                                 M.read (| mut_ |),
                                 ltac:(M.monadic
-                                  (UnOp.not (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::file_format::SignatureToken",
-                                        "is_mutable_reference",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, operand |) ]
-                                    |)
+                                  (M.call_closure (|
+                                    Ty.path "bool",
+                                    UnOp.not,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_associated_function (|
+                                          Ty.path "move_binary_format::file_format::SignatureToken",
+                                          "is_mutable_reference",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, operand |) ]
+                                      |)
+                                    ]
                                   |)))
                               |)
                             |)) in
@@ -5619,33 +5623,22 @@ Module type_safety.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_associated_function (|
-                                    Ty.path "move_binary_format::file_format::AbilitySet",
-                                    "has_key",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.match_operator (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::AbilitySet",
-                                      M.alloc (|
-                                        Ty.apply
-                                          (Ty.path "core::ops::control_flow::ControlFlow")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.path "core::convert::Infallible";
-                                                Ty.path "move_binary_format::errors::PartialVMError"
-                                              ];
-                                            Ty.path "move_binary_format::file_format::AbilitySet"
-                                          ],
-                                        M.call_closure (|
+                                      "has_key",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.match_operator (|
+                                        Ty.path "move_binary_format::file_format::AbilitySet",
+                                        M.alloc (|
                                           Ty.apply
                                             (Ty.path "core::ops::control_flow::ControlFlow")
                                             []
@@ -5660,24 +5653,24 @@ Module type_safety.
                                                 ];
                                               Ty.path "move_binary_format::file_format::AbilitySet"
                                             ],
-                                          M.get_trait_method (|
-                                            "core::ops::try_trait::Try",
+                                          M.call_closure (|
                                             Ty.apply
-                                              (Ty.path "core::result::Result")
+                                              (Ty.path "core::ops::control_flow::ControlFlow")
                                               []
                                               [
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ];
                                                 Ty.path
-                                                  "move_binary_format::file_format::AbilitySet";
-                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                                  "move_binary_format::file_format::AbilitySet"
                                               ],
-                                            [],
-                                            [],
-                                            "branch",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::try_trait::Try",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
                                                 []
@@ -5687,64 +5680,71 @@ Module type_safety.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError"
                                                 ],
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_bytecode_verifier::type_safety::TypeSafetyChecker",
-                                                "abilities",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| verifier |) |)
-                                                |);
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.borrow (| Pointer.Kind.Ref, struct_type |)
-                                                  |)
-                                                |)
-                                              ]
-                                            |)
-                                          ]
-                                        |)
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::ops::control_flow::ControlFlow::Break",
-                                                0
-                                              |) in
-                                            let residual :=
-                                              M.copy (|
+                                              [],
+                                              [],
+                                              "branch",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "move_binary_format::file_format::AbilitySet";
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
-                                                γ0_0
-                                              |) in
-                                            M.never_to_any (|
-                                              M.read (|
-                                                M.return_ (|
-                                                  M.call_closure (|
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      []
-                                                      [
-                                                        Ty.tuple [];
-                                                        Ty.path
-                                                          "move_binary_format::errors::PartialVMError"
-                                                      ],
-                                                    M.get_trait_method (|
-                                                      "core::ops::try_trait::FromResidual",
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_bytecode_verifier::type_safety::TypeSafetyChecker",
+                                                  "abilities",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| verifier |) |)
+                                                  |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.Ref, struct_type |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                          |)
+                                        |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::ops::control_flow::ControlFlow::Break",
+                                                  0
+                                                |) in
+                                              let residual :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "core::convert::Infallible";
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ],
+                                                  γ0_0
+                                                |) in
+                                              M.never_to_any (|
+                                                M.read (|
+                                                  M.return_ (|
+                                                    M.call_closure (|
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
                                                         []
@@ -5753,45 +5753,56 @@ Module type_safety.
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError"
                                                         ],
-                                                      [],
-                                                      [
+                                                      M.get_trait_method (|
+                                                        "core::ops::try_trait::FromResidual",
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
                                                           []
                                                           [
-                                                            Ty.path "core::convert::Infallible";
+                                                            Ty.tuple [];
                                                             Ty.path
                                                               "move_binary_format::errors::PartialVMError"
-                                                          ]
-                                                      ],
-                                                      "from_residual",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [ M.read (| residual |) ]
+                                                          ],
+                                                        [],
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "core::convert::Infallible";
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ]
+                                                        ],
+                                                        "from_residual",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [ M.read (| residual |) ]
+                                                    |)
                                                   |)
                                                 |)
-                                              |)
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::ops::control_flow::ControlFlow::Continue",
-                                                0
-                                              |) in
-                                            let val :=
-                                              M.copy (|
-                                                Ty.path
-                                                  "move_binary_format::file_format::AbilitySet",
-                                                γ0_0
-                                              |) in
-                                            M.read (| val |)))
-                                      ]
-                                    |)
-                                  ]
-                                |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::ops::control_flow::ControlFlow::Continue",
+                                                  0
+                                                |) in
+                                              let val :=
+                                                M.copy (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::AbilitySet",
+                                                  γ0_0
+                                                |) in
+                                              M.read (| val |)))
+                                        ]
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7159,27 +7170,31 @@ Module type_safety.
                                                                   |),
                                                                   ltac:(M.monadic
                                                                     (LogicalOp.and (|
-                                                                      UnOp.not (|
-                                                                        M.call_closure (|
-                                                                          Ty.path "bool",
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "move_binary_format::file_format::Signature",
-                                                                            "is_empty",
-                                                                            [],
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.borrow (|
-                                                                              Pointer.Kind.Ref,
-                                                                              M.deref (|
-                                                                                M.read (|
-                                                                                  type_actuals
+                                                                      M.call_closure (|
+                                                                        Ty.path "bool",
+                                                                        UnOp.not,
+                                                                        [
+                                                                          M.call_closure (|
+                                                                            Ty.path "bool",
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::Signature",
+                                                                              "is_empty",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.read (|
+                                                                                    type_actuals
+                                                                                  |)
                                                                                 |)
                                                                               |)
-                                                                            |)
-                                                                          ]
-                                                                        |)
+                                                                            ]
+                                                                          |)
+                                                                        ]
                                                                       |),
                                                                       ltac:(M.monadic
                                                                         (M.call_closure (|
@@ -10729,33 +10744,22 @@ Module type_safety.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_associated_function (|
-                                    Ty.path "move_binary_format::file_format::AbilitySet",
-                                    "has_key",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.match_operator (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::AbilitySet",
-                                      M.alloc (|
-                                        Ty.apply
-                                          (Ty.path "core::ops::control_flow::ControlFlow")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.path "core::convert::Infallible";
-                                                Ty.path "move_binary_format::errors::PartialVMError"
-                                              ];
-                                            Ty.path "move_binary_format::file_format::AbilitySet"
-                                          ],
-                                        M.call_closure (|
+                                      "has_key",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.match_operator (|
+                                        Ty.path "move_binary_format::file_format::AbilitySet",
+                                        M.alloc (|
                                           Ty.apply
                                             (Ty.path "core::ops::control_flow::ControlFlow")
                                             []
@@ -10770,24 +10774,24 @@ Module type_safety.
                                                 ];
                                               Ty.path "move_binary_format::file_format::AbilitySet"
                                             ],
-                                          M.get_trait_method (|
-                                            "core::ops::try_trait::Try",
+                                          M.call_closure (|
                                             Ty.apply
-                                              (Ty.path "core::result::Result")
+                                              (Ty.path "core::ops::control_flow::ControlFlow")
                                               []
                                               [
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ];
                                                 Ty.path
-                                                  "move_binary_format::file_format::AbilitySet";
-                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                                  "move_binary_format::file_format::AbilitySet"
                                               ],
-                                            [],
-                                            [],
-                                            "branch",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::try_trait::Try",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
                                                 []
@@ -10797,64 +10801,71 @@ Module type_safety.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError"
                                                 ],
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_bytecode_verifier::type_safety::TypeSafetyChecker",
-                                                "abilities",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| verifier |) |)
-                                                |);
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.borrow (| Pointer.Kind.Ref, struct_type |)
-                                                  |)
-                                                |)
-                                              ]
-                                            |)
-                                          ]
-                                        |)
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::ops::control_flow::ControlFlow::Break",
-                                                0
-                                              |) in
-                                            let residual :=
-                                              M.copy (|
+                                              [],
+                                              [],
+                                              "branch",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "move_binary_format::file_format::AbilitySet";
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
-                                                γ0_0
-                                              |) in
-                                            M.never_to_any (|
-                                              M.read (|
-                                                M.return_ (|
-                                                  M.call_closure (|
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      []
-                                                      [
-                                                        Ty.tuple [];
-                                                        Ty.path
-                                                          "move_binary_format::errors::PartialVMError"
-                                                      ],
-                                                    M.get_trait_method (|
-                                                      "core::ops::try_trait::FromResidual",
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_bytecode_verifier::type_safety::TypeSafetyChecker",
+                                                  "abilities",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| verifier |) |)
+                                                  |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.Ref, struct_type |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                          |)
+                                        |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::ops::control_flow::ControlFlow::Break",
+                                                  0
+                                                |) in
+                                              let residual :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "core::convert::Infallible";
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ],
+                                                  γ0_0
+                                                |) in
+                                              M.never_to_any (|
+                                                M.read (|
+                                                  M.return_ (|
+                                                    M.call_closure (|
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
                                                         []
@@ -10863,45 +10874,56 @@ Module type_safety.
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError"
                                                         ],
-                                                      [],
-                                                      [
+                                                      M.get_trait_method (|
+                                                        "core::ops::try_trait::FromResidual",
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
                                                           []
                                                           [
-                                                            Ty.path "core::convert::Infallible";
+                                                            Ty.tuple [];
                                                             Ty.path
                                                               "move_binary_format::errors::PartialVMError"
-                                                          ]
-                                                      ],
-                                                      "from_residual",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [ M.read (| residual |) ]
+                                                          ],
+                                                        [],
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "core::convert::Infallible";
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ]
+                                                        ],
+                                                        "from_residual",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [ M.read (| residual |) ]
+                                                    |)
                                                   |)
                                                 |)
-                                              |)
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::ops::control_flow::ControlFlow::Continue",
-                                                0
-                                              |) in
-                                            let val :=
-                                              M.copy (|
-                                                Ty.path
-                                                  "move_binary_format::file_format::AbilitySet",
-                                                γ0_0
-                                              |) in
-                                            M.read (| val |)))
-                                      ]
-                                    |)
-                                  ]
-                                |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::ops::control_flow::ControlFlow::Continue",
+                                                  0
+                                                |) in
+                                              let val :=
+                                                M.copy (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::AbilitySet",
+                                                  γ0_0
+                                                |) in
+                                              M.read (| val |)))
+                                        ]
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -11752,33 +11774,22 @@ Module type_safety.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_associated_function (|
-                                    Ty.path "move_binary_format::file_format::AbilitySet",
-                                    "has_key",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.match_operator (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::AbilitySet",
-                                      M.alloc (|
-                                        Ty.apply
-                                          (Ty.path "core::ops::control_flow::ControlFlow")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.path "core::convert::Infallible";
-                                                Ty.path "move_binary_format::errors::PartialVMError"
-                                              ];
-                                            Ty.path "move_binary_format::file_format::AbilitySet"
-                                          ],
-                                        M.call_closure (|
+                                      "has_key",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.match_operator (|
+                                        Ty.path "move_binary_format::file_format::AbilitySet",
+                                        M.alloc (|
                                           Ty.apply
                                             (Ty.path "core::ops::control_flow::ControlFlow")
                                             []
@@ -11793,24 +11804,24 @@ Module type_safety.
                                                 ];
                                               Ty.path "move_binary_format::file_format::AbilitySet"
                                             ],
-                                          M.get_trait_method (|
-                                            "core::ops::try_trait::Try",
+                                          M.call_closure (|
                                             Ty.apply
-                                              (Ty.path "core::result::Result")
+                                              (Ty.path "core::ops::control_flow::ControlFlow")
                                               []
                                               [
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ];
                                                 Ty.path
-                                                  "move_binary_format::file_format::AbilitySet";
-                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                                  "move_binary_format::file_format::AbilitySet"
                                               ],
-                                            [],
-                                            [],
-                                            "branch",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::try_trait::Try",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
                                                 []
@@ -11820,64 +11831,71 @@ Module type_safety.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError"
                                                 ],
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_bytecode_verifier::type_safety::TypeSafetyChecker",
-                                                "abilities",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| verifier |) |)
-                                                |);
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.borrow (| Pointer.Kind.Ref, struct_type |)
-                                                  |)
-                                                |)
-                                              ]
-                                            |)
-                                          ]
-                                        |)
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::ops::control_flow::ControlFlow::Break",
-                                                0
-                                              |) in
-                                            let residual :=
-                                              M.copy (|
+                                              [],
+                                              [],
+                                              "branch",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "move_binary_format::file_format::AbilitySet";
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
-                                                γ0_0
-                                              |) in
-                                            M.never_to_any (|
-                                              M.read (|
-                                                M.return_ (|
-                                                  M.call_closure (|
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      []
-                                                      [
-                                                        Ty.tuple [];
-                                                        Ty.path
-                                                          "move_binary_format::errors::PartialVMError"
-                                                      ],
-                                                    M.get_trait_method (|
-                                                      "core::ops::try_trait::FromResidual",
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_bytecode_verifier::type_safety::TypeSafetyChecker",
+                                                  "abilities",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| verifier |) |)
+                                                  |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.Ref, struct_type |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                          |)
+                                        |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::ops::control_flow::ControlFlow::Break",
+                                                  0
+                                                |) in
+                                              let residual :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "core::convert::Infallible";
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ],
+                                                  γ0_0
+                                                |) in
+                                              M.never_to_any (|
+                                                M.read (|
+                                                  M.return_ (|
+                                                    M.call_closure (|
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
                                                         []
@@ -11886,45 +11904,56 @@ Module type_safety.
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError"
                                                         ],
-                                                      [],
-                                                      [
+                                                      M.get_trait_method (|
+                                                        "core::ops::try_trait::FromResidual",
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
                                                           []
                                                           [
-                                                            Ty.path "core::convert::Infallible";
+                                                            Ty.tuple [];
                                                             Ty.path
                                                               "move_binary_format::errors::PartialVMError"
-                                                          ]
-                                                      ],
-                                                      "from_residual",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [ M.read (| residual |) ]
+                                                          ],
+                                                        [],
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "core::convert::Infallible";
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ]
+                                                        ],
+                                                        "from_residual",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [ M.read (| residual |) ]
+                                                    |)
                                                   |)
                                                 |)
-                                              |)
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::ops::control_flow::ControlFlow::Continue",
-                                                0
-                                              |) in
-                                            let val :=
-                                              M.copy (|
-                                                Ty.path
-                                                  "move_binary_format::file_format::AbilitySet",
-                                                γ0_0
-                                              |) in
-                                            M.read (| val |)))
-                                      ]
-                                    |)
-                                  ]
-                                |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::ops::control_flow::ControlFlow::Continue",
+                                                  0
+                                                |) in
+                                              let val :=
+                                                M.copy (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::AbilitySet",
+                                                  γ0_0
+                                                |) in
+                                              M.read (| val |)))
+                                        ]
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -12792,33 +12821,22 @@ Module type_safety.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_associated_function (|
-                                    Ty.path "move_binary_format::file_format::AbilitySet",
-                                    "has_key",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.match_operator (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::AbilitySet",
-                                      M.alloc (|
-                                        Ty.apply
-                                          (Ty.path "core::ops::control_flow::ControlFlow")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.path "core::convert::Infallible";
-                                                Ty.path "move_binary_format::errors::PartialVMError"
-                                              ];
-                                            Ty.path "move_binary_format::file_format::AbilitySet"
-                                          ],
-                                        M.call_closure (|
+                                      "has_key",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.match_operator (|
+                                        Ty.path "move_binary_format::file_format::AbilitySet",
+                                        M.alloc (|
                                           Ty.apply
                                             (Ty.path "core::ops::control_flow::ControlFlow")
                                             []
@@ -12833,24 +12851,24 @@ Module type_safety.
                                                 ];
                                               Ty.path "move_binary_format::file_format::AbilitySet"
                                             ],
-                                          M.get_trait_method (|
-                                            "core::ops::try_trait::Try",
+                                          M.call_closure (|
                                             Ty.apply
-                                              (Ty.path "core::result::Result")
+                                              (Ty.path "core::ops::control_flow::ControlFlow")
                                               []
                                               [
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ];
                                                 Ty.path
-                                                  "move_binary_format::file_format::AbilitySet";
-                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                                  "move_binary_format::file_format::AbilitySet"
                                               ],
-                                            [],
-                                            [],
-                                            "branch",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::try_trait::Try",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
                                                 []
@@ -12860,64 +12878,71 @@ Module type_safety.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError"
                                                 ],
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_bytecode_verifier::type_safety::TypeSafetyChecker",
-                                                "abilities",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| verifier |) |)
-                                                |);
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.borrow (| Pointer.Kind.Ref, struct_type |)
-                                                  |)
-                                                |)
-                                              ]
-                                            |)
-                                          ]
-                                        |)
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::ops::control_flow::ControlFlow::Break",
-                                                0
-                                              |) in
-                                            let residual :=
-                                              M.copy (|
+                                              [],
+                                              [],
+                                              "branch",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "move_binary_format::file_format::AbilitySet";
                                                     Ty.path
                                                       "move_binary_format::errors::PartialVMError"
                                                   ],
-                                                γ0_0
-                                              |) in
-                                            M.never_to_any (|
-                                              M.read (|
-                                                M.return_ (|
-                                                  M.call_closure (|
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      []
-                                                      [
-                                                        Ty.tuple [];
-                                                        Ty.path
-                                                          "move_binary_format::errors::PartialVMError"
-                                                      ],
-                                                    M.get_trait_method (|
-                                                      "core::ops::try_trait::FromResidual",
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_bytecode_verifier::type_safety::TypeSafetyChecker",
+                                                  "abilities",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| verifier |) |)
+                                                  |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.Ref, struct_type |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                          |)
+                                        |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::ops::control_flow::ControlFlow::Break",
+                                                  0
+                                                |) in
+                                              let residual :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "core::convert::Infallible";
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError"
+                                                    ],
+                                                  γ0_0
+                                                |) in
+                                              M.never_to_any (|
+                                                M.read (|
+                                                  M.return_ (|
+                                                    M.call_closure (|
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
                                                         []
@@ -12926,45 +12951,56 @@ Module type_safety.
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError"
                                                         ],
-                                                      [],
-                                                      [
+                                                      M.get_trait_method (|
+                                                        "core::ops::try_trait::FromResidual",
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
                                                           []
                                                           [
-                                                            Ty.path "core::convert::Infallible";
+                                                            Ty.tuple [];
                                                             Ty.path
                                                               "move_binary_format::errors::PartialVMError"
-                                                          ]
-                                                      ],
-                                                      "from_residual",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [ M.read (| residual |) ]
+                                                          ],
+                                                        [],
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "core::convert::Infallible";
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ]
+                                                        ],
+                                                        "from_residual",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [ M.read (| residual |) ]
+                                                    |)
                                                   |)
                                                 |)
-                                              |)
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::ops::control_flow::ControlFlow::Continue",
-                                                0
-                                              |) in
-                                            let val :=
-                                              M.copy (|
-                                                Ty.path
-                                                  "move_binary_format::file_format::AbilitySet",
-                                                γ0_0
-                                              |) in
-                                            M.read (| val |)))
-                                      ]
-                                    |)
-                                  ]
-                                |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::ops::control_flow::ControlFlow::Continue",
+                                                  0
+                                                |) in
+                                              let val :=
+                                                M.copy (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::AbilitySet",
+                                                  γ0_0
+                                                |) in
+                                              M.read (| val |)))
+                                        ]
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -16825,38 +16861,24 @@ Module type_safety.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_binary_format::file_format::AbilitySet",
-                                                "has_drop",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.match_operator (|
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                M.get_associated_function (|
                                                   Ty.path
                                                     "move_binary_format::file_format::AbilitySet",
-                                                  M.alloc (|
-                                                    Ty.apply
-                                                      (Ty.path
-                                                        "core::ops::control_flow::ControlFlow")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "core::result::Result")
-                                                          []
-                                                          [
-                                                            Ty.path "core::convert::Infallible";
-                                                            Ty.path
-                                                              "move_binary_format::errors::PartialVMError"
-                                                          ];
-                                                        Ty.path
-                                                          "move_binary_format::file_format::AbilitySet"
-                                                      ],
-                                                    M.call_closure (|
+                                                  "has_drop",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.match_operator (|
+                                                    Ty.path
+                                                      "move_binary_format::file_format::AbilitySet",
+                                                    M.alloc (|
                                                       Ty.apply
                                                         (Ty.path
                                                           "core::ops::control_flow::ControlFlow")
@@ -16873,37 +16895,12 @@ Module type_safety.
                                                           Ty.path
                                                             "move_binary_format::file_format::AbilitySet"
                                                         ],
-                                                      M.get_trait_method (|
-                                                        "core::ops::try_trait::Try",
+                                                      M.call_closure (|
                                                         Ty.apply
-                                                          (Ty.path "core::result::Result")
+                                                          (Ty.path
+                                                            "core::ops::control_flow::ControlFlow")
                                                           []
                                                           [
-                                                            Ty.path
-                                                              "move_binary_format::file_format::AbilitySet";
-                                                            Ty.path
-                                                              "move_binary_format::errors::PartialVMError"
-                                                          ],
-                                                        [],
-                                                        [],
-                                                        "branch",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ M.read (| abilities |) ]
-                                                    |)
-                                                  |),
-                                                  [
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let γ0_0 :=
-                                                          M.SubPointer.get_struct_tuple_field (|
-                                                            γ,
-                                                            "core::ops::control_flow::ControlFlow::Break",
-                                                            0
-                                                          |) in
-                                                        let residual :=
-                                                          M.copy (|
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
                                                               []
@@ -16911,23 +16908,56 @@ Module type_safety.
                                                                 Ty.path "core::convert::Infallible";
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError"
-                                                              ],
-                                                            γ0_0
-                                                          |) in
-                                                        M.never_to_any (|
-                                                          M.read (|
-                                                            M.return_ (|
-                                                              M.call_closure (|
-                                                                Ty.apply
-                                                                  (Ty.path "core::result::Result")
-                                                                  []
-                                                                  [
-                                                                    Ty.tuple [];
-                                                                    Ty.path
-                                                                      "move_binary_format::errors::PartialVMError"
-                                                                  ],
-                                                                M.get_trait_method (|
-                                                                  "core::ops::try_trait::FromResidual",
+                                                              ];
+                                                            Ty.path
+                                                              "move_binary_format::file_format::AbilitySet"
+                                                          ],
+                                                        M.get_trait_method (|
+                                                          "core::ops::try_trait::Try",
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::AbilitySet";
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ],
+                                                          [],
+                                                          [],
+                                                          "branch",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [ M.read (| abilities |) ]
+                                                      |)
+                                                    |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_struct_tuple_field (|
+                                                              γ,
+                                                              "core::ops::control_flow::ControlFlow::Break",
+                                                              0
+                                                            |) in
+                                                          let residual :=
+                                                            M.copy (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
+                                                              γ0_0
+                                                            |) in
+                                                          M.never_to_any (|
+                                                            M.read (|
+                                                              M.return_ (|
+                                                                M.call_closure (|
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
                                                                     []
@@ -16936,47 +16966,59 @@ Module type_safety.
                                                                       Ty.path
                                                                         "move_binary_format::errors::PartialVMError"
                                                                     ],
-                                                                  [],
-                                                                  [
+                                                                  M.get_trait_method (|
+                                                                    "core::ops::try_trait::FromResidual",
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
                                                                       []
                                                                       [
-                                                                        Ty.path
-                                                                          "core::convert::Infallible";
+                                                                        Ty.tuple [];
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
-                                                                      ]
-                                                                  ],
-                                                                  "from_residual",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [ M.read (| residual |) ]
+                                                                      ],
+                                                                    [],
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::convert::Infallible";
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ]
+                                                                    ],
+                                                                    "from_residual",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [ M.read (| residual |) ]
+                                                                |)
                                                               |)
                                                             |)
-                                                          |)
-                                                        |)));
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let γ0_0 :=
-                                                          M.SubPointer.get_struct_tuple_field (|
-                                                            γ,
-                                                            "core::ops::control_flow::ControlFlow::Continue",
-                                                            0
-                                                          |) in
-                                                        let val :=
-                                                          M.copy (|
-                                                            Ty.path
-                                                              "move_binary_format::file_format::AbilitySet",
-                                                            γ0_0
-                                                          |) in
-                                                        M.read (| val |)))
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
+                                                          |)));
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_struct_tuple_field (|
+                                                              γ,
+                                                              "core::ops::control_flow::ControlFlow::Continue",
+                                                              0
+                                                            |) in
+                                                          let val :=
+                                                            M.copy (|
+                                                              Ty.path
+                                                                "move_binary_format::file_format::AbilitySet",
+                                                              γ0_0
+                                                            |) in
+                                                          M.read (| val |)))
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -23868,38 +23910,24 @@ Module type_safety.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_binary_format::file_format::AbilitySet",
-                                                "has_copy",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.match_operator (|
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                M.get_associated_function (|
                                                   Ty.path
                                                     "move_binary_format::file_format::AbilitySet",
-                                                  M.alloc (|
-                                                    Ty.apply
-                                                      (Ty.path
-                                                        "core::ops::control_flow::ControlFlow")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "core::result::Result")
-                                                          []
-                                                          [
-                                                            Ty.path "core::convert::Infallible";
-                                                            Ty.path
-                                                              "move_binary_format::errors::PartialVMError"
-                                                          ];
-                                                        Ty.path
-                                                          "move_binary_format::file_format::AbilitySet"
-                                                      ],
-                                                    M.call_closure (|
+                                                  "has_copy",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.match_operator (|
+                                                    Ty.path
+                                                      "move_binary_format::file_format::AbilitySet",
+                                                    M.alloc (|
                                                       Ty.apply
                                                         (Ty.path
                                                           "core::ops::control_flow::ControlFlow")
@@ -23916,25 +23944,25 @@ Module type_safety.
                                                           Ty.path
                                                             "move_binary_format::file_format::AbilitySet"
                                                         ],
-                                                      M.get_trait_method (|
-                                                        "core::ops::try_trait::Try",
+                                                      M.call_closure (|
                                                         Ty.apply
-                                                          (Ty.path "core::result::Result")
+                                                          (Ty.path
+                                                            "core::ops::control_flow::ControlFlow")
                                                           []
                                                           [
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path "core::convert::Infallible";
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ];
                                                             Ty.path
-                                                              "move_binary_format::file_format::AbilitySet";
-                                                            Ty.path
-                                                              "move_binary_format::errors::PartialVMError"
+                                                              "move_binary_format::file_format::AbilitySet"
                                                           ],
-                                                        [],
-                                                        [],
-                                                        "branch",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::try_trait::Try",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
                                                             []
@@ -23944,119 +23972,129 @@ Module type_safety.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError"
                                                             ],
-                                                          M.get_associated_function (|
-                                                            Ty.path
-                                                              "move_binary_format::file_format::CompiledModule",
-                                                            "abilities",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (|
-                                                                M.read (|
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.deref (|
-                                                                      M.read (| verifier |)
-                                                                    |),
-                                                                    "move_bytecode_verifier::type_safety::TypeSafetyChecker",
-                                                                    "module"
-                                                                  |)
-                                                                |)
-                                                              |)
-                                                            |);
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (|
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  local_signature
-                                                                |)
-                                                              |)
-                                                            |);
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (|
-                                                                M.call_closure (|
-                                                                  Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "slice")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "move_binary_format::file_format::AbilitySet"
-                                                                        ]
-                                                                    ],
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "move_bytecode_verifier::absint::FunctionContext",
-                                                                    "type_parameters",
-                                                                    [],
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.read (|
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            M.deref (|
-                                                                              M.read (| verifier |)
-                                                                            |),
-                                                                            "move_bytecode_verifier::type_safety::TypeSafetyChecker",
-                                                                            "function_context"
-                                                                          |)
-                                                                        |)
-                                                                      |)
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              |)
-                                                            |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  |),
-                                                  [
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let γ0_0 :=
-                                                          M.SubPointer.get_struct_tuple_field (|
-                                                            γ,
-                                                            "core::ops::control_flow::ControlFlow::Break",
-                                                            0
-                                                          |) in
-                                                        let residual :=
-                                                          M.copy (|
+                                                          [],
+                                                          [],
+                                                          "branch",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
                                                               []
                                                               [
-                                                                Ty.path "core::convert::Infallible";
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::AbilitySet";
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
-                                                            γ0_0
-                                                          |) in
-                                                        M.never_to_any (|
-                                                          M.read (|
-                                                            M.return_ (|
-                                                              M.call_closure (|
-                                                                Ty.apply
-                                                                  (Ty.path "core::result::Result")
-                                                                  []
-                                                                  [
-                                                                    Ty.tuple [];
-                                                                    Ty.path
-                                                                      "move_binary_format::errors::PartialVMError"
-                                                                  ],
-                                                                M.get_trait_method (|
-                                                                  "core::ops::try_trait::FromResidual",
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "move_binary_format::file_format::CompiledModule",
+                                                              "abilities",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.read (|
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.deref (|
+                                                                        M.read (| verifier |)
+                                                                      |),
+                                                                      "move_bytecode_verifier::type_safety::TypeSafetyChecker",
+                                                                      "module"
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    local_signature
+                                                                  |)
+                                                                |)
+                                                              |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_binary_format::file_format::AbilitySet"
+                                                                          ]
+                                                                      ],
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "move_bytecode_verifier::absint::FunctionContext",
+                                                                      "type_parameters",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (|
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  verifier
+                                                                                |)
+                                                                              |),
+                                                                              "move_bytecode_verifier::type_safety::TypeSafetyChecker",
+                                                                              "function_context"
+                                                                            |)
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_struct_tuple_field (|
+                                                              γ,
+                                                              "core::ops::control_flow::ControlFlow::Break",
+                                                              0
+                                                            |) in
+                                                          let residual :=
+                                                            M.copy (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
+                                                              γ0_0
+                                                            |) in
+                                                          M.never_to_any (|
+                                                            M.read (|
+                                                              M.return_ (|
+                                                                M.call_closure (|
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
                                                                     []
@@ -24065,47 +24103,59 @@ Module type_safety.
                                                                       Ty.path
                                                                         "move_binary_format::errors::PartialVMError"
                                                                     ],
-                                                                  [],
-                                                                  [
+                                                                  M.get_trait_method (|
+                                                                    "core::ops::try_trait::FromResidual",
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
                                                                       []
                                                                       [
-                                                                        Ty.path
-                                                                          "core::convert::Infallible";
+                                                                        Ty.tuple [];
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
-                                                                      ]
-                                                                  ],
-                                                                  "from_residual",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [ M.read (| residual |) ]
+                                                                      ],
+                                                                    [],
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::convert::Infallible";
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ]
+                                                                    ],
+                                                                    "from_residual",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [ M.read (| residual |) ]
+                                                                |)
                                                               |)
                                                             |)
-                                                          |)
-                                                        |)));
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let γ0_0 :=
-                                                          M.SubPointer.get_struct_tuple_field (|
-                                                            γ,
-                                                            "core::ops::control_flow::ControlFlow::Continue",
-                                                            0
-                                                          |) in
-                                                        let val :=
-                                                          M.copy (|
-                                                            Ty.path
-                                                              "move_binary_format::file_format::AbilitySet",
-                                                            γ0_0
-                                                          |) in
-                                                        M.read (| val |)))
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
+                                                          |)));
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_struct_tuple_field (|
+                                                              γ,
+                                                              "core::ops::control_flow::ControlFlow::Continue",
+                                                              0
+                                                            |) in
+                                                          let val :=
+                                                            M.copy (|
+                                                              Ty.path
+                                                                "move_binary_format::file_format::AbilitySet",
+                                                              γ0_0
+                                                            |) in
+                                                          M.read (| val |)))
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -27714,40 +27764,24 @@ Module type_safety.
                                                             M.use
                                                               (M.alloc (|
                                                                 Ty.path "bool",
-                                                                UnOp.not (|
-                                                                  M.call_closure (|
-                                                                    Ty.path "bool",
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "move_binary_format::file_format::AbilitySet",
-                                                                      "has_copy",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.match_operator (|
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  UnOp.not,
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_binary_format::file_format::AbilitySet",
-                                                                        M.alloc (|
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "core::ops::control_flow::ControlFlow")
-                                                                            []
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "core::result::Result")
-                                                                                []
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "core::convert::Infallible";
-                                                                                  Ty.path
-                                                                                    "move_binary_format::errors::PartialVMError"
-                                                                                ];
-                                                                              Ty.path
-                                                                                "move_binary_format::file_format::AbilitySet"
-                                                                            ],
-                                                                          M.call_closure (|
+                                                                        "has_copy",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.match_operator (|
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::AbilitySet",
+                                                                          M.alloc (|
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::ops::control_flow::ControlFlow")
@@ -27766,26 +27800,27 @@ Module type_safety.
                                                                                 Ty.path
                                                                                   "move_binary_format::file_format::AbilitySet"
                                                                               ],
-                                                                            M.get_trait_method (|
-                                                                              "core::ops::try_trait::Try",
+                                                                            M.call_closure (|
                                                                               Ty.apply
                                                                                 (Ty.path
-                                                                                  "core::result::Result")
+                                                                                  "core::ops::control_flow::ControlFlow")
                                                                                 []
                                                                                 [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::result::Result")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::convert::Infallible";
+                                                                                      Ty.path
+                                                                                        "move_binary_format::errors::PartialVMError"
+                                                                                    ];
                                                                                   Ty.path
-                                                                                    "move_binary_format::file_format::AbilitySet";
-                                                                                  Ty.path
-                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                    "move_binary_format::file_format::AbilitySet"
                                                                                 ],
-                                                                              [],
-                                                                              [],
-                                                                              "branch",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.call_closure (|
+                                                                              M.get_trait_method (|
+                                                                                "core::ops::try_trait::Try",
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::result::Result")
@@ -27796,79 +27831,85 @@ Module type_safety.
                                                                                     Ty.path
                                                                                       "move_binary_format::errors::PartialVMError"
                                                                                   ],
-                                                                                M.get_associated_function (|
-                                                                                  Ty.path
-                                                                                    "move_bytecode_verifier::type_safety::TypeSafetyChecker",
-                                                                                  "abilities",
-                                                                                  [],
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  M.borrow (|
-                                                                                    Pointer.Kind.Ref,
-                                                                                    M.deref (|
-                                                                                      M.read (|
-                                                                                        verifier
-                                                                                      |)
-                                                                                    |)
-                                                                                  |);
-                                                                                  M.borrow (|
-                                                                                    Pointer.Kind.Ref,
-                                                                                    M.deref (|
-                                                                                      M.read (|
-                                                                                        M.deref (|
-                                                                                          M.borrow (|
-                                                                                            Pointer.Kind.Ref,
-                                                                                            inner
-                                                                                          |)
-                                                                                        |)
-                                                                                      |)
-                                                                                    |)
-                                                                                  |)
-                                                                                ]
-                                                                              |)
-                                                                            ]
-                                                                          |)
-                                                                        |),
-                                                                        [
-                                                                          fun γ =>
-                                                                            ltac:(M.monadic
-                                                                              (let γ0_0 :=
-                                                                                M.SubPointer.get_struct_tuple_field (|
-                                                                                  γ,
-                                                                                  "core::ops::control_flow::ControlFlow::Break",
-                                                                                  0
-                                                                                |) in
-                                                                              let residual :=
-                                                                                M.copy (|
+                                                                                [],
+                                                                                [],
+                                                                                "branch",
+                                                                                [],
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.call_closure (|
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::result::Result")
                                                                                     []
                                                                                     [
                                                                                       Ty.path
-                                                                                        "core::convert::Infallible";
+                                                                                        "move_binary_format::file_format::AbilitySet";
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError"
                                                                                     ],
-                                                                                  γ0_0
-                                                                                |) in
-                                                                              M.never_to_any (|
-                                                                                M.read (|
-                                                                                  M.return_ (|
-                                                                                    M.call_closure (|
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "core::result::Result")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.tuple
-                                                                                            [];
-                                                                                          Ty.path
-                                                                                            "move_binary_format::errors::PartialVMError"
-                                                                                        ],
-                                                                                      M.get_trait_method (|
-                                                                                        "core::ops::try_trait::FromResidual",
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "move_bytecode_verifier::type_safety::TypeSafetyChecker",
+                                                                                    "abilities",
+                                                                                    [],
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          verifier
+                                                                                        |)
+                                                                                      |)
+                                                                                    |);
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          M.deref (|
+                                                                                            M.borrow (|
+                                                                                              Pointer.Kind.Ref,
+                                                                                              inner
+                                                                                            |)
+                                                                                          |)
+                                                                                        |)
+                                                                                      |)
+                                                                                    |)
+                                                                                  ]
+                                                                                |)
+                                                                              ]
+                                                                            |)
+                                                                          |),
+                                                                          [
+                                                                            fun γ =>
+                                                                              ltac:(M.monadic
+                                                                                (let γ0_0 :=
+                                                                                  M.SubPointer.get_struct_tuple_field (|
+                                                                                    γ,
+                                                                                    "core::ops::control_flow::ControlFlow::Break",
+                                                                                    0
+                                                                                  |) in
+                                                                                let residual :=
+                                                                                  M.copy (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::result::Result")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "core::convert::Infallible";
+                                                                                        Ty.path
+                                                                                          "move_binary_format::errors::PartialVMError"
+                                                                                      ],
+                                                                                    γ0_0
+                                                                                  |) in
+                                                                                M.never_to_any (|
+                                                                                  M.read (|
+                                                                                    M.return_ (|
+                                                                                      M.call_closure (|
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "core::result::Result")
@@ -27879,51 +27920,64 @@ Module type_safety.
                                                                                             Ty.path
                                                                                               "move_binary_format::errors::PartialVMError"
                                                                                           ],
-                                                                                        [],
-                                                                                        [
+                                                                                        M.get_trait_method (|
+                                                                                          "core::ops::try_trait::FromResidual",
                                                                                           Ty.apply
                                                                                             (Ty.path
                                                                                               "core::result::Result")
                                                                                             []
                                                                                             [
-                                                                                              Ty.path
-                                                                                                "core::convert::Infallible";
+                                                                                              Ty.tuple
+                                                                                                [];
                                                                                               Ty.path
                                                                                                 "move_binary_format::errors::PartialVMError"
-                                                                                            ]
-                                                                                        ],
-                                                                                        "from_residual",
-                                                                                        [],
-                                                                                        []
-                                                                                      |),
-                                                                                      [
-                                                                                        M.read (|
-                                                                                          residual
-                                                                                        |)
-                                                                                      ]
+                                                                                            ],
+                                                                                          [],
+                                                                                          [
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "core::result::Result")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "core::convert::Infallible";
+                                                                                                Ty.path
+                                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                                              ]
+                                                                                          ],
+                                                                                          "from_residual",
+                                                                                          [],
+                                                                                          []
+                                                                                        |),
+                                                                                        [
+                                                                                          M.read (|
+                                                                                            residual
+                                                                                          |)
+                                                                                        ]
+                                                                                      |)
                                                                                     |)
                                                                                   |)
-                                                                                |)
-                                                                              |)));
-                                                                          fun γ =>
-                                                                            ltac:(M.monadic
-                                                                              (let γ0_0 :=
-                                                                                M.SubPointer.get_struct_tuple_field (|
-                                                                                  γ,
-                                                                                  "core::ops::control_flow::ControlFlow::Continue",
-                                                                                  0
-                                                                                |) in
-                                                                              let val :=
-                                                                                M.copy (|
-                                                                                  Ty.path
-                                                                                    "move_binary_format::file_format::AbilitySet",
-                                                                                  γ0_0
-                                                                                |) in
-                                                                              M.read (| val |)))
-                                                                        ]
-                                                                      |)
-                                                                    ]
-                                                                  |)
+                                                                                |)));
+                                                                            fun γ =>
+                                                                              ltac:(M.monadic
+                                                                                (let γ0_0 :=
+                                                                                  M.SubPointer.get_struct_tuple_field (|
+                                                                                    γ,
+                                                                                    "core::ops::control_flow::ControlFlow::Continue",
+                                                                                    0
+                                                                                  |) in
+                                                                                let val :=
+                                                                                  M.copy (|
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::AbilitySet",
+                                                                                    γ0_0
+                                                                                  |) in
+                                                                                M.read (| val |)))
+                                                                          ]
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
                                                                 |)
                                                               |)) in
                                                           let _ :=
@@ -29414,38 +29468,24 @@ Module type_safety.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_binary_format::file_format::AbilitySet",
-                                                "has_drop",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.match_operator (|
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                M.get_associated_function (|
                                                   Ty.path
                                                     "move_binary_format::file_format::AbilitySet",
-                                                  M.alloc (|
-                                                    Ty.apply
-                                                      (Ty.path
-                                                        "core::ops::control_flow::ControlFlow")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "core::result::Result")
-                                                          []
-                                                          [
-                                                            Ty.path "core::convert::Infallible";
-                                                            Ty.path
-                                                              "move_binary_format::errors::PartialVMError"
-                                                          ];
-                                                        Ty.path
-                                                          "move_binary_format::file_format::AbilitySet"
-                                                      ],
-                                                    M.call_closure (|
+                                                  "has_drop",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.match_operator (|
+                                                    Ty.path
+                                                      "move_binary_format::file_format::AbilitySet",
+                                                    M.alloc (|
                                                       Ty.apply
                                                         (Ty.path
                                                           "core::ops::control_flow::ControlFlow")
@@ -29462,25 +29502,25 @@ Module type_safety.
                                                           Ty.path
                                                             "move_binary_format::file_format::AbilitySet"
                                                         ],
-                                                      M.get_trait_method (|
-                                                        "core::ops::try_trait::Try",
+                                                      M.call_closure (|
                                                         Ty.apply
-                                                          (Ty.path "core::result::Result")
+                                                          (Ty.path
+                                                            "core::ops::control_flow::ControlFlow")
                                                           []
                                                           [
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path "core::convert::Infallible";
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ];
                                                             Ty.path
-                                                              "move_binary_format::file_format::AbilitySet";
-                                                            Ty.path
-                                                              "move_binary_format::errors::PartialVMError"
+                                                              "move_binary_format::file_format::AbilitySet"
                                                           ],
-                                                        [],
-                                                        [],
-                                                        "branch",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::try_trait::Try",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
                                                             []
@@ -29490,67 +29530,75 @@ Module type_safety.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError"
                                                             ],
-                                                          M.get_associated_function (|
-                                                            Ty.path
-                                                              "move_bytecode_verifier::type_safety::TypeSafetyChecker",
-                                                            "abilities",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (| M.read (| verifier |) |)
-                                                            |);
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (|
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  ref_inner_signature
-                                                                |)
-                                                              |)
-                                                            |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  |),
-                                                  [
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let γ0_0 :=
-                                                          M.SubPointer.get_struct_tuple_field (|
-                                                            γ,
-                                                            "core::ops::control_flow::ControlFlow::Break",
-                                                            0
-                                                          |) in
-                                                        let residual :=
-                                                          M.copy (|
+                                                          [],
+                                                          [],
+                                                          "branch",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
                                                               []
                                                               [
-                                                                Ty.path "core::convert::Infallible";
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::AbilitySet";
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
-                                                            γ0_0
-                                                          |) in
-                                                        M.never_to_any (|
-                                                          M.read (|
-                                                            M.return_ (|
-                                                              M.call_closure (|
-                                                                Ty.apply
-                                                                  (Ty.path "core::result::Result")
-                                                                  []
-                                                                  [
-                                                                    Ty.tuple [];
-                                                                    Ty.path
-                                                                      "move_binary_format::errors::PartialVMError"
-                                                                  ],
-                                                                M.get_trait_method (|
-                                                                  "core::ops::try_trait::FromResidual",
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "move_bytecode_verifier::type_safety::TypeSafetyChecker",
+                                                              "abilities",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| verifier |) |)
+                                                              |);
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    ref_inner_signature
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_struct_tuple_field (|
+                                                              γ,
+                                                              "core::ops::control_flow::ControlFlow::Break",
+                                                              0
+                                                            |) in
+                                                          let residual :=
+                                                            M.copy (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
+                                                              γ0_0
+                                                            |) in
+                                                          M.never_to_any (|
+                                                            M.read (|
+                                                              M.return_ (|
+                                                                M.call_closure (|
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
                                                                     []
@@ -29559,47 +29607,59 @@ Module type_safety.
                                                                       Ty.path
                                                                         "move_binary_format::errors::PartialVMError"
                                                                     ],
-                                                                  [],
-                                                                  [
+                                                                  M.get_trait_method (|
+                                                                    "core::ops::try_trait::FromResidual",
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
                                                                       []
                                                                       [
-                                                                        Ty.path
-                                                                          "core::convert::Infallible";
+                                                                        Ty.tuple [];
                                                                         Ty.path
                                                                           "move_binary_format::errors::PartialVMError"
-                                                                      ]
-                                                                  ],
-                                                                  "from_residual",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [ M.read (| residual |) ]
+                                                                      ],
+                                                                    [],
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::convert::Infallible";
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ]
+                                                                    ],
+                                                                    "from_residual",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [ M.read (| residual |) ]
+                                                                |)
                                                               |)
                                                             |)
-                                                          |)
-                                                        |)));
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let γ0_0 :=
-                                                          M.SubPointer.get_struct_tuple_field (|
-                                                            γ,
-                                                            "core::ops::control_flow::ControlFlow::Continue",
-                                                            0
-                                                          |) in
-                                                        let val :=
-                                                          M.copy (|
-                                                            Ty.path
-                                                              "move_binary_format::file_format::AbilitySet",
-                                                            γ0_0
-                                                          |) in
-                                                        M.read (| val |)))
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
+                                                          |)));
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_struct_tuple_field (|
+                                                              γ,
+                                                              "core::ops::control_flow::ControlFlow::Continue",
+                                                              0
+                                                            |) in
+                                                          let val :=
+                                                            M.copy (|
+                                                              Ty.path
+                                                                "move_binary_format::file_format::AbilitySet",
+                                                              γ0_0
+                                                            |) in
+                                                          M.read (| val |)))
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -30317,18 +30377,22 @@ Module type_safety.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_binary_format::file_format::SignatureToken",
-                                                "is_integer",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.borrow (| Pointer.Kind.Ref, operand |) ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::SignatureToken",
+                                                  "is_integer",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.Ref, operand |) ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -31121,18 +31185,22 @@ Module type_safety.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_binary_format::file_format::SignatureToken",
-                                                "is_integer",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.borrow (| Pointer.Kind.Ref, operand |) ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::SignatureToken",
+                                                  "is_integer",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.Ref, operand |) ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -31925,18 +31993,22 @@ Module type_safety.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_binary_format::file_format::SignatureToken",
-                                                "is_integer",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.borrow (| Pointer.Kind.Ref, operand |) ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::SignatureToken",
+                                                  "is_integer",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.Ref, operand |) ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -52329,18 +52401,22 @@ Module type_safety.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_binary_format::file_format::SignatureToken",
-                                                "is_integer",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.borrow (| Pointer.Kind.Ref, operand |) ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::SignatureToken",
+                                                  "is_integer",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.Ref, operand |) ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -53133,18 +53209,22 @@ Module type_safety.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_binary_format::file_format::SignatureToken",
-                                                "is_integer",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.borrow (| Pointer.Kind.Ref, operand |) ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::SignatureToken",
+                                                  "is_integer",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.Ref, operand |) ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -53937,18 +54017,22 @@ Module type_safety.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_binary_format::file_format::SignatureToken",
-                                                "is_integer",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.borrow (| Pointer.Kind.Ref, operand |) ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::SignatureToken",
+                                                  "is_integer",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.Ref, operand |) ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -55233,34 +55317,38 @@ Module type_safety.
                                                   M.use
                                                     (M.alloc (|
                                                       Ty.path "bool",
-                                                      UnOp.not (|
-                                                        M.call_closure (|
-                                                          Ty.path "bool",
-                                                          BinOp.lt,
-                                                          [
-                                                            M.cast
-                                                              (Ty.path "usize")
-                                                              (M.read (|
-                                                                M.deref (| M.read (| idx |) |)
-                                                              |));
-                                                            M.call_closure (|
-                                                              Ty.path "usize",
-                                                              M.get_associated_function (|
-                                                                Ty.path
-                                                                  "move_binary_format::file_format::Signature",
-                                                                "len",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (| M.read (| subst |) |)
-                                                                |)
-                                                              ]
-                                                            |)
-                                                          ]
-                                                        |)
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        UnOp.not,
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.lt,
+                                                            [
+                                                              M.cast
+                                                                (Ty.path "usize")
+                                                                (M.read (|
+                                                                  M.deref (| M.read (| idx |) |)
+                                                                |));
+                                                              M.call_closure (|
+                                                                Ty.path "usize",
+                                                                M.get_associated_function (|
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::Signature",
+                                                                  "len",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| subst |) |)
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        ]
                                                       |)
                                                     |)) in
                                                 let _ :=

@@ -236,20 +236,24 @@ Module char.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                LogicalOp.and (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.ge,
-                                    [ M.read (| radix |); Value.Integer IntegerKind.U32 2 ]
-                                  |),
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  LogicalOp.and (|
+                                    M.call_closure (|
                                       Ty.path "bool",
-                                      BinOp.le,
-                                      [ M.read (| radix |); Value.Integer IntegerKind.U32 36 ]
-                                    |)))
-                                |)
+                                      BinOp.ge,
+                                      [ M.read (| radix |); Value.Integer IntegerKind.U32 2 ]
+                                    |),
+                                    ltac:(M.monadic
+                                      (M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.le,
+                                        [ M.read (| radix |); Value.Integer IntegerKind.U32 36 ]
+                                      |)))
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

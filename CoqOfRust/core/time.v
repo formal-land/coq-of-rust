@@ -2725,20 +2725,24 @@ Module time.
                                                 M.use
                                                   (M.alloc (|
                                                     Ty.path "bool",
-                                                    UnOp.not (|
-                                                      M.call_closure (|
-                                                        Ty.path "bool",
-                                                        BinOp.lt,
-                                                        [
-                                                          M.read (| nanos |);
-                                                          M.read (|
-                                                            get_constant (|
-                                                              "core::time::NANOS_PER_SEC",
-                                                              Ty.path "u32"
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      UnOp.not,
+                                                      [
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          BinOp.lt,
+                                                          [
+                                                            M.read (| nanos |);
+                                                            M.read (|
+                                                              get_constant (|
+                                                                "core::time::NANOS_PER_SEC",
+                                                                Ty.path "u32"
+                                                              |)
                                                             |)
-                                                          |)
-                                                        ]
-                                                      |)
+                                                          ]
+                                                        |)
+                                                      ]
                                                     |)
                                                   |)) in
                                               let _ :=
@@ -3129,20 +3133,24 @@ Module time.
                                                 M.use
                                                   (M.alloc (|
                                                     Ty.path "bool",
-                                                    UnOp.not (|
-                                                      M.call_closure (|
-                                                        Ty.path "bool",
-                                                        BinOp.lt,
-                                                        [
-                                                          M.read (| nanos |);
-                                                          M.read (|
-                                                            get_constant (|
-                                                              "core::time::NANOS_PER_SEC",
-                                                              Ty.path "u32"
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      UnOp.not,
+                                                      [
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          BinOp.lt,
+                                                          [
+                                                            M.read (| nanos |);
+                                                            M.read (|
+                                                              get_constant (|
+                                                                "core::time::NANOS_PER_SEC",
+                                                                Ty.path "u32"
+                                                              |)
                                                             |)
-                                                          |)
-                                                        ]
-                                                      |)
+                                                          ]
+                                                        |)
+                                                      ]
                                                     |)
                                                   |)) in
                                               let _ :=
@@ -3445,20 +3453,24 @@ Module time.
                                                               M.use
                                                                 (M.alloc (|
                                                                   Ty.path "bool",
-                                                                  UnOp.not (|
-                                                                    M.call_closure (|
-                                                                      Ty.path "bool",
-                                                                      BinOp.lt,
-                                                                      [
-                                                                        M.read (| nanos |);
-                                                                        M.read (|
-                                                                          get_constant (|
-                                                                            "core::time::NANOS_PER_SEC",
-                                                                            Ty.path "u32"
+                                                                  M.call_closure (|
+                                                                    Ty.path "bool",
+                                                                    UnOp.not,
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        Ty.path "bool",
+                                                                        BinOp.lt,
+                                                                        [
+                                                                          M.read (| nanos |);
+                                                                          M.read (|
+                                                                            get_constant (|
+                                                                              "core::time::NANOS_PER_SEC",
+                                                                              Ty.path "u32"
+                                                                            |)
                                                                           |)
-                                                                        |)
-                                                                      ]
-                                                                    |)
+                                                                        ]
+                                                                      |)
+                                                                    ]
                                                                   |)
                                                                 |)) in
                                                             let _ :=
@@ -3796,20 +3808,24 @@ Module time.
                                                             M.use
                                                               (M.alloc (|
                                                                 Ty.path "bool",
-                                                                UnOp.not (|
-                                                                  M.call_closure (|
-                                                                    Ty.path "bool",
-                                                                    BinOp.lt,
-                                                                    [
-                                                                      M.read (| nanos |);
-                                                                      M.read (|
-                                                                        get_constant (|
-                                                                          "core::time::NANOS_PER_SEC",
-                                                                          Ty.path "u32"
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  UnOp.not,
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      BinOp.lt,
+                                                                      [
+                                                                        M.read (| nanos |);
+                                                                        M.read (|
+                                                                          get_constant (|
+                                                                            "core::time::NANOS_PER_SEC",
+                                                                            Ty.path "u32"
+                                                                          |)
                                                                         |)
-                                                                      |)
-                                                                    ]
-                                                                  |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
                                                                 |)
                                                               |)) in
                                                           let _ :=
@@ -5042,15 +5058,19 @@ Module time.
                                             ]
                                           |) in
                                         let~ add_ns : Ty.path "bool" :=
-                                          UnOp.not (|
-                                            LogicalOp.or (|
-                                              M.read (| rem_msb |),
-                                              ltac:(M.monadic
-                                                (LogicalOp.and (|
-                                                  M.read (| is_even |),
-                                                  ltac:(M.monadic (M.read (| is_tie |)))
-                                                |)))
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              LogicalOp.or (|
+                                                M.read (| rem_msb |),
+                                                ltac:(M.monadic
+                                                  (LogicalOp.and (|
+                                                    M.read (| is_even |),
+                                                    ltac:(M.monadic (M.read (| is_tie |)))
+                                                  |)))
+                                              |)
+                                            ]
                                           |) in
                                         let~ nanos : Ty.path "u32" :=
                                           M.call_closure (|
@@ -5327,15 +5347,19 @@ Module time.
                                                     ]
                                                   |) in
                                                 let~ add_ns : Ty.path "bool" :=
-                                                  UnOp.not (|
-                                                    LogicalOp.or (|
-                                                      M.read (| rem_msb |),
-                                                      ltac:(M.monadic
-                                                        (LogicalOp.and (|
-                                                          M.read (| is_even |),
-                                                          ltac:(M.monadic (M.read (| is_tie |)))
-                                                        |)))
-                                                    |)
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    UnOp.not,
+                                                    [
+                                                      LogicalOp.or (|
+                                                        M.read (| rem_msb |),
+                                                        ltac:(M.monadic
+                                                          (LogicalOp.and (|
+                                                            M.read (| is_even |),
+                                                            ltac:(M.monadic (M.read (| is_tie |)))
+                                                          |)))
+                                                      |)
+                                                    ]
                                                   |) in
                                                 let~ nanos : Ty.path "u32" :=
                                                   M.call_closure (|
@@ -5912,15 +5936,19 @@ Module time.
                                             ]
                                           |) in
                                         let~ add_ns : Ty.path "bool" :=
-                                          UnOp.not (|
-                                            LogicalOp.or (|
-                                              M.read (| rem_msb |),
-                                              ltac:(M.monadic
-                                                (LogicalOp.and (|
-                                                  M.read (| is_even |),
-                                                  ltac:(M.monadic (M.read (| is_tie |)))
-                                                |)))
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              LogicalOp.or (|
+                                                M.read (| rem_msb |),
+                                                ltac:(M.monadic
+                                                  (LogicalOp.and (|
+                                                    M.read (| is_even |),
+                                                    ltac:(M.monadic (M.read (| is_tie |)))
+                                                  |)))
+                                              |)
+                                            ]
                                           |) in
                                         let~ nanos : Ty.path "u32" :=
                                           M.call_closure (|
@@ -6197,15 +6225,19 @@ Module time.
                                                     ]
                                                   |) in
                                                 let~ add_ns : Ty.path "bool" :=
-                                                  UnOp.not (|
-                                                    LogicalOp.or (|
-                                                      M.read (| rem_msb |),
-                                                      ltac:(M.monadic
-                                                        (LogicalOp.and (|
-                                                          M.read (| is_even |),
-                                                          ltac:(M.monadic (M.read (| is_tie |)))
-                                                        |)))
-                                                    |)
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    UnOp.not,
+                                                    [
+                                                      LogicalOp.or (|
+                                                        M.read (| rem_msb |),
+                                                        ltac:(M.monadic
+                                                          (LogicalOp.and (|
+                                                            M.read (| is_even |),
+                                                            ltac:(M.monadic (M.read (| is_tie |)))
+                                                          |)))
+                                                      |)
+                                                    ]
                                                   |) in
                                                 let~ nanos : Ty.path "u32" :=
                                                   M.call_closure (|

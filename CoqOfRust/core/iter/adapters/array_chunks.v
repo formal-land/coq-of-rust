@@ -349,12 +349,16 @@ Module iter.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.ne,
-                                    [ N; Value.Integer IntegerKind.Usize 0 ]
-                                  |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.ne,
+                                      [ N; Value.Integer IntegerKind.Usize 0 ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=

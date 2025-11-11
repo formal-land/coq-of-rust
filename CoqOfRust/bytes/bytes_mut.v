@@ -714,23 +714,27 @@ Module bytes_mut.
                                                         M.use
                                                           (M.alloc (|
                                                             Ty.path "bool",
-                                                            UnOp.not (|
-                                                              M.call_closure (|
-                                                                Ty.path "bool",
-                                                                BinOp.eq,
-                                                                [
-                                                                  M.read (|
-                                                                    M.deref (|
-                                                                      M.read (| left_val |)
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              UnOp.not,
+                                                              [
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  BinOp.eq,
+                                                                  [
+                                                                    M.read (|
+                                                                      M.deref (|
+                                                                        M.read (| left_val |)
+                                                                      |)
+                                                                    |);
+                                                                    M.read (|
+                                                                      M.deref (|
+                                                                        M.read (| right_val |)
+                                                                      |)
                                                                     |)
-                                                                  |);
-                                                                  M.read (|
-                                                                    M.deref (|
-                                                                      M.read (| right_val |)
-                                                                    |)
-                                                                  |)
-                                                                ]
-                                                              |)
+                                                                  ]
+                                                                |)
+                                                              ]
                                                             |)
                                                           |)) in
                                                       let _ :=
@@ -1053,29 +1057,33 @@ Module bytes_mut.
                         M.use
                           (M.alloc (|
                             Ty.path "bool",
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                BinOp.le,
-                                [
-                                  M.read (| at_ |);
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.path "bytes::bytes_mut::BytesMut",
-                                      "capacity",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| self |) |)
-                                      |)
-                                    ]
-                                  |)
-                                ]
-                              |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              UnOp.not,
+                              [
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.le,
+                                  [
+                                    M.read (| at_ |);
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.path "bytes::bytes_mut::BytesMut",
+                                        "capacity",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                                |)
+                              ]
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1343,29 +1351,33 @@ Module bytes_mut.
                         M.use
                           (M.alloc (|
                             Ty.path "bool",
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                BinOp.le,
-                                [
-                                  M.read (| at_ |);
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.path "bytes::bytes_mut::BytesMut",
-                                      "len",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| self |) |)
-                                      |)
-                                    ]
-                                  |)
-                                ]
-                              |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              UnOp.not,
+                              [
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.le,
+                                  [
+                                    M.read (| at_ |);
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.path "bytes::bytes_mut::BytesMut",
+                                        "len",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                                |)
+                              ]
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1936,21 +1948,25 @@ Module bytes_mut.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.le,
-                                            [
-                                              M.read (| len |);
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| self |) |),
-                                                  "bytes::bytes_mut::BytesMut",
-                                                  "cap"
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.le,
+                                              [
+                                                M.read (| len |);
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "bytes::bytes_mut::BytesMut",
+                                                    "cap"
+                                                  |)
                                                 |)
-                                              |)
-                                            ]
-                                          |)
+                                              ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -2621,7 +2637,11 @@ Module bytes_mut.
                                                         M.use
                                                           (M.alloc (|
                                                             Ty.path "bool",
-                                                            UnOp.not (| M.read (| allocate |) |)
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              UnOp.not,
+                                                              [ M.read (| allocate |) ]
+                                                            |)
                                                           |)) in
                                                       let _ :=
                                                         is_constant_or_break_match (|
@@ -3143,27 +3163,32 @@ Module bytes_mut.
                                                                             M.use
                                                                               (M.alloc (|
                                                                                 Ty.path "bool",
-                                                                                UnOp.not (|
-                                                                                  M.call_closure (|
-                                                                                    Ty.path "bool",
-                                                                                    BinOp.eq,
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        M.deref (|
-                                                                                          M.read (|
-                                                                                            left_val
+                                                                                M.call_closure (|
+                                                                                  Ty.path "bool",
+                                                                                  UnOp.not,
+                                                                                  [
+                                                                                    M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "bool",
+                                                                                      BinOp.eq,
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              left_val
+                                                                                            |)
+                                                                                          |)
+                                                                                        |);
+                                                                                        M.read (|
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              right_val
+                                                                                            |)
                                                                                           |)
                                                                                         |)
-                                                                                      |);
-                                                                                      M.read (|
-                                                                                        M.deref (|
-                                                                                          M.read (|
-                                                                                            right_val
-                                                                                          |)
-                                                                                        |)
-                                                                                      |)
-                                                                                    ]
-                                                                                  |)
+                                                                                      ]
+                                                                                    |)
+                                                                                  ]
                                                                                 |)
                                                                               |)) in
                                                                           let _ :=
@@ -3317,19 +3342,23 @@ Module bytes_mut.
                                                   M.use
                                                     (M.alloc (|
                                                       Ty.path "bool",
-                                                      UnOp.not (|
-                                                        M.call_closure (|
-                                                          Ty.path "bool",
-                                                          BinOp.eq,
-                                                          [
-                                                            M.read (|
-                                                              M.deref (| M.read (| left_val |) |)
-                                                            |);
-                                                            M.read (|
-                                                              M.deref (| M.read (| right_val |) |)
-                                                            |)
-                                                          ]
-                                                        |)
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        UnOp.not,
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.eq,
+                                                            [
+                                                              M.read (|
+                                                                M.deref (| M.read (| left_val |) |)
+                                                              |);
+                                                              M.read (|
+                                                                M.deref (| M.read (| right_val |) |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        ]
                                                       |)
                                                     |)) in
                                                 let _ :=
@@ -3430,7 +3459,14 @@ Module bytes_mut.
                           ltac:(M.monadic
                             (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                             let γ :=
-                              M.alloc (| Ty.path "bool", UnOp.not (| M.read (| allocate |) |) |) in
+                              M.alloc (|
+                                Ty.path "bool",
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [ M.read (| allocate |) ]
+                                |)
+                              |) in
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.never_to_any (| M.read (| M.return_ (| Value.Bool false |) |) |)));
@@ -3776,8 +3812,10 @@ Module bytes_mut.
                                                                 M.use
                                                                   (M.alloc (|
                                                                     Ty.path "bool",
-                                                                    UnOp.not (|
-                                                                      M.read (| allocate |)
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      UnOp.not,
+                                                                      [ M.read (| allocate |) ]
                                                                     |)
                                                                   |)) in
                                                               let _ :=
@@ -3992,55 +4030,60 @@ Module bytes_mut.
                                                                             M.use
                                                                               (M.alloc (|
                                                                                 Ty.path "bool",
-                                                                                UnOp.not (|
-                                                                                  M.call_closure (|
-                                                                                    Ty.path "bool",
-                                                                                    BinOp.le,
-                                                                                    [
-                                                                                      M.call_closure (|
-                                                                                        Ty.path
-                                                                                          "usize",
-                                                                                        BinOp.Wrap.add,
-                                                                                        [
-                                                                                          M.read (|
-                                                                                            off
-                                                                                          |);
-                                                                                          M.read (|
-                                                                                            len
-                                                                                          |)
-                                                                                        ]
-                                                                                      |);
-                                                                                      M.call_closure (|
-                                                                                        Ty.path
-                                                                                          "usize",
-                                                                                        M.get_associated_function (|
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "alloc::vec::Vec")
+                                                                                M.call_closure (|
+                                                                                  Ty.path "bool",
+                                                                                  UnOp.not,
+                                                                                  [
+                                                                                    M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "bool",
+                                                                                      BinOp.le,
+                                                                                      [
+                                                                                        M.call_closure (|
+                                                                                          Ty.path
+                                                                                            "usize",
+                                                                                          BinOp.Wrap.add,
+                                                                                          [
+                                                                                            M.read (|
+                                                                                              off
+                                                                                            |);
+                                                                                            M.read (|
+                                                                                              len
+                                                                                            |)
+                                                                                          ]
+                                                                                        |);
+                                                                                        M.call_closure (|
+                                                                                          Ty.path
+                                                                                            "usize",
+                                                                                          M.get_associated_function (|
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "alloc::vec::Vec")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "u8";
+                                                                                                Ty.path
+                                                                                                  "alloc::alloc::Global"
+                                                                                              ],
+                                                                                            "capacity",
+                                                                                            [],
                                                                                             []
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "u8";
-                                                                                              Ty.path
-                                                                                                "alloc::alloc::Global"
-                                                                                            ],
-                                                                                          "capacity",
-                                                                                          [],
-                                                                                          []
-                                                                                        |),
-                                                                                        [
-                                                                                          M.borrow (|
-                                                                                            Pointer.Kind.Ref,
-                                                                                            M.deref (|
-                                                                                              M.read (|
-                                                                                                v
+                                                                                          |),
+                                                                                          [
+                                                                                            M.borrow (|
+                                                                                              Pointer.Kind.Ref,
+                                                                                              M.deref (|
+                                                                                                M.read (|
+                                                                                                  v
+                                                                                                |)
                                                                                               |)
                                                                                             |)
-                                                                                          |)
-                                                                                        ]
-                                                                                      |)
-                                                                                    ]
-                                                                                  |)
+                                                                                          ]
+                                                                                        |)
+                                                                                      ]
+                                                                                    |)
+                                                                                  ]
                                                                                 |)
                                                                               |)) in
                                                                           let _ :=
@@ -4276,7 +4319,11 @@ Module bytes_mut.
                               M.use
                                 (M.alloc (|
                                   Ty.path "bool",
-                                  UnOp.not (| M.read (| allocate |) |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    UnOp.not,
+                                    [ M.read (| allocate |) ]
+                                  |)
                                 |)) in
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4715,19 +4762,23 @@ Module bytes_mut.
                                                   M.use
                                                     (M.alloc (|
                                                       Ty.path "bool",
-                                                      UnOp.not (|
-                                                        M.call_closure (|
-                                                          Ty.path "bool",
-                                                          BinOp.eq,
-                                                          [
-                                                            M.read (|
-                                                              M.deref (| M.read (| left_val |) |)
-                                                            |);
-                                                            M.read (|
-                                                              M.deref (| M.read (| right_val |) |)
-                                                            |)
-                                                          ]
-                                                        |)
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        UnOp.not,
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.eq,
+                                                            [
+                                                              M.read (|
+                                                                M.deref (| M.read (| left_val |) |)
+                                                              |);
+                                                              M.read (|
+                                                                M.deref (| M.read (| right_val |) |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        ]
                                                       |)
                                                     |)) in
                                                 let _ :=
@@ -5031,38 +5082,42 @@ Module bytes_mut.
                                         M.use
                                           (M.alloc (|
                                             Ty.path "bool",
-                                            UnOp.not (|
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                BinOp.ge,
-                                                [
-                                                  M.call_closure (|
-                                                    Ty.path "usize",
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "slice")
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              UnOp.not,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.ge,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "core::mem::maybe_uninit::MaybeUninit")
+                                                              []
+                                                              [ Ty.path "u8" ]
+                                                          ],
+                                                        "len",
+                                                        [],
                                                         []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "core::mem::maybe_uninit::MaybeUninit")
-                                                            []
-                                                            [ Ty.path "u8" ]
-                                                        ],
-                                                      "len",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (| M.read (| dst |) |)
-                                                      |)
-                                                    ]
-                                                  |);
-                                                  M.read (| cnt |)
-                                                ]
-                                              |)
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| dst |) |)
+                                                        |)
+                                                      ]
+                                                    |);
+                                                    M.read (| cnt |)
+                                                  ]
+                                                |)
+                                              ]
                                             |)
                                           |)) in
                                       let _ :=
@@ -5849,21 +5904,25 @@ Module bytes_mut.
                                         M.use
                                           (M.alloc (|
                                             Ty.path "bool",
-                                            UnOp.not (|
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                BinOp.le,
-                                                [
-                                                  M.read (| count |);
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.deref (| M.read (| self |) |),
-                                                      "bytes::bytes_mut::BytesMut",
-                                                      "cap"
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              UnOp.not,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.le,
+                                                  [
+                                                    M.read (| count |);
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "bytes::bytes_mut::BytesMut",
+                                                        "cap"
+                                                      |)
                                                     |)
-                                                  |)
-                                                ]
-                                              |)
+                                                  ]
+                                                |)
+                                              ]
                                             |)
                                           |)) in
                                       let _ :=
@@ -6618,19 +6677,23 @@ Module bytes_mut.
                                             M.use
                                               (M.alloc (|
                                                 Ty.path "bool",
-                                                UnOp.not (|
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    BinOp.eq,
-                                                    [
-                                                      M.read (|
-                                                        M.deref (| M.read (| left_val |) |)
-                                                      |);
-                                                      M.read (|
-                                                        M.deref (| M.read (| right_val |) |)
-                                                      |)
-                                                    ]
-                                                  |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  UnOp.not,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.eq,
+                                                      [
+                                                        M.read (|
+                                                          M.deref (| M.read (| left_val |) |)
+                                                        |);
+                                                        M.read (|
+                                                          M.deref (| M.read (| right_val |) |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=
@@ -6716,26 +6779,30 @@ Module bytes_mut.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          LogicalOp.or (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.eq,
-                                              [
-                                                M.read (| ref_cnt |);
-                                                Value.Integer IntegerKind.Usize 1
-                                              ]
-                                            |),
-                                            ltac:(M.monadic
-                                              (M.call_closure (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            LogicalOp.or (|
+                                              M.call_closure (|
                                                 Ty.path "bool",
                                                 BinOp.eq,
                                                 [
                                                   M.read (| ref_cnt |);
-                                                  Value.Integer IntegerKind.Usize 2
+                                                  Value.Integer IntegerKind.Usize 1
                                                 ]
-                                              |)))
-                                          |)
+                                              |),
+                                              ltac:(M.monadic
+                                                (M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.eq,
+                                                  [
+                                                    M.read (| ref_cnt |);
+                                                    Value.Integer IntegerKind.Usize 2
+                                                  ]
+                                                |)))
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -6983,19 +7050,23 @@ Module bytes_mut.
                                             M.use
                                               (M.alloc (|
                                                 Ty.path "bool",
-                                                UnOp.not (|
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    BinOp.eq,
-                                                    [
-                                                      M.read (|
-                                                        M.deref (| M.read (| left_val |) |)
-                                                      |);
-                                                      M.read (|
-                                                        M.deref (| M.read (| right_val |) |)
-                                                      |)
-                                                    ]
-                                                  |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  UnOp.not,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.eq,
+                                                      [
+                                                        M.read (|
+                                                          M.deref (| M.read (| left_val |) |)
+                                                        |);
+                                                        M.read (|
+                                                          M.deref (| M.read (| right_val |) |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=
@@ -7290,19 +7361,23 @@ Module bytes_mut.
                                             M.use
                                               (M.alloc (|
                                                 Ty.path "bool",
-                                                UnOp.not (|
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    BinOp.eq,
-                                                    [
-                                                      M.read (|
-                                                        M.deref (| M.read (| left_val |) |)
-                                                      |);
-                                                      M.read (|
-                                                        M.deref (| M.read (| right_val |) |)
-                                                      |)
-                                                    ]
-                                                  |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  UnOp.not,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.eq,
+                                                      [
+                                                        M.read (|
+                                                          M.deref (| M.read (| left_val |) |)
+                                                        |);
+                                                        M.read (|
+                                                          M.deref (| M.read (| right_val |) |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=
@@ -7489,19 +7564,23 @@ Module bytes_mut.
                                             M.use
                                               (M.alloc (|
                                                 Ty.path "bool",
-                                                UnOp.not (|
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    BinOp.eq,
-                                                    [
-                                                      M.read (|
-                                                        M.deref (| M.read (| left_val |) |)
-                                                      |);
-                                                      M.read (|
-                                                        M.deref (| M.read (| right_val |) |)
-                                                      |)
-                                                    ]
-                                                  |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  UnOp.not,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.eq,
+                                                      [
+                                                        M.read (|
+                                                          M.deref (| M.read (| left_val |) |)
+                                                        |);
+                                                        M.read (|
+                                                          M.deref (| M.read (| right_val |) |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=
@@ -7587,20 +7666,24 @@ Module bytes_mut.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.le,
-                                            [
-                                              M.read (| pos |);
-                                              M.read (|
-                                                get_constant (|
-                                                  "bytes::bytes_mut::MAX_VEC_POS",
-                                                  Ty.path "usize"
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.le,
+                                              [
+                                                M.read (| pos |);
+                                                M.read (|
+                                                  get_constant (|
+                                                    "bytes::bytes_mut::MAX_VEC_POS",
+                                                    Ty.path "usize"
+                                                  |)
                                                 |)
-                                              |)
-                                            ]
-                                          |)
+                                              ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -8152,30 +8235,34 @@ Module bytes_mut.
                         M.use
                           (M.alloc (|
                             Ty.path "bool",
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                BinOp.le,
-                                [
-                                  M.read (| cnt |);
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_trait_method (|
-                                      "bytes::buf::buf_impl::Buf",
-                                      Ty.apply
-                                        (Ty.path "&mut")
+                            M.call_closure (|
+                              Ty.path "bool",
+                              UnOp.not,
+                              [
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.le,
+                                  [
+                                    M.read (| cnt |);
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_trait_method (|
+                                        "bytes::buf::buf_impl::Buf",
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [ Ty.path "bytes::bytes_mut::BytesMut" ],
+                                        [],
+                                        [],
+                                        "remaining",
+                                        [],
                                         []
-                                        [ Ty.path "bytes::bytes_mut::BytesMut" ],
-                                      [],
-                                      [],
-                                      "remaining",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, self |) ]
-                                  |)
-                                ]
-                              |)
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, self |) ]
+                                    |)
+                                  ]
+                                |)
+                              ]
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -8942,38 +9029,42 @@ Module bytes_mut.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.ge,
-                                            [
-                                              M.call_closure (|
-                                                Ty.path "usize",
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path "slice")
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.ge,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path "slice")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::mem::maybe_uninit::MaybeUninit")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ],
+                                                    "len",
+                                                    [],
                                                     []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "core::mem::maybe_uninit::MaybeUninit")
-                                                        []
-                                                        [ Ty.path "u8" ]
-                                                    ],
-                                                  "len",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| dst |) |)
-                                                  |)
-                                                ]
-                                              |);
-                                              M.read (| cnt |)
-                                            ]
-                                          |)
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| dst |) |)
+                                                    |)
+                                                  ]
+                                                |);
+                                                M.read (| cnt |)
+                                              ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
@@ -13914,19 +14005,23 @@ Module bytes_mut.
                                           M.use
                                             (M.alloc (|
                                               Ty.path "bool",
-                                              UnOp.not (|
-                                                M.call_closure (|
-                                                  Ty.path "bool",
-                                                  BinOp.eq,
-                                                  [
-                                                    M.read (|
-                                                      M.deref (| M.read (| left_val |) |)
-                                                    |);
-                                                    M.read (|
-                                                      M.deref (| M.read (| right_val |) |)
-                                                    |)
-                                                  ]
-                                                |)
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                UnOp.not,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.eq,
+                                                    [
+                                                      M.read (|
+                                                        M.deref (| M.read (| left_val |) |)
+                                                      |);
+                                                      M.read (|
+                                                        M.deref (| M.read (| right_val |) |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
                                               |)
                                             |)) in
                                         let _ :=

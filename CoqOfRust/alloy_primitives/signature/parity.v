@@ -816,20 +816,24 @@ Module signature.
               []
               []
               [
-                UnOp.not (|
-                  M.call_closure (|
-                    Ty.path "bool",
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "ruint::Uint")
-                        [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ]
+                M.call_closure (|
+                  Ty.path "bool",
+                  UnOp.not,
+                  [
+                    M.call_closure (|
+                      Ty.path "bool",
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ]
+                          [],
+                        "is_zero",
                         [],
-                      "is_zero",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, value |) ]
-                  |)
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, value |) ]
+                    |)
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1600,7 +1604,7 @@ Module signature.
                       "alloy_primitives::signature::parity::Parity::Parity"
                       []
                       []
-                      [ UnOp.not (| M.read (| b |) |) ]));
+                      [ M.call_closure (| Ty.path "bool", UnOp.not, [ M.read (| b |) ] |) ]));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
@@ -1614,7 +1618,7 @@ Module signature.
                       "alloy_primitives::signature::parity::Parity::NonEip155"
                       []
                       []
-                      [ UnOp.not (| M.read (| b |) |) ]));
+                      [ M.call_closure (| Ty.path "bool", UnOp.not, [ M.read (| b |) ] |) ]));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=

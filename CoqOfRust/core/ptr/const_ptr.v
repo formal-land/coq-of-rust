@@ -955,31 +955,36 @@ Module ptr.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                LogicalOp.and (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.lt,
-                                    [ Value.Integer IntegerKind.Usize 0; M.read (| pointee_size |) ]
-                                  |),
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  LogicalOp.and (|
+                                    M.call_closure (|
                                       Ty.path "bool",
-                                      BinOp.le,
-                                      [
-                                        M.read (| pointee_size |);
-                                        M.cast
-                                          (Ty.path "usize")
-                                          (M.read (|
-                                            get_associated_constant (|
-                                              Ty.path "isize",
-                                              "MAX",
-                                              Ty.path "isize"
-                                            |)
-                                          |))
+                                      BinOp.lt,
+                                      [ Value.Integer IntegerKind.Usize 0; M.read (| pointee_size |)
                                       ]
-                                    |)))
-                                |)
+                                    |),
+                                    ltac:(M.monadic
+                                      (M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.le,
+                                        [
+                                          M.read (| pointee_size |);
+                                          M.cast
+                                            (Ty.path "usize")
+                                            (M.read (|
+                                              get_associated_constant (|
+                                                Ty.path "isize",
+                                                "MAX",
+                                                Ty.path "isize"
+                                              |)
+                                            |))
+                                        ]
+                                      |)))
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1172,31 +1177,36 @@ Module ptr.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                LogicalOp.and (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.lt,
-                                    [ Value.Integer IntegerKind.Usize 0; M.read (| pointee_size |) ]
-                                  |),
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  LogicalOp.and (|
+                                    M.call_closure (|
                                       Ty.path "bool",
-                                      BinOp.le,
-                                      [
-                                        M.read (| pointee_size |);
-                                        M.cast
-                                          (Ty.path "usize")
-                                          (M.read (|
-                                            get_associated_constant (|
-                                              Ty.path "isize",
-                                              "MAX",
-                                              Ty.path "isize"
-                                            |)
-                                          |))
+                                      BinOp.lt,
+                                      [ Value.Integer IntegerKind.Usize 0; M.read (| pointee_size |)
                                       ]
-                                    |)))
-                                |)
+                                    |),
+                                    ltac:(M.monadic
+                                      (M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.le,
+                                        [
+                                          M.read (| pointee_size |);
+                                          M.cast
+                                            (Ty.path "usize")
+                                            (M.read (|
+                                              get_associated_constant (|
+                                                Ty.path "isize",
+                                                "MAX",
+                                                Ty.path "isize"
+                                              |)
+                                            |))
+                                        ]
+                                      |)))
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1413,7 +1423,7 @@ Module ptr.
                       "core::option::Option::Some"
                       []
                       [ Ty.path "bool" ]
-                      [ UnOp.not (| M.read (| eq |) |) ]))
+                      [ M.call_closure (| Ty.path "bool", UnOp.not, [ M.read (| eq |) ] |) ]))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2215,17 +2225,21 @@ Module ptr.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_associated_function (|
-                                    Ty.path "usize",
-                                    "is_power_of_two",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| align |) ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_associated_function (|
+                                      Ty.path "usize",
+                                      "is_power_of_two",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.read (| align |) ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2361,17 +2375,21 @@ Module ptr.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_associated_function (|
-                                    Ty.path "usize",
-                                    "is_power_of_two",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| align |) ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_associated_function (|
+                                      Ty.path "usize",
+                                      "is_power_of_two",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.read (| align |) ]
+                                  |)
+                                ]
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

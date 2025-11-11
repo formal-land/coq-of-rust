@@ -999,7 +999,11 @@ Module fmt.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (| M.read (| is_nonnegative |) |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [ M.read (| is_nonnegative |) ]
+                                |)
                               |)) in
                           let _ :=
                             is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4868,30 +4872,34 @@ Module fmt.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.path "str",
-                                      "is_empty",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| formatted |) |),
-                                              "core::num::fmt::Formatted",
-                                              "sign"
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.path "str",
+                                        "is_empty",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| formatted |) |),
+                                                "core::num::fmt::Formatted",
+                                                "sign"
+                                              |)
                                             |)
                                           |)
                                         |)
-                                      |)
-                                    ]
-                                  |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -8368,15 +8376,19 @@ Module fmt.
                                 M.use
                                   (M.alloc (|
                                     Ty.path "bool",
-                                    UnOp.not (|
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        BinOp.eq,
-                                        [
-                                          M.read (| M.deref (| M.read (| left_val |) |) |);
-                                          M.read (| M.deref (| M.read (| right_val |) |) |)
-                                        ]
-                                      |)
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [
+                                            M.read (| M.deref (| M.read (| left_val |) |) |);
+                                            M.read (| M.deref (| M.read (| right_val |) |) |)
+                                          ]
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -10540,33 +10552,37 @@ Module fmt.
                                     Ty.path "bool",
                                     LogicalOp.and (|
                                       LogicalOp.and (|
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "slice")
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                                "is_empty",
+                                                [],
                                                 []
-                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                              "is_empty",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.deref (| M.read (| self |) |),
-                                                      "core::fmt::Arguments",
-                                                      "pieces"
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "core::fmt::Arguments",
+                                                        "pieces"
+                                                      |)
                                                     |)
                                                   |)
                                                 |)
-                                              |)
-                                            ]
-                                          |)
+                                              ]
+                                            |)
+                                          ]
                                         |),
                                         ltac:(M.monadic
                                           (M.call_closure (|
@@ -11384,30 +11400,34 @@ Module fmt.
                                                                     M.use
                                                                       (M.alloc (|
                                                                         Ty.path "bool",
-                                                                        UnOp.not (|
-                                                                          M.call_closure (|
-                                                                            Ty.path "bool",
-                                                                            M.get_associated_function (|
-                                                                              Ty.path "str",
-                                                                              "is_empty",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.read (|
-                                                                                    M.deref (|
-                                                                                      M.read (|
-                                                                                        piece
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          UnOp.not,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "bool",
+                                                                              M.get_associated_function (|
+                                                                                Ty.path "str",
+                                                                                "is_empty",
+                                                                                [],
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          piece
+                                                                                        |)
                                                                                       |)
                                                                                     |)
                                                                                   |)
                                                                                 |)
-                                                                              |)
-                                                                            ]
-                                                                          |)
+                                                                              ]
+                                                                            |)
+                                                                          ]
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
@@ -12137,30 +12157,34 @@ Module fmt.
                                                                     M.use
                                                                       (M.alloc (|
                                                                         Ty.path "bool",
-                                                                        UnOp.not (|
-                                                                          M.call_closure (|
-                                                                            Ty.path "bool",
-                                                                            M.get_associated_function (|
-                                                                              Ty.path "str",
-                                                                              "is_empty",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.read (|
-                                                                                    M.deref (|
-                                                                                      M.read (|
-                                                                                        piece
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          UnOp.not,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "bool",
+                                                                              M.get_associated_function (|
+                                                                                Ty.path "str",
+                                                                                "is_empty",
+                                                                                [],
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          piece
+                                                                                        |)
                                                                                       |)
                                                                                     |)
                                                                                   |)
                                                                                 |)
-                                                                              |)
-                                                                            ]
-                                                                          |)
+                                                                              ]
+                                                                            |)
+                                                                          ]
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
@@ -12995,38 +13019,42 @@ Module fmt.
                                   M.use
                                     (M.alloc (|
                                       Ty.path "bool",
-                                      UnOp.not (|
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          BinOp.lt,
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| arg |) |),
-                                                "core::fmt::rt::Placeholder",
-                                                "position"
-                                              |)
-                                            |);
-                                            M.call_closure (|
-                                              Ty.path "usize",
-                                              M.get_associated_function (|
-                                                Ty.apply
-                                                  (Ty.path "slice")
-                                                  []
-                                                  [ Ty.path "core::fmt::rt::Argument" ],
-                                                "len",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| args |) |)
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        UnOp.not,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.lt,
+                                            [
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| arg |) |),
+                                                  "core::fmt::rt::Placeholder",
+                                                  "position"
                                                 |)
-                                              ]
-                                            |)
-                                          ]
-                                        |)
+                                              |);
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "slice")
+                                                    []
+                                                    [ Ty.path "core::fmt::rt::Argument" ],
+                                                  "len",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| args |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                          |)
+                                        ]
                                       |)
                                     |)) in
                                 let _ :=
@@ -13168,32 +13196,36 @@ Module fmt.
                                           M.use
                                             (M.alloc (|
                                               Ty.path "bool",
-                                              UnOp.not (|
-                                                M.call_closure (|
-                                                  Ty.path "bool",
-                                                  BinOp.lt,
-                                                  [
-                                                    M.read (| i |);
-                                                    M.call_closure (|
-                                                      Ty.path "usize",
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path "slice")
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                UnOp.not,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.lt,
+                                                    [
+                                                      M.read (| i |);
+                                                      M.call_closure (|
+                                                        Ty.path "usize",
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [ Ty.path "core::fmt::rt::Argument" ],
+                                                          "len",
+                                                          [],
                                                           []
-                                                          [ Ty.path "core::fmt::rt::Argument" ],
-                                                        "len",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (| M.read (| args |) |)
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
-                                                |)
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| args |) |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
                                               |)
                                             |)) in
                                         let _ :=

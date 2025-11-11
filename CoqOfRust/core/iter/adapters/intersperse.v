@@ -2353,7 +2353,13 @@ Module iter.
                                   |),
                                   [
                                     M.read (| lo |);
-                                    M.cast (Ty.path "usize") (UnOp.not (| M.read (| started |) |))
+                                    M.cast
+                                      (Ty.path "usize")
+                                      (M.call_closure (|
+                                        Ty.path "bool",
+                                        UnOp.not,
+                                        [ M.read (| started |) ]
+                                      |))
                                   ]
                                 |);
                                 M.cast (Ty.path "usize") (M.read (| next_is_some |))
@@ -2426,7 +2432,11 @@ Module iter.
                                                           M.read (| hi |);
                                                           M.cast
                                                             (Ty.path "usize")
-                                                            (UnOp.not (| M.read (| started |) |))
+                                                            (M.call_closure (|
+                                                              Ty.path "bool",
+                                                              UnOp.not,
+                                                              [ M.read (| started |) ]
+                                                            |))
                                                         ]
                                                       |);
                                                       M.cast

@@ -423,7 +423,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               Ty.path "bool",
-                                              UnOp.not (| Value.Bool true |)
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                UnOp.not,
+                                                [ Value.Bool true ]
+                                              |)
                                             |)
                                           |)
                                         |)

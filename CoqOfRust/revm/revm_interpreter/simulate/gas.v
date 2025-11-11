@@ -186,11 +186,13 @@ Module Impl_Gas.
       apply u64_overflowing_sub_eq.
     }
     destruct u64_overflowing_sub as [remaining overflow] eqn:H_u64_overflowing_sub_eq.
-    cbn; progress repeat get_can_access.
     eapply Run.Call. {
       apply Run.Pure.
     }
-    cbn.
+    cbn; repeat progress get_can_access.
+    eapply Run.Call. {
+      apply Run.Pure.
+    }
     destruct negb eqn:?; cbn; progress repeat get_can_access.
     { apply Run.Pure. }
     { apply Run.Pure. }

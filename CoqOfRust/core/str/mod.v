@@ -449,12 +449,16 @@ Module str.
                       M.use
                         (M.alloc (|
                           Ty.path "bool",
-                          UnOp.not (|
-                            M.call_closure (|
-                              Ty.path "bool",
-                              BinOp.le,
-                              [ M.read (| begin |); M.read (| end_ |) ]
-                            |)
+                          M.call_closure (|
+                            Ty.path "bool",
+                            UnOp.not,
+                            [
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.le,
+                                [ M.read (| begin |); M.read (| end_ |) ]
+                              |)
+                            ]
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -594,20 +598,24 @@ Module str.
                       M.use
                         (M.alloc (|
                           Ty.path "bool",
-                          UnOp.not (|
-                            M.call_closure (|
-                              Ty.path "bool",
-                              M.get_associated_function (|
-                                Ty.path "str",
-                                "is_char_boundary",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
-                                M.read (| begin |)
-                              ]
-                            |)
+                          M.call_closure (|
+                            Ty.path "bool",
+                            UnOp.not,
+                            [
+                              M.call_closure (|
+                                Ty.path "bool",
+                                M.get_associated_function (|
+                                  Ty.path "str",
+                                  "is_char_boundary",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |);
+                                  M.read (| begin |)
+                                ]
+                              |)
+                            ]
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

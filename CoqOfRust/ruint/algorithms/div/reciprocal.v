@@ -40,22 +40,26 @@ Module algorithms.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.ge,
-                                              [
-                                                M.read (| d |);
-                                                M.call_closure (|
-                                                  Ty.path "u64",
-                                                  BinOp.Wrap.shl,
-                                                  [
-                                                    Value.Integer IntegerKind.U64 1;
-                                                    Value.Integer IntegerKind.I32 63
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.ge,
+                                                [
+                                                  M.read (| d |);
+                                                  M.call_closure (|
+                                                    Ty.path "u64",
+                                                    BinOp.Wrap.shl,
+                                                    [
+                                                      Value.Integer IntegerKind.U64 1;
+                                                      Value.Integer IntegerKind.I32 63
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -122,22 +126,26 @@ Module algorithms.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.ge,
-                                              [
-                                                M.read (| r |);
-                                                M.call_closure (|
-                                                  Ty.path "u128",
-                                                  BinOp.Wrap.shl,
-                                                  [
-                                                    Value.Integer IntegerKind.U128 1;
-                                                    Value.Integer IntegerKind.I32 64
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.ge,
+                                                [
+                                                  M.read (| r |);
+                                                  M.call_closure (|
+                                                    Ty.path "u128",
+                                                    BinOp.Wrap.shl,
+                                                    [
+                                                      Value.Integer IntegerKind.U128 1;
+                                                      Value.Integer IntegerKind.I32 64
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -181,22 +189,26 @@ Module algorithms.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.lt,
-                                              [
-                                                M.read (| r |);
-                                                M.call_closure (|
-                                                  Ty.path "u128",
-                                                  BinOp.Wrap.shl,
-                                                  [
-                                                    Value.Integer IntegerKind.U128 1;
-                                                    Value.Integer IntegerKind.I32 65
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.lt,
+                                                [
+                                                  M.read (| r |);
+                                                  M.call_closure (|
+                                                    Ty.path "u128",
+                                                    BinOp.Wrap.shl,
+                                                    [
+                                                      Value.Integer IntegerKind.U128 1;
+                                                      Value.Integer IntegerKind.I32 65
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -301,22 +313,26 @@ Module algorithms.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.ge,
-                                              [
-                                                M.read (| d |);
-                                                M.call_closure (|
-                                                  Ty.path "u64",
-                                                  BinOp.Wrap.shl,
-                                                  [
-                                                    Value.Integer IntegerKind.U64 1;
-                                                    Value.Integer IntegerKind.I32 63
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.ge,
+                                                [
+                                                  M.read (| d |);
+                                                  M.call_closure (|
+                                                    Ty.path "u64",
+                                                    BinOp.Wrap.shl,
+                                                    [
+                                                      Value.Integer IntegerKind.U64 1;
+                                                      Value.Integer IntegerKind.I32 63
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -1340,22 +1356,26 @@ Module algorithms.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.ge,
-                                              [
-                                                M.read (| d |);
-                                                M.call_closure (|
-                                                  Ty.path "u128",
-                                                  BinOp.Wrap.shl,
-                                                  [
-                                                    Value.Integer IntegerKind.U128 1;
-                                                    Value.Integer IntegerKind.I32 127
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.ge,
+                                                [
+                                                  M.read (| d |);
+                                                  M.call_closure (|
+                                                    Ty.path "u128",
+                                                    BinOp.Wrap.shl,
+                                                    [
+                                                      Value.Integer IntegerKind.U128 1;
+                                                      Value.Integer IntegerKind.I32 127
+                                                    ]
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=

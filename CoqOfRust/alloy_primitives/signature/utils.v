@@ -78,16 +78,20 @@ Module signature.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_function (|
-                                      "alloy_primitives::signature::utils::is_valid_v",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| v |) ]
-                                  |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_function (|
+                                        "alloy_primitives::signature::utils::is_valid_v",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.read (| v |) ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=

@@ -331,21 +331,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.use
                       (M.alloc (|
                         Ty.path "bool",
-                        UnOp.not (|
-                          M.call_closure (|
-                            Ty.path "bool",
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "std::collections::hash::set::HashSet")
+                        M.call_closure (|
+                          Ty.path "bool",
+                          UnOp.not,
+                          [
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "std::collections::hash::set::HashSet")
+                                  []
+                                  [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ],
+                                "insert",
+                                [],
                                 []
-                                [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ],
-                              "insert",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.MutRef, a |); Value.Integer IntegerKind.I32 4
-                            ]
-                          |)
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, a |);
+                                Value.Integer IntegerKind.I32 4
+                              ]
+                            |)
+                          ]
                         |)
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -370,31 +376,35 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.use
                       (M.alloc (|
                         Ty.path "bool",
-                        UnOp.not (|
-                          M.call_closure (|
-                            Ty.path "bool",
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "std::collections::hash::set::HashSet")
-                                []
-                                [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ],
-                              "contains",
-                              [],
-                              [ Ty.path "i32" ]
-                            |),
-                            [
-                              M.borrow (| Pointer.Kind.Ref, a |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (| Ty.path "i32", Value.Integer IntegerKind.I32 4 |)
+                        M.call_closure (|
+                          Ty.path "bool",
+                          UnOp.not,
+                          [
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "std::collections::hash::set::HashSet")
+                                  []
+                                  [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ],
+                                "contains",
+                                [],
+                                [ Ty.path "i32" ]
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, a |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.alloc (| Ty.path "i32", Value.Integer IntegerKind.I32 4 |)
+                                    |)
                                   |)
                                 |)
-                              |)
-                            ]
-                          |)
+                              ]
+                            |)
+                          ]
                         |)
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

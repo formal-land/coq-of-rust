@@ -271,29 +271,33 @@ Module buf.
                               M.use
                                 (M.alloc (|
                                   Ty.path "bool",
-                                  UnOp.not (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_trait_method (|
-                                        "bytes::buf::buf_impl::Buf",
-                                        T,
-                                        [],
-                                        [],
-                                        "has_remaining",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "bytes::buf::iter::IntoIter",
-                                            "inner"
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    UnOp.not,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_trait_method (|
+                                          "bytes::buf::buf_impl::Buf",
+                                          T,
+                                          [],
+                                          [],
+                                          "has_remaining",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "bytes::buf::iter::IntoIter",
+                                              "inner"
+                                            |)
                                           |)
-                                        |)
-                                      ]
-                                    |)
+                                        ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
