@@ -71,6 +71,9 @@ Ltac gas_macro_eq H gas set_instruction_result :=
   );
   [|
     eapply Run.Call; [
+      apply Run.Pure
+    |];
+    eapply Run.Call; [
       epose proof (set_instruction_result [H]
         _
         _
@@ -117,6 +120,9 @@ Definition popn_top_macro {WIRE : Set} `{Link WIRE}
 
 Ltac popn_top_macro_eq H IInterpreterTypes popn_top set_instruction_result :=
   unfold popn_top_macro;
+  eapply Run.Call; [
+    apply Run.Pure
+  |];
   eapply Run.Call; [
     apply popn_top
   |];
