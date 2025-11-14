@@ -32,6 +32,7 @@ jobs:
           endGroup
           startGroup "Build"
             sudo chown -R $(whoami) .
+            cargo clean
             rustup component add rust-src rustc-dev llvm-tools-preview
             cargo build --verbose
           endGroup
