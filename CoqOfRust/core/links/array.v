@@ -26,6 +26,18 @@ Module ArrayPairs.
     | S length, {| ArrayPair.x := x; ArrayPair.xs := xs |} => φ x :: to_values xs
     end.
 
+  Fixpoint to_tuple_rev_Set (A : Set) (length : nat) : Set :=
+    match length with
+    | O => unit
+    | S length => to_tuple_rev_Set A length * A
+    end.
+
+  Fixpoint to_tuple_rev {A : Set} {length : nat} (xs : t A length) : to_tuple_rev_Set A length :=
+    match length, xs with
+    | O, ArrayEmpty.Make => tt
+    | S length, {| ArrayPair.x := x; ArrayPair.xs := xs |} => (to_tuple_rev xs, x)
+    end.
+
   Fixpoint of_list {A : Set} (xs : list A) : t A (List.length xs) :=
     match xs with
     | [] => ArrayEmpty.Make
