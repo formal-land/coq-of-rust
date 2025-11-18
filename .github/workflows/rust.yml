@@ -16,8 +16,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Get disk space
+      run: df -h
     - name: Download Git submodules
-      run: git submodule update --init --recursive
+      run: git submodule update --init --recursive --depth 1
+    - name: Get disk space
+      run: df -h
     - uses: coq-community/docker-coq-action@v1
       with:
         custom_image: coqorg/coq:8.20-ocaml-4.14-flambda
