@@ -62,6 +62,7 @@ Proof.
 Qed.
 Global Opaque run_abs_i32.
 
+(* get_or_zero permanece igual — usa referências na simulação *)
 Definition get_or_zero (xs : array.t U32.t {| Integer.value := 4 |}) (i : Usize.t) : U32.t :=
   let i := i.(Integer.value) in
   let xs := ArrayPairs.to_tuple_rev xs.(array.value) in
@@ -130,6 +131,8 @@ Proof.
   }
 Qed.
 Global Opaque run_get_or_zero.
+
+(* ---------- alterações relacionadas a Bool: usa-se o tipo primitivo `bool` agora ---------- *)
 
 Definition bool_and (a b : bool) : bool :=
   if a
@@ -242,4 +245,3 @@ Proof.
 Qed.
 
 Global Opaque run_min3.
-
