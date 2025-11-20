@@ -1326,23 +1326,27 @@ Module array.
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
                 b
               |) in
-            UnOp.not (|
-              M.call_closure (|
-                Ty.path "bool",
-                M.get_trait_method (|
-                  "core::array::equality::SpecArrayEq",
-                  T,
-                  [ N ],
-                  [ U ],
-                  "spec_eq",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| a |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |)
-                ]
-              |)
+            M.call_closure (|
+              Ty.path "bool",
+              UnOp.not,
+              [
+                M.call_closure (|
+                  Ty.path "bool",
+                  M.get_trait_method (|
+                    "core::array::equality::SpecArrayEq",
+                    T,
+                    [ N ],
+                    [ U ],
+                    "spec_eq",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| a |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |)
+                  ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

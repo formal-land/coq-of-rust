@@ -3407,33 +3407,37 @@ Module loop_summary.
                                             M.use
                                               (M.alloc (|
                                                 Ty.path "bool",
-                                                UnOp.not (|
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    M.get_trait_method (|
-                                                      "core::cmp::PartialEq",
-                                                      Ty.path
-                                                        "move_bytecode_verifier::loop_summary::NodeId",
-                                                      [],
-                                                      [
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  UnOp.not,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      M.get_trait_method (|
+                                                        "core::cmp::PartialEq",
                                                         Ty.path
-                                                          "move_bytecode_verifier::loop_summary::NodeId"
-                                                      ],
-                                                      "eq",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (| M.read (| left_val |) |)
-                                                      |);
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (| M.read (| right_val |) |)
-                                                      |)
-                                                    ]
-                                                  |)
+                                                          "move_bytecode_verifier::loop_summary::NodeId",
+                                                        [],
+                                                        [
+                                                          Ty.path
+                                                            "move_bytecode_verifier::loop_summary::NodeId"
+                                                        ],
+                                                        "eq",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| left_val |) |)
+                                                        |);
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| right_val |) |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=
@@ -3784,42 +3788,46 @@ Module loop_summary.
                                                                               M.use
                                                                                 (M.alloc (|
                                                                                   Ty.path "bool",
-                                                                                  UnOp.not (|
-                                                                                    M.call_closure (|
-                                                                                      Ty.path
-                                                                                        "bool",
-                                                                                      M.get_trait_method (|
-                                                                                        "core::cmp::PartialEq",
+                                                                                  M.call_closure (|
+                                                                                    Ty.path "bool",
+                                                                                    UnOp.not,
+                                                                                    [
+                                                                                      M.call_closure (|
                                                                                         Ty.path
-                                                                                          "move_bytecode_verifier::loop_summary::NodeId",
-                                                                                        [],
-                                                                                        [
+                                                                                          "bool",
+                                                                                        M.get_trait_method (|
+                                                                                          "core::cmp::PartialEq",
                                                                                           Ty.path
-                                                                                            "move_bytecode_verifier::loop_summary::NodeId"
-                                                                                        ],
-                                                                                        "eq",
-                                                                                        [],
-                                                                                        []
-                                                                                      |),
-                                                                                      [
-                                                                                        M.borrow (|
-                                                                                          Pointer.Kind.Ref,
-                                                                                          M.deref (|
-                                                                                            M.read (|
-                                                                                              left_val
+                                                                                            "move_bytecode_verifier::loop_summary::NodeId",
+                                                                                          [],
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "move_bytecode_verifier::loop_summary::NodeId"
+                                                                                          ],
+                                                                                          "eq",
+                                                                                          [],
+                                                                                          []
+                                                                                        |),
+                                                                                        [
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            M.deref (|
+                                                                                              M.read (|
+                                                                                                left_val
+                                                                                              |)
+                                                                                            |)
+                                                                                          |);
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            M.deref (|
+                                                                                              M.read (|
+                                                                                                right_val
+                                                                                              |)
                                                                                             |)
                                                                                           |)
-                                                                                        |);
-                                                                                        M.borrow (|
-                                                                                          Pointer.Kind.Ref,
-                                                                                          M.deref (|
-                                                                                            M.read (|
-                                                                                              right_val
-                                                                                            |)
-                                                                                          |)
-                                                                                        |)
-                                                                                      ]
-                                                                                    |)
+                                                                                        ]
+                                                                                      |)
+                                                                                    ]
                                                                                   |)
                                                                                 |)) in
                                                                             let _ :=

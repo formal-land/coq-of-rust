@@ -710,14 +710,18 @@ Module mem.
                       |)
                     |),
                     ltac:(M.monadic
-                      (UnOp.not (|
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            other_assumptions,
-                            "core::mem::transmutability::Assume",
-                            "alignment"
+                      (M.call_closure (|
+                        Ty.path "bool",
+                        UnOp.not,
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              other_assumptions,
+                              "core::mem::transmutability::Assume",
+                              "alignment"
+                            |)
                           |)
-                        |)
+                        ]
                       |)))
                   |));
                 ("lifetimes",
@@ -730,14 +734,18 @@ Module mem.
                       |)
                     |),
                     ltac:(M.monadic
-                      (UnOp.not (|
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            other_assumptions,
-                            "core::mem::transmutability::Assume",
-                            "lifetimes"
+                      (M.call_closure (|
+                        Ty.path "bool",
+                        UnOp.not,
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              other_assumptions,
+                              "core::mem::transmutability::Assume",
+                              "lifetimes"
+                            |)
                           |)
-                        |)
+                        ]
                       |)))
                   |));
                 ("safety",
@@ -750,14 +758,18 @@ Module mem.
                       |)
                     |),
                     ltac:(M.monadic
-                      (UnOp.not (|
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            other_assumptions,
-                            "core::mem::transmutability::Assume",
-                            "safety"
+                      (M.call_closure (|
+                        Ty.path "bool",
+                        UnOp.not,
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              other_assumptions,
+                              "core::mem::transmutability::Assume",
+                              "safety"
+                            |)
                           |)
-                        |)
+                        ]
                       |)))
                   |));
                 ("validity",
@@ -770,14 +782,18 @@ Module mem.
                       |)
                     |),
                     ltac:(M.monadic
-                      (UnOp.not (|
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            other_assumptions,
-                            "core::mem::transmutability::Assume",
-                            "validity"
+                      (M.call_closure (|
+                        Ty.path "bool",
+                        UnOp.not,
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              other_assumptions,
+                              "core::mem::transmutability::Assume",
+                              "validity"
+                            |)
                           |)
-                        |)
+                        ]
                       |)))
                   |))
               ]))

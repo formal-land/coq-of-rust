@@ -3282,8 +3282,17 @@ Module script_signature.
                         (M.alloc (|
                           Ty.path "bool",
                           LogicalOp.or (|
-                            UnOp.not (| M.read (| all_args_have_valid_type |) |),
-                            ltac:(M.monadic (UnOp.not (| M.read (| has_valid_return_type |) |)))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              UnOp.not,
+                              [ M.read (| all_args_have_valid_type |) ]
+                            |),
+                            ltac:(M.monadic
+                              (M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [ M.read (| has_valid_return_type |) ]
+                              |)))
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

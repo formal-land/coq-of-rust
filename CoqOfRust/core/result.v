@@ -958,17 +958,21 @@ Module result.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
               self
             |) in
-          UnOp.not (|
-            M.call_closure (|
-              Ty.path "bool",
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
-                "is_ok",
-                [],
-                []
-              |),
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-            |)
+          M.call_closure (|
+            Ty.path "bool",
+            UnOp.not,
+            [
+              M.call_closure (|
+                Ty.path "bool",
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
+                  "is_ok",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

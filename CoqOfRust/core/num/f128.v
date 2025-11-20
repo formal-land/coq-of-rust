@@ -735,12 +735,16 @@ Module f128.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| Ty.path "f128", self |) in
-          UnOp.not (|
-            M.call_closure (|
-              Ty.path "bool",
-              M.get_associated_function (| Ty.path "f128", "is_sign_negative", [], [] |),
-              [ M.read (| self |) ]
-            |)
+          M.call_closure (|
+            Ty.path "bool",
+            UnOp.not,
+            [
+              M.call_closure (|
+                Ty.path "bool",
+                M.get_associated_function (| Ty.path "f128", "is_sign_negative", [], [] |),
+                [ M.read (| self |) ]
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -891,10 +895,18 @@ Module f128.
                     BinOp.Wrap.bit_and,
                     [
                       M.read (| bits |);
-                      UnOp.not (|
-                        M.read (|
-                          get_associated_constant (| Ty.path "f128", "SIGN_MASK", Ty.path "u128" |)
-                        |)
+                      M.call_closure (|
+                        Ty.path "u128",
+                        UnOp.not,
+                        [
+                          M.read (|
+                            get_associated_constant (|
+                              Ty.path "f128",
+                              "SIGN_MASK",
+                              Ty.path "u128"
+                            |)
+                          |)
+                        ]
                       |)
                     ]
                   |) in
@@ -1077,10 +1089,18 @@ Module f128.
                     BinOp.Wrap.bit_and,
                     [
                       M.read (| bits |);
-                      UnOp.not (|
-                        M.read (|
-                          get_associated_constant (| Ty.path "f128", "SIGN_MASK", Ty.path "u128" |)
-                        |)
+                      M.call_closure (|
+                        Ty.path "u128",
+                        UnOp.not,
+                        [
+                          M.read (|
+                            get_associated_constant (|
+                              Ty.path "f128",
+                              "SIGN_MASK",
+                              Ty.path "u128"
+                            |)
+                          |)
+                        ]
                       |)
                     ]
                   |) in
@@ -2274,18 +2294,22 @@ Module f128.
                         M.use
                           (M.alloc (|
                             Ty.path "bool",
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_function (| "core::intrinsics::likely", [], [] |),
-                                [
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.le,
-                                    [ M.read (| min |); M.read (| max |) ]
-                                  |)
-                                ]
-                              |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              UnOp.not,
+                              [
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_function (| "core::intrinsics::likely", [], [] |),
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.le,
+                                      [ M.read (| min |); M.read (| max |) ]
+                                    |)
+                                  ]
+                                |)
+                              ]
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2383,12 +2407,16 @@ Module f128.
                     M.get_associated_function (| Ty.path "f128", "to_bits", [], [] |),
                     [ M.read (| self |) ]
                   |);
-                  UnOp.not (|
-                    M.call_closure (|
-                      Ty.path "u128",
-                      BinOp.Wrap.shl,
-                      [ Value.Integer IntegerKind.U128 1; Value.Integer IntegerKind.I32 127 ]
-                    |)
+                  M.call_closure (|
+                    Ty.path "u128",
+                    UnOp.not,
+                    [
+                      M.call_closure (|
+                        Ty.path "u128",
+                        BinOp.Wrap.shl,
+                        [ Value.Integer IntegerKind.U128 1; Value.Integer IntegerKind.I32 127 ]
+                      |)
+                    ]
                   |)
                 ]
               |)

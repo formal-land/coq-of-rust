@@ -398,15 +398,19 @@ Module num.
                                                               "decimal_point"
                                                             |)
                                                           |);
-                                                          UnOp.neg (|
-                                                            M.read (|
-                                                              get_associated_constant (|
-                                                                Ty.path
-                                                                  "core::num::dec2flt::decimal::Decimal",
-                                                                "DECIMAL_POINT_RANGE",
-                                                                Ty.path "i32"
+                                                          M.call_closure (|
+                                                            Ty.path "i32",
+                                                            UnOp.neg,
+                                                            [
+                                                              M.read (|
+                                                                get_associated_constant (|
+                                                                  Ty.path
+                                                                    "core::num::dec2flt::decimal::Decimal",
+                                                                  "DECIMAL_POINT_RANGE",
+                                                                  Ty.path "i32"
+                                                                |)
                                                               |)
-                                                            |)
+                                                            ]
                                                           |)
                                                         ]
                                                       |)
@@ -616,14 +620,18 @@ Module num.
                                                       [
                                                         M.cast
                                                           (Ty.path "usize")
-                                                          (UnOp.neg (|
-                                                            M.read (|
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                d,
-                                                                "core::num::dec2flt::decimal::Decimal",
-                                                                "decimal_point"
+                                                          (M.call_closure (|
+                                                            Ty.path "i32",
+                                                            UnOp.neg,
+                                                            [
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  d,
+                                                                  "core::num::dec2flt::decimal::Decimal",
+                                                                  "decimal_point"
+                                                                |)
                                                               |)
-                                                            |)
+                                                            ]
                                                           |))
                                                       ]
                                                   ]

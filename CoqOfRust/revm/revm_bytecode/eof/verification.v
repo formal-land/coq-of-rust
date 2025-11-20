@@ -573,18 +573,22 @@ Module eof.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.read (|
                                       M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| eof |) |),
-                                        "revm_bytecode::eof::Eof",
-                                        "body"
-                                      |),
-                                      "revm_bytecode::eof::body::EofBody",
-                                      "is_data_filled"
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| eof |) |),
+                                          "revm_bytecode::eof::Eof",
+                                          "body"
+                                        |),
+                                        "revm_bytecode::eof::body::EofBody",
+                                        "is_data_filled"
+                                      |)
                                     |)
-                                  |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -2375,22 +2379,27 @@ Module eof.
                                     ]
                                   |),
                                   ltac:(M.monadic
-                                    (UnOp.not (|
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        M.get_associated_function (|
-                                          Ty.path "revm_bytecode::eof::types_section::TypesSection",
-                                          "is_non_returning",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| first_types |) |)
-                                          |)
-                                        ]
-                                      |)
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "revm_bytecode::eof::types_section::TypesSection",
+                                            "is_non_returning",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| first_types |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
                                     |)))
                                 |)
                               |)) in
@@ -2932,65 +2941,70 @@ Module eof.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::into_iter::IntoIter")
-                                        []
-                                        [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
-                                      [],
-                                      [],
-                                      "all",
-                                      [],
-                                      [ Ty.function [ Ty.path "bool" ] (Ty.path "bool") ]
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.alloc (|
-                                          Ty.apply
-                                            (Ty.path "alloc::vec::into_iter::IntoIter")
-                                            []
-                                            [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
-                                          M.call_closure (|
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::into_iter::IntoIter")
+                                          []
+                                          [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
+                                        [],
+                                        [],
+                                        "all",
+                                        [],
+                                        [ Ty.function [ Ty.path "bool" ] (Ty.path "bool") ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.alloc (|
                                             Ty.apply
                                               (Ty.path "alloc::vec::into_iter::IntoIter")
                                               []
                                               [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
-                                            M.get_trait_method (|
-                                              "core::iter::traits::collect::IntoIterator",
+                                            M.call_closure (|
                                               Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
+                                                (Ty.path "alloc::vec::into_iter::IntoIter")
                                                 []
                                                 [ Ty.path "bool"; Ty.path "alloc::alloc::Global" ],
-                                              [],
-                                              [],
-                                              "into_iter",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  tracker,
-                                                  "revm_bytecode::eof::verification::AccessTracker",
-                                                  "codes"
+                                              M.get_trait_method (|
+                                                "core::iter::traits::collect::IntoIterator",
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [ Ty.path "bool"; Ty.path "alloc::alloc::Global"
+                                                  ],
+                                                [],
+                                                [],
+                                                "into_iter",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    tracker,
+                                                    "revm_bytecode::eof::verification::AccessTracker",
+                                                    "codes"
+                                                  |)
                                                 |)
-                                              |)
-                                            ]
+                                              ]
+                                            |)
                                           |)
+                                        |);
+                                        M.get_function (|
+                                          "core::convert::identity",
+                                          [],
+                                          [ Ty.path "bool" ]
                                         |)
-                                      |);
-                                      M.get_function (|
-                                        "core::convert::identity",
-                                        [],
-                                        [ Ty.path "bool" ]
-                                      |)
-                                    ]
-                                  |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -3035,60 +3049,51 @@ Module eof.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      Ty.apply
-                                        (Ty.path "core::slice::iter::Iter")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            []
-                                            [ Ty.path "revm_bytecode::eof::verification::CodeType" ]
-                                        ],
-                                      [],
-                                      [],
-                                      "all",
-                                      [],
-                                      [
-                                        Ty.function
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          []
                                           [
                                             Ty.apply
-                                              (Ty.path "&")
+                                              (Ty.path "core::option::Option")
                                               []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::option::Option")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "revm_bytecode::eof::verification::CodeType"
-                                                  ]
+                                              [ Ty.path "revm_bytecode::eof::verification::CodeType"
                                               ]
-                                          ]
-                                          (Ty.path "bool")
-                                      ]
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.alloc (|
-                                          Ty.apply
-                                            (Ty.path "core::slice::iter::Iter")
-                                            []
+                                          ],
+                                        [],
+                                        [],
+                                        "all",
+                                        [],
+                                        [
+                                          Ty.function
                                             [
                                               Ty.apply
-                                                (Ty.path "core::option::Option")
+                                                (Ty.path "&")
                                                 []
                                                 [
-                                                  Ty.path
-                                                    "revm_bytecode::eof::verification::CodeType"
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "revm_bytecode::eof::verification::CodeType"
+                                                    ]
                                                 ]
-                                            ],
-                                          M.call_closure (|
+                                            ]
+                                            (Ty.path "bool")
+                                        ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.alloc (|
                                             Ty.apply
                                               (Ty.path "core::slice::iter::Iter")
                                               []
@@ -3101,9 +3106,9 @@ Module eof.
                                                       "revm_bytecode::eof::verification::CodeType"
                                                   ]
                                               ],
-                                            M.get_associated_function (|
+                                            M.call_closure (|
                                               Ty.apply
-                                                (Ty.path "slice")
+                                                (Ty.path "core::slice::iter::Iter")
                                                 []
                                                 [
                                                   Ty.apply
@@ -3114,21 +3119,49 @@ Module eof.
                                                         "revm_bytecode::eof::verification::CodeType"
                                                     ]
                                                 ],
-                                              "iter",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
                                                     Ty.apply
-                                                      (Ty.path "&")
+                                                      (Ty.path "core::option::Option")
                                                       []
                                                       [
+                                                        Ty.path
+                                                          "revm_bytecode::eof::verification::CodeType"
+                                                      ]
+                                                  ],
+                                                "iter",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "revm_bytecode::eof::verification::CodeType"
+                                                                ]
+                                                            ]
+                                                        ],
+                                                      M.get_trait_method (|
+                                                        "core::ops::deref::Deref",
                                                         Ty.apply
-                                                          (Ty.path "slice")
+                                                          (Ty.path "alloc::vec::Vec")
                                                           []
                                                           [
                                                             Ty.apply
@@ -3137,13 +3170,43 @@ Module eof.
                                                               [
                                                                 Ty.path
                                                                   "revm_bytecode::eof::verification::CodeType"
-                                                              ]
-                                                          ]
-                                                      ],
-                                                    M.get_trait_method (|
-                                                      "core::ops::deref::Deref",
+                                                              ];
+                                                            Ty.path "alloc::alloc::Global"
+                                                          ],
+                                                        [],
+                                                        [],
+                                                        "deref",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            tracker,
+                                                            "revm_bytecode::eof::verification::AccessTracker",
+                                                            "subcontainers"
+                                                          |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
+                                          |)
+                                        |);
+                                        M.closure
+                                          (fun γ =>
+                                            ltac:(M.monadic
+                                              match γ with
+                                              | [ α0 ] =>
+                                                ltac:(M.monadic
+                                                  (M.match_operator (|
+                                                    Ty.path "bool",
+                                                    M.alloc (|
                                                       Ty.apply
-                                                        (Ty.path "alloc::vec::Vec")
+                                                        (Ty.path "&")
                                                         []
                                                         [
                                                           Ty.apply
@@ -3152,101 +3215,57 @@ Module eof.
                                                             [
                                                               Ty.path
                                                                 "revm_bytecode::eof::verification::CodeType"
-                                                            ];
-                                                          Ty.path "alloc::alloc::Global"
+                                                            ]
                                                         ],
-                                                      [],
-                                                      [],
-                                                      "deref",
-                                                      [],
-                                                      []
+                                                      α0
                                                     |),
                                                     [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          tracker,
-                                                          "revm_bytecode::eof::verification::AccessTracker",
-                                                          "subcontainers"
-                                                        |)
-                                                      |)
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let i :=
+                                                            M.copy (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "revm_bytecode::eof::verification::CodeType"
+                                                                    ]
+                                                                ],
+                                                              γ
+                                                            |) in
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "revm_bytecode::eof::verification::CodeType"
+                                                                ],
+                                                              "is_some",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| i |) |)
+                                                              |)
+                                                            ]
+                                                          |)))
                                                     ]
-                                                  |)
-                                                |)
-                                              |)
-                                            ]
-                                          |)
-                                        |)
-                                      |);
-                                      M.closure
-                                        (fun γ =>
-                                          ltac:(M.monadic
-                                            match γ with
-                                            | [ α0 ] =>
-                                              ltac:(M.monadic
-                                                (M.match_operator (|
-                                                  Ty.path "bool",
-                                                  M.alloc (|
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "core::option::Option")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "revm_bytecode::eof::verification::CodeType"
-                                                          ]
-                                                      ],
-                                                    α0
-                                                  |),
-                                                  [
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let i :=
-                                                          M.copy (|
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "core::option::Option")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "revm_bytecode::eof::verification::CodeType"
-                                                                  ]
-                                                              ],
-                                                            γ
-                                                          |) in
-                                                        M.call_closure (|
-                                                          Ty.path "bool",
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path "core::option::Option")
-                                                              []
-                                                              [
-                                                                Ty.path
-                                                                  "revm_bytecode::eof::verification::CodeType"
-                                                              ],
-                                                            "is_some",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (| M.read (| i |) |)
-                                                            |)
-                                                          ]
-                                                        |)))
-                                                  ]
-                                                |)))
-                                            | _ => M.impossible "wrong number of arguments"
-                                            end))
-                                    ]
-                                  |)
+                                                  |)))
+                                              | _ => M.impossible "wrong number of arguments"
+                                              end))
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -3344,18 +3363,22 @@ Module eof.
                                     ]
                                   |),
                                   ltac:(M.monadic
-                                    (UnOp.not (|
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [
+                                        M.read (|
                                           M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| eof |) |),
-                                            "revm_bytecode::eof::Eof",
-                                            "body"
-                                          |),
-                                          "revm_bytecode::eof::body::EofBody",
-                                          "is_data_filled"
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| eof |) |),
+                                              "revm_bytecode::eof::Eof",
+                                              "body"
+                                            |),
+                                            "revm_bytecode::eof::body::EofBody",
+                                            "is_data_filled"
+                                          |)
                                         |)
-                                      |)
+                                      ]
                                     |)))
                                 |)
                               |)) in
@@ -7101,7 +7124,11 @@ Module eof.
                           M.use
                             (M.alloc (|
                               Ty.path "bool",
-                              UnOp.not (| M.read (| was_accessed |) |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [ M.read (| was_accessed |) ]
+                              |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.read (|
@@ -8835,8 +8862,14 @@ Module eof.
                                                             M.use
                                                               (M.alloc (|
                                                                 Ty.path "bool",
-                                                                UnOp.not (|
-                                                                  M.read (| is_after_termination |)
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  UnOp.not,
+                                                                  [
+                                                                    M.read (|
+                                                                      is_after_termination
+                                                                    |)
+                                                                  ]
                                                                 |)
                                                               |)) in
                                                           let _ :=
@@ -8937,14 +8970,18 @@ Module eof.
                                                                 LogicalOp.and (|
                                                                   M.read (| is_after_termination |),
                                                                   ltac:(M.monadic
-                                                                    (UnOp.not (|
-                                                                      M.read (|
-                                                                        M.SubPointer.get_struct_record_field (|
-                                                                          this_instruction,
-                                                                          "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo",
-                                                                          "is_jumpdest"
+                                                                    (M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      UnOp.not,
+                                                                      [
+                                                                        M.read (|
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            this_instruction,
+                                                                            "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo",
+                                                                            "is_jumpdest"
+                                                                          |)
                                                                         |)
-                                                                      |)
+                                                                      ]
                                                                     |)))
                                                                 |)
                                                               |)) in
@@ -10658,7 +10695,11 @@ Module eof.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (| M.read (| is_after_termination |) |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [ M.read (| is_after_termination |) ]
+                                |)
                               |)) in
                           let _ :=
                             is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

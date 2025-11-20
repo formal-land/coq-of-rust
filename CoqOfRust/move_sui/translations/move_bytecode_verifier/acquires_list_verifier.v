@@ -1586,47 +1586,51 @@ Module acquires_list_verifier.
                                                               M.use
                                                                 (M.alloc (|
                                                                   Ty.path "bool",
-                                                                  UnOp.not (|
-                                                                    M.call_closure (|
-                                                                      Ty.path "bool",
-                                                                      M.get_associated_function (|
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "alloc::collections::btree::set::BTreeSet")
-                                                                          []
+                                                                  M.call_closure (|
+                                                                    Ty.path "bool",
+                                                                    UnOp.not,
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        Ty.path "bool",
+                                                                        M.get_associated_function (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::collections::btree::set::BTreeSet")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::StructDefinitionIndex";
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ],
+                                                                          "contains",
+                                                                          [],
                                                                           [
                                                                             Ty.path
-                                                                              "move_binary_format::file_format::StructDefinitionIndex";
-                                                                            Ty.path
-                                                                              "alloc::alloc::Global"
-                                                                          ],
-                                                                        "contains",
-                                                                        [],
+                                                                              "move_binary_format::file_format::StructDefinitionIndex"
+                                                                          ]
+                                                                        |),
                                                                         [
-                                                                          Ty.path
-                                                                            "move_binary_format::file_format::StructDefinitionIndex"
-                                                                        ]
-                                                                      |),
-                                                                      [
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            verifier,
-                                                                            "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
-                                                                            "actual_acquires"
-                                                                          |)
-                                                                        |);
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.deref (|
-                                                                            M.borrow (|
-                                                                              Pointer.Kind.Ref,
-                                                                              annotation
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              verifier,
+                                                                              "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
+                                                                              "actual_acquires"
+                                                                            |)
+                                                                          |);
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                annotation
+                                                                              |)
                                                                             |)
                                                                           |)
-                                                                        |)
-                                                                      ]
-                                                                    |)
+                                                                        ]
+                                                                      |)
+                                                                    ]
                                                                   |)
                                                                 |)) in
                                                             let _ :=
@@ -2186,30 +2190,34 @@ Module acquires_list_verifier.
                                                               M.use
                                                                 (M.alloc (|
                                                                   Ty.path "bool",
-                                                                  UnOp.not (|
-                                                                    M.call_closure (|
-                                                                      Ty.path "bool",
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "move_binary_format::file_format::AbilitySet",
-                                                                        "has_key",
-                                                                        [],
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        M.read (|
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            M.deref (|
-                                                                              M.read (|
-                                                                                struct_handle
-                                                                              |)
-                                                                            |),
-                                                                            "move_binary_format::file_format::StructHandle",
-                                                                            "abilities"
+                                                                  M.call_closure (|
+                                                                    Ty.path "bool",
+                                                                    UnOp.not,
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        Ty.path "bool",
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::AbilitySet",
+                                                                          "has_key",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.read (|
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  struct_handle
+                                                                                |)
+                                                                              |),
+                                                                              "move_binary_format::file_format::StructHandle",
+                                                                              "abilities"
+                                                                            |)
                                                                           |)
-                                                                        |)
-                                                                      ]
-                                                                    |)
+                                                                        ]
+                                                                      |)
+                                                                    ]
                                                                   |)
                                                                 |)) in
                                                             let _ :=
@@ -3715,48 +3723,52 @@ Module acquires_list_verifier.
                                                           M.use
                                                             (M.alloc (|
                                                               Ty.path "bool",
-                                                              UnOp.not (|
-                                                                M.call_closure (|
-                                                                  Ty.path "bool",
-                                                                  M.get_associated_function (|
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "alloc::collections::btree::set::BTreeSet")
-                                                                      []
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                UnOp.not,
+                                                                [
+                                                                  M.call_closure (|
+                                                                    Ty.path "bool",
+                                                                    M.get_associated_function (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "alloc::collections::btree::set::BTreeSet")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::StructDefinitionIndex";
+                                                                          Ty.path
+                                                                            "alloc::alloc::Global"
+                                                                        ],
+                                                                      "contains",
+                                                                      [],
                                                                       [
                                                                         Ty.path
-                                                                          "move_binary_format::file_format::StructDefinitionIndex";
-                                                                        Ty.path
-                                                                          "alloc::alloc::Global"
-                                                                      ],
-                                                                    "contains",
-                                                                    [],
+                                                                          "move_binary_format::file_format::StructDefinitionIndex"
+                                                                      ]
+                                                                    |),
                                                                     [
-                                                                      Ty.path
-                                                                        "move_binary_format::file_format::StructDefinitionIndex"
-                                                                    ]
-                                                                  |),
-                                                                  [
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.SubPointer.get_struct_record_field (|
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.deref (|
+                                                                            M.read (| self |)
+                                                                          |),
+                                                                          "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
+                                                                          "annotated_acquires"
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
                                                                         M.deref (|
-                                                                          M.read (| self |)
-                                                                        |),
-                                                                        "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
-                                                                        "annotated_acquires"
-                                                                      |)
-                                                                    |);
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.read (|
-                                                                          acquired_resource
+                                                                          M.read (|
+                                                                            acquired_resource
+                                                                          |)
                                                                         |)
                                                                       |)
-                                                                    |)
-                                                                  ]
-                                                                |)
+                                                                    ]
+                                                                  |)
+                                                                ]
                                                               |)
                                                             |)) in
                                                         let _ :=

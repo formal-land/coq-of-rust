@@ -197,14 +197,18 @@ Module Impl_integration_flipper_Flipper.
                 "integration_flipper::Flipper",
                 "value"
               |),
-              UnOp.not (|
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "integration_flipper::Flipper",
-                    "value"
+              M.call_closure (|
+                Ty.path "bool",
+                UnOp.not,
+                [
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "integration_flipper::Flipper",
+                      "value"
+                    |)
                   |)
-                |)
+                ]
               |)
             |) in
           M.alloc (| Ty.tuple [], Value.Tuple [] |)

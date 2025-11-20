@@ -441,14 +441,18 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 "conditional_compilation::ConditionalCompilation",
                 "value"
               |),
-              UnOp.not (|
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "conditional_compilation::ConditionalCompilation",
-                    "value"
+              M.call_closure (|
+                Ty.path "bool",
+                UnOp.not,
+                [
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "conditional_compilation::ConditionalCompilation",
+                      "value"
+                    |)
                   |)
-                |)
+                ]
               |)
             |) in
           let~ caller : Ty.path "conditional_compilation::AccountId" :=
@@ -626,14 +630,18 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 "conditional_compilation::ConditionalCompilation",
                 "value"
               |),
-              UnOp.not (|
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "conditional_compilation::ConditionalCompilation",
-                    "value"
+              M.call_closure (|
+                Ty.path "bool",
+                UnOp.not,
+                [
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "conditional_compilation::ConditionalCompilation",
+                      "value"
+                    |)
                   |)
-                |)
+                ]
               |)
             |) in
           let~ _ : Ty.tuple [] :=
@@ -725,14 +733,18 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
                 "conditional_compilation::ConditionalCompilation",
                 "value"
               |),
-              UnOp.not (|
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "conditional_compilation::ConditionalCompilation",
-                    "value"
+              M.call_closure (|
+                Ty.path "bool",
+                UnOp.not,
+                [
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "conditional_compilation::ConditionalCompilation",
+                      "value"
+                    |)
                   |)
-                |)
+                ]
               |)
             |) in
           M.alloc (| Ty.tuple [], Value.Tuple [] |)

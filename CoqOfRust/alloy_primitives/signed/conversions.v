@@ -1241,7 +1241,11 @@ Module signed.
                                         []
                                       |),
                                       [
-                                        UnOp.not (| M.read (| u |) |);
+                                        M.call_closure (|
+                                          Ty.path "i128",
+                                          UnOp.not,
+                                          [ M.read (| u |) ]
+                                        |);
                                         Value.Integer IntegerKind.I128 1
                                       ]
                                     |)
@@ -1381,7 +1385,10 @@ Module signed.
                     M.call_closure (|
                       Ty.path "u128",
                       M.get_associated_function (| Ty.path "u128", "wrapping_add", [], [] |),
-                      [ UnOp.not (| M.read (| u |) |); Value.Integer IntegerKind.U128 1 ]
+                      [
+                        M.call_closure (| Ty.path "u128", UnOp.not, [ M.read (| u |) ] |);
+                        Value.Integer IntegerKind.U128 1
+                      ]
                     |) in
                   let~ stc :
                       Ty.apply
@@ -4238,7 +4245,10 @@ Module signed.
                     M.call_closure (|
                       Ty.path "u8",
                       M.get_associated_function (| Ty.path "u8", "wrapping_add", [], [] |),
-                      [ UnOp.not (| M.read (| uint |) |); Value.Integer IntegerKind.U8 1 ]
+                      [
+                        M.call_closure (| Ty.path "u8", UnOp.not, [ M.read (| uint |) ] |);
+                        Value.Integer IntegerKind.U8 1
+                      ]
                     |) in
                   let~ tc : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
                     M.call_closure (|
@@ -5331,7 +5341,10 @@ Module signed.
                     M.call_closure (|
                       Ty.path "u16",
                       M.get_associated_function (| Ty.path "u16", "wrapping_add", [], [] |),
-                      [ UnOp.not (| M.read (| uint |) |); Value.Integer IntegerKind.U16 1 ]
+                      [
+                        M.call_closure (| Ty.path "u16", UnOp.not, [ M.read (| uint |) ] |);
+                        Value.Integer IntegerKind.U16 1
+                      ]
                     |) in
                   let~ tc : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
                     M.call_closure (|
@@ -6424,7 +6437,10 @@ Module signed.
                     M.call_closure (|
                       Ty.path "u32",
                       M.get_associated_function (| Ty.path "u32", "wrapping_add", [], [] |),
-                      [ UnOp.not (| M.read (| uint |) |); Value.Integer IntegerKind.U32 1 ]
+                      [
+                        M.call_closure (| Ty.path "u32", UnOp.not, [ M.read (| uint |) ] |);
+                        Value.Integer IntegerKind.U32 1
+                      ]
                     |) in
                   let~ tc : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
                     M.call_closure (|
@@ -7517,7 +7533,10 @@ Module signed.
                     M.call_closure (|
                       Ty.path "u64",
                       M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [ UnOp.not (| M.read (| uint |) |); Value.Integer IntegerKind.U64 1 ]
+                      [
+                        M.call_closure (| Ty.path "u64", UnOp.not, [ M.read (| uint |) ] |);
+                        Value.Integer IntegerKind.U64 1
+                      ]
                     |) in
                   let~ tc : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
                     M.call_closure (|
@@ -8610,7 +8629,10 @@ Module signed.
                     M.call_closure (|
                       Ty.path "usize",
                       M.get_associated_function (| Ty.path "usize", "wrapping_add", [], [] |),
-                      [ UnOp.not (| M.read (| uint |) |); Value.Integer IntegerKind.Usize 1 ]
+                      [
+                        M.call_closure (| Ty.path "usize", UnOp.not, [ M.read (| uint |) ] |);
+                        Value.Integer IntegerKind.Usize 1
+                      ]
                     |) in
                   let~ tc : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
                     M.call_closure (|

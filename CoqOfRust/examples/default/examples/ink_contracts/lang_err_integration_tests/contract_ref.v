@@ -331,14 +331,18 @@ Module Impl_contract_ref_FlipperRef.
                 "contract_ref::FlipperRef",
                 "value"
               |),
-              UnOp.not (|
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "contract_ref::FlipperRef",
-                    "value"
+              M.call_closure (|
+                Ty.path "bool",
+                UnOp.not,
+                [
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "contract_ref::FlipperRef",
+                      "value"
+                    |)
                   |)
-                |)
+                ]
               |)
             |) in
           M.alloc (| Ty.tuple [], Value.Tuple [] |)

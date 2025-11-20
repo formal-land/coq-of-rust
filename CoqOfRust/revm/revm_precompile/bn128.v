@@ -4251,34 +4251,39 @@ Module bn128.
                                                                                                             (M.alloc (|
                                                                                                               Ty.path
                                                                                                                 "bool",
-                                                                                                              UnOp.not (|
-                                                                                                                M.call_closure (|
-                                                                                                                  Ty.path
-                                                                                                                    "bool",
-                                                                                                                  BinOp.lt,
-                                                                                                                  [
-                                                                                                                    M.read (|
-                                                                                                                      n
-                                                                                                                    |);
-                                                                                                                    M.call_closure (|
-                                                                                                                      Ty.path
-                                                                                                                        "usize",
-                                                                                                                      BinOp.Wrap.div,
-                                                                                                                      [
-                                                                                                                        M.read (|
-                                                                                                                          get_constant (|
-                                                                                                                            "revm_precompile::bn128::PAIR_ELEMENT_LEN",
-                                                                                                                            Ty.path
-                                                                                                                              "usize"
-                                                                                                                          |)
-                                                                                                                        |);
-                                                                                                                        Value.Integer
-                                                                                                                          IntegerKind.Usize
-                                                                                                                          32
-                                                                                                                      ]
-                                                                                                                    |)
-                                                                                                                  ]
-                                                                                                                |)
+                                                                                                              M.call_closure (|
+                                                                                                                Ty.path
+                                                                                                                  "bool",
+                                                                                                                UnOp.not,
+                                                                                                                [
+                                                                                                                  M.call_closure (|
+                                                                                                                    Ty.path
+                                                                                                                      "bool",
+                                                                                                                    BinOp.lt,
+                                                                                                                    [
+                                                                                                                      M.read (|
+                                                                                                                        n
+                                                                                                                      |);
+                                                                                                                      M.call_closure (|
+                                                                                                                        Ty.path
+                                                                                                                          "usize",
+                                                                                                                        BinOp.Wrap.div,
+                                                                                                                        [
+                                                                                                                          M.read (|
+                                                                                                                            get_constant (|
+                                                                                                                              "revm_precompile::bn128::PAIR_ELEMENT_LEN",
+                                                                                                                              Ty.path
+                                                                                                                                "usize"
+                                                                                                                            |)
+                                                                                                                          |);
+                                                                                                                          Value.Integer
+                                                                                                                            IntegerKind.Usize
+                                                                                                                            32
+                                                                                                                        ]
+                                                                                                                      |)
+                                                                                                                    ]
+                                                                                                                  |)
+                                                                                                                ]
                                                                                                               |)
                                                                                                             |)) in
                                                                                                         let

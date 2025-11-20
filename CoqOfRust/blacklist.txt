@@ -32,3 +32,5 @@ plonky3/merkle-tree/src/hiding_mmcs.v
 plonky3/merkle-tree/src/mmcs.v
 plonky3/monty-31/src/monty_31.v
 plonky3/poseidon2/src/external.v
+# Legacy folder
+legacy/

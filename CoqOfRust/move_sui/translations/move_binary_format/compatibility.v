@@ -1446,57 +1446,14 @@ Module compatibility.
                                                                         (M.alloc (|
                                                                           Ty.path "bool",
                                                                           LogicalOp.or (|
-                                                                            UnOp.not (|
-                                                                              M.call_closure (|
-                                                                                Ty.path "bool",
-                                                                                M.get_function (|
-                                                                                  "move_binary_format::compatibility::struct_abilities_compatible",
-                                                                                  [],
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  M.read (|
-                                                                                    M.SubPointer.get_struct_record_field (|
-                                                                                      M.deref (|
-                                                                                        M.read (|
-                                                                                          self
-                                                                                        |)
-                                                                                      |),
-                                                                                      "move_binary_format::compatibility::Compatibility",
-                                                                                      "disallowed_new_abilities"
-                                                                                    |)
-                                                                                  |);
-                                                                                  M.read (|
-                                                                                    M.SubPointer.get_struct_record_field (|
-                                                                                      M.deref (|
-                                                                                        M.read (|
-                                                                                          old_struct
-                                                                                        |)
-                                                                                      |),
-                                                                                      "move_binary_format::normalized::Struct",
-                                                                                      "abilities"
-                                                                                    |)
-                                                                                  |);
-                                                                                  M.read (|
-                                                                                    M.SubPointer.get_struct_record_field (|
-                                                                                      M.deref (|
-                                                                                        M.read (|
-                                                                                          new_struct
-                                                                                        |)
-                                                                                      |),
-                                                                                      "move_binary_format::normalized::Struct",
-                                                                                      "abilities"
-                                                                                    |)
-                                                                                  |)
-                                                                                ]
-                                                                              |)
-                                                                            |),
-                                                                            ltac:(M.monadic
-                                                                              (UnOp.not (|
+                                                                            M.call_closure (|
+                                                                              Ty.path "bool",
+                                                                              UnOp.not,
+                                                                              [
                                                                                 M.call_closure (|
                                                                                   Ty.path "bool",
                                                                                   M.get_function (|
-                                                                                    "move_binary_format::compatibility::struct_type_parameters_compatible",
+                                                                                    "move_binary_format::compatibility::struct_abilities_compatible",
                                                                                     [],
                                                                                     []
                                                                                   |),
@@ -1509,127 +1466,178 @@ Module compatibility.
                                                                                           |)
                                                                                         |),
                                                                                         "move_binary_format::compatibility::Compatibility",
-                                                                                        "disallow_change_struct_type_params"
+                                                                                        "disallowed_new_abilities"
                                                                                       |)
                                                                                     |);
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.Ref,
-                                                                                      M.deref (|
-                                                                                        M.call_closure (|
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "&")
-                                                                                            []
-                                                                                            [
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "slice")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "move_binary_format::file_format::StructTypeParameter"
-                                                                                                ]
-                                                                                            ],
-                                                                                          M.get_trait_method (|
-                                                                                            "core::ops::deref::Deref",
-                                                                                            Ty.apply
-                                                                                              (Ty.path
-                                                                                                "alloc::vec::Vec")
-                                                                                              []
-                                                                                              [
-                                                                                                Ty.path
-                                                                                                  "move_binary_format::file_format::StructTypeParameter";
-                                                                                                Ty.path
-                                                                                                  "alloc::alloc::Global"
-                                                                                              ],
-                                                                                            [],
-                                                                                            [],
-                                                                                            "deref",
-                                                                                            [],
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            M.borrow (|
-                                                                                              Pointer.Kind.Ref,
-                                                                                              M.deref (|
-                                                                                                M.borrow (|
-                                                                                                  Pointer.Kind.Ref,
-                                                                                                  M.SubPointer.get_struct_record_field (|
-                                                                                                    M.deref (|
-                                                                                                      M.read (|
-                                                                                                        old_struct
-                                                                                                      |)
-                                                                                                    |),
-                                                                                                    "move_binary_format::normalized::Struct",
-                                                                                                    "type_parameters"
-                                                                                                  |)
-                                                                                                |)
-                                                                                              |)
-                                                                                            |)
-                                                                                          ]
-                                                                                        |)
+                                                                                    M.read (|
+                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            old_struct
+                                                                                          |)
+                                                                                        |),
+                                                                                        "move_binary_format::normalized::Struct",
+                                                                                        "abilities"
                                                                                       |)
                                                                                     |);
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.Ref,
-                                                                                      M.deref (|
-                                                                                        M.call_closure (|
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "&")
-                                                                                            []
-                                                                                            [
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "slice")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "move_binary_format::file_format::StructTypeParameter"
-                                                                                                ]
-                                                                                            ],
-                                                                                          M.get_trait_method (|
-                                                                                            "core::ops::deref::Deref",
-                                                                                            Ty.apply
-                                                                                              (Ty.path
-                                                                                                "alloc::vec::Vec")
-                                                                                              []
-                                                                                              [
-                                                                                                Ty.path
-                                                                                                  "move_binary_format::file_format::StructTypeParameter";
-                                                                                                Ty.path
-                                                                                                  "alloc::alloc::Global"
-                                                                                              ],
-                                                                                            [],
-                                                                                            [],
-                                                                                            "deref",
-                                                                                            [],
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            M.borrow (|
-                                                                                              Pointer.Kind.Ref,
-                                                                                              M.deref (|
-                                                                                                M.borrow (|
-                                                                                                  Pointer.Kind.Ref,
-                                                                                                  M.SubPointer.get_struct_record_field (|
-                                                                                                    M.deref (|
-                                                                                                      M.read (|
-                                                                                                        new_struct
-                                                                                                      |)
-                                                                                                    |),
-                                                                                                    "move_binary_format::normalized::Struct",
-                                                                                                    "type_parameters"
-                                                                                                  |)
-                                                                                                |)
-                                                                                              |)
-                                                                                            |)
-                                                                                          ]
-                                                                                        |)
+                                                                                    M.read (|
+                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            new_struct
+                                                                                          |)
+                                                                                        |),
+                                                                                        "move_binary_format::normalized::Struct",
+                                                                                        "abilities"
                                                                                       |)
                                                                                     |)
                                                                                   ]
                                                                                 |)
+                                                                              ]
+                                                                            |),
+                                                                            ltac:(M.monadic
+                                                                              (M.call_closure (|
+                                                                                Ty.path "bool",
+                                                                                UnOp.not,
+                                                                                [
+                                                                                  M.call_closure (|
+                                                                                    Ty.path "bool",
+                                                                                    M.get_function (|
+                                                                                      "move_binary_format::compatibility::struct_type_parameters_compatible",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.read (|
+                                                                                        M.SubPointer.get_struct_record_field (|
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              self
+                                                                                            |)
+                                                                                          |),
+                                                                                          "move_binary_format::compatibility::Compatibility",
+                                                                                          "disallow_change_struct_type_params"
+                                                                                        |)
+                                                                                      |);
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.call_closure (|
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "&")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "slice")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "move_binary_format::file_format::StructTypeParameter"
+                                                                                                  ]
+                                                                                              ],
+                                                                                            M.get_trait_method (|
+                                                                                              "core::ops::deref::Deref",
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "alloc::vec::Vec")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "move_binary_format::file_format::StructTypeParameter";
+                                                                                                  Ty.path
+                                                                                                    "alloc::alloc::Global"
+                                                                                                ],
+                                                                                              [],
+                                                                                              [],
+                                                                                              "deref",
+                                                                                              [],
+                                                                                              []
+                                                                                            |),
+                                                                                            [
+                                                                                              M.borrow (|
+                                                                                                Pointer.Kind.Ref,
+                                                                                                M.deref (|
+                                                                                                  M.borrow (|
+                                                                                                    Pointer.Kind.Ref,
+                                                                                                    M.SubPointer.get_struct_record_field (|
+                                                                                                      M.deref (|
+                                                                                                        M.read (|
+                                                                                                          old_struct
+                                                                                                        |)
+                                                                                                      |),
+                                                                                                      "move_binary_format::normalized::Struct",
+                                                                                                      "type_parameters"
+                                                                                                    |)
+                                                                                                  |)
+                                                                                                |)
+                                                                                              |)
+                                                                                            ]
+                                                                                          |)
+                                                                                        |)
+                                                                                      |);
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.call_closure (|
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "&")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "slice")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "move_binary_format::file_format::StructTypeParameter"
+                                                                                                  ]
+                                                                                              ],
+                                                                                            M.get_trait_method (|
+                                                                                              "core::ops::deref::Deref",
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "alloc::vec::Vec")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "move_binary_format::file_format::StructTypeParameter";
+                                                                                                  Ty.path
+                                                                                                    "alloc::alloc::Global"
+                                                                                                ],
+                                                                                              [],
+                                                                                              [],
+                                                                                              "deref",
+                                                                                              [],
+                                                                                              []
+                                                                                            |),
+                                                                                            [
+                                                                                              M.borrow (|
+                                                                                                Pointer.Kind.Ref,
+                                                                                                M.deref (|
+                                                                                                  M.borrow (|
+                                                                                                    Pointer.Kind.Ref,
+                                                                                                    M.SubPointer.get_struct_record_field (|
+                                                                                                      M.deref (|
+                                                                                                        M.read (|
+                                                                                                          new_struct
+                                                                                                        |)
+                                                                                                      |),
+                                                                                                      "move_binary_format::normalized::Struct",
+                                                                                                      "type_parameters"
+                                                                                                    |)
+                                                                                                  |)
+                                                                                                |)
+                                                                                              |)
+                                                                                            ]
+                                                                                          |)
+                                                                                        |)
+                                                                                      |)
+                                                                                    ]
+                                                                                  |)
+                                                                                ]
                                                                               |)))
                                                                           |)
                                                                         |)) in
@@ -2340,18 +2348,23 @@ Module compatibility.
                                                                                       |)
                                                                                     |),
                                                                                     ltac:(M.monadic
-                                                                                      (UnOp.not (|
-                                                                                        M.read (|
-                                                                                          M.SubPointer.get_struct_record_field (|
-                                                                                            M.deref (|
-                                                                                              M.read (|
-                                                                                                new_func
-                                                                                              |)
-                                                                                            |),
-                                                                                            "move_binary_format::normalized::Function",
-                                                                                            "is_entry"
+                                                                                      (M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "bool",
+                                                                                        UnOp.not,
+                                                                                        [
+                                                                                          M.read (|
+                                                                                            M.SubPointer.get_struct_record_field (|
+                                                                                              M.deref (|
+                                                                                                M.read (|
+                                                                                                  new_func
+                                                                                                |)
+                                                                                              |),
+                                                                                              "move_binary_format::normalized::Function",
+                                                                                              "is_entry"
+                                                                                            |)
                                                                                           |)
-                                                                                        |)
+                                                                                        ]
                                                                                       |)))
                                                                                   |)
                                                                                 |)) in
@@ -2515,133 +2528,137 @@ Module compatibility.
                                                                                 |)))
                                                                             |),
                                                                             ltac:(M.monadic
-                                                                              (UnOp.not (|
-                                                                                M.call_closure (|
-                                                                                  Ty.path "bool",
-                                                                                  M.get_function (|
-                                                                                    "move_binary_format::compatibility::fun_type_parameters_compatible",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.Ref,
-                                                                                      M.deref (|
-                                                                                        M.call_closure (|
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "&")
-                                                                                            []
-                                                                                            [
+                                                                              (M.call_closure (|
+                                                                                Ty.path "bool",
+                                                                                UnOp.not,
+                                                                                [
+                                                                                  M.call_closure (|
+                                                                                    Ty.path "bool",
+                                                                                    M.get_function (|
+                                                                                      "move_binary_format::compatibility::fun_type_parameters_compatible",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.call_closure (|
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "&")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "slice")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "move_binary_format::file_format::AbilitySet"
+                                                                                                  ]
+                                                                                              ],
+                                                                                            M.get_trait_method (|
+                                                                                              "core::ops::deref::Deref",
                                                                                               Ty.apply
                                                                                                 (Ty.path
-                                                                                                  "slice")
+                                                                                                  "alloc::vec::Vec")
                                                                                                 []
                                                                                                 [
                                                                                                   Ty.path
-                                                                                                    "move_binary_format::file_format::AbilitySet"
-                                                                                                ]
-                                                                                            ],
-                                                                                          M.get_trait_method (|
-                                                                                            "core::ops::deref::Deref",
-                                                                                            Ty.apply
-                                                                                              (Ty.path
-                                                                                                "alloc::vec::Vec")
+                                                                                                    "move_binary_format::file_format::AbilitySet";
+                                                                                                  Ty.path
+                                                                                                    "alloc::alloc::Global"
+                                                                                                ],
+                                                                                              [],
+                                                                                              [],
+                                                                                              "deref",
+                                                                                              [],
                                                                                               []
-                                                                                              [
-                                                                                                Ty.path
-                                                                                                  "move_binary_format::file_format::AbilitySet";
-                                                                                                Ty.path
-                                                                                                  "alloc::alloc::Global"
-                                                                                              ],
-                                                                                            [],
-                                                                                            [],
-                                                                                            "deref",
-                                                                                            [],
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            M.borrow (|
-                                                                                              Pointer.Kind.Ref,
-                                                                                              M.deref (|
-                                                                                                M.borrow (|
-                                                                                                  Pointer.Kind.Ref,
-                                                                                                  M.SubPointer.get_struct_record_field (|
-                                                                                                    M.deref (|
-                                                                                                      M.read (|
-                                                                                                        old_func
-                                                                                                      |)
-                                                                                                    |),
-                                                                                                    "move_binary_format::normalized::Function",
-                                                                                                    "type_parameters"
+                                                                                            |),
+                                                                                            [
+                                                                                              M.borrow (|
+                                                                                                Pointer.Kind.Ref,
+                                                                                                M.deref (|
+                                                                                                  M.borrow (|
+                                                                                                    Pointer.Kind.Ref,
+                                                                                                    M.SubPointer.get_struct_record_field (|
+                                                                                                      M.deref (|
+                                                                                                        M.read (|
+                                                                                                          old_func
+                                                                                                        |)
+                                                                                                      |),
+                                                                                                      "move_binary_format::normalized::Function",
+                                                                                                      "type_parameters"
+                                                                                                    |)
                                                                                                   |)
                                                                                                 |)
                                                                                               |)
-                                                                                            |)
-                                                                                          ]
+                                                                                            ]
+                                                                                          |)
                                                                                         |)
-                                                                                      |)
-                                                                                    |);
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.Ref,
-                                                                                      M.deref (|
-                                                                                        M.call_closure (|
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "&")
-                                                                                            []
-                                                                                            [
+                                                                                      |);
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.call_closure (|
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "&")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "slice")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "move_binary_format::file_format::AbilitySet"
+                                                                                                  ]
+                                                                                              ],
+                                                                                            M.get_trait_method (|
+                                                                                              "core::ops::deref::Deref",
                                                                                               Ty.apply
                                                                                                 (Ty.path
-                                                                                                  "slice")
+                                                                                                  "alloc::vec::Vec")
                                                                                                 []
                                                                                                 [
                                                                                                   Ty.path
-                                                                                                    "move_binary_format::file_format::AbilitySet"
-                                                                                                ]
-                                                                                            ],
-                                                                                          M.get_trait_method (|
-                                                                                            "core::ops::deref::Deref",
-                                                                                            Ty.apply
-                                                                                              (Ty.path
-                                                                                                "alloc::vec::Vec")
+                                                                                                    "move_binary_format::file_format::AbilitySet";
+                                                                                                  Ty.path
+                                                                                                    "alloc::alloc::Global"
+                                                                                                ],
+                                                                                              [],
+                                                                                              [],
+                                                                                              "deref",
+                                                                                              [],
                                                                                               []
-                                                                                              [
-                                                                                                Ty.path
-                                                                                                  "move_binary_format::file_format::AbilitySet";
-                                                                                                Ty.path
-                                                                                                  "alloc::alloc::Global"
-                                                                                              ],
-                                                                                            [],
-                                                                                            [],
-                                                                                            "deref",
-                                                                                            [],
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            M.borrow (|
-                                                                                              Pointer.Kind.Ref,
-                                                                                              M.deref (|
-                                                                                                M.borrow (|
-                                                                                                  Pointer.Kind.Ref,
-                                                                                                  M.SubPointer.get_struct_record_field (|
-                                                                                                    M.deref (|
-                                                                                                      M.read (|
-                                                                                                        new_func
-                                                                                                      |)
-                                                                                                    |),
-                                                                                                    "move_binary_format::normalized::Function",
-                                                                                                    "type_parameters"
+                                                                                            |),
+                                                                                            [
+                                                                                              M.borrow (|
+                                                                                                Pointer.Kind.Ref,
+                                                                                                M.deref (|
+                                                                                                  M.borrow (|
+                                                                                                    Pointer.Kind.Ref,
+                                                                                                    M.SubPointer.get_struct_record_field (|
+                                                                                                      M.deref (|
+                                                                                                        M.read (|
+                                                                                                          new_func
+                                                                                                        |)
+                                                                                                      |),
+                                                                                                      "move_binary_format::normalized::Function",
+                                                                                                      "type_parameters"
+                                                                                                    |)
                                                                                                   |)
                                                                                                 |)
                                                                                               |)
-                                                                                            |)
-                                                                                          ]
+                                                                                            ]
+                                                                                          |)
                                                                                         |)
                                                                                       |)
-                                                                                    |)
-                                                                                  ]
-                                                                                |)
+                                                                                    ]
+                                                                                  |)
+                                                                                ]
                                                                               |)))
                                                                           |)
                                                                         |)) in
@@ -3251,31 +3268,35 @@ Module compatibility.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                          []
+                                          [
+                                            Ty.path "move_core_types::language_storage::ModuleId";
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
+                                        "is_subset",
+                                        [],
                                         []
-                                        [
-                                          Ty.path "move_core_types::language_storage::ModuleId";
-                                          Ty.path "alloc::alloc::Global"
-                                        ],
-                                      "is_subset",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (| Pointer.Kind.Ref, old_friend_module_ids |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.borrow (| Pointer.Kind.Ref, new_friend_module_ids |)
+                                      |),
+                                      [
+                                        M.borrow (| Pointer.Kind.Ref, old_friend_module_ids |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (| Pointer.Kind.Ref, new_friend_module_ids |)
+                                          |)
                                         |)
-                                      |)
-                                    ]
-                                  |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
@@ -3308,7 +3329,11 @@ Module compatibility.
                                     |)
                                   |),
                                   ltac:(M.monadic
-                                    (UnOp.not (| M.read (| struct_and_function_linking |) |)))
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [ M.read (| struct_and_function_linking |) ]
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -3366,7 +3391,12 @@ Module compatibility.
                                       "check_struct_layout"
                                     |)
                                   |),
-                                  ltac:(M.monadic (UnOp.not (| M.read (| struct_layout |) |)))
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [ M.read (| struct_layout |) ]
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -3424,7 +3454,12 @@ Module compatibility.
                                       "check_friend_linking"
                                     |)
                                   |),
-                                  ltac:(M.monadic (UnOp.not (| M.read (| friend_linking |) |)))
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [ M.read (| friend_linking |) ]
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -3482,7 +3517,12 @@ Module compatibility.
                                       "check_private_entry_linking"
                                     |)
                                   |),
-                                  ltac:(M.monadic (UnOp.not (| M.read (| entry_linking |) |)))
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [ M.read (| entry_linking |) ]
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -3637,17 +3677,21 @@ Module compatibility.
                                       γ
                                     |) in
                                   LogicalOp.or (|
-                                    UnOp.not (|
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        M.get_associated_function (|
-                                          Ty.path "move_binary_format::file_format::AbilitySet",
-                                          "has_ability",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| new_abilities |); M.read (| ability |) ]
-                                      |)
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_associated_function (|
+                                            Ty.path "move_binary_format::file_format::AbilitySet",
+                                            "has_ability",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| new_abilities |); M.read (| ability |) ]
+                                        |)
+                                      ]
                                     |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
@@ -4438,14 +4482,18 @@ Module compatibility.
             fun γ =>
               ltac:(M.monadic
                 (LogicalOp.or (|
-                  UnOp.not (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| old_type_parameter |) |),
-                        "move_binary_format::file_format::StructTypeParameter",
-                        "is_phantom"
+                  M.call_closure (|
+                    Ty.path "bool",
+                    UnOp.not,
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| old_type_parameter |) |),
+                          "move_binary_format::file_format::StructTypeParameter",
+                          "is_phantom"
+                        |)
                       |)
-                    |)
+                    ]
                   |),
                   ltac:(M.monadic
                     (M.read (|

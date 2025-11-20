@@ -1209,7 +1209,8 @@ Module gas.
                   let remaining := M.copy (| Ty.path "u64", γ0_0 |) in
                   let overflow := M.copy (| Ty.path "bool", γ0_1 |) in
                   M.read (|
-                    let~ success : Ty.path "bool" := UnOp.not (| M.read (| overflow |) |) in
+                    let~ success : Ty.path "bool" :=
+                      M.call_closure (| Ty.path "bool", UnOp.not, [ M.read (| overflow |) ] |) in
                     let~ _ : Ty.tuple [] :=
                       M.match_operator (|
                         Ty.tuple [],
@@ -1319,23 +1320,27 @@ Module gas.
                                     M.use
                                       (M.alloc (|
                                         Ty.path "bool",
-                                        UnOp.not (|
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            M.get_associated_function (|
-                                              Ty.path "revm_interpreter::gas::Gas",
-                                              "record_cost",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (| M.read (| self |) |)
-                                              |);
-                                              M.read (| additional_cost |)
-                                            ]
-                                          |)
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          UnOp.not,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              M.get_associated_function (|
+                                                Ty.path "revm_interpreter::gas::Gas",
+                                                "record_cost",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| self |) |)
+                                                |);
+                                                M.read (| additional_cost |)
+                                              ]
+                                            |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=

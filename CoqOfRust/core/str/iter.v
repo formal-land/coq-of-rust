@@ -595,30 +595,35 @@ Module str.
                                                                                       start_bytes,
                                                                                       M.read (| i |)
                                                                                     |),
-                                                                                    UnOp.not (|
-                                                                                      M.call_closure (|
-                                                                                        Ty.path
-                                                                                          "bool",
-                                                                                        M.get_function (|
-                                                                                          "core::str::validations::utf8_is_cont_byte",
-                                                                                          [],
-                                                                                          []
-                                                                                        |),
-                                                                                        [
-                                                                                          M.read (|
-                                                                                            M.SubPointer.get_array_field (|
-                                                                                              M.deref (|
+                                                                                    M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "bool",
+                                                                                      UnOp.not,
+                                                                                      [
+                                                                                        M.call_closure (|
+                                                                                          Ty.path
+                                                                                            "bool",
+                                                                                          M.get_function (|
+                                                                                            "core::str::validations::utf8_is_cont_byte",
+                                                                                            [],
+                                                                                            []
+                                                                                          |),
+                                                                                          [
+                                                                                            M.read (|
+                                                                                              M.SubPointer.get_array_field (|
+                                                                                                M.deref (|
+                                                                                                  M.read (|
+                                                                                                    chunk
+                                                                                                  |)
+                                                                                                |),
                                                                                                 M.read (|
-                                                                                                  chunk
+                                                                                                  i
                                                                                                 |)
-                                                                                              |),
-                                                                                              M.read (|
-                                                                                                i
                                                                                               |)
                                                                                             |)
-                                                                                          |)
-                                                                                        ]
-                                                                                      |)
+                                                                                          ]
+                                                                                        |)
+                                                                                      ]
                                                                                     |)
                                                                                   |) in
                                                                                 M.alloc (|
@@ -962,16 +967,20 @@ Module str.
                                                       M.use
                                                         (M.alloc (|
                                                           Ty.path "bool",
-                                                          UnOp.not (|
-                                                            M.call_closure (|
-                                                              Ty.path "bool",
-                                                              M.get_function (|
-                                                                "core::str::validations::utf8_is_cont_byte",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [ M.read (| b |) ]
-                                                            |)
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            UnOp.not,
+                                                            [
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                M.get_function (|
+                                                                  "core::str::validations::utf8_is_cont_byte",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [ M.read (| b |) ]
+                                                              |)
+                                                            ]
                                                           |)
                                                         |)) in
                                                     let _ :=
@@ -4317,14 +4326,18 @@ Module str.
                               M.use
                                 (M.alloc (|
                                   Ty.path "bool",
-                                  UnOp.not (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::str::iter::SplitInternal",
-                                        "finished"
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    UnOp.not,
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::str::iter::SplitInternal",
+                                          "finished"
+                                        |)
                                       |)
-                                    |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -5086,14 +5099,18 @@ Module str.
                               M.use
                                 (M.alloc (|
                                   Ty.path "bool",
-                                  UnOp.not (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::str::iter::SplitInternal",
-                                        "allow_trailing_empty"
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    UnOp.not,
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::str::iter::SplitInternal",
+                                          "allow_trailing_empty"
+                                        |)
                                       |)
-                                    |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -5156,22 +5173,26 @@ Module str.
                                         let γ :=
                                           M.alloc (|
                                             Ty.path "bool",
-                                            UnOp.not (|
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                M.get_associated_function (|
-                                                  Ty.path "str",
-                                                  "is_empty",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| elt |) |)
-                                                  |)
-                                                ]
-                                              |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              UnOp.not,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  M.get_associated_function (|
+                                                    Ty.path "str",
+                                                    "is_empty",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| elt |) |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              ]
                                             |)
                                           |) in
                                         let _ :=
@@ -5573,14 +5594,18 @@ Module str.
                               M.use
                                 (M.alloc (|
                                   Ty.path "bool",
-                                  UnOp.not (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::str::iter::SplitInternal",
-                                        "allow_trailing_empty"
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    UnOp.not,
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::str::iter::SplitInternal",
+                                          "allow_trailing_empty"
+                                        |)
                                       |)
-                                    |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
@@ -5643,22 +5668,26 @@ Module str.
                                         let γ :=
                                           M.alloc (|
                                             Ty.path "bool",
-                                            UnOp.not (|
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                M.get_associated_function (|
-                                                  Ty.path "str",
-                                                  "is_empty",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| elt |) |)
-                                                  |)
-                                                ]
-                                              |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              UnOp.not,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  M.get_associated_function (|
+                                                    Ty.path "str",
+                                                    "is_empty",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| elt |) |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              ]
                                             |)
                                           |) in
                                         let _ :=

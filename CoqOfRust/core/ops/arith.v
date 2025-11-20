@@ -2513,7 +2513,7 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| Ty.path "isize", self |) in
-            UnOp.neg (| M.read (| self |) |)))
+            M.call_closure (| Ty.path "isize", UnOp.neg, [ M.read (| self |) ] |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2539,7 +2539,7 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| Ty.path "i8", self |) in
-            UnOp.neg (| M.read (| self |) |)))
+            M.call_closure (| Ty.path "i8", UnOp.neg, [ M.read (| self |) ] |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2565,7 +2565,7 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| Ty.path "i16", self |) in
-            UnOp.neg (| M.read (| self |) |)))
+            M.call_closure (| Ty.path "i16", UnOp.neg, [ M.read (| self |) ] |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2591,7 +2591,7 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| Ty.path "i32", self |) in
-            UnOp.neg (| M.read (| self |) |)))
+            M.call_closure (| Ty.path "i32", UnOp.neg, [ M.read (| self |) ] |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2617,7 +2617,7 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| Ty.path "i64", self |) in
-            UnOp.neg (| M.read (| self |) |)))
+            M.call_closure (| Ty.path "i64", UnOp.neg, [ M.read (| self |) ] |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2643,7 +2643,7 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| Ty.path "i128", self |) in
-            UnOp.neg (| M.read (| self |) |)))
+            M.call_closure (| Ty.path "i128", UnOp.neg, [ M.read (| self |) ] |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2669,7 +2669,7 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| Ty.path "f16", self |) in
-            UnOp.neg (| M.read (| self |) |)))
+            M.call_closure (| Ty.path "f16", UnOp.neg, [ M.read (| self |) ] |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2695,7 +2695,7 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| Ty.path "f32", self |) in
-            UnOp.neg (| M.read (| self |) |)))
+            M.call_closure (| Ty.path "f32", UnOp.neg, [ M.read (| self |) ] |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2721,7 +2721,7 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| Ty.path "f64", self |) in
-            UnOp.neg (| M.read (| self |) |)))
+            M.call_closure (| Ty.path "f64", UnOp.neg, [ M.read (| self |) ] |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2747,7 +2747,7 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| Ty.path "f128", self |) in
-            UnOp.neg (| M.read (| self |) |)))
+            M.call_closure (| Ty.path "f128", UnOp.neg, [ M.read (| self |) ] |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

@@ -6588,23 +6588,27 @@ Module u256.
                         M.use
                           (M.alloc (|
                             Ty.path "bool",
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_trait_method (|
-                                  "core::cmp::PartialOrd",
-                                  Ty.path "move_core_types::u256::U256",
-                                  [],
-                                  [ Ty.path "move_core_types::u256::U256" ],
-                                  "lt",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (| Pointer.Kind.Ref, low |);
-                                  M.borrow (| Pointer.Kind.Ref, high |)
-                                ]
-                              |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              UnOp.not,
+                              [
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_trait_method (|
+                                    "core::cmp::PartialOrd",
+                                    Ty.path "move_core_types::u256::U256",
+                                    [],
+                                    [ Ty.path "move_core_types::u256::U256" ],
+                                    "lt",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, low |);
+                                    M.borrow (| Pointer.Kind.Ref, high |)
+                                  ]
+                                |)
+                              ]
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6776,23 +6780,27 @@ Module u256.
                         M.use
                           (M.alloc (|
                             Ty.path "bool",
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_trait_method (|
-                                  "core::cmp::PartialOrd",
-                                  Ty.path "move_core_types::u256::U256",
-                                  [],
-                                  [ Ty.path "move_core_types::u256::U256" ],
-                                  "le",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (| Pointer.Kind.Ref, low |);
-                                  M.borrow (| Pointer.Kind.Ref, high |)
-                                ]
-                              |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              UnOp.not,
+                              [
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_trait_method (|
+                                    "core::cmp::PartialOrd",
+                                    Ty.path "move_core_types::u256::U256",
+                                    [],
+                                    [ Ty.path "move_core_types::u256::U256" ],
+                                    "le",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, low |);
+                                    M.borrow (| Pointer.Kind.Ref, high |)
+                                  ]
+                                |)
+                              ]
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7374,23 +7382,27 @@ Module u256.
                         M.use
                           (M.alloc (|
                             Ty.path "bool",
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_trait_method (|
-                                  "core::cmp::PartialOrd",
-                                  Ty.path "move_core_types::u256::U256",
-                                  [],
-                                  [ Ty.path "move_core_types::u256::U256" ],
-                                  "lt",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (| Pointer.Kind.Ref, low |);
-                                  M.borrow (| Pointer.Kind.Ref, high |)
-                                ]
-                              |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              UnOp.not,
+                              [
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_trait_method (|
+                                    "core::cmp::PartialOrd",
+                                    Ty.path "move_core_types::u256::U256",
+                                    [],
+                                    [ Ty.path "move_core_types::u256::U256" ],
+                                    "lt",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, low |);
+                                    M.borrow (| Pointer.Kind.Ref, high |)
+                                  ]
+                                |)
+                              ]
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7583,23 +7595,27 @@ Module u256.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialOrd",
-                                      Ty.path "move_core_types::u256::U256",
-                                      [],
-                                      [ Ty.path "move_core_types::u256::U256" ],
-                                      "le",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (| Pointer.Kind.Ref, low |);
-                                      M.borrow (| Pointer.Kind.Ref, high |)
-                                    ]
-                                  |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_trait_method (|
+                                        "core::cmp::PartialOrd",
+                                        Ty.path "move_core_types::u256::U256",
+                                        [],
+                                        [ Ty.path "move_core_types::u256::U256" ],
+                                        "le",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (| Pointer.Kind.Ref, low |);
+                                        M.borrow (| Pointer.Kind.Ref, high |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=

@@ -282,8 +282,16 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                   M.use
                     (M.alloc (|
                       Ty.path "bool",
-                      UnOp.not (|
-                        M.call_closure (| Ty.path "bool", BinOp.eq, [ LIMBS; M.read (| limbs |) ] |)
+                      M.call_closure (|
+                        Ty.path "bool",
+                        UnOp.not,
+                        [
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.eq,
+                            [ LIMBS; M.read (| limbs |) ]
+                          |)
+                        ]
                       |)
                     |)) in
                 let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -713,42 +721,49 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                                   M.use
                                     (M.alloc (|
                                       Ty.path "bool",
-                                      UnOp.not (|
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          BinOp.le,
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_array_field (|
-                                                limbs,
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  BinOp.Wrap.sub,
-                                                  [
-                                                    M.read (|
-                                                      get_associated_constant (|
-                                                        Ty.apply
-                                                          (Ty.path "ruint::Uint")
-                                                          [ BITS; LIMBS ]
-                                                          [],
-                                                        "LIMBS",
-                                                        Ty.path "usize"
-                                                      |)
-                                                    |);
-                                                    Value.Integer IntegerKind.Usize 1
-                                                  ]
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        UnOp.not,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.le,
+                                            [
+                                              M.read (|
+                                                M.SubPointer.get_array_field (|
+                                                  limbs,
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    BinOp.Wrap.sub,
+                                                    [
+                                                      M.read (|
+                                                        get_associated_constant (|
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [ BITS; LIMBS ]
+                                                            [],
+                                                          "LIMBS",
+                                                          Ty.path "usize"
+                                                        |)
+                                                      |);
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    ]
+                                                  |)
+                                                |)
+                                              |);
+                                              M.read (|
+                                                get_associated_constant (|
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [ BITS; LIMBS ]
+                                                    [],
+                                                  "MASK",
+                                                  Ty.path "u64"
                                                 |)
                                               |)
-                                            |);
-                                            M.read (|
-                                              get_associated_constant (|
-                                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                                "MASK",
-                                                Ty.path "u64"
-                                              |)
-                                            |)
-                                          ]
-                                        |)
+                                            ]
+                                          |)
+                                        ]
                                       |)
                                     |)) in
                                 let _ :=

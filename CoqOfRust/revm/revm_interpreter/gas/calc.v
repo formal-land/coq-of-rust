@@ -267,23 +267,27 @@ Module gas.
                                                     M.use
                                                       (M.alloc (|
                                                         Ty.path "bool",
-                                                        UnOp.not (|
-                                                          M.call_closure (|
-                                                            Ty.path "bool",
-                                                            M.get_associated_function (|
-                                                              Ty.path
-                                                                "revm_context_interface::host::SStoreResult",
-                                                              "is_original_zero",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.deref (| M.read (| vals |) |)
-                                                              |)
-                                                            ]
-                                                          |)
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          UnOp.not,
+                                                          [
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              M.get_associated_function (|
+                                                                Ty.path
+                                                                  "revm_context_interface::host::SStoreResult",
+                                                                "is_original_zero",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| vals |) |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          ]
                                                         |)
                                                       |)) in
                                                   let _ :=
@@ -690,22 +694,26 @@ Module gas.
                               (M.alloc (|
                                 Ty.path "bool",
                                 LogicalOp.and (|
-                                  UnOp.not (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_associated_function (|
-                                        Ty.path "revm_context_interface::host::SStoreResult",
-                                        "is_present_zero",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| vals |) |)
-                                        |)
-                                      ]
-                                    |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    UnOp.not,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_associated_function (|
+                                          Ty.path "revm_context_interface::host::SStoreResult",
+                                          "is_present_zero",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| vals |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
@@ -2802,17 +2810,22 @@ Module gas.
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| vals |) |) |) ]
                           |),
                           ltac:(M.monadic
-                            (UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_associated_function (|
-                                  Ty.path "revm_context_interface::host::SStoreResult",
-                                  "is_new_zero",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| vals |) |) |) ]
-                              |)
+                            (M.call_closure (|
+                              Ty.path "bool",
+                              UnOp.not,
+                              [
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_associated_function (|
+                                    Ty.path "revm_context_interface::host::SStoreResult",
+                                    "is_new_zero",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| vals |) |) |)
+                                  ]
+                                |)
+                              ]
                             |)))
                         |)
                       |)) in
@@ -2926,34 +2939,42 @@ Module gas.
                           |)
                         |),
                         ltac:(M.monadic
-                          (UnOp.not (|
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
+                          (M.call_closure (|
+                            Ty.path "bool",
+                            UnOp.not,
+                            [
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
-                                  res,
-                                  "revm_context_interface::journaled_state::StateLoad",
-                                  "data"
-                                |),
-                                "revm_context_interface::host::SelfDestructResult",
-                                "target_exists"
+                                  M.SubPointer.get_struct_record_field (|
+                                    res,
+                                    "revm_context_interface::journaled_state::StateLoad",
+                                    "data"
+                                  |),
+                                  "revm_context_interface::host::SelfDestructResult",
+                                  "target_exists"
+                                |)
                               |)
-                            |)
+                            ]
                           |)))
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (UnOp.not (|
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
+                      (M.call_closure (|
+                        Ty.path "bool",
+                        UnOp.not,
+                        [
+                          M.read (|
                             M.SubPointer.get_struct_record_field (|
-                              res,
-                              "revm_context_interface::journaled_state::StateLoad",
-                              "data"
-                            |),
-                            "revm_context_interface::host::SelfDestructResult",
-                            "target_exists"
+                              M.SubPointer.get_struct_record_field (|
+                                res,
+                                "revm_context_interface::journaled_state::StateLoad",
+                                "data"
+                              |),
+                              "revm_context_interface::host::SelfDestructResult",
+                              "target_exists"
+                            |)
                           |)
-                        |)
+                        ]
                       |)))
                 ]
               |) in

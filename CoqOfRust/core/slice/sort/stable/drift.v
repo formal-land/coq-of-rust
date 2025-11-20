@@ -1078,17 +1078,22 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     Ty.path "bool",
-                                    UnOp.not (|
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        M.get_associated_function (|
-                                          Ty.path "core::slice::sort::stable::drift::DriftsortRun",
-                                          "sorted",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| prev_run |) ]
-                                      |)
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "core::slice::sort::stable::drift::DriftsortRun",
+                                            "sorted",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| prev_run |) ]
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
@@ -1536,7 +1541,11 @@ Module slice.
                                 Ty.path "bool",
                                 LogicalOp.or (|
                                   LogicalOp.or (|
-                                    UnOp.not (| M.read (| can_fit_in_scratch |) |),
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      UnOp.not,
+                                      [ M.read (| can_fit_in_scratch |) ]
+                                    |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
                                         Ty.path "bool",
@@ -1576,18 +1585,22 @@ Module slice.
                                         M.use
                                           (M.alloc (|
                                             Ty.path "bool",
-                                            UnOp.not (|
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                M.get_associated_function (|
-                                                  Ty.path
-                                                    "core::slice::sort::stable::drift::DriftsortRun",
-                                                  "sorted",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ M.read (| left |) ]
-                                              |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              UnOp.not,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  M.get_associated_function (|
+                                                    Ty.path
+                                                      "core::slice::sort::stable::drift::DriftsortRun",
+                                                    "sorted",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [ M.read (| left |) ]
+                                                |)
+                                              ]
                                             |)
                                           |)) in
                                       let _ :=
@@ -1685,18 +1698,22 @@ Module slice.
                                         M.use
                                           (M.alloc (|
                                             Ty.path "bool",
-                                            UnOp.not (|
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                M.get_associated_function (|
-                                                  Ty.path
-                                                    "core::slice::sort::stable::drift::DriftsortRun",
-                                                  "sorted",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ M.read (| right |) ]
-                                              |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              UnOp.not,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  M.get_associated_function (|
+                                                    Ty.path
+                                                      "core::slice::sort::stable::drift::DriftsortRun",
+                                                    "sorted",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [ M.read (| right |) ]
+                                                |)
+                                              ]
                                             |)
                                           |)) in
                                       let _ :=

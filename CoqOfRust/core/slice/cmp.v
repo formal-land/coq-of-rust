@@ -221,23 +221,27 @@ Module slice.
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ B ] ],
                 other
               |) in
-            UnOp.not (|
-              M.call_closure (|
-                Ty.path "bool",
-                M.get_trait_method (|
-                  "core::slice::cmp::SlicePartialEq",
-                  Self,
-                  [],
-                  [ B ],
-                  "equal",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
-                ]
-              |)
+            M.call_closure (|
+              Ty.path "bool",
+              UnOp.not,
+              [
+                M.call_closure (|
+                  Ty.path "bool",
+                  M.get_trait_method (|
+                    "core::slice::cmp::SlicePartialEq",
+                    Self,
+                    [],
+                    [ B ],
+                    "equal",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
+                  ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

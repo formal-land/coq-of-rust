@@ -870,32 +870,36 @@ Module verifier.
                       M.use
                         (M.alloc (|
                           Ty.path "bool",
-                          UnOp.not (|
-                            M.call_closure (|
-                              Ty.path "bool",
-                              BinOp.le,
-                              [
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
+                          M.call_closure (|
+                            Ty.path "bool",
+                            UnOp.not,
+                            [
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.le,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                      "len",
+                                      [],
                                       []
-                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                                    "len",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, bytes |) ]
-                                |);
-                                M.read (|
-                                  get_constant (|
-                                    "move_bytecode_verifier::verifier::verify_module_with_config_for_test::MAX_MODULE_SIZE",
-                                    Ty.path "usize"
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, bytes |) ]
+                                  |);
+                                  M.read (|
+                                    get_constant (|
+                                      "move_bytecode_verifier::verifier::verify_module_with_config_for_test::MAX_MODULE_SIZE",
+                                      Ty.path "usize"
+                                    |)
                                   |)
-                                |)
-                              ]
-                            |)
+                                ]
+                              |)
+                            ]
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

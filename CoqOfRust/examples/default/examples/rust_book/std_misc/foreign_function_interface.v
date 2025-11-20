@@ -454,14 +454,18 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                                               Pointer.Kind.Ref,
                                               M.alloc (|
                                                 Ty.path "f32",
-                                                UnOp.neg (|
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.deref (| M.read (| self |) |),
-                                                      "foreign_function_interface::Complex",
-                                                      "im"
+                                                M.call_closure (|
+                                                  Ty.path "f32",
+                                                  UnOp.neg,
+                                                  [
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "foreign_function_interface::Complex",
+                                                        "im"
+                                                      |)
                                                     |)
-                                                  |)
+                                                  ]
                                                 |)
                                               |)
                                             |)

@@ -269,13 +269,19 @@ Module bits.
                                           BinOp.Wrap.bit_and,
                                           [
                                             M.read (| β |);
-                                            UnOp.not (|
-                                              M.call_closure (|
-                                                Ty.path "u64",
-                                                BinOp.Wrap.shl,
-                                                [ Value.Integer IntegerKind.U64 1; M.read (| bits |)
-                                                ]
-                                              |)
+                                            M.call_closure (|
+                                              Ty.path "u64",
+                                              UnOp.not,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "u64",
+                                                  BinOp.Wrap.shl,
+                                                  [
+                                                    Value.Integer IntegerKind.U64 1;
+                                                    M.read (| bits |)
+                                                  ]
+                                                |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -2856,44 +2862,49 @@ Module bits.
                                                                                       (M.alloc (|
                                                                                         Ty.path
                                                                                           "bool",
-                                                                                        UnOp.not (|
-                                                                                          LogicalOp.and (|
-                                                                                            M.call_closure (|
-                                                                                              Ty.path
-                                                                                                "bool",
-                                                                                              BinOp.ge,
-                                                                                              [
-                                                                                                M.read (|
-                                                                                                  i
-                                                                                                |);
-                                                                                                M.read (|
-                                                                                                  limbs
-                                                                                                |)
-                                                                                              ]
-                                                                                            |),
-                                                                                            ltac:(M.monadic
-                                                                                              (M.call_closure (|
+                                                                                        M.call_closure (|
+                                                                                          Ty.path
+                                                                                            "bool",
+                                                                                          UnOp.not,
+                                                                                          [
+                                                                                            LogicalOp.and (|
+                                                                                              M.call_closure (|
                                                                                                 Ty.path
                                                                                                   "bool",
-                                                                                                BinOp.lt,
+                                                                                                BinOp.ge,
                                                                                                 [
-                                                                                                  M.call_closure (|
-                                                                                                    Ty.path
-                                                                                                      "usize",
-                                                                                                    BinOp.Wrap.sub,
-                                                                                                    [
-                                                                                                      M.read (|
-                                                                                                        i
-                                                                                                      |);
-                                                                                                      M.read (|
-                                                                                                        limbs
-                                                                                                      |)
-                                                                                                    ]
+                                                                                                  M.read (|
+                                                                                                    i
                                                                                                   |);
-                                                                                                  LIMBS
+                                                                                                  M.read (|
+                                                                                                    limbs
+                                                                                                  |)
                                                                                                 ]
-                                                                                              |)))
-                                                                                          |)
+                                                                                              |),
+                                                                                              ltac:(M.monadic
+                                                                                                (M.call_closure (|
+                                                                                                  Ty.path
+                                                                                                    "bool",
+                                                                                                  BinOp.lt,
+                                                                                                  [
+                                                                                                    M.call_closure (|
+                                                                                                      Ty.path
+                                                                                                        "usize",
+                                                                                                      BinOp.Wrap.sub,
+                                                                                                      [
+                                                                                                        M.read (|
+                                                                                                          i
+                                                                                                        |);
+                                                                                                        M.read (|
+                                                                                                          limbs
+                                                                                                        |)
+                                                                                                      ]
+                                                                                                    |);
+                                                                                                    LIMBS
+                                                                                                  ]
+                                                                                                |)))
+                                                                                            |)
+                                                                                          ]
                                                                                         |)
                                                                                       |)) in
                                                                                   let _ :=
@@ -3721,29 +3732,12 @@ Module bits.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           Ty.path "bool",
-                                                                          UnOp.not (|
-                                                                            LogicalOp.and (|
-                                                                              M.call_closure (|
-                                                                                Ty.path "bool",
-                                                                                BinOp.lt,
-                                                                                [
-                                                                                  M.call_closure (|
-                                                                                    Ty.path "usize",
-                                                                                    BinOp.Wrap.sub,
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        i
-                                                                                      |);
-                                                                                      M.read (|
-                                                                                        limbs
-                                                                                      |)
-                                                                                    ]
-                                                                                  |);
-                                                                                  LIMBS
-                                                                                ]
-                                                                              |),
-                                                                              ltac:(M.monadic
-                                                                                (M.call_closure (|
+                                                                          M.call_closure (|
+                                                                            Ty.path "bool",
+                                                                            UnOp.not,
+                                                                            [
+                                                                              LogicalOp.and (|
+                                                                                M.call_closure (|
                                                                                   Ty.path "bool",
                                                                                   BinOp.lt,
                                                                                   [
@@ -3752,28 +3746,50 @@ Module bits.
                                                                                         "usize",
                                                                                       BinOp.Wrap.sub,
                                                                                       [
-                                                                                        M.call_closure (|
-                                                                                          Ty.path
-                                                                                            "usize",
-                                                                                          BinOp.Wrap.sub,
-                                                                                          [
-                                                                                            M.read (|
-                                                                                              i
-                                                                                            |);
-                                                                                            M.read (|
-                                                                                              limbs
-                                                                                            |)
-                                                                                          ]
+                                                                                        M.read (|
+                                                                                          i
                                                                                         |);
-                                                                                        Value.Integer
-                                                                                          IntegerKind.Usize
-                                                                                          1
+                                                                                        M.read (|
+                                                                                          limbs
+                                                                                        |)
                                                                                       ]
                                                                                     |);
                                                                                     LIMBS
                                                                                   ]
-                                                                                |)))
-                                                                            |)
+                                                                                |),
+                                                                                ltac:(M.monadic
+                                                                                  (M.call_closure (|
+                                                                                    Ty.path "bool",
+                                                                                    BinOp.lt,
+                                                                                    [
+                                                                                      M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "usize",
+                                                                                        BinOp.Wrap.sub,
+                                                                                        [
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "usize",
+                                                                                            BinOp.Wrap.sub,
+                                                                                            [
+                                                                                              M.read (|
+                                                                                                i
+                                                                                              |);
+                                                                                              M.read (|
+                                                                                                limbs
+                                                                                              |)
+                                                                                            ]
+                                                                                          |);
+                                                                                          Value.Integer
+                                                                                            IntegerKind.Usize
+                                                                                            1
+                                                                                        ]
+                                                                                      |);
+                                                                                      LIMBS
+                                                                                    ]
+                                                                                  |)))
+                                                                              |)
+                                                                            ]
                                                                           |)
                                                                         |)) in
                                                                     let _ :=
@@ -5093,29 +5109,12 @@ Module bits.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           Ty.path "bool",
-                                                                          UnOp.not (|
-                                                                            LogicalOp.and (|
-                                                                              M.call_closure (|
-                                                                                Ty.path "bool",
-                                                                                BinOp.lt,
-                                                                                [
-                                                                                  M.call_closure (|
-                                                                                    Ty.path "usize",
-                                                                                    BinOp.Wrap.add,
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        i
-                                                                                      |);
-                                                                                      M.read (|
-                                                                                        limbs
-                                                                                      |)
-                                                                                    ]
-                                                                                  |);
-                                                                                  LIMBS
-                                                                                ]
-                                                                              |),
-                                                                              ltac:(M.monadic
-                                                                                (M.call_closure (|
+                                                                          M.call_closure (|
+                                                                            Ty.path "bool",
+                                                                            UnOp.not,
+                                                                            [
+                                                                              LogicalOp.and (|
+                                                                                M.call_closure (|
                                                                                   Ty.path "bool",
                                                                                   BinOp.lt,
                                                                                   [
@@ -5124,28 +5123,50 @@ Module bits.
                                                                                         "usize",
                                                                                       BinOp.Wrap.add,
                                                                                       [
-                                                                                        M.call_closure (|
-                                                                                          Ty.path
-                                                                                            "usize",
-                                                                                          BinOp.Wrap.add,
-                                                                                          [
-                                                                                            M.read (|
-                                                                                              i
-                                                                                            |);
-                                                                                            M.read (|
-                                                                                              limbs
-                                                                                            |)
-                                                                                          ]
+                                                                                        M.read (|
+                                                                                          i
                                                                                         |);
-                                                                                        Value.Integer
-                                                                                          IntegerKind.Usize
-                                                                                          1
+                                                                                        M.read (|
+                                                                                          limbs
+                                                                                        |)
                                                                                       ]
                                                                                     |);
                                                                                     LIMBS
                                                                                   ]
-                                                                                |)))
-                                                                            |)
+                                                                                |),
+                                                                                ltac:(M.monadic
+                                                                                  (M.call_closure (|
+                                                                                    Ty.path "bool",
+                                                                                    BinOp.lt,
+                                                                                    [
+                                                                                      M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "usize",
+                                                                                        BinOp.Wrap.add,
+                                                                                        [
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "usize",
+                                                                                            BinOp.Wrap.add,
+                                                                                            [
+                                                                                              M.read (|
+                                                                                                i
+                                                                                              |);
+                                                                                              M.read (|
+                                                                                                limbs
+                                                                                              |)
+                                                                                            ]
+                                                                                          |);
+                                                                                          Value.Integer
+                                                                                            IntegerKind.Usize
+                                                                                            1
+                                                                                        ]
+                                                                                      |);
+                                                                                      LIMBS
+                                                                                    ]
+                                                                                  |)))
+                                                                              |)
+                                                                            ]
                                                                           |)
                                                                         |)) in
                                                                     let _ :=

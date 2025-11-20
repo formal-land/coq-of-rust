@@ -67,7 +67,17 @@ Module signed.
                                             M.use
                                               (M.alloc (|
                                                 Ty.path "bool",
-                                                UnOp.not (| UnOp.not (| M.read (| overflow |) |) |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  UnOp.not,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      UnOp.not,
+                                                      [ M.read (| overflow |) ]
+                                                    |)
+                                                  ]
+                                                |)
                                               |)) in
                                           let _ :=
                                             is_constant_or_break_match (|
@@ -571,17 +581,21 @@ Module signed.
                       BinOp.Wrap.bit_and,
                       [
                         M.read (| β |);
-                        UnOp.not (|
-                          M.read (|
-                            get_associated_constant (|
-                              Ty.apply
-                                (Ty.path "alloy_primitives::signed::int::Signed")
-                                [ BITS; LIMBS ]
-                                [],
-                              "SIGN_BIT",
-                              Ty.path "u64"
+                        M.call_closure (|
+                          Ty.path "u64",
+                          UnOp.not,
+                          [
+                            M.read (|
+                              get_associated_constant (|
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                  [ BITS; LIMBS ]
+                                  [],
+                                "SIGN_BIT",
+                                Ty.path "u64"
+                              |)
                             |)
-                          |)
+                          ]
                         |)
                       ]
                     |)

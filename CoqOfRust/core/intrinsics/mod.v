@@ -3262,7 +3262,12 @@ Module intrinsics.
           [
             fun γ =>
               ltac:(M.monadic
-                (let γ := M.use (M.alloc (| Ty.path "bool", UnOp.not (| M.read (| b |) |) |)) in
+                (let γ :=
+                  M.use
+                    (M.alloc (|
+                      Ty.path "bool",
+                      M.call_closure (| Ty.path "bool", UnOp.not, [ M.read (| b |) ] |)
+                    |)) in
                 let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 M.never_to_any (|
                   M.call_closure (|
@@ -8278,7 +8283,8 @@ Module ub_checks.
     *)
     Definition runtime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (UnOp.not (| Value.Bool false |)))
+      | [], [], [] =>
+        ltac:(M.monadic (M.call_closure (| Ty.path "bool", UnOp.not, [ Value.Bool false ] |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -8335,17 +8341,21 @@ Module ub_checks.
               (LogicalOp.or (|
                 M.read (| is_zst |),
                 ltac:(M.monadic
-                  (UnOp.not (|
-                    M.call_closure (|
-                      Ty.path "bool",
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
-                        "is_null",
-                        [],
-                        []
-                      |),
-                      [ M.read (| ptr |) ]
-                    |)
+                  (M.call_closure (|
+                    Ty.path "bool",
+                    UnOp.not,
+                    [
+                      M.call_closure (|
+                        Ty.path "bool",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                          "is_null",
+                          [],
+                          []
+                        |),
+                        [ M.read (| ptr |) ]
+                      |)
+                    ]
                   |)))
               |)))
           |)))
@@ -8393,17 +8403,21 @@ Module ub_checks.
                                   (LogicalOp.or (|
                                     M.read (| is_zst |),
                                     ltac:(M.monadic
-                                      (UnOp.not (|
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
-                                            "is_null",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.read (| ptr |) ]
-                                        |)
+                                      (M.call_closure (|
+                                        Ty.path "bool",
+                                        UnOp.not,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                                              "is_null",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| ptr |) ]
+                                          |)
+                                        ]
                                       |)))
                                   |)))
                             ]
@@ -10472,13 +10486,19 @@ Module slice.
                                           M.use
                                             (M.alloc (|
                                               Ty.path "bool",
-                                              UnOp.not (|
-                                                M.call_closure (|
-                                                  Ty.path "bool",
-                                                  BinOp.le,
-                                                  [ M.read (| offset_to_aligned |); M.read (| len |)
-                                                  ]
-                                                |)
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                UnOp.not,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.le,
+                                                    [
+                                                      M.read (| offset_to_aligned |);
+                                                      M.read (| len |)
+                                                    ]
+                                                  |)
+                                                ]
                                               |)
                                             |)) in
                                         let _ :=
@@ -10541,31 +10561,35 @@ Module slice.
                                           M.use
                                             (M.alloc (|
                                               Ty.path "bool",
-                                              UnOp.not (|
-                                                M.call_closure (|
-                                                  Ty.path "bool",
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path "*const")
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                UnOp.not,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "*const")
+                                                        []
+                                                        [ Ty.path "usize" ],
+                                                      "is_aligned_to",
+                                                      [],
                                                       []
-                                                      [ Ty.path "usize" ],
-                                                    "is_aligned_to",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.read (| word_ptr |);
-                                                    M.call_closure (|
-                                                      Ty.path "usize",
-                                                      M.get_function (|
-                                                        "core::mem::align_of",
-                                                        [],
-                                                        [ Ty.path "usize" ]
-                                                      |),
-                                                      []
-                                                    |)
-                                                  ]
-                                                |)
+                                                    |),
+                                                    [
+                                                      M.read (| word_ptr |);
+                                                      M.call_closure (|
+                                                        Ty.path "usize",
+                                                        M.get_function (|
+                                                          "core::mem::align_of",
+                                                          [],
+                                                          [ Ty.path "usize" ]
+                                                        |),
+                                                        []
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
                                               |)
                                             |)) in
                                         let _ :=
@@ -10666,27 +10690,31 @@ Module slice.
                                                               M.use
                                                                 (M.alloc (|
                                                                   Ty.path "bool",
-                                                                  UnOp.not (|
-                                                                    M.call_closure (|
-                                                                      Ty.path "bool",
-                                                                      BinOp.le,
-                                                                      [
-                                                                        M.call_closure (|
-                                                                          Ty.path "usize",
-                                                                          BinOp.Wrap.add,
-                                                                          [
-                                                                            M.read (| byte_pos |);
-                                                                            M.read (|
-                                                                              get_constant (|
-                                                                                "core::slice::ascii::is_ascii::runtime::USIZE_SIZE",
-                                                                                Ty.path "usize"
+                                                                  M.call_closure (|
+                                                                    Ty.path "bool",
+                                                                    UnOp.not,
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        Ty.path "bool",
+                                                                        BinOp.le,
+                                                                        [
+                                                                          M.call_closure (|
+                                                                            Ty.path "usize",
+                                                                            BinOp.Wrap.add,
+                                                                            [
+                                                                              M.read (| byte_pos |);
+                                                                              M.read (|
+                                                                                get_constant (|
+                                                                                  "core::slice::ascii::is_ascii::runtime::USIZE_SIZE",
+                                                                                  Ty.path "usize"
+                                                                                |)
                                                                               |)
-                                                                            |)
-                                                                          ]
-                                                                        |);
-                                                                        M.read (| len |)
-                                                                      ]
-                                                                    |)
+                                                                            ]
+                                                                          |);
+                                                                          M.read (| len |)
+                                                                        ]
+                                                                      |)
+                                                                    ]
                                                                   |)
                                                                 |)) in
                                                             let _ :=
@@ -10747,48 +10775,53 @@ Module slice.
                                                               M.use
                                                                 (M.alloc (|
                                                                   Ty.path "bool",
-                                                                  UnOp.not (|
-                                                                    M.call_closure (|
-                                                                      Ty.path "bool",
-                                                                      BinOp.eq,
-                                                                      [
-                                                                        M.call_closure (|
-                                                                          Ty.apply
-                                                                            (Ty.path "*const")
-                                                                            []
-                                                                            [ Ty.path "u8" ],
-                                                                          M.get_associated_function (|
-                                                                            Ty.apply
-                                                                              (Ty.path "*const")
-                                                                              []
-                                                                              [ Ty.path "usize" ],
-                                                                            "cast",
-                                                                            [],
-                                                                            [ Ty.path "u8" ]
-                                                                          |),
-                                                                          [ M.read (| word_ptr |) ]
-                                                                        |);
-                                                                        M.call_closure (|
-                                                                          Ty.apply
-                                                                            (Ty.path "*const")
-                                                                            []
-                                                                            [ Ty.path "u8" ],
-                                                                          M.get_associated_function (|
+                                                                  M.call_closure (|
+                                                                    Ty.path "bool",
+                                                                    UnOp.not,
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        Ty.path "bool",
+                                                                        BinOp.eq,
+                                                                        [
+                                                                          M.call_closure (|
                                                                             Ty.apply
                                                                               (Ty.path "*const")
                                                                               []
                                                                               [ Ty.path "u8" ],
-                                                                            "wrapping_add",
-                                                                            [],
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.read (| start |);
-                                                                            M.read (| byte_pos |)
-                                                                          ]
-                                                                        |)
-                                                                      ]
-                                                                    |)
+                                                                            M.get_associated_function (|
+                                                                              Ty.apply
+                                                                                (Ty.path "*const")
+                                                                                []
+                                                                                [ Ty.path "usize" ],
+                                                                              "cast",
+                                                                              [],
+                                                                              [ Ty.path "u8" ]
+                                                                            |),
+                                                                            [ M.read (| word_ptr |)
+                                                                            ]
+                                                                          |);
+                                                                          M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path "*const")
+                                                                              []
+                                                                              [ Ty.path "u8" ],
+                                                                            M.get_associated_function (|
+                                                                              Ty.apply
+                                                                                (Ty.path "*const")
+                                                                                []
+                                                                                [ Ty.path "u8" ],
+                                                                              "wrapping_add",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.read (| start |);
+                                                                              M.read (| byte_pos |)
+                                                                            ]
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    ]
                                                                   |)
                                                                 |)) in
                                                             let _ :=
@@ -10935,33 +10968,39 @@ Module slice.
                                           M.use
                                             (M.alloc (|
                                               Ty.path "bool",
-                                              UnOp.not (|
-                                                LogicalOp.and (|
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    BinOp.le,
-                                                    [ M.read (| byte_pos |); M.read (| len |) ]
-                                                  |),
-                                                  ltac:(M.monadic
-                                                    (M.call_closure (|
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                UnOp.not,
+                                                [
+                                                  LogicalOp.and (|
+                                                    M.call_closure (|
                                                       Ty.path "bool",
                                                       BinOp.le,
-                                                      [
-                                                        M.call_closure (|
-                                                          Ty.path "usize",
-                                                          BinOp.Wrap.sub,
-                                                          [ M.read (| len |); M.read (| byte_pos |)
-                                                          ]
-                                                        |);
-                                                        M.read (|
-                                                          get_constant (|
-                                                            "core::slice::ascii::is_ascii::runtime::USIZE_SIZE",
-                                                            Ty.path "usize"
+                                                      [ M.read (| byte_pos |); M.read (| len |) ]
+                                                    |),
+                                                    ltac:(M.monadic
+                                                      (M.call_closure (|
+                                                        Ty.path "bool",
+                                                        BinOp.le,
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "usize",
+                                                            BinOp.Wrap.sub,
+                                                            [
+                                                              M.read (| len |);
+                                                              M.read (| byte_pos |)
+                                                            ]
+                                                          |);
+                                                          M.read (|
+                                                            get_constant (|
+                                                              "core::slice::ascii::is_ascii::runtime::USIZE_SIZE",
+                                                              Ty.path "usize"
+                                                            |)
                                                           |)
-                                                        |)
-                                                      ]
-                                                    |)))
-                                                |)
+                                                        ]
+                                                      |)))
+                                                  |)
+                                                ]
                                               |)
                                             |)) in
                                         let _ :=
@@ -11029,12 +11068,16 @@ Module slice.
                     |) in
                   M.alloc (|
                     Ty.path "bool",
-                    UnOp.not (|
-                      M.call_closure (|
-                        Ty.path "bool",
-                        M.get_function (| "core::slice::ascii::contains_nonascii", [], [] |),
-                        [ M.read (| last_word |) ]
-                      |)
+                    M.call_closure (|
+                      Ty.path "bool",
+                      UnOp.not,
+                      [
+                        M.call_closure (|
+                          Ty.path "bool",
+                          M.get_function (| "core::slice::ascii::contains_nonascii", [], [] |),
+                          [ M.read (| last_word |) ]
+                        |)
+                      ]
                     |)
                   |)
                 |)))

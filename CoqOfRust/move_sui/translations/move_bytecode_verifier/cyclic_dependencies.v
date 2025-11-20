@@ -774,46 +774,50 @@ Module cyclic_dependencies.
                             M.use
                               (M.alloc (|
                                 Ty.path "bool",
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::set::BTreeSet")
-                                        []
-                                        [
-                                          Ty.path "move_core_types::language_storage::ModuleId";
-                                          Ty.path "alloc::alloc::Global"
-                                        ],
-                                      "insert",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (| M.read (| visited |) |)
-                                      |);
-                                      M.call_closure (|
-                                        Ty.path "move_core_types::language_storage::ModuleId",
-                                        M.get_trait_method (|
-                                          "core::clone::Clone",
-                                          Ty.path "move_core_types::language_storage::ModuleId",
-                                          [],
-                                          [],
-                                          "clone",
-                                          [],
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  UnOp.not,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::set::BTreeSet")
                                           []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| cursor |) |)
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                  |)
+                                          [
+                                            Ty.path "move_core_types::language_storage::ModuleId";
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
+                                        "insert",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| visited |) |)
+                                        |);
+                                        M.call_closure (|
+                                          Ty.path "move_core_types::language_storage::ModuleId",
+                                          M.get_trait_method (|
+                                            "core::clone::Clone",
+                                            Ty.path "move_core_types::language_storage::ModuleId",
+                                            [],
+                                            [],
+                                            "clone",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| cursor |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=

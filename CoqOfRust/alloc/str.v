@@ -613,27 +613,31 @@ Module str.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.ge,
-                                              [
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path "alloc::vec::Vec")
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.ge,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "alloc::vec::Vec")
+                                                        []
+                                                        [ T; Ty.path "alloc::alloc::Global" ],
+                                                      "capacity",
+                                                      [],
                                                       []
-                                                      [ T; Ty.path "alloc::alloc::Global" ],
-                                                    "capacity",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.borrow (| Pointer.Kind.Ref, result |) ]
-                                                |);
-                                                M.read (| reserved_len |)
-                                              ]
-                                            |)
+                                                    |),
+                                                    [ M.borrow (| Pointer.Kind.Ref, result |) ]
+                                                  |);
+                                                  M.read (| reserved_len |)
+                                                ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=

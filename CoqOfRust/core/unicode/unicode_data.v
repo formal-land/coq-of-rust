@@ -368,7 +368,11 @@ Module unicode.
                                                 let~ _ : Ty.tuple [] :=
                                                   M.write (|
                                                     word,
-                                                    UnOp.not (| M.read (| word |) |)
+                                                    M.call_closure (|
+                                                      Ty.path "u64",
+                                                      UnOp.not,
+                                                      [ M.read (| word |) ]
+                                                    |)
                                                   |) in
                                                 M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                               |)));

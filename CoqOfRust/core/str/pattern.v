@@ -432,23 +432,27 @@ Module str.
                                                       M.use
                                                         (M.alloc (|
                                                           Ty.path "bool",
-                                                          UnOp.not (|
-                                                            M.call_closure (|
-                                                              Ty.path "bool",
-                                                              BinOp.eq,
-                                                              [
-                                                                M.read (|
-                                                                  M.deref (|
-                                                                    M.read (| left_val |)
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            UnOp.not,
+                                                            [
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                BinOp.eq,
+                                                                [
+                                                                  M.read (|
+                                                                    M.deref (|
+                                                                      M.read (| left_val |)
+                                                                    |)
+                                                                  |);
+                                                                  M.read (|
+                                                                    M.deref (|
+                                                                      M.read (| right_val |)
+                                                                    |)
                                                                   |)
-                                                                |);
-                                                                M.read (|
-                                                                  M.deref (|
-                                                                    M.read (| right_val |)
-                                                                  |)
-                                                                |)
-                                                              ]
-                                                            |)
+                                                                ]
+                                                              |)
+                                                            ]
                                                           |)
                                                         |)) in
                                                     let _ :=
@@ -789,23 +793,27 @@ Module str.
                                                       M.use
                                                         (M.alloc (|
                                                           Ty.path "bool",
-                                                          UnOp.not (|
-                                                            M.call_closure (|
-                                                              Ty.path "bool",
-                                                              BinOp.eq,
-                                                              [
-                                                                M.read (|
-                                                                  M.deref (|
-                                                                    M.read (| left_val |)
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            UnOp.not,
+                                                            [
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                BinOp.eq,
+                                                                [
+                                                                  M.read (|
+                                                                    M.deref (|
+                                                                      M.read (| left_val |)
+                                                                    |)
+                                                                  |);
+                                                                  M.read (|
+                                                                    M.deref (|
+                                                                      M.read (| right_val |)
+                                                                    |)
                                                                   |)
-                                                                |);
-                                                                M.read (|
-                                                                  M.deref (|
-                                                                    M.read (| right_val |)
-                                                                  |)
-                                                                |)
-                                                              ]
-                                                            |)
+                                                                ]
+                                                              |)
+                                                            ]
                                                           |)
                                                         |)) in
                                                     let _ :=
@@ -14065,14 +14073,18 @@ Module str.
                                 "core::str::pattern::EmptyNeedle",
                                 "is_match_fw"
                               |),
-                              UnOp.not (|
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| searcher |) |),
-                                    "core::str::pattern::EmptyNeedle",
-                                    "is_match_fw"
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| searcher |) |),
+                                      "core::str::pattern::EmptyNeedle",
+                                      "is_match_fw"
+                                    |)
                                   |)
-                                |)
+                                ]
                               |)
                             |) in
                           let~ pos : Ty.path "usize" :=
@@ -14483,33 +14495,37 @@ Module str.
                                                           M.use
                                                             (M.alloc (|
                                                               Ty.path "bool",
-                                                              UnOp.not (|
-                                                                M.call_closure (|
-                                                                  Ty.path "bool",
-                                                                  M.get_associated_function (|
-                                                                    Ty.path "str",
-                                                                    "is_char_boundary",
-                                                                    [],
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.read (|
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            M.deref (|
-                                                                              M.read (| self |)
-                                                                            |),
-                                                                            "core::str::pattern::StrSearcher",
-                                                                            "haystack"
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                UnOp.not,
+                                                                [
+                                                                  M.call_closure (|
+                                                                    Ty.path "bool",
+                                                                    M.get_associated_function (|
+                                                                      Ty.path "str",
+                                                                      "is_char_boundary",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (|
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.deref (|
+                                                                                M.read (| self |)
+                                                                              |),
+                                                                              "core::str::pattern::StrSearcher",
+                                                                              "haystack"
+                                                                            |)
                                                                           |)
                                                                         |)
-                                                                      |)
-                                                                    |);
-                                                                    M.read (| b |)
-                                                                  ]
-                                                                |)
+                                                                      |);
+                                                                      M.read (| b |)
+                                                                    ]
+                                                                  |)
+                                                                ]
                                                               |)
                                                             |)) in
                                                         let _ :=
@@ -15132,14 +15148,18 @@ Module str.
                                 "core::str::pattern::EmptyNeedle",
                                 "is_match_bw"
                               |),
-                              UnOp.not (|
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| searcher |) |),
-                                    "core::str::pattern::EmptyNeedle",
-                                    "is_match_bw"
+                              M.call_closure (|
+                                Ty.path "bool",
+                                UnOp.not,
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| searcher |) |),
+                                      "core::str::pattern::EmptyNeedle",
+                                      "is_match_bw"
+                                    |)
                                   |)
-                                |)
+                                ]
                               |)
                             |) in
                           let~ end_ : Ty.path "usize" :=
@@ -15528,33 +15548,37 @@ Module str.
                                                           M.use
                                                             (M.alloc (|
                                                               Ty.path "bool",
-                                                              UnOp.not (|
-                                                                M.call_closure (|
-                                                                  Ty.path "bool",
-                                                                  M.get_associated_function (|
-                                                                    Ty.path "str",
-                                                                    "is_char_boundary",
-                                                                    [],
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.read (|
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            M.deref (|
-                                                                              M.read (| self |)
-                                                                            |),
-                                                                            "core::str::pattern::StrSearcher",
-                                                                            "haystack"
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                UnOp.not,
+                                                                [
+                                                                  M.call_closure (|
+                                                                    Ty.path "bool",
+                                                                    M.get_associated_function (|
+                                                                      Ty.path "str",
+                                                                      "is_char_boundary",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (|
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.deref (|
+                                                                                M.read (| self |)
+                                                                              |),
+                                                                              "core::str::pattern::StrSearcher",
+                                                                              "haystack"
+                                                                            |)
                                                                           |)
                                                                         |)
-                                                                      |)
-                                                                    |);
-                                                                    M.read (| a |)
-                                                                  ]
-                                                                |)
+                                                                      |);
+                                                                      M.read (| a |)
+                                                                    ]
+                                                                  |)
+                                                                ]
                                                               |)
                                                             |)) in
                                                         let _ :=
@@ -17831,23 +17855,27 @@ Module str.
                                         M.use
                                           (M.alloc (|
                                             Ty.path "bool",
-                                            UnOp.not (|
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                M.get_associated_function (|
-                                                  Ty.path "core::str::pattern::TwoWaySearcher",
-                                                  "byteset_contains",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| self |) |)
-                                                  |);
-                                                  M.read (| tail_byte |)
-                                                ]
-                                              |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              UnOp.not,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::str::pattern::TwoWaySearcher",
+                                                    "byteset_contains",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| self |) |)
+                                                    |);
+                                                    M.read (| tail_byte |)
+                                                  ]
+                                                |)
+                                              ]
                                             |)
                                           |)) in
                                       let _ :=
@@ -17903,7 +17931,11 @@ Module str.
                                                       M.use
                                                         (M.alloc (|
                                                           Ty.path "bool",
-                                                          UnOp.not (| M.read (| long_period |) |)
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            UnOp.not,
+                                                            [ M.read (| long_period |) ]
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       is_constant_or_break_match (|
@@ -18240,10 +18272,15 @@ Module str.
                                                                                       (M.alloc (|
                                                                                         Ty.path
                                                                                           "bool",
-                                                                                        UnOp.not (|
-                                                                                          M.read (|
-                                                                                            long_period
-                                                                                          |)
+                                                                                        M.call_closure (|
+                                                                                          Ty.path
+                                                                                            "bool",
+                                                                                          UnOp.not,
+                                                                                          [
+                                                                                            M.read (|
+                                                                                              long_period
+                                                                                            |)
+                                                                                          ]
                                                                                         |)
                                                                                       |)) in
                                                                                   let _ :=
@@ -18606,10 +18643,15 @@ Module str.
                                                                                       (M.alloc (|
                                                                                         Ty.path
                                                                                           "bool",
-                                                                                        UnOp.not (|
-                                                                                          M.read (|
-                                                                                            long_period
-                                                                                          |)
+                                                                                        M.call_closure (|
+                                                                                          Ty.path
+                                                                                            "bool",
+                                                                                          UnOp.not,
+                                                                                          [
+                                                                                            M.read (|
+                                                                                              long_period
+                                                                                            |)
+                                                                                          ]
                                                                                         |)
                                                                                       |)) in
                                                                                   let _ :=
@@ -18757,7 +18799,11 @@ Module str.
                                         M.use
                                           (M.alloc (|
                                             Ty.path "bool",
-                                            UnOp.not (| M.read (| long_period |) |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              UnOp.not,
+                                              [ M.read (| long_period |) ]
+                                            |)
                                           |)) in
                                       let _ :=
                                         is_constant_or_break_match (|
@@ -19157,23 +19203,27 @@ Module str.
                                         M.use
                                           (M.alloc (|
                                             Ty.path "bool",
-                                            UnOp.not (|
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                M.get_associated_function (|
-                                                  Ty.path "core::str::pattern::TwoWaySearcher",
-                                                  "byteset_contains",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| self |) |)
-                                                  |);
-                                                  M.read (| front_byte |)
-                                                ]
-                                              |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              UnOp.not,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::str::pattern::TwoWaySearcher",
+                                                    "byteset_contains",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| self |) |)
+                                                    |);
+                                                    M.read (| front_byte |)
+                                                  ]
+                                                |)
+                                              ]
                                             |)
                                           |)) in
                                       let _ :=
@@ -19229,7 +19279,11 @@ Module str.
                                                       M.use
                                                         (M.alloc (|
                                                           Ty.path "bool",
-                                                          UnOp.not (| M.read (| long_period |) |)
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            UnOp.not,
+                                                            [ M.read (| long_period |) ]
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       is_constant_or_break_match (|
@@ -19639,10 +19693,15 @@ Module str.
                                                                                       (M.alloc (|
                                                                                         Ty.path
                                                                                           "bool",
-                                                                                        UnOp.not (|
-                                                                                          M.read (|
-                                                                                            long_period
-                                                                                          |)
+                                                                                        M.call_closure (|
+                                                                                          Ty.path
+                                                                                            "bool",
+                                                                                          UnOp.not,
+                                                                                          [
+                                                                                            M.read (|
+                                                                                              long_period
+                                                                                            |)
+                                                                                          ]
                                                                                         |)
                                                                                       |)) in
                                                                                   let _ :=
@@ -20025,10 +20084,15 @@ Module str.
                                                                                       (M.alloc (|
                                                                                         Ty.path
                                                                                           "bool",
-                                                                                        UnOp.not (|
-                                                                                          M.read (|
-                                                                                            long_period
-                                                                                          |)
+                                                                                        M.call_closure (|
+                                                                                          Ty.path
+                                                                                            "bool",
+                                                                                          UnOp.not,
+                                                                                          [
+                                                                                            M.read (|
+                                                                                              long_period
+                                                                                            |)
+                                                                                          ]
                                                                                         |)
                                                                                       |)) in
                                                                                   let _ :=
@@ -20163,7 +20227,11 @@ Module str.
                                         M.use
                                           (M.alloc (|
                                             Ty.path "bool",
-                                            UnOp.not (| M.read (| long_period |) |)
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              UnOp.not,
+                                              [ M.read (| long_period |) ]
+                                            |)
                                           |)) in
                                       let _ :=
                                         is_constant_or_break_match (|
@@ -20390,7 +20458,11 @@ Module str.
                                                         [ M.read (| a |); M.read (| b |) ]
                                                       |),
                                                       ltac:(M.monadic
-                                                        (UnOp.not (| M.read (| order_greater |) |)))
+                                                        (M.call_closure (|
+                                                          Ty.path "bool",
+                                                          UnOp.not,
+                                                          [ M.read (| order_greater |) ]
+                                                        |)))
                                                     |),
                                                     ltac:(M.monadic
                                                       (LogicalOp.and (|
@@ -20801,7 +20873,11 @@ Module str.
                                                         [ M.read (| a |); M.read (| b |) ]
                                                       |),
                                                       ltac:(M.monadic
-                                                        (UnOp.not (| M.read (| order_greater |) |)))
+                                                        (M.call_closure (|
+                                                          Ty.path "bool",
+                                                          UnOp.not,
+                                                          [ M.read (| order_greater |) ]
+                                                        |)))
                                                     |),
                                                     ltac:(M.monadic
                                                       (LogicalOp.and (|
@@ -21070,12 +21146,16 @@ Module str.
                                       M.use
                                         (M.alloc (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.le,
-                                              [ M.read (| period |); M.read (| known_period |) ]
-                                            |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            UnOp.not,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.le,
+                                                [ M.read (| period |); M.read (| known_period |) ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
@@ -21444,32 +21524,36 @@ Module str.
                                         M.use
                                           (M.alloc (|
                                             Ty.path "bool",
-                                            UnOp.not (|
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                BinOp.gt,
-                                                [
-                                                  M.call_closure (|
-                                                    Ty.path "usize",
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "slice")
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              UnOp.not,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.gt,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ],
+                                                        "len",
+                                                        [],
                                                         []
-                                                        [ Ty.path "u8" ],
-                                                      "len",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (| M.read (| needle |) |)
-                                                      |)
-                                                    ]
-                                                  |);
-                                                  Value.Integer IntegerKind.Usize 1
-                                                ]
-                                              |)
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| needle |) |)
+                                                        |)
+                                                      ]
+                                                    |);
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  ]
+                                                |)
+                                              ]
                                             |)
                                           |)) in
                                       let _ :=
@@ -22357,19 +22441,24 @@ Module str.
                                                                                 BinOp.Wrap.bit_and,
                                                                                 [
                                                                                   M.read (| β |);
-                                                                                  UnOp.not (|
-                                                                                    M.call_closure (|
-                                                                                      Ty.path "u16",
-                                                                                      BinOp.Wrap.shl,
-                                                                                      [
-                                                                                        Value.Integer
-                                                                                          IntegerKind.U16
-                                                                                          1;
-                                                                                        M.read (|
-                                                                                          trailing
-                                                                                        |)
-                                                                                      ]
-                                                                                    |)
+                                                                                  M.call_closure (|
+                                                                                    Ty.path "u16",
+                                                                                    UnOp.not,
+                                                                                    [
+                                                                                      M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "u16",
+                                                                                        BinOp.Wrap.shl,
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            IntegerKind.U16
+                                                                                            1;
+                                                                                          M.read (|
+                                                                                            trailing
+                                                                                          |)
+                                                                                        ]
+                                                                                      |)
+                                                                                    ]
                                                                                   |)
                                                                                 ]
                                                                               |)
@@ -22786,7 +22875,12 @@ Module str.
                                               |)
                                             ]
                                           |),
-                                          ltac:(M.monadic (UnOp.not (| M.read (| result |) |)))
+                                          ltac:(M.monadic
+                                            (M.call_closure (|
+                                              Ty.path "bool",
+                                              UnOp.not,
+                                              [ M.read (| result |) ]
+                                            |)))
                                         |)
                                       |)) in
                                   let _ :=
@@ -23429,7 +23523,12 @@ Module str.
                                               |)
                                             ]
                                           |),
-                                          ltac:(M.monadic (UnOp.not (| M.read (| result |) |)))
+                                          ltac:(M.monadic
+                                            (M.call_closure (|
+                                              Ty.path "bool",
+                                              UnOp.not,
+                                              [ M.read (| result |) ]
+                                            |)))
                                         |)
                                       |)) in
                                   let _ :=
@@ -23876,19 +23975,23 @@ Module str.
                                                 M.use
                                                   (M.alloc (|
                                                     Ty.path "bool",
-                                                    UnOp.not (|
-                                                      M.call_closure (|
-                                                        Ty.path "bool",
-                                                        BinOp.eq,
-                                                        [
-                                                          M.read (|
-                                                            M.deref (| M.read (| left_val |) |)
-                                                          |);
-                                                          M.read (|
-                                                            M.deref (| M.read (| right_val |) |)
-                                                          |)
-                                                        ]
-                                                      |)
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      UnOp.not,
+                                                      [
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          BinOp.eq,
+                                                          [
+                                                            M.read (|
+                                                              M.deref (| M.read (| left_val |) |)
+                                                            |);
+                                                            M.read (|
+                                                              M.deref (| M.read (| right_val |) |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      ]
                                                     |)
                                                   |)) in
                                               let _ :=

@@ -271,41 +271,45 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.use
                       (M.alloc (|
                         Ty.path "bool",
-                        UnOp.not (|
-                          M.call_closure (|
-                            Ty.path "bool",
-                            BinOp.ne,
-                            [
-                              M.call_closure (|
-                                Ty.path "u64",
-                                M.get_function (|
-                                  "hash::calculate_hash",
-                                  [],
-                                  [ Ty.path "hash::Person" ]
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.borrow (| Pointer.Kind.Ref, person1 |) |)
-                                  |)
-                                ]
-                              |);
-                              M.call_closure (|
-                                Ty.path "u64",
-                                M.get_function (|
-                                  "hash::calculate_hash",
-                                  [],
-                                  [ Ty.path "hash::Person" ]
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.borrow (| Pointer.Kind.Ref, person2 |) |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                          |)
+                        M.call_closure (|
+                          Ty.path "bool",
+                          UnOp.not,
+                          [
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ne,
+                              [
+                                M.call_closure (|
+                                  Ty.path "u64",
+                                  M.get_function (|
+                                    "hash::calculate_hash",
+                                    [],
+                                    [ Ty.path "hash::Person" ]
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.borrow (| Pointer.Kind.Ref, person1 |) |)
+                                    |)
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.path "u64",
+                                  M.get_function (|
+                                    "hash::calculate_hash",
+                                    [],
+                                    [ Ty.path "hash::Person" ]
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.borrow (| Pointer.Kind.Ref, person2 |) |)
+                                    |)
+                                  ]
+                                |)
+                              ]
+                            |)
+                          ]
                         |)
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

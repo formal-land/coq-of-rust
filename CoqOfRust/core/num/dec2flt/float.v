@@ -32,8 +32,10 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               Ty.path "f32",
-              UnOp.neg (|
-                M.read (| get_associated_constant (| Ty.path "f32", "NAN", Ty.path "f32" |) |)
+              M.call_closure (|
+                Ty.path "f32",
+                UnOp.neg,
+                [ M.read (| get_associated_constant (| Ty.path "f32", "NAN", Ty.path "f32" |) |) ]
               |)
             |))).
         
@@ -162,20 +164,24 @@ Module num.
                                         M.use
                                           (M.alloc (|
                                             Ty.path "bool",
-                                            UnOp.not (|
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                BinOp.le,
-                                                [
-                                                  M.read (| v |);
-                                                  M.read (|
-                                                    get_constant (|
-                                                      "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH",
-                                                      Ty.path "u64"
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              UnOp.not,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.le,
+                                                  [
+                                                    M.read (| v |);
+                                                    M.read (|
+                                                      get_constant (|
+                                                        "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH",
+                                                        Ty.path "u64"
+                                                      |)
                                                     |)
-                                                  |)
-                                                ]
-                                              |)
+                                                  ]
+                                                |)
+                                              ]
                                             |)
                                           |)) in
                                       let _ :=
@@ -488,8 +494,10 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               Ty.path "f64",
-              UnOp.neg (|
-                M.read (| get_associated_constant (| Ty.path "f64", "NAN", Ty.path "f64" |) |)
+              M.call_closure (|
+                Ty.path "f64",
+                UnOp.neg,
+                [ M.read (| get_associated_constant (| Ty.path "f64", "NAN", Ty.path "f64" |) |) ]
               |)
             |))).
         
@@ -618,20 +626,24 @@ Module num.
                                         M.use
                                           (M.alloc (|
                                             Ty.path "bool",
-                                            UnOp.not (|
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                BinOp.le,
-                                                [
-                                                  M.read (| v |);
-                                                  M.read (|
-                                                    get_constant (|
-                                                      "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH",
-                                                      Ty.path "u64"
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              UnOp.not,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.le,
+                                                  [
+                                                    M.read (| v |);
+                                                    M.read (|
+                                                      get_constant (|
+                                                        "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH",
+                                                        Ty.path "u64"
+                                                      |)
                                                     |)
-                                                  |)
-                                                ]
-                                              |)
+                                                  ]
+                                                |)
+                                              ]
                                             |)
                                           |)) in
                                       let _ :=

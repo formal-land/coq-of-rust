@@ -83,7 +83,7 @@ Module slice.
                           |)
                         ]
                       |);
-                      UnOp.not (| M.read (| x |) |)
+                      M.call_closure (| Ty.path "usize", UnOp.not, [ M.read (| x |) ] |)
                     ]
                   |);
                   M.read (| get_constant (| "core::slice::memchr::HI_USIZE", Ty.path "usize" |) |)

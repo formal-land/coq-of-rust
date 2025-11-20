@@ -1,6 +1,3 @@
-Require Import CoqOfRust.CoqOfRust.
-Require Import CoqOfRust.links.M.
-Require Import CoqOfRust.simulate.M.
 Require Import core.links.array.
 Require Import examples.default.examples.custom.links.loops_free.
 
@@ -9,6 +6,7 @@ Definition max2 (a b : U32.t) : U32.t :=
     b
   else
     a.
+
 Lemma max2_eq (a b : U32.t) :
   {{
     SimulateM.eval_f (Stack := []) (run_max2 a b) tt 🌲
@@ -60,6 +58,7 @@ Proof.
   }
   { apply Run.Pure. }
 Qed.
+<<<<<<< HEAD
 Global Opaque run_abs_i32.
 
 Definition get_or_zero (xs : array.t U32.t {| Integer.value := 4 |}) (i : Usize.t) : U32.t :=
@@ -243,3 +242,6 @@ Qed.
 
 Global Opaque run_min3.
 
+=======
+Global Opaque run_max2.
+>>>>>>> formal-land/main

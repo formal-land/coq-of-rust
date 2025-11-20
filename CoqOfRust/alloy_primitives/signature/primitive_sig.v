@@ -1921,14 +1921,18 @@ Module signature.
                               []
                               [
                                 ("y_parity",
-                                  UnOp.not (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "alloy_primitives::signature::primitive_sig::PrimitiveSignature",
-                                        "y_parity"
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    UnOp.not,
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloy_primitives::signature::primitive_sig::PrimitiveSignature",
+                                          "y_parity"
+                                        |)
                                       |)
-                                    |)
+                                    ]
                                   |));
                                 ("r",
                                   M.read (|
