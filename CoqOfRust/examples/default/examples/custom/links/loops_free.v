@@ -14,7 +14,7 @@ Proof.
   run_symbolic.
 Defined.
 
-Instance run_bool_and (a b : Bool.t) : Run.Trait bool_and [] [] [φ a; φ b] Bool.t.
+Instance run_bool_and (a b : bool) : Run.Trait bool_and [] [] [φ a; φ b] bool.
 Proof.
   constructor.
   run_symbolic.
@@ -27,13 +27,13 @@ Proof.
   run_symbolic.
 Defined.
 
-Instance run_eq2 (a b : Array.t U32.t 2) : Run.Trait eq2 [] [] [φ a; φ b] Bool.t.
+Instance run_eq2 (a b : Array.t U32.t 2) : Run.Trait eq2 [] [] [φ a; φ b] bool.
 Proof.
   constructor.
   run_symbolic.
 Defined.
 
-Instance run_eq_pair (x y : Prod.t U32.t U32.t) : Run.Trait eq_pair [] [] [φ x; φ y] Bool.t.
+Instance run_eq_pair (x y : Prod.t U32.t U32.t) : Run.Trait eq_pair [] [] [φ x; φ y] bool.
 Proof.
   constructor.
   run_symbolic.
@@ -44,4 +44,3 @@ Proof.
   constructor.
   run_symbolic.
 Defined.
-
