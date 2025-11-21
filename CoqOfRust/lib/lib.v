@@ -118,6 +118,14 @@ Module Integer.
       None
     else
       Some z.
+
+  Definition normalize_saturating (kind : IntegerKind.t) (z : Z) : Z :=
+    if z <? min kind then
+      min kind
+    else if max kind <? z then
+      max kind
+    else
+      z.
 End Integer.
 
 (** We define the operators for the release mode. That means that we make overflows on integers
