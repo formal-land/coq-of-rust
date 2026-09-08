@@ -2,6 +2,7 @@ Require Import Stdlib.Lists.List.
 Require Import Stdlib.ZArith.ZArith.
 
 Require Import alloy_primitives.links.aliases.
+Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_interpreter.instructions.simulate.table.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.simulate.dispatch.
@@ -17,6 +18,8 @@ Require Import simulate.RocqOfRust.
 Parameter run_InterpreterTypes_for_WIRE :
   RocqOfRust.revm.revm_interpreter.links.interpreter_types.InterpreterTypes.Run
     WIRE WIRE_types.
+
+Parameter run_Host_for_TestHost : Host.Run TestHost.t TestHost.host_types.
 
 Definition bytecode_is_not_end (bytecode : Bytecode.t) : bool :=
   Z.ltb
@@ -54,6 +57,7 @@ Definition run_plain_stack_at
   let table :=
     FragmentInstructionTable.table
       (H := TestHost.t)
+      (run_host := run_Host_for_TestHost)
       run_InterpreterTypes_for_WIRE in
   match
     InterpreterDispatch.run_plain_fuel
@@ -98,6 +102,7 @@ Definition table_static_gas (opcode : Z) : option Z :=
   let table :=
     FragmentInstructionTable.table
       (H := TestHost.t)
+      (run_host := run_Host_for_TestHost)
       run_InterpreterTypes_for_WIRE in
   match
     InterpreterStep.instruction_at
@@ -110,6 +115,17 @@ Definition table_static_gas (opcode : Z) : option Z :=
           .(Integer.value)
   | None => None
   end.
+
+Module Test.
+  Lemma number_static_gas : table_static_gas 67 = Some 2.
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
+  (** Host reads and interpreter-only operations share the same runner. *)
+  Lemma number_add :
+    run_plain_stack [byte 67; byte 96; byte 2; byte 1; byte 0] =
+    Some (words [3]).
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+End Test.
 
 (** The executable prefix of GeneralStateTests/stExample/add11.json. *)
 Goal
