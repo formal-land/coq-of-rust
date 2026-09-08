@@ -3,10 +3,13 @@ Require Import Stdlib.ZArith.ZArith.
 
 Require Import alloy_primitives.links.aliases.
 Require Import core.links.result.
+Require Import core.ops.links.range.
 Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_context_interface.links.journaled_state.
 Require Import revm.revm_context_interface.simulate.host.
+Require Import revm.revm_interpreter.instructions.simulate.system.calldataload.
 Require Import revm.revm_interpreter.instructions.simulate.table.
+Require Import revm.revm_interpreter.interpreter_action.links.call_inputs.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.simulate.dispatch.
 Require Import revm.revm_interpreter.simulate.instruction_context.
@@ -157,6 +160,35 @@ Definition run_add11 : option (Z * list StatefulHost.Change.t) :=
   end.
 
 Module Test.
+  Definition shared_calldata_interpreter (offset : Z) :=
+    let interpreter :=
+      make_interpreter {| Stack.value := [{| Uint.value := offset |}] |} in
+    let input :=
+      empty_input <| Input.input :=
+        CallInput.SharedBuffer
+          {| Range.start := {| Integer.value := 1 |};
+             Range.end_ := {| Integer.value := 3 |} |} |> in
+    interpreter
+      <| @Interpreter.input WIRE _ WIRE_types _ := input |>
+      <| @Interpreter.memory WIRE _ WIRE_types _ :=
+        {| Memory.value := [(9 : u8)];
+           Memory.shared_buffer := [(8 : u8); (1 : u8); (2 : u8); (7 : u8)] |} |>.
+
+  Goal
+    (calldataload (shared_calldata_interpreter 0)).(Interpreter.stack) =
+    {| Stack.value := [{| Uint.value := 1 * 256 ^ 31 + 2 * 256 ^ 30 |}] |}.
+  Proof. vm_compute. reflexivity. Qed.
+
+  Goal
+    (calldataload (shared_calldata_interpreter 1)).(Interpreter.stack) =
+    {| Stack.value := [{| Uint.value := 2 * 256 ^ 31 |}] |}.
+  Proof. vm_compute. reflexivity. Qed.
+
+  Goal
+    (calldataload (shared_calldata_interpreter (2 ^ 255))).(Interpreter.stack) =
+    {| Stack.value := [{| Uint.value := 0 |}] |}.
+  Proof. vm_compute. reflexivity. Qed.
+
   Definition sload_test_address := StatefulHost.rust_address 0.
 
   Definition sload_test_key := StatefulHost.rust_word 7.

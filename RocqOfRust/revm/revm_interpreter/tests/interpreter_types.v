@@ -639,7 +639,23 @@ Module MemoryTrait.
     Memory.slice self range.(Range.start) (range.(Range.end_) -i range.(Range.start)).
 
   Definition global_slice (self : Self) (range : Range.t usize) : Synthetic :=
-    Memory.slice self range.(Range.start) (range.(Range.end_) -i range.(Range.start)).
+    let offset := Z.to_nat i[range.(Range.start)] in
+    let len :=
+      Z.to_nat
+        (i[range.(Range.end_)] - i[range.(Range.start)]) in
+    List.firstn len
+      (List.skipn offset self.(Memory.shared_buffer)).
+
+  Module Test.
+    Goal
+      global_slice
+        {| Memory.value := [(9 : u8)];
+           Memory.shared_buffer := [(1 : u8); (2 : u8); (3 : u8)] |}
+        {| Range.start := {| Integer.value := 1 |};
+           Range.end_ := {| Integer.value := 3 |} |} =
+      [(2 : u8); (3 : u8)].
+    Proof. vm_compute. reflexivity. Qed.
+  End Test.
 
   Definition slice_len (self : Self) (offset len : usize) : Synthetic :=
     Memory.slice self offset len.
