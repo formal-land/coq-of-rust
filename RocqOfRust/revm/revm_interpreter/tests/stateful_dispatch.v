@@ -28,6 +28,9 @@ Parameter run_InterpreterTypes_for_WIRE :
   RocqOfRust.revm.revm_interpreter.links.interpreter_types.InterpreterTypes.Run
     WIRE WIRE_types.
 
+Parameter run_Host_for_StatefulHost :
+  Host.Run StatefulHost.t StatefulHost.host_types.
+
 Definition bytecode_is_not_end (bytecode : Bytecode.t) : bool :=
   Z.ltb
     bytecode.(Bytecode.pc).(Integer.value)
@@ -131,6 +134,7 @@ Definition run_add11 : option (Z * list StatefulHost.Change.t) :=
     FragmentInstructionTable.table
       (H := StatefulHost.t)
       (H_types := StatefulHost.host_types)
+      (run_host := run_Host_for_StatefulHost)
       run_InterpreterTypes_for_WIRE in
   match
     InterpreterDispatch.run_plain_stateful_fuel

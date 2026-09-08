@@ -17,6 +17,7 @@ Require Import revm.revm_interpreter.instructions.links.bitwise.sgt.
 Require Import revm.revm_interpreter.instructions.links.bitwise.shl.
 Require Import revm.revm_interpreter.instructions.links.bitwise.shr.
 Require Import revm.revm_interpreter.instructions.links.bitwise.slt.
+Require Import revm.revm_interpreter.instructions.links.block_info.
 Require Import revm.revm_interpreter.instructions.links.control.jump.
 Require Import revm.revm_interpreter.instructions.links.control.jumpdest.
 Require Import revm.revm_interpreter.instructions.links.control.jumpi.
@@ -54,6 +55,7 @@ Require Import revm.revm_interpreter.instructions.simulate.bitwise.sgt.
 Require Import revm.revm_interpreter.instructions.simulate.bitwise.shl.
 Require Import revm.revm_interpreter.instructions.simulate.bitwise.shr.
 Require Import revm.revm_interpreter.instructions.simulate.bitwise.slt.
+Require Import revm.revm_interpreter.instructions.simulate.block_info.block_number.
 Require Import revm.revm_interpreter.instructions.simulate.control.jump.
 Require Import revm.revm_interpreter.instructions.simulate.control.jumpdest.
 Require Import revm.revm_interpreter.instructions.simulate.control.jumpi.
@@ -349,6 +351,17 @@ Module FragmentInstructionTable.
     Function1.t (InstructionContext.t H WIRE WIRE_types) unit :=
     Function1.of_run (fun context => run_bitwise_clz run_types context).
 
+  Definition block_number_function
+      {WIRE H : Set} `{Link WIRE} `{Link H}
+      {WIRE_types : InterpreterTypes.Types.t}
+      `{InterpreterTypes.Types.AreLinks WIRE_types}
+      {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
+      (run_types : InterpreterTypes.Run WIRE WIRE_types)
+      (run_host : Host.Run H H_types) :
+    Function1.t (InstructionContext.t H WIRE WIRE_types) unit :=
+    Function1.of_run
+      (fun context => run_block_number run_types run_host context).
+
   Definition unknown_function
       {WIRE H : Set} `{Link WIRE} `{Link H}
       {WIRE_types : InterpreterTypes.Types.t}
@@ -544,7 +557,8 @@ Module FragmentInstructionTable.
       `{InterpreterTypes.Types.AreLinks WIRE_types}
       {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
       (run_InterpreterTypes_for_WIRE :
-        InterpreterTypes.Run WIRE WIRE_types) :
+        InterpreterTypes.Run WIRE WIRE_types)
+      {run_host : Host.Run H H_types} :
     array.t
       (Instruction.t WIRE H WIRE_types)
       {| Integer.value := 256 |} :=
@@ -806,9 +820,17 @@ Module FragmentInstructionTable.
         (ArrayPair.Build_t selfbalance_instruction
           (prepend_repeat unknown_instruction 8 176
             (ArrayPair.Build_t pop_instruction tail_after_pop))) in
+    let tail_after_number :
+        ArrayPairs.t (Instruction.t WIRE H WIRE_types) 188 :=
+      prepend_repeat unknown_instruction 2 186 tail_after_chainid in
     let tail_after_returndatacopy :
         ArrayPairs.t (Instruction.t WIRE H WIRE_types) 193 :=
-      prepend_repeat unknown_instruction 7 186 tail_after_chainid in
+      prepend_repeat unknown_instruction 4 189
+        (ArrayPair.Build_t
+          {| Instruction.fn_ := block_number_function
+               run_InterpreterTypes_for_WIRE run_host;
+             Instruction.static_gas := {| Integer.value := 2 |} |}
+          tail_after_number) in
     let tail_after_callvalue :
         ArrayPairs.t (Instruction.t WIRE H WIRE_types) 204 :=
       ArrayPair.Build_t callvalue_instruction
@@ -876,4 +898,5 @@ Module FragmentInstructionTable.
                                   240
                                   bitwise_instructions))))))))))))
       ).
+
 End FragmentInstructionTable.
