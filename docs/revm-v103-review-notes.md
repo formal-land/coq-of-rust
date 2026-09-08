@@ -57,6 +57,18 @@ improved to handle more of these cases automatically.
 
 Use the project convention of double-space indentation in Rocq proofs.
 
+## Local resource limits
+
+Reuse existing build worktrees and check free disk space and available RAM before
+compiling. Run only one compiler job at a time on this laptop. Use a per-process
+virtual-memory limit (for example, `ulimit -v 2097152` for 2 GiB) and a timeout
+for evaluation tests, and record peak RSS. A timed-out or memory-limited test is
+a failure to investigate, not a reason to remove the limit automatically.
+
+Check binary offsets against the input length before applying `Z.to_nat` in
+executable simulations. Converting a saturated 64-bit offset directly to a
+unary natural can exhaust memory even when the input list has only two bytes.
+
 ## PR hygiene
 
 Keep links, simulate, and tests layers separate unless the current change really

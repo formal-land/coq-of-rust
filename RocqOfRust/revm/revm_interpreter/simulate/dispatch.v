@@ -50,6 +50,7 @@ Require Import revm.revm_interpreter.instructions.simulate.stack.pop.
 Require Import revm.revm_interpreter.instructions.simulate.stack.push.
 Require Import revm.revm_interpreter.instructions.simulate.stack.push0.
 Require Import revm.revm_interpreter.instructions.simulate.stack.swap.
+Require Import revm.revm_interpreter.instructions.simulate.system.calldataload.
 Require Import revm.revm_interpreter.instructions.simulate.system.callvalue.
 Require Import revm.revm_interpreter.instructions.simulate.system.gas.
 Require Import revm.revm_interpreter.instructions.simulate.system.returndatacopy.
@@ -281,6 +282,14 @@ Module InterpreterDispatch.
           Some instruction /\
         InterpreterStep.instruction_static_gas instruction =
           {| Integer.value := 2 |};
+    table_calldataload :
+      exists instruction,
+        InterpreterStep.instruction_at
+          table
+          {| Integer.value := 53 |} =
+          Some instruction /\
+        InterpreterStep.instruction_static_gas instruction =
+          {| Integer.value := 3 |};
     table_returndatacopy :
       exists instruction,
         InterpreterStep.instruction_at
@@ -364,6 +373,8 @@ Module InterpreterDispatch.
         op_clz
       else if Z.eqb opcode.(Integer.value) 52 then
         callvalue
+      else if Z.eqb opcode.(Integer.value) 53 then
+        calldataload
       else if Z.eqb opcode.(Integer.value) 62 then
         returndatacopy
       else if Z.eqb opcode.(Integer.value) 80 then
@@ -719,6 +730,16 @@ Module InterpreterDispatch.
       (state : InstructionContext.State.t H WIRE WIRE_types) :
     simple {| Integer.value := 52 |} state =
     InstructionContext.map_interpreter callvalue state.
+  Proof. reflexivity. Qed.
+
+  Lemma simple_calldataload
+      {H WIRE : Set} `{Link H} `{Link WIRE}
+      {WIRE_types : InterpreterTypes.Types.t}
+      `{InterpreterTypes.Types.AreLinks WIRE_types}
+      `{IInterpreterTypes : InterpreterTypes.C WIRE_types}
+      (state : InstructionContext.State.t H WIRE WIRE_types) :
+    simple {| Integer.value := 53 |} state =
+    InstructionContext.map_interpreter calldataload state.
   Proof. reflexivity. Qed.
 
   Lemma simple_push1
