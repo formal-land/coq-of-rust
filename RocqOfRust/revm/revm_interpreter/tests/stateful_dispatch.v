@@ -161,6 +161,28 @@ Definition run_add11 : option (Z * list StatefulHost.Change.t) :=
   end.
 
 Module Test.
+  Lemma coinbase_reads_full_address :
+    let beneficiary := 2 ^ 159 + 256 + 1 in
+    let input := add11_input <| StatefulHost.Input.block :=
+      add11_input.(StatefulHost.Input.block)
+        <| StatefulHost.Environment.Block.coinbase := beneficiary |> |> in
+    let initial_state : InstructionContext.State.t StatefulHost.t WIRE WIRE_types :=
+      {| InstructionContext.State.interpreter := make_interpreter_with_bytecode
+           [(65 : u8); (0 : u8)] {| Stack.value := [] |};
+         InstructionContext.State.host := StatefulHost.make input |} in
+    let table := FragmentInstructionTable.table
+      (H := StatefulHost.t) (run_host := run_Host_for_StatefulHost)
+      run_InterpreterTypes_for_WIRE in
+    match InterpreterDispatch.run_plain_fuel 2 InterpreterTypes.I
+      bytecode_is_not_end table initial_state with
+    | Some (_, {| InstructionContext.State.interpreter := interpreter;
+                  InstructionContext.State.host := _ |}) =>
+        Some (List.map Uint.value interpreter.(Interpreter.stack).(Stack.value),
+          interpreter.(Interpreter.gas).(Gas.remaining).(Integer.value))
+    | None => None
+    end = Some ([beneficiary], 999998).
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
   Lemma gaslimit_reads_block_not_remaining_gas :
     let interpreter := make_interpreter_with_bytecode
       [(69 : u8); (0 : u8)] {| Stack.value := [] |} in
