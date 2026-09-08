@@ -33,6 +33,7 @@ Require Import revm.revm_interpreter.instructions.simulate.bitwise.shl.
 Require Import revm.revm_interpreter.instructions.simulate.bitwise.shr.
 Require Import revm.revm_interpreter.instructions.simulate.bitwise.slt.
 Require Import revm.revm_interpreter.instructions.simulate.block_info.block_number.
+Require Import revm.revm_interpreter.instructions.simulate.block_info.timestamp.
 Require Import revm.revm_interpreter.instructions.simulate.block_info.chainid.
 Require Import revm.revm_interpreter.instructions.simulate.control.jump.
 Require Import revm.revm_interpreter.instructions.simulate.control.jumpdest.
@@ -379,6 +380,15 @@ Module InterpreterDispatch.
         InstructionContext.map_interpreter (calldataload)
       else if Z.eqb opcode.(Integer.value) 62 then
         InstructionContext.map_interpreter (returndatacopy)
+      else if Z.eqb opcode.(Integer.value) 66 then
+        fun state =>
+          let '(interpreter, host) := timestamp
+            (IInterpreterTypes := IInterpreterTypes) (IHost := IHost)
+            (@InstructionContext.State.interpreter
+              H WIRE _ _ WIRE_types _ state)
+            (@InstructionContext.State.host H WIRE _ _ WIRE_types _ state) in
+          {| InstructionContext.State.interpreter := interpreter;
+             InstructionContext.State.host := host |}
       else if Z.eqb opcode.(Integer.value) 67 then
         fun state =>
           let '(interpreter, host) := block_number

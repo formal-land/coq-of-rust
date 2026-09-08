@@ -120,6 +120,13 @@ Module Test.
   Lemma number_static_gas : table_static_gas 67 = Some 2.
   Proof. timeout 5 vm_compute. reflexivity. Qed.
 
+  Lemma timestamp_static_gas : table_static_gas 66 = Some 2.
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
+  Lemma timestamp_and_number :
+    run_plain_stack [byte 66; byte 67; byte 0] = Some (words [1; 0]).
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
   (** Host reads and interpreter-only operations share the same runner. *)
   Lemma number_add :
     run_plain_stack [byte 67; byte 96; byte 2; byte 1; byte 0] =

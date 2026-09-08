@@ -56,6 +56,7 @@ Require Import revm.revm_interpreter.instructions.simulate.bitwise.shl.
 Require Import revm.revm_interpreter.instructions.simulate.bitwise.shr.
 Require Import revm.revm_interpreter.instructions.simulate.bitwise.slt.
 Require Import revm.revm_interpreter.instructions.simulate.block_info.block_number.
+Require Import revm.revm_interpreter.instructions.simulate.block_info.timestamp.
 Require Import revm.revm_interpreter.instructions.simulate.control.jump.
 Require Import revm.revm_interpreter.instructions.simulate.control.jumpdest.
 Require Import revm.revm_interpreter.instructions.simulate.control.jumpi.
@@ -361,6 +362,17 @@ Module FragmentInstructionTable.
     Function1.t (InstructionContext.t H WIRE WIRE_types) unit :=
     Function1.of_run
       (fun context => run_block_number run_types run_host context).
+
+  Definition timestamp_function
+      {WIRE H : Set} `{Link WIRE} `{Link H}
+      {WIRE_types : InterpreterTypes.Types.t}
+      `{InterpreterTypes.Types.AreLinks WIRE_types}
+      {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
+      (run_types : InterpreterTypes.Run WIRE WIRE_types)
+      (run_host : Host.Run H H_types) :
+    Function1.t (InstructionContext.t H WIRE WIRE_types) unit :=
+    Function1.of_run
+      (fun context => run_timestamp run_types run_host context).
 
   Definition unknown_function
       {WIRE H : Set} `{Link WIRE} `{Link H}
@@ -825,12 +837,16 @@ Module FragmentInstructionTable.
       prepend_repeat unknown_instruction 2 186 tail_after_chainid in
     let tail_after_returndatacopy :
         ArrayPairs.t (Instruction.t WIRE H WIRE_types) 193 :=
-      prepend_repeat unknown_instruction 4 189
+      prepend_repeat unknown_instruction 3 190
+        (ArrayPair.Build_t
+          {| Instruction.fn_ := timestamp_function
+               run_InterpreterTypes_for_WIRE run_host;
+             Instruction.static_gas := {| Integer.value := 2 |} |}
         (ArrayPair.Build_t
           {| Instruction.fn_ := block_number_function
                run_InterpreterTypes_for_WIRE run_host;
              Instruction.static_gas := {| Integer.value := 2 |} |}
-          tail_after_number) in
+          tail_after_number)) in
     let tail_after_callvalue :
         ArrayPairs.t (Instruction.t WIRE H WIRE_types) 204 :=
       ArrayPair.Build_t callvalue_instruction
