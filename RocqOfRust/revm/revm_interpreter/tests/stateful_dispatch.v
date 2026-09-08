@@ -10,6 +10,7 @@ Require Import revm.revm_context_interface.simulate.host.
 Require Import revm.revm_interpreter.instructions.simulate.system.calldataload.
 Require Import revm.revm_interpreter.instructions.simulate.table.
 Require Import revm.revm_interpreter.interpreter_action.links.call_inputs.
+Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.simulate.dispatch.
 Require Import revm.revm_interpreter.simulate.instruction_context.
@@ -160,6 +161,30 @@ Definition run_add11 : option (Z * list StatefulHost.Change.t) :=
   end.
 
 Module Test.
+  Lemma gaslimit_reads_block_not_remaining_gas :
+    let interpreter := make_interpreter_with_bytecode
+      [(69 : u8); (0 : u8)] {| Stack.value := [] |} in
+    let interpreter := interpreter
+      <| @Interpreter.gas WIRE _ WIRE_types _ :=
+        interpreter.(Interpreter.gas)
+          <| Gas.limit := (100 : u64) |>
+          <| Gas.remaining := (17 : u64) |> |> in
+    let initial_state : InstructionContext.State.t StatefulHost.t WIRE WIRE_types :=
+      {| InstructionContext.State.interpreter := interpreter;
+         InstructionContext.State.host := StatefulHost.make add11_input |} in
+    let table := FragmentInstructionTable.table
+      (H := StatefulHost.t) (run_host := run_Host_for_StatefulHost)
+      run_InterpreterTypes_for_WIRE in
+    match InterpreterDispatch.run_plain_fuel 2 InterpreterTypes.I
+      bytecode_is_not_end table initial_state with
+    | Some (_, {| InstructionContext.State.interpreter := interpreter;
+                  InstructionContext.State.host := _ |}) =>
+        Some (List.map Uint.value interpreter.(Interpreter.stack).(Stack.value),
+          interpreter.(Interpreter.gas).(Gas.remaining).(Integer.value))
+    | None => None
+    end = Some ([1000000], 15).
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
   Definition shared_calldata_interpreter (offset : Z) :=
     let interpreter :=
       make_interpreter {| Stack.value := [{| Uint.value := offset |}] |} in
