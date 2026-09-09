@@ -37,6 +37,7 @@ Require Import revm.revm_interpreter.instructions.simulate.block_info.blob_basef
 Require Import revm.revm_interpreter.instructions.simulate.block_info.block_number.
 Require Import revm.revm_interpreter.instructions.simulate.block_info.chainid.
 Require Import revm.revm_interpreter.instructions.simulate.block_info.coinbase.
+Require Import revm.revm_interpreter.instructions.simulate.block_info.difficulty.
 Require Import revm.revm_interpreter.instructions.simulate.block_info.gaslimit.
 Require Import revm.revm_interpreter.instructions.simulate.block_info.timestamp.
 Require Import revm.revm_interpreter.instructions.simulate.control.jump.
@@ -441,6 +442,15 @@ Module InterpreterDispatch.
       else if Z.eqb opcode.(Integer.value) 74 then
         fun state =>
           let '(interpreter, host) := blob_basefee
+            (IInterpreterTypes := IInterpreterTypes) (IHost := IHost)
+            (@InstructionContext.State.interpreter
+              H WIRE _ _ WIRE_types _ state)
+            (@InstructionContext.State.host H WIRE _ _ WIRE_types _ state) in
+          {| InstructionContext.State.interpreter := interpreter;
+             InstructionContext.State.host := host |}
+      else if Z.eqb opcode.(Integer.value) 68 then
+        fun state =>
+          let '(interpreter, host) := difficulty
             (IInterpreterTypes := IInterpreterTypes) (IHost := IHost)
             (@InstructionContext.State.interpreter
               H WIRE _ _ WIRE_types _ state)

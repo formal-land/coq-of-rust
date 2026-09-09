@@ -15,6 +15,16 @@ Require Import revm.revm_primitives.simulate.hardfork.
 Require Import ruint.links.lib.
 Require Import ruint.simulate.lib.
 
+Definition difficulty_value
+    {H : Set} `{Link H}
+    {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
+    {IHost : Host.C H H_types}
+    (spec_id : SpecId.t) (host : H) : aliases.U256.t * H :=
+  if Impl_SpecId.is_enabled_in spec_id SpecId.MERGE then
+    let '(prevrandao, host) := IHost.(Host.prevrandao) host in
+    (match prevrandao with Some value => value | None => Impl_Uint.ZERO end, host)
+  else IHost.(Host.difficulty) host.
+
 Definition difficulty
     {WIRE H : Set} `{Link WIRE} `{Link H}
     {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
@@ -27,22 +37,10 @@ Definition difficulty
   let spec_id :=
     IInterpreterTypes.(InterpreterTypes.RuntimeFlag_for_RuntimeFlag).(RuntimeFlag.spec_id)
       interpreter.(Interpreter.runtime_flag) in
-  let is_merge := Impl_SpecId.is_enabled_in spec_id SpecId.MERGE in
-  if is_merge then
-    let '(prevrandao, host) := IHost.(Host.prevrandao) host in
-    let value :=
-      match prevrandao with
-      | Some value => value
-      | None => Impl_Uint.ZERO
-      end in
-    push_macro interpreter value (fun interpreter => (interpreter, host)) (fun interpreter =>
-    (interpreter, host)
-    )
-  else
-    let '(difficulty, host) := IHost.(Host.difficulty) host in
-    push_macro interpreter difficulty (fun interpreter => (interpreter, host)) (fun interpreter =>
-    (interpreter, host)
-    ).
+  let '(value, host) := difficulty_value spec_id host in
+  push_macro interpreter value (fun interpreter => (interpreter, host)) (fun interpreter =>
+  (interpreter, host)
+  ).
 
 Lemma difficulty_eq
     {WIRE H : Set} `{Link WIRE} `{Link H}
@@ -80,7 +78,7 @@ Lemma difficulty_eq
   }}.
 Proof.
   intros.
-  with_strategy transparent [run_difficulty] unfold difficulty, run_difficulty; cbn.
+  with_strategy transparent [run_difficulty] unfold difficulty, difficulty_value, run_difficulty; cbn.
   s. {
     apply InterpreterTypesEq.
   }
