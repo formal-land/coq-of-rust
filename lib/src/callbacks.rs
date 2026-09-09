@@ -18,12 +18,15 @@ impl ToRocq {
 
 fn get_index_rocq_file_content(file_names: Vec<String>) -> String {
     let mut index_content = String::new();
+    let mut file_names = file_names;
+    file_names.sort();
 
     for file_name in file_names {
-        index_content.push_str(&format!(
-            "Require Export {}.\n",
-            file_name.replace(".rs", "").replace('/', "."),
-        ));
+        let module_name = std::path::Path::new(&file_name)
+            .with_extension("")
+            .to_string_lossy()
+            .replace('/', ".");
+        index_content.push_str(&format!("Require Export {}.\n", module_name,));
     }
 
     index_content
@@ -34,6 +37,7 @@ impl Callbacks for ToRocq {
         let crate::options::Options {
             axiomatize,
             with_json,
+            ref runtime_module_prefix,
             ..
         } = self.opts;
 
@@ -43,7 +47,14 @@ impl Callbacks for ToRocq {
         println!("Compiling crate {current_crate_name_string:}");
 
         let crate_name = current_crate_name_string.clone();
-        let translation = translate_top_level(&tcx, TopLevelOptions { axiomatize });
+        let translation = translate_top_level(
+            &tcx,
+            TopLevelOptions {
+                axiomatize,
+                separate_runtime_file: true,
+                runtime_module_prefix: runtime_module_prefix.as_deref(),
+            },
+        );
 
         let mut file = File::create(format!("{crate_name}.v")).unwrap();
         let index_content = get_index_rocq_file_content(translation.keys().cloned().collect());
@@ -68,7 +79,7 @@ impl Callbacks for ToRocq {
                 .write_all(rocq_translation.as_bytes())
                 .unwrap();
 
-            if with_json {
+            if with_json && !json_translation.is_empty() {
                 let json_file_name = file_name.replace(".rs", ".json");
                 let mut file = File::create(json_file_name).unwrap();
                 file.write_all(json_translation.as_bytes()).unwrap();

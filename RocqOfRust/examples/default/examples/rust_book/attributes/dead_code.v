@@ -65,3 +65,14 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "dead_code::main" main
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("dead_code::used_function", used_function);
+    ("dead_code::unused_function", unused_function);
+    ("dead_code::noisy_unused_function", noisy_unused_function);
+    ("dead_code::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

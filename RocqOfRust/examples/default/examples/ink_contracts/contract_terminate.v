@@ -333,3 +333,19 @@ Module Impl_contract_terminate_JustTerminate.
   Admitted.
   Global Typeclasses Opaque terminate_me.
 End Impl_contract_terminate_JustTerminate.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::default::Default",
+      [],
+      Ty.path "contract_terminate::AccountId",
+      "default",
+      Impl_core_default_Default_for_contract_terminate_AccountId.default);
+    ("core::clone::Clone",
+      [],
+      Ty.path "contract_terminate::AccountId",
+      "clone",
+      Impl_core_clone_Clone_for_contract_terminate_AccountId.clone)
+  ].

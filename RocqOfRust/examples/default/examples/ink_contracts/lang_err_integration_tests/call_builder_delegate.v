@@ -194,3 +194,14 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
   Admitted.
   Global Typeclasses Opaque invoke.
 End Impl_call_builder_delegate_CallBuilderDelegateTest.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::default::Default",
+      [],
+      Ty.path "call_builder_delegate::CallBuilderDelegateTest",
+      "default",
+      Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.default)
+  ].

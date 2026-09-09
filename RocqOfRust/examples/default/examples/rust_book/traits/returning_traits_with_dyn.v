@@ -499,3 +499,23 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "returning_traits_with
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("returning_traits_with_dyn::random_animal", random_animal);
+    ("returning_traits_with_dyn::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("returning_traits_with_dyn::Animal",
+      [],
+      Ty.path "returning_traits_with_dyn::Sheep",
+      "noise",
+      Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep.noise);
+    ("returning_traits_with_dyn::Animal",
+      [],
+      Ty.path "returning_traits_with_dyn::Cow",
+      "noise",
+      Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.noise)
+  ].

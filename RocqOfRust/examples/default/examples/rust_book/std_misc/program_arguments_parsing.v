@@ -834,3 +834,14 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "program_arguments_par
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("program_arguments_parsing::increase", increase);
+    ("program_arguments_parsing::decrease", decrease);
+    ("program_arguments_parsing::help", help);
+    ("program_arguments_parsing::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

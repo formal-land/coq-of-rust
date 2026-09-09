@@ -130,3 +130,9 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "match_guards_unreacha
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("match_guards_unreachable::main", main) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

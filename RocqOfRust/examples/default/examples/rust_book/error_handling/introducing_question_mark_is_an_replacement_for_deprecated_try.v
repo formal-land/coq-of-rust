@@ -442,3 +442,13 @@ Global Instance Instance_IsFunction_main :
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("introducing_question_mark_is_an_replacement_for_deprecated_try::multiply", multiply);
+    ("introducing_question_mark_is_an_replacement_for_deprecated_try::print", print);
+    ("introducing_question_mark_is_an_replacement_for_deprecated_try::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

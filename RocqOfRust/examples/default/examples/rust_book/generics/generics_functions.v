@@ -180,3 +180,15 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "generics_functions::m
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("generics_functions::reg_fn", reg_fn);
+    ("generics_functions::gen_spec_t", gen_spec_t);
+    ("generics_functions::gen_spec_i32", gen_spec_i32);
+    ("generics_functions::generic", generic);
+    ("generics_functions::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

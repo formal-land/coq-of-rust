@@ -480,3 +480,29 @@ Module Impl_custom_environment_Topics.
   Admitted.
   Global Typeclasses Opaque trigger.
 End Impl_custom_environment_Topics.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::default::Default",
+      [],
+      Ty.path "custom_environment::AccountId",
+      "default",
+      Impl_core_default_Default_for_custom_environment_AccountId.default);
+    ("core::clone::Clone",
+      [],
+      Ty.path "custom_environment::AccountId",
+      "clone",
+      Impl_core_clone_Clone_for_custom_environment_AccountId.clone);
+    ("core::default::Default",
+      [],
+      Ty.path "custom_environment::Topics",
+      "default",
+      Impl_core_default_Default_for_custom_environment_Topics.default);
+    ("core::default::Default",
+      [],
+      Ty.path "custom_environment::EventWithTopics",
+      "default",
+      Impl_core_default_Default_for_custom_environment_EventWithTopics.default)
+  ].

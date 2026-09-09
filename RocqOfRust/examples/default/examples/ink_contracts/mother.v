@@ -2796,3 +2796,114 @@ Module Impl_mother_Mother.
   Admitted.
   Global Typeclasses Opaque debug_log.
 End Impl_mother_Mother.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::default::Default",
+      [],
+      Ty.path "mother::AccountId",
+      "default",
+      Impl_core_default_Default_for_mother_AccountId.default);
+    ("core::clone::Clone",
+      [],
+      Ty.path "mother::AccountId",
+      "clone",
+      Impl_core_clone_Clone_for_mother_AccountId.clone);
+    ("core::cmp::PartialEq",
+      [ Ty.path "mother::AccountId" ],
+      Ty.path "mother::AccountId",
+      "eq",
+      Impl_core_cmp_PartialEq_mother_AccountId_for_mother_AccountId.eq);
+    ("core::cmp::Eq",
+      [],
+      Ty.path "mother::AccountId",
+      "assert_receiver_is_total_eq",
+      Impl_core_cmp_Eq_for_mother_AccountId.assert_receiver_is_total_eq);
+    ("core::default::Default",
+      [],
+      Ty.path "mother::Bids",
+      "default",
+      Impl_core_default_Default_for_mother_Bids.default);
+    ("core::cmp::PartialEq",
+      [ Ty.path "mother::Bids" ],
+      Ty.path "mother::Bids",
+      "eq",
+      Impl_core_cmp_PartialEq_mother_Bids_for_mother_Bids.eq);
+    ("core::cmp::Eq",
+      [],
+      Ty.path "mother::Bids",
+      "assert_receiver_is_total_eq",
+      Impl_core_cmp_Eq_for_mother_Bids.assert_receiver_is_total_eq);
+    ("core::clone::Clone",
+      [],
+      Ty.path "mother::Bids",
+      "clone",
+      Impl_core_clone_Clone_for_mother_Bids.clone);
+    ("core::cmp::PartialEq",
+      [ Ty.path "mother::Outline" ],
+      Ty.path "mother::Outline",
+      "eq",
+      Impl_core_cmp_PartialEq_mother_Outline_for_mother_Outline.eq);
+    ("core::cmp::Eq",
+      [],
+      Ty.path "mother::Outline",
+      "assert_receiver_is_total_eq",
+      Impl_core_cmp_Eq_for_mother_Outline.assert_receiver_is_total_eq);
+    ("core::clone::Clone",
+      [],
+      Ty.path "mother::Outline",
+      "clone",
+      Impl_core_clone_Clone_for_mother_Outline.clone);
+    ("core::cmp::PartialEq",
+      [ Ty.path "mother::Status" ],
+      Ty.path "mother::Status",
+      "eq",
+      Impl_core_cmp_PartialEq_mother_Status_for_mother_Status.eq);
+    ("core::cmp::Eq",
+      [],
+      Ty.path "mother::Status",
+      "assert_receiver_is_total_eq",
+      Impl_core_cmp_Eq_for_mother_Status.assert_receiver_is_total_eq);
+    ("core::clone::Clone",
+      [],
+      Ty.path "mother::Status",
+      "clone",
+      Impl_core_clone_Clone_for_mother_Status.clone);
+    ("core::cmp::PartialEq",
+      [ Ty.path "mother::Auction" ],
+      Ty.path "mother::Auction",
+      "eq",
+      Impl_core_cmp_PartialEq_mother_Auction_for_mother_Auction.eq);
+    ("core::cmp::Eq",
+      [],
+      Ty.path "mother::Auction",
+      "assert_receiver_is_total_eq",
+      Impl_core_cmp_Eq_for_mother_Auction.assert_receiver_is_total_eq);
+    ("core::clone::Clone",
+      [],
+      Ty.path "mother::Auction",
+      "clone",
+      Impl_core_clone_Clone_for_mother_Auction.clone);
+    ("core::default::Default",
+      [],
+      Ty.path "mother::Auction",
+      "default",
+      Impl_core_default_Default_for_mother_Auction.default);
+    ("core::cmp::PartialEq",
+      [ Ty.path "mother::Failure" ],
+      Ty.path "mother::Failure",
+      "eq",
+      Impl_core_cmp_PartialEq_mother_Failure_for_mother_Failure.eq);
+    ("core::cmp::Eq",
+      [],
+      Ty.path "mother::Failure",
+      "assert_receiver_is_total_eq",
+      Impl_core_cmp_Eq_for_mother_Failure.assert_receiver_is_total_eq);
+    ("core::default::Default",
+      [],
+      Ty.path "mother::Mother",
+      "default",
+      Impl_core_default_Default_for_mother_Mother.default)
+  ].

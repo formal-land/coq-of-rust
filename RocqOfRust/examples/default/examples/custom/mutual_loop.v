@@ -141,3 +141,9 @@ Global Instance Instance_IsFunction_start_loop :
 Proof.
 Admitted.
 Global Typeclasses Opaque start_loop.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("mutual_loop::start_loop", start_loop) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

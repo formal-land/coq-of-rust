@@ -1792,3 +1792,69 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
         ("transfer_from", InstanceField.Method transfer_from)
       ].
 End Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::default::Default",
+      [],
+      Ty.path "trait_erc20::AccountId",
+      "default",
+      Impl_core_default_Default_for_trait_erc20_AccountId.default);
+    ("core::clone::Clone",
+      [],
+      Ty.path "trait_erc20::AccountId",
+      "clone",
+      Impl_core_clone_Clone_for_trait_erc20_AccountId.clone);
+    ("core::fmt::Debug",
+      [],
+      Ty.path "trait_erc20::Error",
+      "fmt",
+      Impl_core_fmt_Debug_for_trait_erc20_Error.fmt);
+    ("core::cmp::PartialEq",
+      [ Ty.path "trait_erc20::Error" ],
+      Ty.path "trait_erc20::Error",
+      "eq",
+      Impl_core_cmp_PartialEq_trait_erc20_Error_for_trait_erc20_Error.eq);
+    ("core::cmp::Eq",
+      [],
+      Ty.path "trait_erc20::Error",
+      "assert_receiver_is_total_eq",
+      Impl_core_cmp_Eq_for_trait_erc20_Error.assert_receiver_is_total_eq);
+    ("core::default::Default",
+      [],
+      Ty.path "trait_erc20::Erc20",
+      "default",
+      Impl_core_default_Default_for_trait_erc20_Erc20.default);
+    ("trait_erc20::BaseErc20",
+      [],
+      Ty.path "trait_erc20::Erc20",
+      "total_supply",
+      Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.total_supply);
+    ("trait_erc20::BaseErc20",
+      [],
+      Ty.path "trait_erc20::Erc20",
+      "balance_of",
+      Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.balance_of);
+    ("trait_erc20::BaseErc20",
+      [],
+      Ty.path "trait_erc20::Erc20",
+      "allowance",
+      Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.allowance);
+    ("trait_erc20::BaseErc20",
+      [],
+      Ty.path "trait_erc20::Erc20",
+      "transfer",
+      Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.transfer);
+    ("trait_erc20::BaseErc20",
+      [],
+      Ty.path "trait_erc20::Erc20",
+      "approve",
+      Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.approve);
+    ("trait_erc20::BaseErc20",
+      [],
+      Ty.path "trait_erc20::Erc20",
+      "transfer_from",
+      Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.transfer_from)
+  ].

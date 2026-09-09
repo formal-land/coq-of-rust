@@ -1096,3 +1096,29 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "boxing_errors::main" 
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("boxing_errors::double_first", double_first);
+    ("boxing_errors::print", print);
+    ("boxing_errors::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::fmt::Debug",
+      [],
+      Ty.path "boxing_errors::EmptyVec",
+      "fmt",
+      Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.fmt);
+    ("core::clone::Clone",
+      [],
+      Ty.path "boxing_errors::EmptyVec",
+      "clone",
+      Impl_core_clone_Clone_for_boxing_errors_EmptyVec.clone);
+    ("core::fmt::Display",
+      [],
+      Ty.path "boxing_errors::EmptyVec",
+      "fmt",
+      Impl_core_fmt_Display_for_boxing_errors_EmptyVec.fmt)
+  ].

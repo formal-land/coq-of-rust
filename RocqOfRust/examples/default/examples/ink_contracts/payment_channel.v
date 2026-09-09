@@ -3210,3 +3210,68 @@ Module Impl_payment_channel_PaymentChannel.
   Admitted.
   Global Typeclasses Opaque get_balance.
 End Impl_payment_channel_PaymentChannel.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("payment_channel::hash_encoded", hash_encoded);
+    ("payment_channel::ecdsa_recover", ecdsa_recover)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::default::Default",
+      [],
+      Ty.path "payment_channel::AccountId",
+      "default",
+      Impl_core_default_Default_for_payment_channel_AccountId.default);
+    ("core::clone::Clone",
+      [],
+      Ty.path "payment_channel::AccountId",
+      "clone",
+      Impl_core_clone_Clone_for_payment_channel_AccountId.clone);
+    ("core::cmp::PartialEq",
+      [ Ty.path "payment_channel::AccountId" ],
+      Ty.path "payment_channel::AccountId",
+      "eq",
+      Impl_core_cmp_PartialEq_payment_channel_AccountId_for_payment_channel_AccountId.eq);
+    ("core::cmp::Eq",
+      [],
+      Ty.path "payment_channel::AccountId",
+      "assert_receiver_is_total_eq",
+      Impl_core_cmp_Eq_for_payment_channel_AccountId.assert_receiver_is_total_eq);
+    ("core::convert::From",
+      [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] ],
+      Ty.path "payment_channel::AccountId",
+      "from",
+      Impl_core_convert_From_array_Usize_32_u8_for_payment_channel_AccountId.from);
+    ("core::cmp::PartialEq",
+      [ Ty.path "payment_channel::Error" ],
+      Ty.path "payment_channel::Error",
+      "eq",
+      Impl_core_cmp_PartialEq_payment_channel_Error_for_payment_channel_Error.eq);
+    ("core::cmp::Eq",
+      [],
+      Ty.path "payment_channel::Error",
+      "assert_receiver_is_total_eq",
+      Impl_core_cmp_Eq_for_payment_channel_Error.assert_receiver_is_total_eq);
+    ("payment_channel::CryptoHash",
+      [],
+      Ty.path "payment_channel::Sha2x256",
+      "hash",
+      Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.hash);
+    ("payment_channel::CryptoHash",
+      [],
+      Ty.path "payment_channel::Keccak256",
+      "hash",
+      Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.hash);
+    ("payment_channel::CryptoHash",
+      [],
+      Ty.path "payment_channel::Blake2x256",
+      "hash",
+      Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.hash);
+    ("payment_channel::CryptoHash",
+      [],
+      Ty.path "payment_channel::Blake2x128",
+      "hash",
+      Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.hash)
+  ].

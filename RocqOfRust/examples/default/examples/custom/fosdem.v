@@ -112,3 +112,9 @@ Module Impl_fosdem_Counter.
   Admitted.
   Global Typeclasses Opaque increment.
 End Impl_fosdem_Counter.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("fosdem::MAX_VALUE", value_MAX_VALUE) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

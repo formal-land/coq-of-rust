@@ -194,3 +194,8 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "enums_use::main" main
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [ ("enums_use::main", main) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

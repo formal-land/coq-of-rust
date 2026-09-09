@@ -192,3 +192,13 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "the_use_as_declaratio
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("the_use_as_declaration::function", function);
+    ("the_use_as_declaration::deeply::nested::function", deeply.nested.function);
+    ("the_use_as_declaration::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

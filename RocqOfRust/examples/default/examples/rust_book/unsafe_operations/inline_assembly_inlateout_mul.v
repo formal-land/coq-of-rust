@@ -95,3 +95,12 @@ Module main.
   Admitted.
   Global Typeclasses Opaque mul.
 End main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("inline_assembly_inlateout_mul::main", main);
+    ("inline_assembly_inlateout_mul::main::mul", main.mul)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

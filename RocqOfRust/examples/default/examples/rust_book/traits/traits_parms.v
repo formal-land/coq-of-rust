@@ -79,3 +79,14 @@ Module Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
       (* Instance *)
       [ ("SomeType", InstanceField.Ty _SomeType); ("some_fn", InstanceField.Method some_fn) ].
 End Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("traits_parms::SomeTrait",
+      [],
+      Ty.path "traits_parms::SomeOtherType",
+      "some_fn",
+      Impl_traits_parms_SomeTrait_for_traits_parms_SomeOtherType.some_fn)
+  ].

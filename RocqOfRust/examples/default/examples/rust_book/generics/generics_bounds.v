@@ -415,3 +415,24 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "generics_bounds::main
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("generics_bounds::print_debug", print_debug);
+    ("generics_bounds::area", area);
+    ("generics_bounds::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::fmt::Debug",
+      [],
+      Ty.path "generics_bounds::Rectangle",
+      "fmt",
+      Impl_core_fmt_Debug_for_generics_bounds_Rectangle.fmt);
+    ("generics_bounds::HasArea",
+      [],
+      Ty.path "generics_bounds::Rectangle",
+      "area",
+      Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.area)
+  ].

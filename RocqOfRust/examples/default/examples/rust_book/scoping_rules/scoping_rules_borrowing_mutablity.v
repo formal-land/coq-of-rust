@@ -538,3 +538,19 @@ Global Instance Instance_IsFunction_main :
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("scoping_rules_borrowing_mutablity::borrow_book", borrow_book);
+    ("scoping_rules_borrowing_mutablity::new_edition", new_edition);
+    ("scoping_rules_borrowing_mutablity::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::clone::Clone",
+      [],
+      Ty.path "scoping_rules_borrowing_mutablity::Book",
+      "clone",
+      Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.clone)
+  ].

@@ -1387,3 +1387,14 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "impl_trait_as_return_
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("impl_trait_as_return_type::combine_vecs_explicit_return_type",
+      combine_vecs_explicit_return_type);
+    ("impl_trait_as_return_type::combine_vecs", combine_vecs);
+    ("impl_trait_as_return_type::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

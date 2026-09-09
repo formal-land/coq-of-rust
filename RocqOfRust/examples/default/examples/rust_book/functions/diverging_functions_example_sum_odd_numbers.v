@@ -368,3 +368,12 @@ Module main.
   Admitted.
   Global Typeclasses Opaque sum_odd_numbers.
 End main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("diverging_functions_example_sum_odd_numbers::main", main);
+    ("diverging_functions_example_sum_odd_numbers::main::sum_odd_numbers", main.sum_odd_numbers)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

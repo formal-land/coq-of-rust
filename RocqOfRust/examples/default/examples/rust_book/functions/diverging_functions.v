@@ -46,3 +46,9 @@ Module main.
   Admitted.
   Global Typeclasses Opaque foo.
 End main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("diverging_functions::main", main); ("diverging_functions::main::foo", main.foo) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

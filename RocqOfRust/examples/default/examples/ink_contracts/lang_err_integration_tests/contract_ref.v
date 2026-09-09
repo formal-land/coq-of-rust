@@ -626,3 +626,24 @@ Module Impl_contract_ref_ContractRef.
   Admitted.
   Global Typeclasses Opaque get.
 End Impl_contract_ref_ContractRef.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::default::Default",
+      [],
+      Ty.path "contract_ref::AccountId",
+      "default",
+      Impl_core_default_Default_for_contract_ref_AccountId.default);
+    ("core::clone::Clone",
+      [],
+      Ty.path "contract_ref::AccountId",
+      "clone",
+      Impl_core_clone_Clone_for_contract_ref_AccountId.clone);
+    ("core::fmt::Debug",
+      [],
+      Ty.path "contract_ref::FlipperError",
+      "fmt",
+      Impl_core_fmt_Debug_for_contract_ref_FlipperError.fmt)
+  ].

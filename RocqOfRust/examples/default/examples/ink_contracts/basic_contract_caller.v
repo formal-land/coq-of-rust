@@ -352,3 +352,19 @@ Module Impl_basic_contract_caller_BasicContractCaller.
   Admitted.
   Global Typeclasses Opaque flip_and_get.
 End Impl_basic_contract_caller_BasicContractCaller.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::default::Default",
+      [],
+      Ty.path "basic_contract_caller::AccountId",
+      "default",
+      Impl_core_default_Default_for_basic_contract_caller_AccountId.default);
+    ("core::clone::Clone",
+      [],
+      Ty.path "basic_contract_caller::AccountId",
+      "clone",
+      Impl_core_clone_Clone_for_basic_contract_caller_AccountId.clone)
+  ].

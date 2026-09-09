@@ -177,3 +177,13 @@ Module main.
   Admitted.
   Global Typeclasses Opaque call_foo.
 End main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("inline_assembly_symbol_operands_and_abi_clobbers::main", main);
+    ("inline_assembly_symbol_operands_and_abi_clobbers::main::foo", main.foo);
+    ("inline_assembly_symbol_operands_and_abi_clobbers::main::call_foo", main.call_foo)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

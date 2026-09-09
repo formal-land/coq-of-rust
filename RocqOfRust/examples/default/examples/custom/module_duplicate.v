@@ -122,3 +122,13 @@ Global Instance Instance_IsFunction_f : M.IsFunction.C "module_duplicate::f" f.
 Proof.
 Admitted.
 Global Typeclasses Opaque f.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("module_duplicate::foo::gre::f_foo_gre", foo.gre.f_foo_gre);
+    ("module_duplicate::foo::f_foo", foo.f_foo);
+    ("module_duplicate::f", f)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

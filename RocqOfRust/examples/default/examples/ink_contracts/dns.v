@@ -1992,3 +1992,45 @@ Module Impl_dns_DomainNameService.
   Admitted.
   Global Typeclasses Opaque get_owner.
 End Impl_dns_DomainNameService.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("dns::zero_address", zero_address) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::default::Default",
+      [],
+      Ty.path "dns::AccountId",
+      "default",
+      Impl_core_default_Default_for_dns_AccountId.default);
+    ("core::clone::Clone",
+      [],
+      Ty.path "dns::AccountId",
+      "clone",
+      Impl_core_clone_Clone_for_dns_AccountId.clone);
+    ("core::cmp::PartialEq",
+      [ Ty.path "dns::AccountId" ],
+      Ty.path "dns::AccountId",
+      "eq",
+      Impl_core_cmp_PartialEq_dns_AccountId_for_dns_AccountId.eq);
+    ("core::convert::From",
+      [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] ],
+      Ty.path "dns::AccountId",
+      "from",
+      Impl_core_convert_From_array_Usize_32_u8_for_dns_AccountId.from);
+    ("core::default::Default",
+      [],
+      Ty.path "dns::DomainNameService",
+      "default",
+      Impl_core_default_Default_for_dns_DomainNameService.default);
+    ("core::cmp::PartialEq",
+      [ Ty.path "dns::Error" ],
+      Ty.path "dns::Error",
+      "eq",
+      Impl_core_cmp_PartialEq_dns_Error_for_dns_Error.eq);
+    ("core::cmp::Eq",
+      [],
+      Ty.path "dns::Error",
+      "assert_receiver_is_total_eq",
+      Impl_core_cmp_Eq_for_dns_Error.assert_receiver_is_total_eq)
+  ].

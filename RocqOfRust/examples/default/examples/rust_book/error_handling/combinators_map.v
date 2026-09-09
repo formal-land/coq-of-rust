@@ -882,3 +882,37 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "combinators_map::main
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("combinators_map::peel", peel);
+    ("combinators_map::chop", chop);
+    ("combinators_map::cook", cook);
+    ("combinators_map::process", process);
+    ("combinators_map::eat", eat);
+    ("combinators_map::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::fmt::Debug",
+      [],
+      Ty.path "combinators_map::Food",
+      "fmt",
+      Impl_core_fmt_Debug_for_combinators_map_Food.fmt);
+    ("core::fmt::Debug",
+      [],
+      Ty.path "combinators_map::Peeled",
+      "fmt",
+      Impl_core_fmt_Debug_for_combinators_map_Peeled.fmt);
+    ("core::fmt::Debug",
+      [],
+      Ty.path "combinators_map::Chopped",
+      "fmt",
+      Impl_core_fmt_Debug_for_combinators_map_Chopped.fmt);
+    ("core::fmt::Debug",
+      [],
+      Ty.path "combinators_map::Cooked",
+      "fmt",
+      Impl_core_fmt_Debug_for_combinators_map_Cooked.fmt)
+  ].

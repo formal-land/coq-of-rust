@@ -108,3 +108,15 @@ Global Instance Instance_IsFunction_main :
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("scoping_rules_raii_desctructor::main", main) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::ops::drop::Drop",
+      [],
+      Ty.path "scoping_rules_raii_desctructor::ToDrop",
+      "drop",
+      Impl_core_ops_drop_Drop_for_scoping_rules_raii_desctructor_ToDrop.drop)
+  ].

@@ -788,3 +788,15 @@ Global Instance Instance_IsFunction_main :
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("scoping_rules_borrowing_the_ref_pattern::main", main) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::clone::Clone",
+      [],
+      Ty.path "scoping_rules_borrowing_the_ref_pattern::Point",
+      "clone",
+      Impl_core_clone_Clone_for_scoping_rules_borrowing_the_ref_pattern_Point.clone)
+  ].

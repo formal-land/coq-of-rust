@@ -553,3 +553,13 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "introducing_question_
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("introducing_question_mark::multiply", multiply);
+    ("introducing_question_mark::print", print);
+    ("introducing_question_mark::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

@@ -4233,3 +4233,89 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
         ("on_batch_received", InstanceField.Method on_batch_received)
       ].
 End Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("erc1155::zero_address", zero_address);
+    ("erc1155::ON_ERC_1155_RECEIVED_SELECTOR", value_ON_ERC_1155_RECEIVED_SELECTOR);
+    ("erc1155::_ON_ERC_1155_BATCH_RECEIVED_SELECTOR", _ON_ERC_1155_BATCH_RECEIVED_SELECTOR)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::default::Default",
+      [],
+      Ty.path "erc1155::AccountId",
+      "default",
+      Impl_core_default_Default_for_erc1155_AccountId.default);
+    ("core::clone::Clone",
+      [],
+      Ty.path "erc1155::AccountId",
+      "clone",
+      Impl_core_clone_Clone_for_erc1155_AccountId.clone);
+    ("core::cmp::PartialEq",
+      [ Ty.path "erc1155::AccountId" ],
+      Ty.path "erc1155::AccountId",
+      "eq",
+      Impl_core_cmp_PartialEq_erc1155_AccountId_for_erc1155_AccountId.eq);
+    ("core::convert::From",
+      [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] ],
+      Ty.path "erc1155::AccountId",
+      "from",
+      Impl_core_convert_From_array_Usize_32_u8_for_erc1155_AccountId.from);
+    ("core::cmp::PartialEq",
+      [ Ty.path "erc1155::Error" ],
+      Ty.path "erc1155::Error",
+      "eq",
+      Impl_core_cmp_PartialEq_erc1155_Error_for_erc1155_Error.eq);
+    ("core::cmp::Eq",
+      [],
+      Ty.path "erc1155::Error",
+      "assert_receiver_is_total_eq",
+      Impl_core_cmp_Eq_for_erc1155_Error.assert_receiver_is_total_eq);
+    ("core::default::Default",
+      [],
+      Ty.path "erc1155::Contract",
+      "default",
+      Impl_core_default_Default_for_erc1155_Contract.default);
+    ("erc1155::Erc1155",
+      [],
+      Ty.path "erc1155::Contract",
+      "is_approved_for_all",
+      Impl_erc1155_Erc1155_for_erc1155_Contract.is_approved_for_all);
+    ("erc1155::Erc1155",
+      [],
+      Ty.path "erc1155::Contract",
+      "balance_of",
+      Impl_erc1155_Erc1155_for_erc1155_Contract.balance_of);
+    ("erc1155::Erc1155",
+      [],
+      Ty.path "erc1155::Contract",
+      "safe_transfer_from",
+      Impl_erc1155_Erc1155_for_erc1155_Contract.safe_transfer_from);
+    ("erc1155::Erc1155",
+      [],
+      Ty.path "erc1155::Contract",
+      "safe_batch_transfer_from",
+      Impl_erc1155_Erc1155_for_erc1155_Contract.safe_batch_transfer_from);
+    ("erc1155::Erc1155",
+      [],
+      Ty.path "erc1155::Contract",
+      "balance_of_batch",
+      Impl_erc1155_Erc1155_for_erc1155_Contract.balance_of_batch);
+    ("erc1155::Erc1155",
+      [],
+      Ty.path "erc1155::Contract",
+      "set_approval_for_all",
+      Impl_erc1155_Erc1155_for_erc1155_Contract.set_approval_for_all);
+    ("erc1155::Erc1155TokenReceiver",
+      [],
+      Ty.path "erc1155::Contract",
+      "on_received",
+      Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.on_received);
+    ("erc1155::Erc1155TokenReceiver",
+      [],
+      Ty.path "erc1155::Contract",
+      "on_batch_received",
+      Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.on_batch_received)
+  ].

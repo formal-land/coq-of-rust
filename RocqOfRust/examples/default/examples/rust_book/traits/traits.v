@@ -822,3 +822,25 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "traits::main" main.
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [ ("traits::main", main) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("traits::Animal", [], Ty.path "traits::Sheep", "new", Impl_traits_Animal_for_traits_Sheep.new);
+    ("traits::Animal",
+      [],
+      Ty.path "traits::Sheep",
+      "name",
+      Impl_traits_Animal_for_traits_Sheep.name);
+    ("traits::Animal",
+      [],
+      Ty.path "traits::Sheep",
+      "noise",
+      Impl_traits_Animal_for_traits_Sheep.noise);
+    ("traits::Animal",
+      [],
+      Ty.path "traits::Sheep",
+      "talk",
+      Impl_traits_Animal_for_traits_Sheep.talk)
+  ].

@@ -229,3 +229,9 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "scoping_rules_raii::m
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("scoping_rules_raii::create_box", create_box); ("scoping_rules_raii::main", main) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

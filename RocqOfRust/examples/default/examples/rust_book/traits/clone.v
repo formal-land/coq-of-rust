@@ -744,3 +744,21 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "clone::main" main.
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [ ("clone::main", main) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::fmt::Debug", [], Ty.path "clone::Unit", "fmt", Impl_core_fmt_Debug_for_clone_Unit.fmt);
+    ("core::clone::Clone",
+      [],
+      Ty.path "clone::Unit",
+      "clone",
+      Impl_core_clone_Clone_for_clone_Unit.clone);
+    ("core::clone::Clone",
+      [],
+      Ty.path "clone::Pair",
+      "clone",
+      Impl_core_clone_Clone_for_clone_Pair.clone);
+    ("core::fmt::Debug", [], Ty.path "clone::Pair", "fmt", Impl_core_fmt_Debug_for_clone_Pair.fmt)
+  ].

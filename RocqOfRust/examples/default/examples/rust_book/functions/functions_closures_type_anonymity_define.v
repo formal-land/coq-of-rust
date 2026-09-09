@@ -64,3 +64,12 @@ Module main.
   Admitted.
   Global Typeclasses Opaque apply.
 End main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("functions_closures_type_anonymity_define::main", main);
+    ("functions_closures_type_anonymity_define::main::apply", main.apply)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

@@ -731,3 +731,19 @@ Module Impl_updated_incrementer_Incrementer.
   Admitted.
   Global Typeclasses Opaque set_code.
 End Impl_updated_incrementer_Incrementer.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::default::Default",
+      [],
+      Ty.path "updated_incrementer::AccountId",
+      "default",
+      Impl_core_default_Default_for_updated_incrementer_AccountId.default);
+    ("core::clone::Clone",
+      [],
+      Ty.path "updated_incrementer::AccountId",
+      "clone",
+      Impl_core_clone_Clone_for_updated_incrementer_AccountId.clone)
+  ].

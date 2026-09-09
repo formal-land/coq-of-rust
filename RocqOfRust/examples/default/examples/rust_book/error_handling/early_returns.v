@@ -400,3 +400,13 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "early_returns::main" 
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("early_returns::multiply", multiply);
+    ("early_returns::print", print);
+    ("early_returns::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

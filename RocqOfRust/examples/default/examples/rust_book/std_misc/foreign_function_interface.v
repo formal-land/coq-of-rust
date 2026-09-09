@@ -665,3 +665,25 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
       Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("foreign_function_interface::csqrtf", csqrtf);
+    ("foreign_function_interface::ccosf", ccosf);
+    ("foreign_function_interface::cos", cos);
+    ("foreign_function_interface::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::clone::Clone",
+      [],
+      Ty.path "foreign_function_interface::Complex",
+      "clone",
+      Impl_core_clone_Clone_for_foreign_function_interface_Complex.clone);
+    ("core::fmt::Debug",
+      [],
+      Ty.path "foreign_function_interface::Complex",
+      "fmt",
+      Impl_core_fmt_Debug_for_foreign_function_interface_Complex.fmt)
+  ].

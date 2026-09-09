@@ -1046,3 +1046,35 @@ Global Instance Instance_IsFunction_main :
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("generics_associated_types_solution::difference", difference);
+    ("generics_associated_types_solution::get_a", get_a);
+    ("generics_associated_types_solution::get_output", get_output);
+    ("generics_associated_types_solution::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("generics_associated_types_solution::Contains",
+      [],
+      Ty.path "generics_associated_types_solution::Container",
+      "contains",
+      Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.contains);
+    ("generics_associated_types_solution::Contains",
+      [],
+      Ty.path "generics_associated_types_solution::Container",
+      "first",
+      Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.first);
+    ("generics_associated_types_solution::Contains",
+      [],
+      Ty.path "generics_associated_types_solution::Container",
+      "last",
+      Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.last);
+    ("generics_associated_types_solution::Contains",
+      [],
+      Ty.path "generics_associated_types_solution::Container",
+      "a",
+      Impl_generics_associated_types_solution_Contains_for_generics_associated_types_solution_Container.a)
+  ].

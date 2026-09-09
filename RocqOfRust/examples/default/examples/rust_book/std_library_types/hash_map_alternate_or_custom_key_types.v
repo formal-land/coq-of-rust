@@ -932,3 +932,28 @@ Global Instance Instance_IsFunction_main :
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("hash_map_alternate_or_custom_key_types::try_logon", try_logon);
+    ("hash_map_alternate_or_custom_key_types::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::cmp::PartialEq",
+      [ Ty.path "hash_map_alternate_or_custom_key_types::Account" ],
+      Ty.path "hash_map_alternate_or_custom_key_types::Account",
+      "eq",
+      Impl_core_cmp_PartialEq_hash_map_alternate_or_custom_key_types_Account_for_hash_map_alternate_or_custom_key_types_Account.eq);
+    ("core::cmp::Eq",
+      [],
+      Ty.path "hash_map_alternate_or_custom_key_types::Account",
+      "assert_receiver_is_total_eq",
+      Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.assert_receiver_is_total_eq);
+    ("core::hash::Hash",
+      [],
+      Ty.path "hash_map_alternate_or_custom_key_types::Account",
+      "hash",
+      Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.hash)
+  ].

@@ -189,3 +189,24 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
       Self
       (* Instance *) [ ("reset", InstanceField.Method reset) ].
 End Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("trait_incrementer::Increment",
+      [],
+      Ty.path "trait_incrementer::Incrementer",
+      "inc",
+      Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.inc);
+    ("trait_incrementer::Increment",
+      [],
+      Ty.path "trait_incrementer::Incrementer",
+      "get",
+      Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.get);
+    ("trait_incrementer::Reset",
+      [],
+      Ty.path "trait_incrementer::Incrementer",
+      "reset",
+      Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.reset)
+  ].

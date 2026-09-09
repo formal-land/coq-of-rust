@@ -760,3 +760,52 @@ Module Impl_call_runtime_RuntimeCaller.
   Admitted.
   Global Typeclasses Opaque call_nonexistent_extrinsic.
 End Impl_call_runtime_RuntimeCaller.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::default::Default",
+      [],
+      Ty.path "call_runtime::AccountId",
+      "default",
+      Impl_core_default_Default_for_call_runtime_AccountId.default);
+    ("core::clone::Clone",
+      [],
+      Ty.path "call_runtime::AccountId",
+      "clone",
+      Impl_core_clone_Clone_for_call_runtime_AccountId.clone);
+    ("core::convert::From",
+      [ Ty.path "call_runtime::AccountId" ],
+      Ty.apply
+        (Ty.path "call_runtime::MultiAddress")
+        []
+        [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ],
+      "from",
+      Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_call_runtime_AccountId_Tuple_.from);
+    ("core::default::Default",
+      [],
+      Ty.path "call_runtime::RuntimeCaller",
+      "default",
+      Impl_core_default_Default_for_call_runtime_RuntimeCaller.default);
+    ("core::fmt::Debug",
+      [],
+      Ty.path "call_runtime::RuntimeError",
+      "fmt",
+      Impl_core_fmt_Debug_for_call_runtime_RuntimeError.fmt);
+    ("core::cmp::PartialEq",
+      [ Ty.path "call_runtime::RuntimeError" ],
+      Ty.path "call_runtime::RuntimeError",
+      "eq",
+      Impl_core_cmp_PartialEq_call_runtime_RuntimeError_for_call_runtime_RuntimeError.eq);
+    ("core::cmp::Eq",
+      [],
+      Ty.path "call_runtime::RuntimeError",
+      "assert_receiver_is_total_eq",
+      Impl_core_cmp_Eq_for_call_runtime_RuntimeError.assert_receiver_is_total_eq);
+    ("core::convert::From",
+      [ Ty.path "call_runtime::EnvError" ],
+      Ty.path "call_runtime::RuntimeError",
+      "from",
+      Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeError.from)
+  ].

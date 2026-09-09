@@ -275,3 +275,24 @@ Module Impl_e2e_call_runtime_Contract.
   Admitted.
   Global Typeclasses Opaque get_contract_balance.
 End Impl_e2e_call_runtime_Contract.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::default::Default",
+      [],
+      Ty.path "e2e_call_runtime::AccountId",
+      "default",
+      Impl_core_default_Default_for_e2e_call_runtime_AccountId.default);
+    ("core::clone::Clone",
+      [],
+      Ty.path "e2e_call_runtime::AccountId",
+      "clone",
+      Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.clone);
+    ("core::default::Default",
+      [],
+      Ty.path "e2e_call_runtime::Contract",
+      "default",
+      Impl_core_default_Default_for_e2e_call_runtime_Contract.default)
+  ].

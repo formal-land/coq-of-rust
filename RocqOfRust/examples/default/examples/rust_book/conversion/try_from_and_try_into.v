@@ -1080,3 +1080,25 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "try_from_and_try_into
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("try_from_and_try_into::main", main) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::fmt::Debug",
+      [],
+      Ty.path "try_from_and_try_into::EvenNumber",
+      "fmt",
+      Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.fmt);
+    ("core::cmp::PartialEq",
+      [ Ty.path "try_from_and_try_into::EvenNumber" ],
+      Ty.path "try_from_and_try_into::EvenNumber",
+      "eq",
+      Impl_core_cmp_PartialEq_try_from_and_try_into_EvenNumber_for_try_from_and_try_into_EvenNumber.eq);
+    ("core::convert::TryFrom",
+      [ Ty.path "i32" ],
+      Ty.path "try_from_and_try_into::EvenNumber",
+      "try_from",
+      Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.try_from)
+  ].

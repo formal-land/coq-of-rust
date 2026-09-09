@@ -552,3 +552,15 @@ Global Instance Instance_IsFunction_main :
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("scoping_rules_lifetimes_elision::elided_input", elided_input);
+    ("scoping_rules_lifetimes_elision::annotated_input", annotated_input);
+    ("scoping_rules_lifetimes_elision::elided_pass", elided_pass);
+    ("scoping_rules_lifetimes_elision::annotated_pass", annotated_pass);
+    ("scoping_rules_lifetimes_elision::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

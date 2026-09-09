@@ -1560,3 +1560,24 @@ Module Impl_erc20_Erc20.
   Global Typeclasses Opaque transfer_from.
 End Impl_erc20_Erc20.
 
+
+Definition function_table : list (string * PolymorphicFunction.t) := [].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::default::Default",
+      [],
+      Ty.path "erc20::AccountId",
+      "default",
+      Impl_core_default_Default_for_erc20_AccountId.default);
+    ("core::clone::Clone",
+      [],
+      Ty.path "erc20::AccountId",
+      "clone",
+      Impl_core_clone_Clone_for_erc20_AccountId.clone);
+    ("core::default::Default",
+      [],
+      Ty.path "erc20::Erc20",
+      "default",
+      Impl_core_default_Default_for_erc20_Erc20.default)
+  ].

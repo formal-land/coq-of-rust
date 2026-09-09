@@ -136,3 +136,8 @@ Module Impl_flipper_Flipper.
   Admitted.
   Global Typeclasses Opaque get.
 End Impl_flipper_Flipper.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

@@ -297,3 +297,14 @@ Module Impl_integration_flipper_Flipper.
   Admitted.
   Global Typeclasses Opaque err_flip.
 End Impl_integration_flipper_Flipper.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::fmt::Debug",
+      [],
+      Ty.path "integration_flipper::FlipperError",
+      "fmt",
+      Impl_core_fmt_Debug_for_integration_flipper_FlipperError.fmt)
+  ].

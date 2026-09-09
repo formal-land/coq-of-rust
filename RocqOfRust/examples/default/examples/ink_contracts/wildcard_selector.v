@@ -441,3 +441,9 @@ Module Impl_wildcard_selector_WildcardSelector.
   Admitted.
   Global Typeclasses Opaque wildcard_complement.
 End Impl_wildcard_selector_WildcardSelector.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("wildcard_selector::decode_input", decode_input) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

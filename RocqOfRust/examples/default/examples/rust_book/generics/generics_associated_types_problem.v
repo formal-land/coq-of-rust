@@ -780,3 +780,28 @@ Global Instance Instance_IsFunction_main :
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("generics_associated_types_problem::difference", difference);
+    ("generics_associated_types_problem::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("generics_associated_types_problem::Contains",
+      [ Ty.path "i32"; Ty.path "i32" ],
+      Ty.path "generics_associated_types_problem::Container",
+      "contains",
+      Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.contains);
+    ("generics_associated_types_problem::Contains",
+      [ Ty.path "i32"; Ty.path "i32" ],
+      Ty.path "generics_associated_types_problem::Container",
+      "first",
+      Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.first);
+    ("generics_associated_types_problem::Contains",
+      [ Ty.path "i32"; Ty.path "i32" ],
+      Ty.path "generics_associated_types_problem::Container",
+      "last",
+      Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associated_types_problem_Container.last)
+  ].

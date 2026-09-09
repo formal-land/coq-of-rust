@@ -4983,3 +4983,49 @@ Module Impl_erc721_Erc721.
   Admitted.
   Global Typeclasses Opaque burn.
 End Impl_erc721_Erc721.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::default::Default",
+      [],
+      Ty.path "erc721::AccountId",
+      "default",
+      Impl_core_default_Default_for_erc721_AccountId.default);
+    ("core::clone::Clone",
+      [],
+      Ty.path "erc721::AccountId",
+      "clone",
+      Impl_core_clone_Clone_for_erc721_AccountId.clone);
+    ("core::cmp::PartialEq",
+      [ Ty.path "erc721::AccountId" ],
+      Ty.path "erc721::AccountId",
+      "eq",
+      Impl_core_cmp_PartialEq_erc721_AccountId_for_erc721_AccountId.eq);
+    ("core::convert::From",
+      [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] ],
+      Ty.path "erc721::AccountId",
+      "from",
+      Impl_core_convert_From_array_Usize_32_u8_for_erc721_AccountId.from);
+    ("core::default::Default",
+      [],
+      Ty.path "erc721::Erc721",
+      "default",
+      Impl_core_default_Default_for_erc721_Erc721.default);
+    ("core::cmp::PartialEq",
+      [ Ty.path "erc721::Error" ],
+      Ty.path "erc721::Error",
+      "eq",
+      Impl_core_cmp_PartialEq_erc721_Error_for_erc721_Error.eq);
+    ("core::cmp::Eq",
+      [],
+      Ty.path "erc721::Error",
+      "assert_receiver_is_total_eq",
+      Impl_core_cmp_Eq_for_erc721_Error.assert_receiver_is_total_eq);
+    ("core::clone::Clone",
+      [],
+      Ty.path "erc721::Error",
+      "clone",
+      Impl_core_clone_Clone_for_erc721_Error.clone)
+  ].

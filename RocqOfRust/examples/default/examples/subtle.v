@@ -7045,3 +7045,257 @@ Module Impl_subtle_ConstantTimeLess_for_u64.
       Self
       (* Instance *) [].
 End Impl_subtle_ConstantTimeLess_for_u64.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("subtle::black_box", black_box) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::clone::Clone",
+      [],
+      Ty.path "subtle::Choice",
+      "clone",
+      Impl_core_clone_Clone_for_subtle_Choice.clone);
+    ("core::fmt::Debug",
+      [],
+      Ty.path "subtle::Choice",
+      "fmt",
+      Impl_core_fmt_Debug_for_subtle_Choice.fmt);
+    ("core::convert::From",
+      [ Ty.path "subtle::Choice" ],
+      Ty.path "bool",
+      "from",
+      Impl_core_convert_From_subtle_Choice_for_bool.from);
+    ("core::ops::bit::BitAnd",
+      [ Ty.path "subtle::Choice" ],
+      Ty.path "subtle::Choice",
+      "bitand",
+      Impl_core_ops_bit_BitAnd_subtle_Choice_for_subtle_Choice.bitand);
+    ("core::ops::bit::BitAndAssign",
+      [ Ty.path "subtle::Choice" ],
+      Ty.path "subtle::Choice",
+      "bitand_assign",
+      Impl_core_ops_bit_BitAndAssign_subtle_Choice_for_subtle_Choice.bitand_assign);
+    ("core::ops::bit::BitOr",
+      [ Ty.path "subtle::Choice" ],
+      Ty.path "subtle::Choice",
+      "bitor",
+      Impl_core_ops_bit_BitOr_subtle_Choice_for_subtle_Choice.bitor);
+    ("core::ops::bit::BitOrAssign",
+      [ Ty.path "subtle::Choice" ],
+      Ty.path "subtle::Choice",
+      "bitor_assign",
+      Impl_core_ops_bit_BitOrAssign_subtle_Choice_for_subtle_Choice.bitor_assign);
+    ("core::ops::bit::BitXor",
+      [ Ty.path "subtle::Choice" ],
+      Ty.path "subtle::Choice",
+      "bitxor",
+      Impl_core_ops_bit_BitXor_subtle_Choice_for_subtle_Choice.bitxor);
+    ("core::ops::bit::BitXorAssign",
+      [ Ty.path "subtle::Choice" ],
+      Ty.path "subtle::Choice",
+      "bitxor_assign",
+      Impl_core_ops_bit_BitXorAssign_subtle_Choice_for_subtle_Choice.bitxor_assign);
+    ("core::ops::bit::Not",
+      [],
+      Ty.path "subtle::Choice",
+      "not",
+      Impl_core_ops_bit_Not_for_subtle_Choice.not);
+    ("core::convert::From",
+      [ Ty.path "u8" ],
+      Ty.path "subtle::Choice",
+      "from",
+      Impl_core_convert_From_u8_for_subtle_Choice.from);
+    ("subtle::ConstantTimeEq",
+      [],
+      Ty.path "subtle::Choice",
+      "ct_eq",
+      Impl_subtle_ConstantTimeEq_for_subtle_Choice.ct_eq);
+    ("subtle::ConstantTimeEq", [], Ty.path "u8", "ct_eq", Impl_subtle_ConstantTimeEq_for_u8.ct_eq);
+    ("subtle::ConstantTimeEq", [], Ty.path "i8", "ct_eq", Impl_subtle_ConstantTimeEq_for_i8.ct_eq);
+    ("subtle::ConstantTimeEq",
+      [],
+      Ty.path "u16",
+      "ct_eq",
+      Impl_subtle_ConstantTimeEq_for_u16.ct_eq);
+    ("subtle::ConstantTimeEq",
+      [],
+      Ty.path "i16",
+      "ct_eq",
+      Impl_subtle_ConstantTimeEq_for_i16.ct_eq);
+    ("subtle::ConstantTimeEq",
+      [],
+      Ty.path "u32",
+      "ct_eq",
+      Impl_subtle_ConstantTimeEq_for_u32.ct_eq);
+    ("subtle::ConstantTimeEq",
+      [],
+      Ty.path "i32",
+      "ct_eq",
+      Impl_subtle_ConstantTimeEq_for_i32.ct_eq);
+    ("subtle::ConstantTimeEq",
+      [],
+      Ty.path "u64",
+      "ct_eq",
+      Impl_subtle_ConstantTimeEq_for_u64.ct_eq);
+    ("subtle::ConstantTimeEq",
+      [],
+      Ty.path "i64",
+      "ct_eq",
+      Impl_subtle_ConstantTimeEq_for_i64.ct_eq);
+    ("subtle::ConstantTimeEq",
+      [],
+      Ty.path "usize",
+      "ct_eq",
+      Impl_subtle_ConstantTimeEq_for_usize.ct_eq);
+    ("subtle::ConstantTimeEq",
+      [],
+      Ty.path "isize",
+      "ct_eq",
+      Impl_subtle_ConstantTimeEq_for_isize.ct_eq);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "u8",
+      "conditional_select",
+      Impl_subtle_ConditionallySelectable_for_u8.conditional_select);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "u8",
+      "conditional_assign",
+      Impl_subtle_ConditionallySelectable_for_u8.conditional_assign);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "u8",
+      "conditional_swap",
+      Impl_subtle_ConditionallySelectable_for_u8.conditional_swap);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "i8",
+      "conditional_select",
+      Impl_subtle_ConditionallySelectable_for_i8.conditional_select);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "i8",
+      "conditional_assign",
+      Impl_subtle_ConditionallySelectable_for_i8.conditional_assign);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "i8",
+      "conditional_swap",
+      Impl_subtle_ConditionallySelectable_for_i8.conditional_swap);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "u16",
+      "conditional_select",
+      Impl_subtle_ConditionallySelectable_for_u16.conditional_select);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "u16",
+      "conditional_assign",
+      Impl_subtle_ConditionallySelectable_for_u16.conditional_assign);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "u16",
+      "conditional_swap",
+      Impl_subtle_ConditionallySelectable_for_u16.conditional_swap);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "i16",
+      "conditional_select",
+      Impl_subtle_ConditionallySelectable_for_i16.conditional_select);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "i16",
+      "conditional_assign",
+      Impl_subtle_ConditionallySelectable_for_i16.conditional_assign);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "i16",
+      "conditional_swap",
+      Impl_subtle_ConditionallySelectable_for_i16.conditional_swap);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "u32",
+      "conditional_select",
+      Impl_subtle_ConditionallySelectable_for_u32.conditional_select);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "u32",
+      "conditional_assign",
+      Impl_subtle_ConditionallySelectable_for_u32.conditional_assign);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "u32",
+      "conditional_swap",
+      Impl_subtle_ConditionallySelectable_for_u32.conditional_swap);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "i32",
+      "conditional_select",
+      Impl_subtle_ConditionallySelectable_for_i32.conditional_select);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "i32",
+      "conditional_assign",
+      Impl_subtle_ConditionallySelectable_for_i32.conditional_assign);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "i32",
+      "conditional_swap",
+      Impl_subtle_ConditionallySelectable_for_i32.conditional_swap);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "u64",
+      "conditional_select",
+      Impl_subtle_ConditionallySelectable_for_u64.conditional_select);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "u64",
+      "conditional_assign",
+      Impl_subtle_ConditionallySelectable_for_u64.conditional_assign);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "u64",
+      "conditional_swap",
+      Impl_subtle_ConditionallySelectable_for_u64.conditional_swap);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "i64",
+      "conditional_select",
+      Impl_subtle_ConditionallySelectable_for_i64.conditional_select);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "i64",
+      "conditional_assign",
+      Impl_subtle_ConditionallySelectable_for_i64.conditional_assign);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "i64",
+      "conditional_swap",
+      Impl_subtle_ConditionallySelectable_for_i64.conditional_swap);
+    ("subtle::ConditionallySelectable",
+      [],
+      Ty.path "subtle::Choice",
+      "conditional_select",
+      Impl_subtle_ConditionallySelectable_for_subtle_Choice.conditional_select);
+    ("subtle::ConstantTimeGreater",
+      [],
+      Ty.path "u8",
+      "ct_gt",
+      Impl_subtle_ConstantTimeGreater_for_u8.ct_gt);
+    ("subtle::ConstantTimeGreater",
+      [],
+      Ty.path "u16",
+      "ct_gt",
+      Impl_subtle_ConstantTimeGreater_for_u16.ct_gt);
+    ("subtle::ConstantTimeGreater",
+      [],
+      Ty.path "u32",
+      "ct_gt",
+      Impl_subtle_ConstantTimeGreater_for_u32.ct_gt);
+    ("subtle::ConstantTimeGreater",
+      [],
+      Ty.path "u64",
+      "ct_gt",
+      Impl_subtle_ConstantTimeGreater_for_u64.ct_gt)
+  ].

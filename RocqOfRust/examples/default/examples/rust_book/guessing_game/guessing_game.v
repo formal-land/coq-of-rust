@@ -434,3 +434,9 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "guessing_game::main" 
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("guessing_game::gen_range", gen_range); ("guessing_game::main", main) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

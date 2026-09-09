@@ -387,3 +387,13 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "aliases_for_result::m
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("aliases_for_result::multiply", multiply);
+    ("aliases_for_result::print", print);
+    ("aliases_for_result::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

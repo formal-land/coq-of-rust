@@ -428,3 +428,9 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "file_io_read_lines::m
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("file_io_read_lines::read_lines", read_lines); ("file_io_read_lines::main", main) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

@@ -367,3 +367,38 @@ Global Instance Instance_IsFunction_foo : M.IsFunction.C "functions_order::foo" 
 Proof.
 Admitted.
 Global Typeclasses Opaque foo.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("functions_order::depends_on_trait_impl", depends_on_trait_impl);
+    ("functions_order::inner_mod::bar", inner_mod.bar);
+    ("functions_order::inner_mod::tar", inner_mod.tar);
+    ("functions_order::inner_mod::nested_mod::tick", inner_mod.nested_mod.tick);
+    ("functions_order::inner_mod::nested_mod::tack", inner_mod.nested_mod.tack);
+    ("functions_order::main", main);
+    ("functions_order::foo", foo)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("functions_order::SomeTrait",
+      [],
+      Ty.path "functions_order::SomeType",
+      "some_trait_foo",
+      Impl_functions_order_SomeTrait_for_functions_order_SomeType.some_trait_foo);
+    ("functions_order::SomeTrait",
+      [],
+      Ty.path "functions_order::SomeType",
+      "some_trait_bar",
+      Impl_functions_order_SomeTrait_for_functions_order_SomeType.some_trait_bar);
+    ("functions_order::SomeTrait",
+      [],
+      Ty.path "functions_order::OtherType",
+      "some_trait_foo",
+      Impl_functions_order_SomeTrait_for_functions_order_OtherType.some_trait_foo);
+    ("functions_order::SomeTrait",
+      [],
+      Ty.path "functions_order::OtherType",
+      "some_trait_bar",
+      Impl_functions_order_SomeTrait_for_functions_order_OtherType.some_trait_bar)
+  ].

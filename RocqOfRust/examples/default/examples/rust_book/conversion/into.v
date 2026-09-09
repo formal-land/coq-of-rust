@@ -68,3 +68,14 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "into::main" main.
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [ ("into::main", main) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::convert::From",
+      [ Ty.path "i32" ],
+      Ty.path "into::Number",
+      "from",
+      Impl_core_convert_From_i32_for_into_Number.from)
+  ].

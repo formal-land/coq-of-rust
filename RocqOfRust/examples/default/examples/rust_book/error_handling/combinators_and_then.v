@@ -736,3 +736,27 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "combinators_and_then:
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("combinators_and_then::have_ingredients", have_ingredients);
+    ("combinators_and_then::have_recipe", have_recipe);
+    ("combinators_and_then::cookable_v1", cookable_v1);
+    ("combinators_and_then::cookable_v2", cookable_v2);
+    ("combinators_and_then::eat", eat);
+    ("combinators_and_then::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::fmt::Debug",
+      [],
+      Ty.path "combinators_and_then::Food",
+      "fmt",
+      Impl_core_fmt_Debug_for_combinators_and_then_Food.fmt);
+    ("core::fmt::Debug",
+      [],
+      Ty.path "combinators_and_then::Day",
+      "fmt",
+      Impl_core_fmt_Debug_for_combinators_and_then_Day.fmt)
+  ].

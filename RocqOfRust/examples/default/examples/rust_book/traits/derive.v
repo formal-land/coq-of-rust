@@ -550,3 +550,24 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "derive::main" main.
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [ ("derive::main", main) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::cmp::PartialEq",
+      [ Ty.path "derive::Centimeters" ],
+      Ty.path "derive::Centimeters",
+      "eq",
+      Impl_core_cmp_PartialEq_derive_Centimeters_for_derive_Centimeters.eq);
+    ("core::cmp::PartialOrd",
+      [ Ty.path "derive::Centimeters" ],
+      Ty.path "derive::Centimeters",
+      "partial_cmp",
+      Impl_core_cmp_PartialOrd_derive_Centimeters_for_derive_Centimeters.partial_cmp);
+    ("core::fmt::Debug",
+      [],
+      Ty.path "derive::Inches",
+      "fmt",
+      Impl_core_fmt_Debug_for_derive_Inches.fmt)
+  ].

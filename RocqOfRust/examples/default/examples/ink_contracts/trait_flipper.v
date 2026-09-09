@@ -125,3 +125,19 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
       Self
       (* Instance *) [ ("flip", InstanceField.Method flip); ("get", InstanceField.Method get) ].
 End Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("trait_flipper::Flip",
+      [],
+      Ty.path "trait_flipper::Flipper",
+      "flip",
+      Impl_trait_flipper_Flip_for_trait_flipper_Flipper.flip);
+    ("trait_flipper::Flip",
+      [],
+      Ty.path "trait_flipper::Flipper",
+      "get",
+      Impl_trait_flipper_Flip_for_trait_flipper_Flipper.get)
+  ].

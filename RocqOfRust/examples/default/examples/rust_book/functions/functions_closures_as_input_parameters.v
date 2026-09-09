@@ -545,3 +545,13 @@ Global Instance Instance_IsFunction_main :
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("functions_closures_as_input_parameters::apply", apply);
+    ("functions_closures_as_input_parameters::apply_to_3", apply_to_3);
+    ("functions_closures_as_input_parameters::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

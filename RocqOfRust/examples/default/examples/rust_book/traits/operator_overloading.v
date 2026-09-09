@@ -461,3 +461,30 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "operator_overloading:
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("operator_overloading::main", main) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::fmt::Debug",
+      [],
+      Ty.path "operator_overloading::FooBar",
+      "fmt",
+      Impl_core_fmt_Debug_for_operator_overloading_FooBar.fmt);
+    ("core::fmt::Debug",
+      [],
+      Ty.path "operator_overloading::BarFoo",
+      "fmt",
+      Impl_core_fmt_Debug_for_operator_overloading_BarFoo.fmt);
+    ("core::ops::arith::Add",
+      [ Ty.path "operator_overloading::Bar" ],
+      Ty.path "operator_overloading::Foo",
+      "add",
+      Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.add);
+    ("core::ops::arith::Add",
+      [ Ty.path "operator_overloading::Foo" ],
+      Ty.path "operator_overloading::Bar",
+      "add",
+      Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.add)
+  ].

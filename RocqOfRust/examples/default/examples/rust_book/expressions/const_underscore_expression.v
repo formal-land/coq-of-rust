@@ -55,3 +55,14 @@ Module underscore_1.
         (* Instance *) [ ("show", InstanceField.Method show) ].
   End Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.
 End underscore_1.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("const_underscore_expression::BarTrait",
+      [],
+      Ty.path "const_underscore_expression::Bar",
+      "show",
+      underscore_1.Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.show)
+  ].

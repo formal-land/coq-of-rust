@@ -423,3 +423,20 @@ Global Instance Instance_IsFunction_main :
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("disambiguating_overlapping_traits::main", main) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("disambiguating_overlapping_traits::UsernameWidget",
+      [],
+      Ty.path "disambiguating_overlapping_traits::Form",
+      "get",
+      Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.get);
+    ("disambiguating_overlapping_traits::AgeWidget",
+      [],
+      Ty.path "disambiguating_overlapping_traits::Form",
+      "get",
+      Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.get)
+  ].

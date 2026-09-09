@@ -313,3 +313,8 @@ Module Impl_custom_allocator_CustomAllocator.
   Admitted.
   Global Typeclasses Opaque get.
 End Impl_custom_allocator_CustomAllocator.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

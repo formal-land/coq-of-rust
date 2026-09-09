@@ -308,3 +308,14 @@ Module tests.
   Admitted.
   Global Typeclasses Opaque test_bad_add_1.
 End tests.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("unit_testing::add", add);
+    ("unit_testing::bad_add", bad_add);
+    ("unit_testing::tests::test_add'1", tests.test_add_1);
+    ("unit_testing::tests::test_bad_add'1", tests.test_bad_add_1)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

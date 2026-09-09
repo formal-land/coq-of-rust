@@ -9,6 +9,9 @@ pub struct RocqOfRustArgs {
     /// Also generate a JSON output
     #[arg(long)]
     with_json: bool,
+    /// Logical Rocq module prefix used by the generated runtime imports
+    #[arg(long)]
+    runtime_module_prefix: Option<String>,
     /// Path to a configuration file
     #[arg(long, default_value = "rocq-of-rust-config.json")]
     configuration_file: String,
@@ -30,6 +33,7 @@ pub struct Options {
     pub(crate) in_cargo: bool,
     pub(crate) axiomatize: bool,
     pub(crate) with_json: bool,
+    pub(crate) runtime_module_prefix: Option<String>,
 }
 
 impl Options {
@@ -40,6 +44,7 @@ impl Options {
             in_cargo: cargo_rocq_of_rust,
             axiomatize: rocq_of_rust.axiomatize,
             with_json: rocq_of_rust.with_json,
+            runtime_module_prefix: rocq_of_rust.runtime_module_prefix,
         }
     }
 }

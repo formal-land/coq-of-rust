@@ -484,3 +484,13 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "option_and_unwrap::ma
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("option_and_unwrap::give_adult", give_adult);
+    ("option_and_unwrap::drink", drink);
+    ("option_and_unwrap::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

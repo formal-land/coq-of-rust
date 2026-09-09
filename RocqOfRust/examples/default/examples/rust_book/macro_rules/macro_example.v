@@ -34,3 +34,9 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "macro_example::main" 
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("macro_example::main", main) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

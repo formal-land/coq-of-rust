@@ -52,3 +52,13 @@ Module main.
   Admitted.
   Global Typeclasses Opaque load_fpu_control_word.
 End main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("inline_assembly_memory_address_operands::main", main);
+    ("inline_assembly_memory_address_operands::main::load_fpu_control_word",
+      main.load_fpu_control_word)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

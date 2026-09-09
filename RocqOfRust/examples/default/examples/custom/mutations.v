@@ -430,3 +430,22 @@ Global Instance Instance_IsFunction_incr : M.IsFunction.C "mutations::incr" incr
 Proof.
 Admitted.
 Global Typeclasses Opaque incr.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("mutations::get_a_ref", get_a_ref);
+    ("mutations::get_b_mut", get_b_mut);
+    ("mutations::duplicate", duplicate);
+    ("mutations::apply_duplicate", apply_duplicate);
+    ("mutations::main", main);
+    ("mutations::incr", incr)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::fmt::Debug",
+      [],
+      Ty.path "mutations::Numbers",
+      "fmt",
+      Impl_core_fmt_Debug_for_mutations_Numbers.fmt)
+  ].

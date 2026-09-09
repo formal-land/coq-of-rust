@@ -408,3 +408,9 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "for_and_iterators_ite
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("for_and_iterators_iter_mut::main", main) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

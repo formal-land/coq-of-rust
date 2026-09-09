@@ -554,3 +554,15 @@ Module Impl_set_code_hash_Incrementer.
   Admitted.
   Global Typeclasses Opaque set_code.
 End Impl_set_code_hash_Incrementer.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("set_code_hash::set_code_hash", set_code_hash) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::default::Default",
+      [],
+      Ty.path "set_code_hash::Incrementer",
+      "default",
+      Impl_core_default_Default_for_set_code_hash_Incrementer.default)
+  ].

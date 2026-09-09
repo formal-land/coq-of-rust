@@ -415,3 +415,18 @@ Global Instance Instance_IsFunction_choose_ref : M.IsFunction.C "loops_free::cho
 Proof.
 Admitted.
 Global Typeclasses Opaque choose_ref.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("loops_free::max2", max2);
+    ("loops_free::abs_i32", abs_i32);
+    ("loops_free::bool_and", bool_and);
+    ("loops_free::get_or_zero", get_or_zero);
+    ("loops_free::eq2", eq2);
+    ("loops_free::eq_pair", eq_pair);
+    ("loops_free::min3", min3);
+    ("loops_free::choose_ref", choose_ref)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

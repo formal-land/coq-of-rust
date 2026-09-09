@@ -741,3 +741,28 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "visibility::main" mai
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("visibility::my_mod::private_function", my_mod.private_function);
+    ("visibility::my_mod::function", my_mod.function);
+    ("visibility::my_mod::indirect_access", my_mod.indirect_access);
+    ("visibility::my_mod::nested::function", my_mod.nested.function);
+    ("visibility::my_mod::nested::private_function", my_mod.nested.private_function);
+    ("visibility::my_mod::nested::public_function_in_my_mod",
+      my_mod.nested.public_function_in_my_mod);
+    ("visibility::my_mod::nested::public_function_in_nested",
+      my_mod.nested.public_function_in_nested);
+    ("visibility::my_mod::nested::public_function_in_super_mod",
+      my_mod.nested.public_function_in_super_mod);
+    ("visibility::my_mod::call_public_function_in_my_mod", my_mod.call_public_function_in_my_mod);
+    ("visibility::my_mod::public_function_in_crate", my_mod.public_function_in_crate);
+    ("visibility::my_mod::private_nested::function", my_mod.private_nested.function);
+    ("visibility::my_mod::private_nested::restricted_function",
+      my_mod.private_nested.restricted_function);
+    ("visibility::function", function);
+    ("visibility::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

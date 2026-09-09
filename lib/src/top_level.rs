@@ -16,12 +16,16 @@ use rustc_span::symbol::{sym, Symbol};
 use serde::Serialize;
 use std::collections::HashMap;
 use std::iter::repeat;
+use std::path::Path as FilePath;
 use std::rc::Rc;
 use std::string::ToString;
 use std::vec;
 
-pub(crate) struct TopLevelOptions {
+#[derive(Clone, Copy)]
+pub(crate) struct TopLevelOptions<'a> {
     pub(crate) axiomatize: bool,
+    pub(crate) separate_runtime_file: bool,
+    pub(crate) runtime_module_prefix: Option<&'a str>,
 }
 
 #[derive(Debug)]
@@ -1224,7 +1228,7 @@ fn compile_trait_item_body<'a>(
     }
 }
 
-fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> Rc<TopLevel> {
+fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions<'_>) -> Rc<TopLevel> {
     let env = Env {
         tcx: *tcx,
         axiomatize: opts.axiomatize,
@@ -1242,22 +1246,100 @@ fn compile_top_level(tcx: &TyCtxt, opts: TopLevelOptions) -> Rc<TopLevel> {
 
 const LINE_WIDTH: usize = 100;
 
+fn runtime_file_path(file_names: &[String]) -> String {
+    let root_file = file_names
+        .iter()
+        .find(|file_name| {
+            matches!(
+                FilePath::new(file_name)
+                    .file_name()
+                    .and_then(|name| name.to_str()),
+                Some("lib.rs" | "main.rs")
+            )
+        })
+        .or_else(|| file_names.first());
+
+    root_file
+        .and_then(|file_name| FilePath::new(file_name).parent())
+        .unwrap_or_else(|| FilePath::new(""))
+        .join("rocq_of_rust_runtime.v")
+        .to_string_lossy()
+        .to_string()
+}
+
+fn runtime_module_name(module_prefix: &str, file_name: &str) -> Option<String> {
+    let components = FilePath::new(file_name)
+        .components()
+        .map(|component| component.as_os_str().to_string_lossy().to_string())
+        .collect_vec();
+    let src_index = components
+        .iter()
+        .rposition(|component| component == "src")?;
+    let mut module_path = vec![module_prefix.to_string()];
+
+    for component in &components[src_index + 1..] {
+        module_path.push(
+            FilePath::new(component)
+                .with_extension("")
+                .to_string_lossy()
+                .to_string(),
+        );
+    }
+
+    Some(module_path.join("."))
+}
+
+fn runtime_imports(module_prefix: &str, file_names: &[String]) -> String {
+    let mut module_names = file_names
+        .iter()
+        .filter_map(|file_name| runtime_module_name(module_prefix, file_name))
+        .collect_vec();
+    module_names.sort();
+    module_names.dedup();
+
+    module_names
+        .into_iter()
+        .map(|module_name| format!("Require Import {module_name}.\n"))
+        .collect()
+}
+
 pub(crate) fn translate_top_level(
     tcx: &TyCtxt,
-    opts: TopLevelOptions,
+    opts: TopLevelOptions<'_>,
 ) -> HashMap<String, (String, String)> {
     let top_level = compile_top_level(tcx, opts);
-    let top_level_groups = group_top_level_by_file_name(top_level);
+    let top_level_groups = group_top_level_by_file_name(top_level.clone());
+    let include_runtime_in_file = !opts.axiomatize && !opts.separate_runtime_file;
 
-    top_level_groups
+    let mut translations = top_level_groups
         .into_iter()
         .map(|(file_name, top_level)| {
             (
                 file_name,
-                (top_level.to_pretty(LINE_WIDTH), top_level.to_json()),
+                (
+                    top_level.to_pretty(LINE_WIDTH, include_runtime_in_file),
+                    top_level.to_json(),
+                ),
             )
         })
-        .collect()
+        .collect::<HashMap<_, _>>();
+
+    if !opts.axiomatize && opts.separate_runtime_file {
+        let mut file_names = translations.keys().cloned().collect_vec();
+        file_names.sort();
+        let crate_name = tcx.crate_name(rustc_hir::def_id::LOCAL_CRATE).to_string();
+        let module_prefix = opts.runtime_module_prefix.unwrap_or(&crate_name);
+        let runtime = format!(
+            "{}{}\n{}",
+            HEADER,
+            runtime_imports(module_prefix, &file_names),
+            top_level.runtime_to_pretty(LINE_WIDTH),
+        );
+
+        translations.insert(runtime_file_path(&file_names), (runtime, String::new()));
+    }
+
+    translations
 }
 
 #[derive(Debug, Serialize)]
@@ -1779,6 +1861,51 @@ impl TypeStructStruct {
     }
 }
 
+fn trait_impl_module_name(
+    predicates: &[Rc<WherePredicate>],
+    self_ty: &RocqType,
+    of_trait: &Path,
+    trait_const_params: &[Rc<Expr>],
+    trait_ty_params: &[Rc<RocqType>],
+) -> String {
+    format!(
+        "Impl_{}{}{}{}_for_{}",
+        of_trait.to_name(),
+        predicates
+            .iter()
+            .map(|where_predicate| {
+                let WherePredicate { bound, ty } = where_predicate.as_ref();
+                let TraitBound { name, ty_params } = bound.as_ref();
+
+                format!(
+                    "_where_{}_{}{}",
+                    name.to_name(),
+                    ty.to_name(),
+                    ty_params
+                        .iter()
+                        .filter_map(|(_, ty_param)| match ty_param.as_ref() {
+                            FieldWithDefault::RequiredValue(ty)
+                            | FieldWithDefault::OptionalValue(ty) => {
+                                Some(format!("_{}", ty.to_name()))
+                            }
+                            FieldWithDefault::Default => None,
+                        })
+                        .join(""),
+                )
+            })
+            .collect::<String>(),
+        trait_const_params
+            .iter()
+            .map(|const_| format!("_{}", const_.to_name()))
+            .join(""),
+        trait_ty_params
+            .iter()
+            .map(|ty| format!("_{}", ty.to_name()))
+            .join(""),
+        self_ty.to_name()
+    )
+}
+
 impl TopLevelItem {
     #[allow(clippy::format_collect)]
     fn to_rocq(&self) -> Vec<Rc<rocq::TopLevelItem>> {
@@ -1855,7 +1982,7 @@ impl TopLevelItem {
             TopLevelItem::Module { name, body } => {
                 vec![Rc::new(rocq::TopLevelItem::Module(rocq::Module::new(
                     name,
-                    body.to_rocq(),
+                    body.to_rocq(false),
                 )))]
             }
             TopLevelItem::TypeAlias {
@@ -2218,40 +2345,12 @@ impl TopLevelItem {
                 items,
             } => {
                 let generics = [generic_consts.clone(), generic_tys.clone()].concat();
-                let module_name = format!(
-                    "Impl_{}{}{}{}_for_{}",
-                    of_trait.to_name(),
-                    predicates
-                        .iter()
-                        .map(|where_predicate| {
-                            let WherePredicate { bound, ty } = where_predicate.as_ref();
-                            let TraitBound { name, ty_params } = bound.as_ref();
-
-                            format!(
-                                "_where_{}_{}{}",
-                                name.to_name(),
-                                ty.to_name(),
-                                ty_params
-                                    .iter()
-                                    .filter_map(|(_, ty_param)| match ty_param.as_ref() {
-                                        FieldWithDefault::RequiredValue(ty)
-                                        | FieldWithDefault::OptionalValue(ty) =>
-                                            Some(format!("_{}", ty.to_name())),
-                                        FieldWithDefault::Default => None,
-                                    })
-                                    .join(""),
-                            )
-                        })
-                        .collect::<String>(),
-                    trait_const_params
-                        .iter()
-                        .map(|const_| format!("_{}", const_.to_name()))
-                        .join(""),
-                    trait_ty_params
-                        .iter()
-                        .map(|ty| format!("_{}", ty.to_name()))
-                        .join(""),
-                    self_ty.to_name()
+                let module_name = trait_impl_module_name(
+                    predicates,
+                    self_ty,
+                    of_trait,
+                    trait_const_params,
+                    trait_ty_params,
                 );
                 let items_rocq = items
                     .iter()
@@ -2387,24 +2486,182 @@ impl TopLevelItem {
 }
 
 impl TopLevel {
-    fn to_rocq(&self) -> Rc<rocq::TopLevel> {
-        rocq::TopLevel::new(
-            &itertools::Itertools::intersperse(
-                self.0.iter().map(|item| item.item.to_rocq()),
-                vec![Rc::new(rocq::TopLevelItem::Line)],
-            )
-            .flatten()
-            .collect_vec(),
-        )
+    fn function_table_entries(&self, module_path: &[String]) -> Vec<(String, Rc<Path>)> {
+        self.0
+            .iter()
+            .flat_map(|entry| match entry.item.as_ref() {
+                TopLevelItem::Const { name, path, .. }
+                | TopLevelItem::Definition { name, path, .. } => {
+                    let mut rocq_path = module_path.to_vec();
+                    rocq_path.push(name.clone());
+
+                    vec![(path.to_string(), Path::new(&rocq_path))]
+                }
+                TopLevelItem::Module { name, body } => {
+                    let mut nested_module_path = module_path.to_vec();
+                    nested_module_path.push(name.clone());
+                    body.function_table_entries(&nested_module_path)
+                }
+                _ => vec![],
+            })
+            .collect()
     }
 
-    pub fn to_pretty(&self, width: usize) -> String {
+    fn function_table_to_rocq(&self) -> Rc<rocq::TopLevelItem> {
+        let entries = self
+            .function_table_entries(&[])
+            .into_iter()
+            .map(|(rust_path, rocq_path)| {
+                Rc::new(rocq::Expression::Tuple(vec![
+                    Rc::new(rocq::Expression::String(rust_path)),
+                    Rc::new(rocq::Expression::Variable {
+                        ident: rocq_path,
+                        no_implicit: false,
+                    }),
+                ]))
+            })
+            .collect();
+        let entry_type = rocq::Expression::multiply(
+            rocq::Expression::just_name("string"),
+            rocq::Expression::just_name("PolymorphicFunction.t"),
+        );
+
+        Rc::new(rocq::TopLevelItem::Definition(rocq::Definition::new(
+            "function_table",
+            Rc::new(rocq::DefinitionKind::Alias {
+                args: vec![],
+                ty: Some(rocq::Expression::just_name("list").apply(entry_type)),
+                body: Rc::new(rocq::Expression::List { exprs: entries }),
+            }),
+        )))
+    }
+
+    fn trait_method_table_entries(&self, module_path: &[String]) -> Vec<Rc<rocq::Expression>> {
+        self.0
+            .iter()
+            .flat_map(|entry| match entry.item.as_ref() {
+                TopLevelItem::TraitImpl {
+                    generic_consts,
+                    generic_tys,
+                    predicates,
+                    self_ty,
+                    of_trait,
+                    trait_const_params,
+                    trait_ty_params,
+                    items,
+                } if generic_consts.is_empty()
+                    && generic_tys.is_empty()
+                    && predicates.is_empty()
+                    && trait_const_params.is_empty() =>
+                {
+                    let module_name = trait_impl_module_name(
+                        predicates,
+                        self_ty,
+                        of_trait,
+                        trait_const_params,
+                        trait_ty_params,
+                    );
+
+                    items
+                        .iter()
+                        .filter_map(|item| {
+                            let kind: Option<&ImplItemKind> = item.kind.as_ref().into();
+                            let kind = kind?;
+
+                            match kind {
+                                ImplItemKind::Const { .. } | ImplItemKind::Definition { .. } => {
+                                    let mut rocq_path = module_path.to_vec();
+                                    rocq_path.push(module_name.clone());
+                                    rocq_path.push(kind.to_definition_name(item.name.to_string()));
+
+                                    Some(Rc::new(rocq::Expression::Tuple(vec![
+                                        Rc::new(rocq::Expression::String(of_trait.to_string())),
+                                        Rc::new(rocq::Expression::List {
+                                            exprs: trait_ty_params
+                                                .iter()
+                                                .map(|ty| ty.to_rocq())
+                                                .collect(),
+                                        }),
+                                        self_ty.to_rocq(),
+                                        Rc::new(rocq::Expression::String(item.name.to_string())),
+                                        Rc::new(rocq::Expression::Variable {
+                                            ident: Path::new(&rocq_path),
+                                            no_implicit: false,
+                                        }),
+                                    ])))
+                                }
+                                ImplItemKind::Type { .. } => None,
+                            }
+                        })
+                        .collect()
+                }
+                TopLevelItem::Module { name, body } => {
+                    let mut nested_module_path = module_path.to_vec();
+                    nested_module_path.push(name.clone());
+                    body.trait_method_table_entries(&nested_module_path)
+                }
+                _ => vec![],
+            })
+            .collect()
+    }
+
+    fn trait_method_table_to_rocq(&self) -> Rc<rocq::TopLevelItem> {
+        Rc::new(rocq::TopLevelItem::Definition(rocq::Definition::new(
+            "trait_method_table",
+            Rc::new(rocq::DefinitionKind::Alias {
+                args: vec![],
+                ty: Some(rocq::Expression::just_name(
+                    "list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t)",
+                )),
+                body: Rc::new(rocq::Expression::List {
+                    exprs: self.trait_method_table_entries(&[]),
+                }),
+            }),
+        )))
+    }
+
+    fn runtime_to_rocq(&self) -> Rc<rocq::TopLevel> {
+        rocq::TopLevel::new(&[
+            self.function_table_to_rocq(),
+            Rc::new(rocq::TopLevelItem::Line),
+            self.trait_method_table_to_rocq(),
+        ])
+    }
+
+    fn to_rocq(&self, include_runtime: bool) -> Rc<rocq::TopLevel> {
+        let mut items = itertools::Itertools::intersperse(
+            self.0.iter().map(|item| item.item.to_rocq()),
+            vec![Rc::new(rocq::TopLevelItem::Line)],
+        )
+        .flatten()
+        .collect_vec();
+
+        if include_runtime {
+            items.push(Rc::new(rocq::TopLevelItem::Line));
+            items.push(self.function_table_to_rocq());
+            items.push(Rc::new(rocq::TopLevelItem::Line));
+            items.push(self.trait_method_table_to_rocq());
+        }
+
+        rocq::TopLevel::new(&items)
+    }
+
+    pub fn to_pretty(&self, width: usize, include_runtime: bool) -> String {
         let mut w = Vec::new();
-        self.to_rocq()
+        self.to_rocq(include_runtime)
             .to_doc(&pretty::Arena::new())
             .render(width, &mut w)
             .unwrap();
         format!("{}{}\n", HEADER, String::from_utf8(w).unwrap())
+    }
+
+    pub fn runtime_to_pretty(&self, width: usize) -> String {
+        let mut w = Vec::new();
+        self.runtime_to_rocq()
+            .to_doc(&pretty::Arena::new())
+            .render(width, &mut w)
+            .unwrap();
+        format!("{}\n", String::from_utf8(w).unwrap())
     }
 
     pub fn to_json(&self) -> String {

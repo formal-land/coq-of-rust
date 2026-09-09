@@ -34,3 +34,12 @@ Global Instance Instance_IsFunction_byte_literal :
 Proof.
 Admitted.
 Global Typeclasses Opaque byte_literal.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("byte_string_literals::byte_string_literal", byte_string_literal);
+    ("byte_string_literals::byte_literal", byte_literal)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

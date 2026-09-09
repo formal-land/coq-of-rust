@@ -6144,3 +6144,84 @@ Module Impl_multisig_Multisig.
   Admitted.
   Global Typeclasses Opaque eval_transaction.
 End Impl_multisig_Multisig.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("multisig::MAX_OWNERS", value_MAX_OWNERS);
+    ("multisig::WRONG_TRANSACTION_ID", value_WRONG_TRANSACTION_ID);
+    ("multisig::ensure_requirement_is_valid", ensure_requirement_is_valid)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::default::Default",
+      [],
+      Ty.path "multisig::AccountId",
+      "default",
+      Impl_core_default_Default_for_multisig_AccountId.default);
+    ("core::fmt::Debug",
+      [],
+      Ty.path "multisig::AccountId",
+      "fmt",
+      Impl_core_fmt_Debug_for_multisig_AccountId.fmt);
+    ("core::clone::Clone",
+      [],
+      Ty.path "multisig::AccountId",
+      "clone",
+      Impl_core_clone_Clone_for_multisig_AccountId.clone);
+    ("core::cmp::PartialEq",
+      [ Ty.path "multisig::AccountId" ],
+      Ty.path "multisig::AccountId",
+      "eq",
+      Impl_core_cmp_PartialEq_multisig_AccountId_for_multisig_AccountId.eq);
+    ("core::cmp::Eq",
+      [],
+      Ty.path "multisig::AccountId",
+      "assert_receiver_is_total_eq",
+      Impl_core_cmp_Eq_for_multisig_AccountId.assert_receiver_is_total_eq);
+    ("core::cmp::PartialOrd",
+      [ Ty.path "multisig::AccountId" ],
+      Ty.path "multisig::AccountId",
+      "partial_cmp",
+      Impl_core_cmp_PartialOrd_multisig_AccountId_for_multisig_AccountId.partial_cmp);
+    ("core::cmp::Ord",
+      [],
+      Ty.path "multisig::AccountId",
+      "cmp",
+      Impl_core_cmp_Ord_for_multisig_AccountId.cmp);
+    ("core::clone::Clone",
+      [],
+      Ty.path "multisig::ConfirmationStatus",
+      "clone",
+      Impl_core_clone_Clone_for_multisig_ConfirmationStatus.clone);
+    ("core::default::Default",
+      [],
+      Ty.path "multisig::Transaction",
+      "default",
+      Impl_core_default_Default_for_multisig_Transaction.default);
+    ("core::clone::Clone",
+      [],
+      Ty.path "multisig::Error",
+      "clone",
+      Impl_core_clone_Clone_for_multisig_Error.clone);
+    ("core::cmp::PartialEq",
+      [ Ty.path "multisig::Error" ],
+      Ty.path "multisig::Error",
+      "eq",
+      Impl_core_cmp_PartialEq_multisig_Error_for_multisig_Error.eq);
+    ("core::cmp::Eq",
+      [],
+      Ty.path "multisig::Error",
+      "assert_receiver_is_total_eq",
+      Impl_core_cmp_Eq_for_multisig_Error.assert_receiver_is_total_eq);
+    ("core::default::Default",
+      [],
+      Ty.path "multisig::Transactions",
+      "default",
+      Impl_core_default_Default_for_multisig_Transactions.default);
+    ("core::default::Default",
+      [],
+      Ty.path "multisig::Multisig",
+      "default",
+      Impl_core_default_Default_for_multisig_Multisig.default)
+  ].

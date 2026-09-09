@@ -629,3 +629,13 @@ Module tests.
   Admitted.
   Global Typeclasses Opaque test_file_also_1.
 End tests.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("concurrent_tests::foo", foo);
+    ("concurrent_tests::tests::test_file'1", tests.test_file_1);
+    ("concurrent_tests::tests::test_file_also'1", tests.test_file_also_1)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

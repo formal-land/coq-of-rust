@@ -917,3 +917,34 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
         ("push_foo", InstanceField.Method push_foo)
       ].
 End Impl_conditional_compilation_Flip_for_conditional_compilation_ConditionalCompilation.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::default::Default",
+      [],
+      Ty.path "conditional_compilation::AccountId",
+      "default",
+      Impl_core_default_Default_for_conditional_compilation_AccountId.default);
+    ("core::clone::Clone",
+      [],
+      Ty.path "conditional_compilation::AccountId",
+      "clone",
+      Impl_core_clone_Clone_for_conditional_compilation_AccountId.clone);
+    ("conditional_compilation::Flip",
+      [],
+      Ty.path "conditional_compilation::ConditionalCompilation",
+      "flip",
+      Impl_conditional_compilation_Flip_for_conditional_compilation_ConditionalCompilation.flip);
+    ("conditional_compilation::Flip",
+      [],
+      Ty.path "conditional_compilation::ConditionalCompilation",
+      "get",
+      Impl_conditional_compilation_Flip_for_conditional_compilation_ConditionalCompilation.get);
+    ("conditional_compilation::Flip",
+      [],
+      Ty.path "conditional_compilation::ConditionalCompilation",
+      "push_foo",
+      Impl_conditional_compilation_Flip_for_conditional_compilation_ConditionalCompilation.push_foo)
+  ].

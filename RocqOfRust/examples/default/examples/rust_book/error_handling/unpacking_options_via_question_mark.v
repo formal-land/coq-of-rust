@@ -652,3 +652,20 @@ Global Instance Instance_IsFunction_main :
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("unpacking_options_via_question_mark::main", main) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::clone::Clone",
+      [],
+      Ty.path "unpacking_options_via_question_mark::PhoneNumber",
+      "clone",
+      Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber.clone);
+    ("core::clone::Clone",
+      [],
+      Ty.path "unpacking_options_via_question_mark::Job",
+      "clone",
+      Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.clone)
+  ].

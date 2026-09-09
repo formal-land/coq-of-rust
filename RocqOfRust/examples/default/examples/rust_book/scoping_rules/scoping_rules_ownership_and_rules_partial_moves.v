@@ -631,3 +631,15 @@ Module main.
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.
 End main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("scoping_rules_ownership_and_rules_partial_moves::main", main) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::fmt::Debug",
+      [],
+      Ty.path "scoping_rules_ownership_and_rules_partial_moves::main::Person",
+      "fmt",
+      main.Impl_core_fmt_Debug_for_scoping_rules_ownership_and_rules_partial_moves_main_Person.fmt)
+  ].

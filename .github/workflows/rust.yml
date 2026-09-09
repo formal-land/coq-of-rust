@@ -73,7 +73,7 @@ jobs:
             cp ../../../../rust-toolchain ./
             time cargo build
             touch src/lib.rs
-            time cargo rocq-of-rust
+            time cargo rocq-of-rust --runtime-module-prefix alloc
             rsync -rcv src/ ../../../../RocqOfRust/alloc/ --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ../../../..
           endGroup
@@ -83,7 +83,7 @@ jobs:
             time cargo build
             touch src/lib.rs
             export RUST_MIN_STACK=800000000
-            time cargo rocq-of-rust
+            time cargo rocq-of-rust --runtime-module-prefix core
             sed -i 's/Module Impl_core_default_Default_where_core_default_Default_T_for_array_expr_T./(* Module Impl_core_default_Default_where_core_default_Default_T_for_array_expr_T./' src/array/mod.v
             sed -i 's/End Impl_core_default_Default_where_core_default_Default_T_for_array_expr_T./End Impl_core_default_Default_where_core_default_Default_T_for_array_expr_T. *)/' src/array/mod.v
             rsync -rcv src/ ../../../../RocqOfRust/core/ --include='*/' --include='*.v' --include='*.rs' --exclude='*'
@@ -104,46 +104,47 @@ jobs:
             translate_revm_crate() {
               crate_path="$1"
               output_path="$2"
+              runtime_module_prefix="$3"
 
               (
                 cd "$crate_path"
-                cargo rocq-of-rust
+                cargo rocq-of-rust --runtime-module-prefix "$runtime_module_prefix"
                 touch src/lib.rs
-                cargo rocq-of-rust --with-json
+                cargo rocq-of-rust --with-json --runtime-module-prefix "$runtime_module_prefix"
                 mkdir -p "$output_path"
                 rsync -rcv src/ "$output_path/" \
                   --include='*/' --include='*.v' --include='*.rs' --include='*.json' --exclude='*'
               )
             }
 
-            translate_revm_crate crates/bytecode ../../../../RocqOfRust/revm/revm_bytecode
-            translate_revm_crate crates/context ../../../../RocqOfRust/revm/revm_context
-            translate_revm_crate crates/context/interface ../../../../../RocqOfRust/revm/revm_context_interface
-            translate_revm_crate crates/database/interface ../../../../../RocqOfRust/revm/revm_database_interface
-            translate_revm_crate crates/handler ../../../../RocqOfRust/revm/revm_handler
-            translate_revm_crate crates/interpreter ../../../../RocqOfRust/revm/revm_interpreter
-            translate_revm_crate crates/precompile ../../../../RocqOfRust/revm/revm_precompile
-            translate_revm_crate crates/primitives ../../../../RocqOfRust/revm/revm_primitives
-            translate_revm_crate crates/revm ../../../../RocqOfRust/revm/revm
-            translate_revm_crate crates/state ../../../../RocqOfRust/revm/revm_state
+            translate_revm_crate crates/bytecode ../../../../RocqOfRust/revm/revm_bytecode revm.revm_bytecode
+            translate_revm_crate crates/context ../../../../RocqOfRust/revm/revm_context revm.revm_context
+            translate_revm_crate crates/context/interface ../../../../../RocqOfRust/revm/revm_context_interface revm.revm_context_interface
+            translate_revm_crate crates/database/interface ../../../../../RocqOfRust/revm/revm_database_interface revm.revm_database_interface
+            translate_revm_crate crates/handler ../../../../RocqOfRust/revm/revm_handler revm.revm_handler
+            translate_revm_crate crates/interpreter ../../../../RocqOfRust/revm/revm_interpreter revm.revm_interpreter
+            translate_revm_crate crates/precompile ../../../../RocqOfRust/revm/revm_precompile revm.revm_precompile
+            translate_revm_crate crates/primitives ../../../../RocqOfRust/revm/revm_primitives revm.revm_primitives
+            translate_revm_crate crates/revm ../../../../RocqOfRust/revm/revm revm.revm
+            translate_revm_crate crates/state ../../../../RocqOfRust/revm/revm_state revm.revm_state
 
             cd ../..
           endGroup
           startGroup "Translate ruint"
             cd third-party/uint
             cp ../../rust-toolchain ./
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix ruint
             touch src/lib.rs
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix ruint
             rsync -rcv src/ ../../RocqOfRust/ruint/ --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ../..
           endGroup
           startGroup "Translate alloy-core"
             cd third-party/alloy-rs-core/crates/primitives
             cp ../../../../rust-toolchain ./
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix alloy_primitives
             touch src/lib.rs
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix alloy_primitives
             rsync -rcv src/ ../../../../RocqOfRust/alloy_primitives/ --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ../../../..
           endGroup
@@ -151,9 +152,9 @@ jobs:
             cd third-party/bytes
             cp ../../rust-toolchain ./
             grep -q workspace Cargo.toml || echo '[workspace]' >> Cargo.toml
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix bytes
             touch src/lib.rs
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix bytes
             rsync -rcv src/ ../../RocqOfRust/bytes/ --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ../..
           endGroup
@@ -163,37 +164,37 @@ jobs:
             cd crates
             # move-abstract-stack
             cd move-abstract-stack
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix move_sui.translations.move_abstract_stack
             touch src/lib.rs
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix move_sui.translations.move_abstract_stack
             rsync -rcv src/ ../../../../RocqOfRust/move_sui/translations/move_abstract_stack/ --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ..
             # move-binary-format
             cd move-binary-format
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix move_sui.translations.move_binary_format
             touch src/lib.rs
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix move_sui.translations.move_binary_format
             rsync -rcv src/ ../../../../RocqOfRust/move_sui/translations/move_binary_format/ --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ..
             # move-bytecode-verifier
             cd move-bytecode-verifier
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix move_sui.translations.move_bytecode_verifier
             touch src/lib.rs
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix move_sui.translations.move_bytecode_verifier
             rsync -rcv src/ ../../../../RocqOfRust/move_sui/translations/move_bytecode_verifier/ --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ..
             # move-bytecode-verifier-meter
             cd move-bytecode-verifier-meter
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix move_sui.translations.move_bytecode_verifier_meter
             touch src/lib.rs
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix move_sui.translations.move_bytecode_verifier_meter
             rsync -rcv src/ ../../../../RocqOfRust/move_sui/translations/move_bytecode_verifier_meter/ --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ..
             # move-core-types
             cd move-core-types
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix move_sui.translations.move_core_types
             touch src/lib.rs
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix move_sui.translations.move_core_types
             rsync -rcv src/ ../../../../RocqOfRust/move_sui/translations/move_core_types/ --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ..
             cd ../../..
@@ -203,23 +204,23 @@ jobs:
             cp ../../rust-toolchain ./
             # Pinocchio Token program
             cd pinocchio/program
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix solana_program_token.pinocchio
             touch src/lib.rs
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix solana_program_token.pinocchio
             rsync -rcv ./src/ ../../../../RocqOfRust/solana_program_token/pinocchio --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ../..
             # Original Token program
             cd program
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix solana_program_token.program
             touch src/lib.rs
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix solana_program_token.program
             rsync -rcv ./src/ ../../../RocqOfRust/solana_program_token/program --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ..
             # SPL Token Interface
             cd interface
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix solana_program_token.interface
             touch src/lib.rs
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix solana_program_token.interface
             rsync -rcv ./src/ ../../../RocqOfRust/solana_program_token/interface --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ..
             cd ../..
@@ -229,44 +230,44 @@ jobs:
             cp ../../rust-toolchain ./
             # account-info
             cd account-info
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix anza_xyz_solana_sdk.account_info
             touch src/lib.rs
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix anza_xyz_solana_sdk.account_info
             rsync -rcv ./src/ ../../../RocqOfRust/anza_xyz_solana_sdk/account_info --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ..
             # address
             cd address
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix anza_xyz_solana_sdk.address
             touch src/lib.rs
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix anza_xyz_solana_sdk.address
             rsync -rcv ./src/ ../../../RocqOfRust/anza_xyz_solana_sdk/address --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ..
             # program-error
             cd program-error
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix anza_xyz_solana_sdk.program_error
             touch src/lib.rs
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix anza_xyz_solana_sdk.program_error
             rsync -rcv ./src/ ../../../RocqOfRust/anza_xyz_solana_sdk/program_error --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ..
             # program-option
             cd program-option
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix anza_xyz_solana_sdk.program_option
             touch src/lib.rs
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix anza_xyz_solana_sdk.program_option
             rsync -rcv ./src/ ../../../RocqOfRust/anza_xyz_solana_sdk/program_option --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ..
             # program-pack
             cd program-pack
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix anza_xyz_solana_sdk.program_pack
             touch src/lib.rs
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix anza_xyz_solana_sdk.program_pack
             rsync -rcv ./src/ ../../../RocqOfRust/anza_xyz_solana_sdk/program_pack --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ..
             # pubkey
             cd pubkey
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix anza_xyz_solana_sdk.pubkey
             touch src/lib.rs
-            cargo rocq-of-rust
+            cargo rocq-of-rust --runtime-module-prefix anza_xyz_solana_sdk.pubkey
             rsync -rcv ./src/ ../../../RocqOfRust/anza_xyz_solana_sdk/pubkey --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ..
             cd ../..

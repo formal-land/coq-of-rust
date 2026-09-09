@@ -49,3 +49,9 @@ Global Instance Instance_IsFunction_classify : M.IsFunction.C "range_patterns::c
 Proof.
 Admitted.
 Global Typeclasses Opaque classify.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("range_patterns::classify", classify) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

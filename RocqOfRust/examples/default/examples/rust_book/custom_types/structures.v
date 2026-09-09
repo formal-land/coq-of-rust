@@ -901,3 +901,14 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "structures::main" mai
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [ ("structures::main", main) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::fmt::Debug",
+      [],
+      Ty.path "structures::Person",
+      "fmt",
+      Impl_core_fmt_Debug_for_structures_Person.fmt)
+  ].

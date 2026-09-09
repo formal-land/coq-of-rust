@@ -876,3 +876,22 @@ Global Instance Instance_IsFunction_main :
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("result_chaining_with_question_mark::checked::div", checked.div);
+    ("result_chaining_with_question_mark::checked::sqrt", checked.sqrt);
+    ("result_chaining_with_question_mark::checked::ln", checked.ln);
+    ("result_chaining_with_question_mark::checked::op_", checked.op_);
+    ("result_chaining_with_question_mark::checked::op", checked.op);
+    ("result_chaining_with_question_mark::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::fmt::Debug",
+      [],
+      Ty.path "result_chaining_with_question_mark::checked::MathError",
+      "fmt",
+      checked.Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.fmt)
+  ].

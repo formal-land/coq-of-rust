@@ -1114,3 +1114,24 @@ Module Impl_mapping_integration_tests_Mappings.
   Admitted.
   Global Typeclasses Opaque take_balance.
 End Impl_mapping_integration_tests_Mappings.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::default::Default",
+      [],
+      Ty.path "mapping_integration_tests::AccountId",
+      "default",
+      Impl_core_default_Default_for_mapping_integration_tests_AccountId.default);
+    ("core::clone::Clone",
+      [],
+      Ty.path "mapping_integration_tests::AccountId",
+      "clone",
+      Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.clone);
+    ("core::default::Default",
+      [],
+      Ty.path "mapping_integration_tests::Mappings",
+      "default",
+      Impl_core_default_Default_for_mapping_integration_tests_Mappings.default)
+  ].

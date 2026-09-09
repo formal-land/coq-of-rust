@@ -371,3 +371,13 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "scoping_rules_borrowi
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [
+    ("scoping_rules_borrowing::eat_box_i32", eat_box_i32);
+    ("scoping_rules_borrowing::borrow_i32", borrow_i32);
+    ("scoping_rules_borrowing::main", main)
+  ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

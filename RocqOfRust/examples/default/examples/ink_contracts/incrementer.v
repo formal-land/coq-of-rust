@@ -136,3 +136,8 @@ Module Impl_incrementer_Incrementer.
   Admitted.
   Global Typeclasses Opaque get.
 End Impl_incrementer_Incrementer.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

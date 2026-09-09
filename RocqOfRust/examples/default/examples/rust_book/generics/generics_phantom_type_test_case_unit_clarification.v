@@ -836,3 +836,30 @@ Global Instance Instance_IsFunction_main :
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("generics_phantom_type_test_case_unit_clarification::main", main) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::fmt::Debug",
+      [],
+      Ty.path "generics_phantom_type_test_case_unit_clarification::Inch",
+      "fmt",
+      Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.fmt);
+    ("core::clone::Clone",
+      [],
+      Ty.path "generics_phantom_type_test_case_unit_clarification::Inch",
+      "clone",
+      Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.clone);
+    ("core::fmt::Debug",
+      [],
+      Ty.path "generics_phantom_type_test_case_unit_clarification::Mm",
+      "fmt",
+      Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.fmt);
+    ("core::clone::Clone",
+      [],
+      Ty.path "generics_phantom_type_test_case_unit_clarification::Mm",
+      "clone",
+      Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.clone)
+  ].

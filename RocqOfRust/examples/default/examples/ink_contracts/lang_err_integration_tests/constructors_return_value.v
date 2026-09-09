@@ -692,3 +692,30 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
   Admitted.
   Global Typeclasses Opaque get_value.
 End Impl_constructors_return_value_ConstructorsReturnValue.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("constructors_return_value::return_value", return_value) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [
+    ("core::default::Default",
+      [],
+      Ty.path "constructors_return_value::AccountId",
+      "default",
+      Impl_core_default_Default_for_constructors_return_value_AccountId.default);
+    ("core::clone::Clone",
+      [],
+      Ty.path "constructors_return_value::AccountId",
+      "clone",
+      Impl_core_clone_Clone_for_constructors_return_value_AccountId.clone);
+    ("core::convert::From",
+      [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] ],
+      Ty.path "constructors_return_value::AccountId",
+      "from",
+      Impl_core_convert_From_array_Usize_32_u8_for_constructors_return_value_AccountId.from);
+    ("core::fmt::Debug",
+      [],
+      Ty.path "constructors_return_value::ConstructorError",
+      "fmt",
+      Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.fmt)
+  ].

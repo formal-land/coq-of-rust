@@ -42,3 +42,8 @@ Global Instance Instance_IsFunction_foo : M.IsFunction.C "let_else::foo" foo.
 Proof.
 Admitted.
 Global Typeclasses Opaque foo.
+
+Definition function_table : list (string * PolymorphicFunction.t) := [ ("let_else::foo", foo) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].

@@ -298,3 +298,9 @@ Global Instance Instance_IsFunction_main : M.IsFunction.C "if_let_match_enum_val
 Proof.
 Admitted.
 Global Typeclasses Opaque main.
+
+Definition function_table : list (string * PolymorphicFunction.t) :=
+  [ ("if_let_match_enum_values::main", main) ].
+
+Definition trait_method_table : list (string * list Ty.t * Ty.t * string * PolymorphicFunction.t) :=
+  [].
