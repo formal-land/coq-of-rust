@@ -156,6 +156,32 @@ Module Test.
     end = InstructionResult.NotActivated.
   Proof. timeout 5 vm_compute. reflexivity. Qed.
 
+  Lemma basefee_static_gas : table_static_gas 72 = Some 2.
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
+  Lemma basefee_at_london :
+    run_plain_stack_at SpecId.LONDON [byte 72; byte 0] = Some (words [0]).
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
+  Lemma basefee_before_london_does_not_push :
+    run_plain_stack_at SpecId.BERLIN [byte 72; byte 0] = Some [].
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
+  Lemma basefee_before_london_not_activated :
+    let interpreter := interpreter_with_spec_id
+      (make_interpreter_with_bytecode [byte 72] {| Stack.value := [] |})
+      SpecId.BERLIN in
+    let initial_state : InstructionContext.State.t TestHost.t WIRE WIRE_types :=
+      {| InstructionContext.State.interpreter := interpreter;
+         InstructionContext.State.host := TestHost.Make |} in
+    match InterpreterDispatch.simple (IInterpreterTypes := InterpreterTypes.I)
+      (byte 72) initial_state with
+    | {| InstructionContext.State.interpreter := final_interpreter;
+         InstructionContext.State.host := _ |} =>
+        LoopControl.instruction_result_bytecode final_interpreter.(Interpreter.bytecode)
+    end = InstructionResult.NotActivated.
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
   Lemma timestamp_and_number :
     run_plain_stack [byte 66; byte 67; byte 0] = Some (words [1; 0]).
   Proof. timeout 5 vm_compute. reflexivity. Qed.

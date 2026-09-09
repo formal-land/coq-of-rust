@@ -55,6 +55,7 @@ Require Import revm.revm_interpreter.instructions.simulate.bitwise.sgt.
 Require Import revm.revm_interpreter.instructions.simulate.bitwise.shl.
 Require Import revm.revm_interpreter.instructions.simulate.bitwise.shr.
 Require Import revm.revm_interpreter.instructions.simulate.bitwise.slt.
+Require Import revm.revm_interpreter.instructions.simulate.block_info.basefee.
 Require Import revm.revm_interpreter.instructions.simulate.block_info.block_number.
 Require Import revm.revm_interpreter.instructions.simulate.block_info.chainid.
 Require Import revm.revm_interpreter.instructions.simulate.block_info.coinbase.
@@ -397,6 +398,16 @@ Module FragmentInstructionTable.
     Function1.t (InstructionContext.t H WIRE WIRE_types) unit :=
     Function1.of_run
       (fun context => run_chainid run_types run_host context).
+  Definition basefee_function
+      {WIRE H : Set} `{Link WIRE} `{Link H}
+      {WIRE_types : InterpreterTypes.Types.t}
+      `{InterpreterTypes.Types.AreLinks WIRE_types}
+      {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
+      (run_types : InterpreterTypes.Run WIRE WIRE_types)
+      (run_host : Host.Run H H_types) :
+    Function1.t (InstructionContext.t H WIRE WIRE_types) unit :=
+    Function1.of_run
+      (fun context => run_basefee run_types run_host context).
   Definition coinbase_function
       {WIRE H : Set} `{Link WIRE} `{Link H}
       {WIRE_types : InterpreterTypes.Types.t}
@@ -864,8 +875,12 @@ Module FragmentInstructionTable.
         ArrayPairs.t (Instruction.t WIRE H WIRE_types) 186 :=
       ArrayPair.Build_t chainid_instruction
         (ArrayPair.Build_t selfbalance_instruction
-          (prepend_repeat unknown_instruction 8 176
-            (ArrayPair.Build_t pop_instruction tail_after_pop))) in
+          (ArrayPair.Build_t
+            {| Instruction.fn_ := basefee_function
+                 run_InterpreterTypes_for_WIRE run_host;
+               Instruction.static_gas := {| Integer.value := 2 |} |}
+            (prepend_repeat unknown_instruction 7 176
+              (ArrayPair.Build_t pop_instruction tail_after_pop)))) in
     let tail_after_number :
         ArrayPairs.t (Instruction.t WIRE H WIRE_types) 188 :=
       ArrayPair.Build_t unknown_instruction
