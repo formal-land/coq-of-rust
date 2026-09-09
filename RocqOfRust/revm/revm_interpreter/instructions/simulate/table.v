@@ -32,6 +32,7 @@ Require Import revm.revm_interpreter.instructions.links.system.calldataload.
 Require Import revm.revm_interpreter.instructions.links.system.callvalue.
 Require Import revm.revm_interpreter.instructions.links.system.gas.
 Require Import revm.revm_interpreter.instructions.links.system.returndatacopy.
+Require Import revm.revm_interpreter.instructions.links.system.returndatasize.
 Require Import revm.revm_interpreter.instructions.simulate.arithmetic.addmod.
 Require Import revm.revm_interpreter.instructions.simulate.arithmetic.div.
 Require Import revm.revm_interpreter.instructions.simulate.arithmetic.exp.
@@ -495,6 +496,15 @@ Module FragmentInstructionTable.
     Function1.of_run
       (fun context => run_gas run_InterpreterTypes_for_WIRE context).
 
+  Definition returndatasize_function
+      {WIRE H : Set} `{Link WIRE} `{Link H}
+      {WIRE_types : InterpreterTypes.Types.t}
+      `{InterpreterTypes.Types.AreLinks WIRE_types}
+      (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types) :
+    Function1.t (InstructionContext.t H WIRE WIRE_types) unit :=
+    Function1.of_run
+      (fun context => run_returndatasize run_InterpreterTypes_for_WIRE context).
+
   Definition pop_function
       {WIRE H : Set} `{Link WIRE} `{Link H}
       {WIRE_types : InterpreterTypes.Types.t}
@@ -789,6 +799,11 @@ Module FragmentInstructionTable.
         calldataload_function (H := H) run_InterpreterTypes_for_WIRE;
       Instruction.static_gas := {| Integer.value := 3 |};
     |} in
+    let returndatasize_instruction : Instruction.t WIRE H WIRE_types := {|
+      Instruction.fn_ :=
+        returndatasize_function (H := H) run_InterpreterTypes_for_WIRE;
+      Instruction.static_gas := {| Integer.value := 2 |};
+    |} in
     let returndatacopy_instruction : Instruction.t WIRE H WIRE_types := {|
       Instruction.fn_ :=
         returndatacopy_function (H := H) run_InterpreterTypes_for_WIRE;
@@ -943,11 +958,13 @@ Module FragmentInstructionTable.
         (ArrayPair.Build_t calldataload_instruction
           (prepend_repeat
             unknown_instruction
-            8
-            194
+            7
+            195
             (ArrayPair.Build_t
-              returndatacopy_instruction
-              tail_after_returndatacopy))) in
+              returndatasize_instruction
+              (ArrayPair.Build_t
+                returndatacopy_instruction
+                tail_after_returndatacopy)))) in
     let tail_after_bitwise :
         ArrayPairs.t (Instruction.t WIRE H WIRE_types) 225 :=
       prepend_repeat unknown_instruction 21 204 tail_after_callvalue in

@@ -61,6 +61,7 @@ Require Import revm.revm_interpreter.instructions.simulate.system.calldataload.
 Require Import revm.revm_interpreter.instructions.simulate.system.callvalue.
 Require Import revm.revm_interpreter.instructions.simulate.system.gas.
 Require Import revm.revm_interpreter.instructions.simulate.system.returndatacopy.
+Require Import revm.revm_interpreter.instructions.simulate.system.returndatasize.
 Require Import revm.revm_interpreter.instructions.simulate.table.
 Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
@@ -297,6 +298,12 @@ Module InterpreterDispatch.
           Some instruction /\
         InterpreterStep.instruction_static_gas instruction =
           {| Integer.value := 3 |};
+    table_returndatasize :
+      exists instruction,
+        InterpreterStep.instruction_at table {| Integer.value := 61 |} =
+          Some instruction /\
+        InterpreterStep.instruction_static_gas instruction =
+          {| Integer.value := 2 |};
     table_returndatacopy :
       exists instruction,
         InterpreterStep.instruction_at
@@ -383,6 +390,8 @@ Module InterpreterDispatch.
         InstructionContext.map_interpreter (callvalue)
       else if Z.eqb opcode.(Integer.value) 53 then
         InstructionContext.map_interpreter (calldataload)
+      else if Z.eqb opcode.(Integer.value) 61 then
+        InstructionContext.map_interpreter (returndatasize)
       else if Z.eqb opcode.(Integer.value) 62 then
         InstructionContext.map_interpreter (returndatacopy)
       else if Z.eqb opcode.(Integer.value) 66 then
@@ -842,6 +851,18 @@ Module InterpreterDispatch.
       (state : InstructionContext.State.t H WIRE WIRE_types) :
     simple {| Integer.value := 30 |} state =
     InstructionContext.map_interpreter op_clz state.
+  Proof. reflexivity. Qed.
+
+  Lemma simple_returndatasize
+      {H WIRE : Set} `{Link H} `{Link WIRE}
+      {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
+      `{IHost : !Host.C H H_types}
+      {WIRE_types : InterpreterTypes.Types.t}
+      `{InterpreterTypes.Types.AreLinks WIRE_types}
+      `{IInterpreterTypes : InterpreterTypes.C WIRE_types}
+      (state : InstructionContext.State.t H WIRE WIRE_types) :
+    simple {| Integer.value := 61 |} state =
+    InstructionContext.map_interpreter returndatasize state.
   Proof. reflexivity. Qed.
 
   Lemma simple_returndatacopy

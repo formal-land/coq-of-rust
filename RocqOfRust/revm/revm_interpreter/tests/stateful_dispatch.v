@@ -8,6 +8,8 @@ Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_context_interface.links.journaled_state.
 Require Import revm.revm_context_interface.simulate.host.
 Require Import revm.revm_interpreter.instructions.simulate.system.calldataload.
+Require Import revm.revm_interpreter.instructions.simulate.system.returndatacopy.
+Require Import revm.revm_interpreter.instructions.simulate.system.returndatasize.
 Require Import revm.revm_interpreter.instructions.simulate.table.
 Require Import revm.revm_interpreter.interpreter_action.links.call_inputs.
 Require Import revm.revm_interpreter.links.gas.
@@ -161,6 +163,26 @@ Definition run_add11 : option (Z * list StatefulHost.Change.t) :=
   end.
 
 Module Test.
+  Definition with_return_bytes (stack : list aliases.U256.t) :=
+    (make_interpreter {| Stack.value := stack |})
+      <| @Interpreter.return_data WIRE _ WIRE_types _ :=
+        {| alloy_primitives.bytes.links.mod.Bytes.value :=
+             {| bytes.Bytes.value := [(1 : u8); (2 : u8); (3 : u8)] |} |} |>.
+
+  Goal
+    (returndatasize (with_return_bytes [])).(Interpreter.stack) =
+      {| Stack.value := [{| Uint.value := 3 |}] |}.
+  Proof. vm_compute. reflexivity. Qed.
+
+  Goal
+    let result := returndatacopy
+      (with_return_bytes
+        [{| Uint.value := 0 |}; {| Uint.value := 1 |}; {| Uint.value := 2 |}]) in
+    (List.firstn 2 result.(Interpreter.memory).(Memory.value),
+     result.(Interpreter.gas).(Gas.remaining).(Integer.value)) =
+    ([(2 : u8); (3 : u8)], 999991).
+  Proof. vm_compute. reflexivity. Qed.
+
   Lemma chainid_reads_full_input_value :
     let chain_id := 2 ^ 64 - 1 in
     let input := add11_input <| StatefulHost.Input.transaction :=

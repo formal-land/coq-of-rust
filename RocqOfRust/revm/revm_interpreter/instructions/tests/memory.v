@@ -52,7 +52,8 @@ Definition make_interpreter_with_memory (stack : Stack.t) (memory : Memory.t)
   |};
   Interpreter.gas := gas_val;
   Interpreter.stack := stack;
-  Interpreter.return_data := tt;
+  Interpreter.return_data :=
+    {| alloy_primitives.bytes.links.mod.Bytes.value := {| bytes.Bytes.value := [] |} |};
   Interpreter.memory := memory;
   Interpreter.input := empty_input;
   Interpreter.sub_routine := tt;
