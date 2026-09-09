@@ -32,8 +32,14 @@ Require Import revm.revm_interpreter.instructions.simulate.bitwise.sgt.
 Require Import revm.revm_interpreter.instructions.simulate.bitwise.shl.
 Require Import revm.revm_interpreter.instructions.simulate.bitwise.shr.
 Require Import revm.revm_interpreter.instructions.simulate.bitwise.slt.
+Require Import revm.revm_interpreter.instructions.simulate.block_info.basefee.
+Require Import revm.revm_interpreter.instructions.simulate.block_info.blob_basefee.
 Require Import revm.revm_interpreter.instructions.simulate.block_info.block_number.
 Require Import revm.revm_interpreter.instructions.simulate.block_info.chainid.
+Require Import revm.revm_interpreter.instructions.simulate.block_info.coinbase.
+Require Import revm.revm_interpreter.instructions.simulate.block_info.difficulty.
+Require Import revm.revm_interpreter.instructions.simulate.block_info.gaslimit.
+Require Import revm.revm_interpreter.instructions.simulate.block_info.timestamp.
 Require Import revm.revm_interpreter.instructions.simulate.control.jump.
 Require Import revm.revm_interpreter.instructions.simulate.control.jumpdest.
 Require Import revm.revm_interpreter.instructions.simulate.control.jumpi.
@@ -388,9 +394,72 @@ Module InterpreterDispatch.
         InstructionContext.map_interpreter (returndatasize)
       else if Z.eqb opcode.(Integer.value) 62 then
         InstructionContext.map_interpreter (returndatacopy)
+      else if Z.eqb opcode.(Integer.value) 66 then
+        fun state =>
+          let '(interpreter, host) := timestamp
+            (IInterpreterTypes := IInterpreterTypes) (IHost := IHost)
+            (@InstructionContext.State.interpreter
+              H WIRE _ _ WIRE_types _ state)
+            (@InstructionContext.State.host H WIRE _ _ WIRE_types _ state) in
+          {| InstructionContext.State.interpreter := interpreter;
+             InstructionContext.State.host := host |}
       else if Z.eqb opcode.(Integer.value) 67 then
         fun state =>
           let '(interpreter, host) := block_number
+            (IInterpreterTypes := IInterpreterTypes) (IHost := IHost)
+            (@InstructionContext.State.interpreter
+              H WIRE _ _ WIRE_types _ state)
+            (@InstructionContext.State.host H WIRE _ _ WIRE_types _ state) in
+          {| InstructionContext.State.interpreter := interpreter;
+             InstructionContext.State.host := host |}
+      else if Z.eqb opcode.(Integer.value) 65 then
+        fun state =>
+          let '(interpreter, host) := coinbase
+            (IInterpreterTypes := IInterpreterTypes) (IHost := IHost)
+            (@InstructionContext.State.interpreter
+              H WIRE _ _ WIRE_types _ state)
+            (@InstructionContext.State.host H WIRE _ _ WIRE_types _ state) in
+          {| InstructionContext.State.interpreter := interpreter;
+             InstructionContext.State.host := host |}
+      else if Z.eqb opcode.(Integer.value) 69 then
+        fun state =>
+          let '(interpreter, host) := gaslimit
+            (IInterpreterTypes := IInterpreterTypes) (IHost := IHost)
+            (@InstructionContext.State.interpreter
+              H WIRE _ _ WIRE_types _ state)
+            (@InstructionContext.State.host H WIRE _ _ WIRE_types _ state) in
+          {| InstructionContext.State.interpreter := interpreter;
+             InstructionContext.State.host := host |}
+      else if Z.eqb opcode.(Integer.value) 70 then
+        fun state =>
+          let '(interpreter, host) := chainid
+            (IInterpreterTypes := IInterpreterTypes) (IHost := IHost)
+            (@InstructionContext.State.interpreter
+              H WIRE _ _ WIRE_types _ state)
+            (@InstructionContext.State.host H WIRE _ _ WIRE_types _ state) in
+          {| InstructionContext.State.interpreter := interpreter;
+             InstructionContext.State.host := host |}
+      else if Z.eqb opcode.(Integer.value) 72 then
+        fun state =>
+          let '(interpreter, host) := basefee
+            (IInterpreterTypes := IInterpreterTypes) (IHost := IHost)
+            (@InstructionContext.State.interpreter
+              H WIRE _ _ WIRE_types _ state)
+            (@InstructionContext.State.host H WIRE _ _ WIRE_types _ state) in
+          {| InstructionContext.State.interpreter := interpreter;
+             InstructionContext.State.host := host |}
+      else if Z.eqb opcode.(Integer.value) 74 then
+        fun state =>
+          let '(interpreter, host) := blob_basefee
+            (IInterpreterTypes := IInterpreterTypes) (IHost := IHost)
+            (@InstructionContext.State.interpreter
+              H WIRE _ _ WIRE_types _ state)
+            (@InstructionContext.State.host H WIRE _ _ WIRE_types _ state) in
+          {| InstructionContext.State.interpreter := interpreter;
+             InstructionContext.State.host := host |}
+      else if Z.eqb opcode.(Integer.value) 68 then
+        fun state =>
+          let '(interpreter, host) := difficulty
             (IInterpreterTypes := IInterpreterTypes) (IHost := IHost)
             (@InstructionContext.State.interpreter
               H WIRE _ _ WIRE_types _ state)

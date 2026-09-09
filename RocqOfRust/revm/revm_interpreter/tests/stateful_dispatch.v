@@ -183,6 +183,177 @@ Module Test.
     ([(2 : u8); (3 : u8)], 999991).
   Proof. vm_compute. reflexivity. Qed.
 
+  Lemma chainid_reads_full_input_value :
+    let chain_id := 2 ^ 64 - 1 in
+    let input := add11_input <| StatefulHost.Input.transaction :=
+      add11_input.(StatefulHost.Input.transaction)
+        <| StatefulHost.Environment.Transaction.chain_id := chain_id |> |> in
+    let interpreter := interpreter_with_spec_id
+      (make_interpreter_with_bytecode [(70 : u8); (0 : u8)]
+        {| Stack.value := [] |}) SpecId.ISTANBUL in
+    let initial_state : InstructionContext.State.t StatefulHost.t WIRE WIRE_types :=
+      {| InstructionContext.State.interpreter := interpreter;
+         InstructionContext.State.host := StatefulHost.make input |} in
+    let table := FragmentInstructionTable.table
+      (H := StatefulHost.t) (run_host := run_Host_for_StatefulHost)
+      run_InterpreterTypes_for_WIRE in
+    match InterpreterDispatch.run_plain_fuel 2 InterpreterTypes.I
+      bytecode_is_not_end table initial_state with
+    | Some (_, {| InstructionContext.State.interpreter := final_interpreter;
+                  InstructionContext.State.host := _ |}) =>
+        Some (List.map Uint.value final_interpreter.(Interpreter.stack).(Stack.value),
+          final_interpreter.(Interpreter.gas).(Gas.remaining).(Integer.value))
+    | None => None
+    end = Some ([chain_id], 999998).
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
+  Lemma basefee_reads_full_input_value :
+    let base_fee := 2 ^ 64 - 1 in
+    let input := add11_input <| StatefulHost.Input.block :=
+      add11_input.(StatefulHost.Input.block)
+        <| StatefulHost.Environment.Block.base_fee := base_fee |> |> in
+    let input := input <| StatefulHost.Input.transaction :=
+      input.(StatefulHost.Input.transaction)
+        <| StatefulHost.Environment.Transaction.gas_price := 7 |> |> in
+    let interpreter := interpreter_with_spec_id
+      (make_interpreter_with_bytecode [(72 : u8); (0 : u8)]
+        {| Stack.value := [] |}) SpecId.LONDON in
+    let initial_state : InstructionContext.State.t StatefulHost.t WIRE WIRE_types :=
+      {| InstructionContext.State.interpreter := interpreter;
+         InstructionContext.State.host := StatefulHost.make input |} in
+    let table := FragmentInstructionTable.table
+      (H := StatefulHost.t) (run_host := run_Host_for_StatefulHost)
+      run_InterpreterTypes_for_WIRE in
+    match InterpreterDispatch.run_plain_fuel 2 InterpreterTypes.I
+      bytecode_is_not_end table initial_state with
+    | Some (_, {| InstructionContext.State.interpreter := final_interpreter;
+                  InstructionContext.State.host := _ |}) =>
+        Some (List.map Uint.value final_interpreter.(Interpreter.stack).(Stack.value),
+          final_interpreter.(Interpreter.gas).(Gas.remaining).(Integer.value))
+    | None => None
+    end = Some ([base_fee], 999998).
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
+  Lemma blob_basefee_reads_full_input_value :
+    let blob_base_fee := 2 ^ 128 - 1 in
+    let input := add11_input <| StatefulHost.Input.block :=
+      add11_input.(StatefulHost.Input.block)
+        <| StatefulHost.Environment.Block.base_fee := 7 |>
+        <| StatefulHost.Environment.Block.blob_base_fee := blob_base_fee |> |> in
+    let input := input <| StatefulHost.Input.transaction :=
+      input.(StatefulHost.Input.transaction)
+        <| StatefulHost.Environment.Transaction.gas_price := 7 |> |> in
+    let interpreter := interpreter_with_spec_id
+      (make_interpreter_with_bytecode [(74 : u8); (0 : u8)]
+        {| Stack.value := [] |}) SpecId.CANCUN in
+    let initial_state : InstructionContext.State.t StatefulHost.t WIRE WIRE_types :=
+      {| InstructionContext.State.interpreter := interpreter;
+         InstructionContext.State.host := StatefulHost.make input |} in
+    let table := FragmentInstructionTable.table
+      (H := StatefulHost.t) (run_host := run_Host_for_StatefulHost)
+      run_InterpreterTypes_for_WIRE in
+    match InterpreterDispatch.run_plain_fuel 2 InterpreterTypes.I
+      bytecode_is_not_end table initial_state with
+    | Some (_, {| InstructionContext.State.interpreter := final_interpreter;
+                  InstructionContext.State.host := _ |}) =>
+        Some (List.map Uint.value final_interpreter.(Interpreter.stack).(Stack.value),
+          final_interpreter.(Interpreter.gas).(Gas.remaining).(Integer.value))
+    | None => None
+    end = Some ([blob_base_fee], 999998).
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
+  Definition difficulty_result (spec_id : SpecId.t) (previous_randao : option Z) :
+      option (list Z * Z) :=
+    let input := add11_input <| StatefulHost.Input.block :=
+      add11_input.(StatefulHost.Input.block)
+        <| StatefulHost.Environment.Block.difficulty := 2 ^ 192 + 7 |>
+        <| StatefulHost.Environment.Block.previous_randao := previous_randao |> |> in
+    let input := input <| StatefulHost.Input.transaction :=
+      input.(StatefulHost.Input.transaction)
+        <| StatefulHost.Environment.Transaction.gas_price := 7 |> |> in
+    let interpreter := interpreter_with_spec_id
+      (make_interpreter_with_bytecode [(68 : u8); (0 : u8)]
+        {| Stack.value := [] |}) spec_id in
+    let initial_state : InstructionContext.State.t StatefulHost.t WIRE WIRE_types :=
+      {| InstructionContext.State.interpreter := interpreter;
+         InstructionContext.State.host := StatefulHost.make input |} in
+    let table := FragmentInstructionTable.table
+      (H := StatefulHost.t) (run_host := run_Host_for_StatefulHost)
+      run_InterpreterTypes_for_WIRE in
+    match InterpreterDispatch.run_plain_fuel 2 InterpreterTypes.I
+      bytecode_is_not_end table initial_state with
+    | Some (_, {| InstructionContext.State.interpreter := final_interpreter;
+                  InstructionContext.State.host := _ |}) =>
+        Some (List.map Uint.value final_interpreter.(Interpreter.stack).(Stack.value),
+          final_interpreter.(Interpreter.gas).(Gas.remaining).(Integer.value))
+    | None => None
+    end.
+
+  Lemma difficulty_before_merge_ignores_randao :
+    difficulty_result SpecId.LONDON (Some (2 ^ 255 + 42)) =
+      Some ([2 ^ 192 + 7], 999998).
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
+  Lemma difficulty_before_merge_without_randao :
+    difficulty_result SpecId.LONDON None = Some ([2 ^ 192 + 7], 999998).
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
+  Lemma prevrandao_at_merge :
+    difficulty_result SpecId.MERGE (Some (2 ^ 255 + 42)) =
+      Some ([2 ^ 255 + 42], 999998).
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
+  Lemma prevrandao_at_cancun :
+    difficulty_result SpecId.CANCUN (Some (2 ^ 255 + 42)) =
+      Some ([2 ^ 255 + 42], 999998).
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
+  Lemma coinbase_reads_full_address :
+    let beneficiary := 2 ^ 159 + 256 + 1 in
+    let input := add11_input <| StatefulHost.Input.block :=
+      add11_input.(StatefulHost.Input.block)
+        <| StatefulHost.Environment.Block.coinbase := beneficiary |> |> in
+    let initial_state : InstructionContext.State.t StatefulHost.t WIRE WIRE_types :=
+      {| InstructionContext.State.interpreter := make_interpreter_with_bytecode
+           [(65 : u8); (0 : u8)] {| Stack.value := [] |};
+         InstructionContext.State.host := StatefulHost.make input |} in
+    let table := FragmentInstructionTable.table
+      (H := StatefulHost.t) (run_host := run_Host_for_StatefulHost)
+      run_InterpreterTypes_for_WIRE in
+    match InterpreterDispatch.run_plain_fuel 2 InterpreterTypes.I
+      bytecode_is_not_end table initial_state with
+    | Some (_, {| InstructionContext.State.interpreter := interpreter;
+                  InstructionContext.State.host := _ |}) =>
+        Some (List.map Uint.value interpreter.(Interpreter.stack).(Stack.value),
+          interpreter.(Interpreter.gas).(Gas.remaining).(Integer.value))
+    | None => None
+    end = Some ([beneficiary], 999998).
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
+  Lemma gaslimit_reads_block_not_remaining_gas :
+    let interpreter := make_interpreter_with_bytecode
+      [(69 : u8); (0 : u8)] {| Stack.value := [] |} in
+    let interpreter := interpreter
+      <| @Interpreter.gas WIRE _ WIRE_types _ :=
+        interpreter.(Interpreter.gas)
+          <| Gas.limit := (100 : u64) |>
+          <| Gas.remaining := (17 : u64) |> |> in
+    let initial_state : InstructionContext.State.t StatefulHost.t WIRE WIRE_types :=
+      {| InstructionContext.State.interpreter := interpreter;
+         InstructionContext.State.host := StatefulHost.make add11_input |} in
+    let table := FragmentInstructionTable.table
+      (H := StatefulHost.t) (run_host := run_Host_for_StatefulHost)
+      run_InterpreterTypes_for_WIRE in
+    match InterpreterDispatch.run_plain_fuel 2 InterpreterTypes.I
+      bytecode_is_not_end table initial_state with
+    | Some (_, {| InstructionContext.State.interpreter := interpreter;
+                  InstructionContext.State.host := _ |}) =>
+        Some (List.map Uint.value interpreter.(Interpreter.stack).(Stack.value),
+          interpreter.(Interpreter.gas).(Gas.remaining).(Integer.value))
+    | None => None
+    end = Some ([1000000], 15).
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
   Definition shared_calldata_interpreter (offset : Z) :=
     let interpreter :=
       make_interpreter {| Stack.value := [{| Uint.value := offset |}] |} in
