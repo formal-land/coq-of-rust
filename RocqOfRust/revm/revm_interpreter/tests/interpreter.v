@@ -37,7 +37,8 @@ Definition make_interpreter_with_bytecode
     Gas.remaining := 1000000;
   |};
   Interpreter.stack := stack;
-  Interpreter.return_data := tt;
+  Interpreter.return_data :=
+    {| alloy_primitives.bytes.links.mod.Bytes.value := {| bytes.Bytes.value := [] |} |};
   Interpreter.memory := {|
     Memory.value := [];
     Memory.shared_buffer := [];

@@ -189,7 +189,7 @@ Definition WIRE_types : InterpreterTypes.Types.t := {|
   InterpreterTypes.Types.Memory_Synthetic := MemorySlice.t;
   InterpreterTypes.Types.Memory_Synthetic1 := MemorySlice.t;
   InterpreterTypes.Types.Bytecode := Bytecode.t;
-  InterpreterTypes.Types.ReturnData := unit;
+  InterpreterTypes.Types.ReturnData := Bytes.t;
   InterpreterTypes.Types.Input := Input.t;
   InterpreterTypes.Types.SubRoutineStack := unit;
   InterpreterTypes.Types.Control := Control.t;
@@ -698,9 +698,16 @@ End SubRoutineStack.
 Export (hints) SubRoutineStack.
 
 Module ReturnData.
-  Instance I : ReturnData.C WIRE_types.(InterpreterTypes.Types.ReturnData).
-  Proof.
-  Admitted.
+  Definition buffer : RefStub.t Bytes.t Bytes.t := {|
+    RefStub.path := [];
+    RefStub.projection := fun value => value;
+    RefStub.injection := fun _ value => value;
+  |}.
+
+  Instance I : ReturnData.C WIRE_types.(InterpreterTypes.Types.ReturnData) := {|
+    simulate.interpreter_types.ReturnData.buffer := buffer;
+    simulate.interpreter_types.ReturnData.buffer_mut := buffer;
+  |}.
 End ReturnData.
 Export (hints) ReturnData.
 
