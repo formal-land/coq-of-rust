@@ -33,6 +33,7 @@ Require Import revm.revm_interpreter.instructions.simulate.bitwise.shl.
 Require Import revm.revm_interpreter.instructions.simulate.bitwise.shr.
 Require Import revm.revm_interpreter.instructions.simulate.bitwise.slt.
 Require Import revm.revm_interpreter.instructions.simulate.block_info.basefee.
+Require Import revm.revm_interpreter.instructions.simulate.block_info.blob_basefee.
 Require Import revm.revm_interpreter.instructions.simulate.block_info.block_number.
 Require Import revm.revm_interpreter.instructions.simulate.block_info.chainid.
 Require Import revm.revm_interpreter.instructions.simulate.block_info.coinbase.
@@ -431,6 +432,15 @@ Module InterpreterDispatch.
       else if Z.eqb opcode.(Integer.value) 72 then
         fun state =>
           let '(interpreter, host) := basefee
+            (IInterpreterTypes := IInterpreterTypes) (IHost := IHost)
+            (@InstructionContext.State.interpreter
+              H WIRE _ _ WIRE_types _ state)
+            (@InstructionContext.State.host H WIRE _ _ WIRE_types _ state) in
+          {| InstructionContext.State.interpreter := interpreter;
+             InstructionContext.State.host := host |}
+      else if Z.eqb opcode.(Integer.value) 74 then
+        fun state =>
+          let '(interpreter, host) := blob_basefee
             (IInterpreterTypes := IInterpreterTypes) (IHost := IHost)
             (@InstructionContext.State.interpreter
               H WIRE _ _ WIRE_types _ state)

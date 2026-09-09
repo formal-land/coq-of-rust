@@ -182,6 +182,33 @@ Module Test.
     end = InstructionResult.NotActivated.
   Proof. timeout 5 vm_compute. reflexivity. Qed.
 
+
+  Lemma blob_basefee_static_gas : table_static_gas 74 = Some 2.
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
+  Lemma blob_basefee_at_cancun :
+    run_plain_stack_at SpecId.CANCUN [byte 74; byte 0] = Some (words [0]).
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
+  Lemma blob_basefee_before_cancun_does_not_push :
+    run_plain_stack_at SpecId.SHANGHAI [byte 74; byte 0] = Some [].
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
+  Lemma blob_basefee_before_cancun_not_activated :
+    let interpreter := interpreter_with_spec_id
+      (make_interpreter_with_bytecode [byte 74] {| Stack.value := [] |})
+      SpecId.SHANGHAI in
+    let initial_state : InstructionContext.State.t TestHost.t WIRE WIRE_types :=
+      {| InstructionContext.State.interpreter := interpreter;
+         InstructionContext.State.host := TestHost.Make |} in
+    match InterpreterDispatch.simple (IInterpreterTypes := InterpreterTypes.I)
+      (byte 74) initial_state with
+    | {| InstructionContext.State.interpreter := final_interpreter;
+         InstructionContext.State.host := _ |} =>
+        LoopControl.instruction_result_bytecode final_interpreter.(Interpreter.bytecode)
+    end = InstructionResult.NotActivated.
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
   Lemma timestamp_and_number :
     run_plain_stack [byte 66; byte 67; byte 0] = Some (words [1; 0]).
   Proof. timeout 5 vm_compute. reflexivity. Qed.

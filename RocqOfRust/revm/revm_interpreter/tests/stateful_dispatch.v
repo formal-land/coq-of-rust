@@ -212,6 +212,34 @@ Module Test.
     end = Some ([base_fee], 999998).
   Proof. timeout 5 vm_compute. reflexivity. Qed.
 
+  Lemma blob_basefee_reads_full_input_value :
+    let blob_base_fee := 2 ^ 128 - 1 in
+    let input := add11_input <| StatefulHost.Input.block :=
+      add11_input.(StatefulHost.Input.block)
+        <| StatefulHost.Environment.Block.base_fee := 7 |>
+        <| StatefulHost.Environment.Block.blob_base_fee := blob_base_fee |> |> in
+    let input := input <| StatefulHost.Input.transaction :=
+      input.(StatefulHost.Input.transaction)
+        <| StatefulHost.Environment.Transaction.gas_price := 7 |> |> in
+    let interpreter := interpreter_with_spec_id
+      (make_interpreter_with_bytecode [(74 : u8); (0 : u8)]
+        {| Stack.value := [] |}) SpecId.CANCUN in
+    let initial_state : InstructionContext.State.t StatefulHost.t WIRE WIRE_types :=
+      {| InstructionContext.State.interpreter := interpreter;
+         InstructionContext.State.host := StatefulHost.make input |} in
+    let table := FragmentInstructionTable.table
+      (H := StatefulHost.t) (run_host := run_Host_for_StatefulHost)
+      run_InterpreterTypes_for_WIRE in
+    match InterpreterDispatch.run_plain_fuel 2 InterpreterTypes.I
+      bytecode_is_not_end table initial_state with
+    | Some (_, {| InstructionContext.State.interpreter := final_interpreter;
+                  InstructionContext.State.host := _ |}) =>
+        Some (List.map Uint.value final_interpreter.(Interpreter.stack).(Stack.value),
+          final_interpreter.(Interpreter.gas).(Gas.remaining).(Integer.value))
+    | None => None
+    end = Some ([blob_base_fee], 999998).
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
   Lemma coinbase_reads_full_address :
     let beneficiary := 2 ^ 159 + 256 + 1 in
     let input := add11_input <| StatefulHost.Input.block :=
