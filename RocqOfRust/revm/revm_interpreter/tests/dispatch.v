@@ -4,6 +4,7 @@ Require Import Stdlib.ZArith.ZArith.
 Require Import alloy_primitives.links.aliases.
 Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_interpreter.instructions.simulate.table.
+Require Import revm.revm_interpreter.links.instruction_result.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.simulate.dispatch.
 Require Import revm.revm_interpreter.simulate.instruction_context.
@@ -127,6 +128,32 @@ Module Test.
   Proof. timeout 5 vm_compute. reflexivity. Qed.
 
   Lemma coinbase_static_gas : table_static_gas 65 = Some 2.
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
+  Lemma chainid_static_gas : table_static_gas 70 = Some 2.
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
+  Lemma chainid_at_istanbul :
+    run_plain_stack_at SpecId.ISTANBUL [byte 70; byte 0] = Some (words [1]).
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
+  Lemma chainid_before_istanbul_does_not_push :
+    run_plain_stack_at SpecId.PETERSBURG [byte 70; byte 0] = Some [].
+  Proof. timeout 5 vm_compute. reflexivity. Qed.
+
+  Lemma chainid_before_istanbul_not_activated :
+    let interpreter := interpreter_with_spec_id
+      (make_interpreter_with_bytecode [byte 70] {| Stack.value := [] |})
+      SpecId.PETERSBURG in
+    let initial_state : InstructionContext.State.t TestHost.t WIRE WIRE_types :=
+      {| InstructionContext.State.interpreter := interpreter;
+         InstructionContext.State.host := TestHost.Make |} in
+    match InterpreterDispatch.simple (IInterpreterTypes := InterpreterTypes.I)
+      (byte 70) initial_state with
+    | {| InstructionContext.State.interpreter := final_interpreter;
+         InstructionContext.State.host := _ |} =>
+        LoopControl.instruction_result_bytecode final_interpreter.(Interpreter.bytecode)
+    end = InstructionResult.NotActivated.
   Proof. timeout 5 vm_compute. reflexivity. Qed.
 
   Lemma timestamp_and_number :

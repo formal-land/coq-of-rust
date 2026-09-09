@@ -56,6 +56,7 @@ Require Import revm.revm_interpreter.instructions.simulate.bitwise.shl.
 Require Import revm.revm_interpreter.instructions.simulate.bitwise.shr.
 Require Import revm.revm_interpreter.instructions.simulate.bitwise.slt.
 Require Import revm.revm_interpreter.instructions.simulate.block_info.block_number.
+Require Import revm.revm_interpreter.instructions.simulate.block_info.chainid.
 Require Import revm.revm_interpreter.instructions.simulate.block_info.coinbase.
 Require Import revm.revm_interpreter.instructions.simulate.block_info.gaslimit.
 Require Import revm.revm_interpreter.instructions.simulate.block_info.timestamp.
@@ -386,6 +387,16 @@ Module FragmentInstructionTable.
     Function1.t (InstructionContext.t H WIRE WIRE_types) unit :=
     Function1.of_run
       (fun context => run_gaslimit run_types run_host context).
+  Definition chainid_function
+      {WIRE H : Set} `{Link WIRE} `{Link H}
+      {WIRE_types : InterpreterTypes.Types.t}
+      `{InterpreterTypes.Types.AreLinks WIRE_types}
+      {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
+      (run_types : InterpreterTypes.Run WIRE WIRE_types)
+      (run_host : Host.Run H H_types) :
+    Function1.t (InstructionContext.t H WIRE WIRE_types) unit :=
+    Function1.of_run
+      (fun context => run_chainid run_types run_host context).
   Definition coinbase_function
       {WIRE H : Set} `{Link WIRE} `{Link H}
       {WIRE_types : InterpreterTypes.Types.t}
@@ -604,7 +615,7 @@ Module FragmentInstructionTable.
     |} in
     let chainid_instruction : Instruction.t WIRE H WIRE_types := {|
       Instruction.fn_ :=
-        unknown_function (H := H) run_InterpreterTypes_for_WIRE;
+        chainid_function run_InterpreterTypes_for_WIRE run_host;
       Instruction.static_gas := {| Integer.value := 2 |};
     |} in
     let selfbalance_instruction : Instruction.t WIRE H WIRE_types := {|
