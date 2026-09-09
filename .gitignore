@@ -36,3 +36,7 @@ RocqOfRust/plugin/rocqofrust_link_plugin/*.cmxs
 
 # Generated files for the smart contracts
 contracts/generated
+
+# Documentation build output
+docs/output/
+docs/data/opcodes.json

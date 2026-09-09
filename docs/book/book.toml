@@ -1,0 +1,18 @@
+[book]
+title = "rocq-of-rust Documentation"
+authors = ["Formal Land"]
+description = "Formal verification of Rust programs in Rocq"
+src = "src"
+language = "en"
+
+[build]
+build-dir = "../output"
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "ayu"
+git-repository-url = "https://github.com/formal-land/rocq-of-rust"
+edit-url-template = "https://github.com/formal-land/rocq-of-rust/edit/main/docs/book/{path}"
+additional-css = ["theme/custom.css", "theme/rocq-highlight.css", "theme/explorer.css"]
+additional-js = ["theme/rocq-highlight.js", "theme/explorer.js"]
+no-section-label = false

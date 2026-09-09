@@ -1,0 +1,135 @@
+/**
+ * Rocq (Coq) syntax highlighting styles
+ * Color scheme inspired by Coq IDE and VS Code themes
+ */
+
+/* Keywords - language constructs (purple/magenta) */
+.rocq-keyword {
+    color: #af00db;
+    font-weight: bold;
+}
+
+/* Tactics - proof commands (green) */
+.rocq-tactic {
+    color: #098658;
+    font-weight: bold;
+}
+
+/* Types (orange/brown) */
+.rocq-type {
+    color: #b5651d;
+}
+
+/* Built-in functions and constructors (teal) */
+.rocq-builtin {
+    color: #0070c1;
+}
+
+/* Comments (gray, italic) */
+.rocq-comment {
+    color: #6a737d;
+    font-style: italic;
+}
+
+/* Strings (rust/red) */
+.rocq-string {
+    color: #a31515;
+}
+
+/* Numbers (dark blue) */
+.rocq-number {
+    color: #098658;
+}
+
+/* Operators (dark gray) */
+.rocq-operator {
+    color: #000000;
+    font-weight: bold;
+}
+
+/* Special symbols */
+.rocq-symbol {
+    color: #795e26;
+}
+
+/* Variable/identifier (default) */
+.rocq-variable {
+    color: #001080;
+}
+
+/* Dark theme overrides */
+.ayu .rocq-keyword,
+.coal .rocq-keyword,
+.navy .rocq-keyword {
+    color: #c586c0;
+}
+
+.ayu .rocq-tactic,
+.coal .rocq-tactic,
+.navy .rocq-tactic {
+    color: #4ec9b0;
+}
+
+.ayu .rocq-type,
+.coal .rocq-type,
+.navy .rocq-type {
+    color: #dcdcaa;
+}
+
+.ayu .rocq-builtin,
+.coal .rocq-builtin,
+.navy .rocq-builtin {
+    color: #9cdcfe;
+}
+
+.ayu .rocq-comment,
+.coal .rocq-comment,
+.navy .rocq-comment {
+    color: #6a9955;
+}
+
+.ayu .rocq-string,
+.coal .rocq-string,
+.navy .rocq-string {
+    color: #ce9178;
+}
+
+.ayu .rocq-number,
+.coal .rocq-number,
+.navy .rocq-number {
+    color: #b5cea8;
+}
+
+.ayu .rocq-operator,
+.coal .rocq-operator,
+.navy .rocq-operator {
+    color: #d4d4d4;
+}
+
+.ayu .rocq-symbol,
+.coal .rocq-symbol,
+.navy .rocq-symbol {
+    color: #d7ba7d;
+}
+
+.ayu .rocq-variable,
+.coal .rocq-variable,
+.navy .rocq-variable {
+    color: #9cdcfe;
+}
+
+/* Code block styling */
+pre code.language-rocq,
+pre code.language-coq {
+    font-family: 'Fira Code', 'Source Code Pro', Consolas, Monaco, 'Courier New', monospace;
+    font-size: 0.9em;
+    line-height: 1.5;
+}
+
+/* Inline code */
+code.language-rocq,
+code.language-coq {
+    padding: 0.2em 0.4em;
+    background-color: rgba(175, 184, 193, 0.2);
+    border-radius: 3px;
+}
