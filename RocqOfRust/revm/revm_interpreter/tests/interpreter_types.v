@@ -102,7 +102,10 @@ Module Memory.
     |}.
 
   Definition set_data (self : t) (memory_offset data_offset len : usize) (data : list u8) : t :=
-    let src := List.skipn (Z.to_nat i[data_offset]) data in
+    let src :=
+      if i[data_offset] <? Z.of_nat (List.length data)
+      then List.skipn (Z.to_nat i[data_offset]) data
+      else [] in
     let to_copy := take_pad (Z.to_nat i[len]) src in
     set self memory_offset to_copy.
 
@@ -231,9 +234,17 @@ End Immediates.
 Export (hints) Immediates.
 
 Module LegacyBytecode.
-  Instance I : LegacyBytecode.C WIRE_types.(InterpreterTypes.Types.Bytecode).
-  Proof.
-  Admitted.
+  Definition bytecode_slice : RefStub.t Bytecode.t (list u8) := {|
+    RefStub.path := [];
+    RefStub.projection self := self.(Bytecode.code);
+    RefStub.injection self value := self <| Bytecode.code := value |>;
+  |}.
+
+  Instance I : LegacyBytecode.C WIRE_types.(InterpreterTypes.Types.Bytecode) := {|
+    simulate.interpreter_types.LegacyBytecode.bytecode_len self :=
+      Z.of_nat (List.length self.(Bytecode.code));
+    simulate.interpreter_types.LegacyBytecode.bytecode_slice := bytecode_slice;
+  |}.
 End LegacyBytecode.
 Export (hints) LegacyBytecode.
 
