@@ -43,6 +43,8 @@ Require Import revm.revm_interpreter.instructions.simulate.block_info.timestamp.
 Require Import revm.revm_interpreter.instructions.simulate.control.jump.
 Require Import revm.revm_interpreter.instructions.simulate.control.jumpdest.
 Require Import revm.revm_interpreter.instructions.simulate.control.jumpi.
+Require Import revm.revm_interpreter.instructions.simulate.control.ret.
+Require Import revm.revm_interpreter.instructions.simulate.control.revert.
 Require Import revm.revm_interpreter.instructions.simulate.control.stop.
 Require Import revm.revm_interpreter.instructions.simulate.control.unknown.
 Require Import revm.revm_interpreter.instructions.simulate.host.selfbalance.
@@ -59,6 +61,7 @@ Require Import revm.revm_interpreter.instructions.simulate.stack.push0.
 Require Import revm.revm_interpreter.instructions.simulate.stack.swap.
 Require Import revm.revm_interpreter.instructions.simulate.system.calldatacopy.
 Require Import revm.revm_interpreter.instructions.simulate.system.calldataload.
+Require Import revm.revm_interpreter.instructions.simulate.system.calldatasize.
 Require Import revm.revm_interpreter.instructions.simulate.system.callvalue.
 Require Import revm.revm_interpreter.instructions.simulate.system.codecopy.
 Require Import revm.revm_interpreter.instructions.simulate.system.gas.
@@ -392,6 +395,8 @@ Module InterpreterDispatch.
         InstructionContext.map_interpreter (callvalue)
       else if Z.eqb opcode.(Integer.value) 53 then
         InstructionContext.map_interpreter (calldataload)
+      else if Z.eqb opcode.(Integer.value) 54 then
+        InstructionContext.map_interpreter (calldatasize)
       else if Z.eqb opcode.(Integer.value) 55 then
         InstructionContext.map_interpreter (calldatacopy)
       else if Z.eqb opcode.(Integer.value) 57 then
@@ -492,6 +497,10 @@ Module InterpreterDispatch.
         InstructionContext.map_interpreter (jumpdest)
       else if Z.eqb opcode.(Integer.value) 95 then
         InstructionContext.map_interpreter (push0)
+      else if Z.eqb opcode.(Integer.value) 243 then
+        InstructionContext.map_interpreter (ret)
+      else if Z.eqb opcode.(Integer.value) 253 then
+        InstructionContext.map_interpreter (revert)
       else if
         (96 <=? opcode.(Integer.value)) &&
         (opcode.(Integer.value) <=? 127)

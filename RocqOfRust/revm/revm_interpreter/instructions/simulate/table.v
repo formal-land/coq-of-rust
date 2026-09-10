@@ -21,6 +21,8 @@ Require Import revm.revm_interpreter.instructions.links.block_info.
 Require Import revm.revm_interpreter.instructions.links.control.jump.
 Require Import revm.revm_interpreter.instructions.links.control.jumpdest.
 Require Import revm.revm_interpreter.instructions.links.control.jumpi.
+Require Import revm.revm_interpreter.instructions.links.control.ret.
+Require Import revm.revm_interpreter.instructions.links.control.revert.
 Require Import revm.revm_interpreter.instructions.links.control.stop.
 Require Import revm.revm_interpreter.instructions.links.control.unknown.
 Require Import revm.revm_interpreter.instructions.links.memory.mload.
@@ -30,6 +32,7 @@ Require Import revm.revm_interpreter.instructions.links.memory.mstore8.
 Require Import revm.revm_interpreter.instructions.links.stack.
 Require Import revm.revm_interpreter.instructions.links.system.calldatacopy.
 Require Import revm.revm_interpreter.instructions.links.system.calldataload.
+Require Import revm.revm_interpreter.instructions.links.system.calldatasize.
 Require Import revm.revm_interpreter.instructions.links.system.callvalue.
 Require Import revm.revm_interpreter.instructions.links.system.codecopy.
 Require Import revm.revm_interpreter.instructions.links.system.gas.
@@ -495,6 +498,30 @@ Module FragmentInstructionTable.
     Function1.t (InstructionContext.t H WIRE WIRE_types) unit :=
     Function1.of_run (fun context => run_calldatacopy run_types context).
 
+  Definition calldatasize_function
+      {WIRE H : Set} `{Link WIRE} `{Link H}
+      {WIRE_types : InterpreterTypes.Types.t}
+      `{InterpreterTypes.Types.AreLinks WIRE_types}
+      (run_types : InterpreterTypes.Run WIRE WIRE_types) :
+    Function1.t (InstructionContext.t H WIRE WIRE_types) unit :=
+    Function1.of_run (fun context => run_calldatasize run_types context).
+
+  Definition ret_function
+      {WIRE H : Set} `{Link WIRE} `{Link H}
+      {WIRE_types : InterpreterTypes.Types.t}
+      `{InterpreterTypes.Types.AreLinks WIRE_types}
+      (run_types : InterpreterTypes.Run WIRE WIRE_types) :
+    Function1.t (InstructionContext.t H WIRE WIRE_types) unit :=
+    Function1.of_run (fun context => run_ret run_types context).
+
+  Definition revert_function
+      {WIRE H : Set} `{Link WIRE} `{Link H}
+      {WIRE_types : InterpreterTypes.Types.t}
+      `{InterpreterTypes.Types.AreLinks WIRE_types}
+      (run_types : InterpreterTypes.Run WIRE WIRE_types) :
+    Function1.t (InstructionContext.t H WIRE WIRE_types) unit :=
+    Function1.of_run (fun context => run_revert run_types context).
+
   Definition codecopy_function
       {WIRE H : Set} `{Link WIRE} `{Link H}
       {WIRE_types : InterpreterTypes.Types.t}
@@ -909,6 +936,17 @@ Module FragmentInstructionTable.
           run_InterpreterTypes_for_WIRE;
       Instruction.static_gas := {| Integer.value := 3 |};
     |} in
+    let tail_after_stack :
+        ArrayPairs.t (Instruction.t WIRE H WIRE_types) 96 :=
+      prepend_repeat unknown_instruction 83 13
+        (ArrayPair.Build_t
+          {| Instruction.fn_ := ret_function (H := H) run_InterpreterTypes_for_WIRE;
+             Instruction.static_gas := {| Integer.value := 0 |} |}
+          (prepend_repeat unknown_instruction 9 3
+            (ArrayPair.Build_t
+              {| Instruction.fn_ := revert_function (H := H) run_InterpreterTypes_for_WIRE;
+                 Instruction.static_gas := {| Integer.value := 0 |} |}
+              (ArrayPairs.repeat unknown_instruction 2)))) in
     let tail_after_push0 :
         ArrayPairs.t (Instruction.t WIRE H WIRE_types) 161 :=
       ArrayPair.Build_t
@@ -916,7 +954,7 @@ Module FragmentInstructionTable.
         (prepend_map push_instruction 1 32 128
           (prepend_map dup_instruction 1 16 112
             (prepend_map swap_instruction 1 16 96
-              (ArrayPairs.repeat unknown_instruction 96)))) in
+              tail_after_stack))) in
     let tail_after_jumpdest :
         ArrayPairs.t (Instruction.t WIRE H WIRE_types) 164 :=
       prepend_repeat unknown_instruction 3 161 tail_after_push0 in
@@ -982,7 +1020,9 @@ Module FragmentInstructionTable.
         ArrayPairs.t (Instruction.t WIRE H WIRE_types) 204 :=
       ArrayPair.Build_t callvalue_instruction
         (ArrayPair.Build_t calldataload_instruction
-          (ArrayPair.Build_t unknown_instruction
+          (ArrayPair.Build_t
+            {| Instruction.fn_ := calldatasize_function (H := H) run_InterpreterTypes_for_WIRE;
+               Instruction.static_gas := {| Integer.value := 2 |} |}
           (ArrayPair.Build_t calldatacopy_instruction
           (ArrayPair.Build_t unknown_instruction
           (ArrayPair.Build_t codecopy_instruction
