@@ -57,8 +57,10 @@ Require Import revm.revm_interpreter.instructions.simulate.stack.pop.
 Require Import revm.revm_interpreter.instructions.simulate.stack.push.
 Require Import revm.revm_interpreter.instructions.simulate.stack.push0.
 Require Import revm.revm_interpreter.instructions.simulate.stack.swap.
+Require Import revm.revm_interpreter.instructions.simulate.system.calldatacopy.
 Require Import revm.revm_interpreter.instructions.simulate.system.calldataload.
 Require Import revm.revm_interpreter.instructions.simulate.system.callvalue.
+Require Import revm.revm_interpreter.instructions.simulate.system.codecopy.
 Require Import revm.revm_interpreter.instructions.simulate.system.gas.
 Require Import revm.revm_interpreter.instructions.simulate.system.returndatacopy.
 Require Import revm.revm_interpreter.instructions.simulate.system.returndatasize.
@@ -390,6 +392,10 @@ Module InterpreterDispatch.
         InstructionContext.map_interpreter (callvalue)
       else if Z.eqb opcode.(Integer.value) 53 then
         InstructionContext.map_interpreter (calldataload)
+      else if Z.eqb opcode.(Integer.value) 55 then
+        InstructionContext.map_interpreter (calldatacopy)
+      else if Z.eqb opcode.(Integer.value) 57 then
+        InstructionContext.map_interpreter (codecopy)
       else if Z.eqb opcode.(Integer.value) 61 then
         InstructionContext.map_interpreter (returndatasize)
       else if Z.eqb opcode.(Integer.value) 62 then

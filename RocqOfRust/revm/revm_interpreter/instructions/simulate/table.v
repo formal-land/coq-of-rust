@@ -28,8 +28,10 @@ Require Import revm.revm_interpreter.instructions.links.memory.msize.
 Require Import revm.revm_interpreter.instructions.links.memory.mstore.
 Require Import revm.revm_interpreter.instructions.links.memory.mstore8.
 Require Import revm.revm_interpreter.instructions.links.stack.
+Require Import revm.revm_interpreter.instructions.links.system.calldatacopy.
 Require Import revm.revm_interpreter.instructions.links.system.calldataload.
 Require Import revm.revm_interpreter.instructions.links.system.callvalue.
+Require Import revm.revm_interpreter.instructions.links.system.codecopy.
 Require Import revm.revm_interpreter.instructions.links.system.gas.
 Require Import revm.revm_interpreter.instructions.links.system.returndatacopy.
 Require Import revm.revm_interpreter.instructions.links.system.returndatasize.
@@ -485,6 +487,22 @@ Module FragmentInstructionTable.
     Function1.of_run
       (fun context => run_calldataload run_InterpreterTypes_for_WIRE context).
 
+  Definition calldatacopy_function
+      {WIRE H : Set} `{Link WIRE} `{Link H}
+      {WIRE_types : InterpreterTypes.Types.t}
+      `{InterpreterTypes.Types.AreLinks WIRE_types}
+      (run_types : InterpreterTypes.Run WIRE WIRE_types) :
+    Function1.t (InstructionContext.t H WIRE WIRE_types) unit :=
+    Function1.of_run (fun context => run_calldatacopy run_types context).
+
+  Definition codecopy_function
+      {WIRE H : Set} `{Link WIRE} `{Link H}
+      {WIRE_types : InterpreterTypes.Types.t}
+      `{InterpreterTypes.Types.AreLinks WIRE_types}
+      (run_types : InterpreterTypes.Run WIRE WIRE_types) :
+    Function1.t (InstructionContext.t H WIRE WIRE_types) unit :=
+    Function1.of_run (fun context => run_codecopy run_types context).
+
   Definition gas_function
       {WIRE H : Set} `{Link WIRE} `{Link H}
       {WIRE_types : InterpreterTypes.Types.t}
@@ -799,6 +817,14 @@ Module FragmentInstructionTable.
         calldataload_function (H := H) run_InterpreterTypes_for_WIRE;
       Instruction.static_gas := {| Integer.value := 3 |};
     |} in
+    let calldatacopy_instruction : Instruction.t WIRE H WIRE_types := {|
+      Instruction.fn_ := calldatacopy_function (H := H) run_InterpreterTypes_for_WIRE;
+      Instruction.static_gas := {| Integer.value := 0 |};
+    |} in
+    let codecopy_instruction : Instruction.t WIRE H WIRE_types := {|
+      Instruction.fn_ := codecopy_function (H := H) run_InterpreterTypes_for_WIRE;
+      Instruction.static_gas := {| Integer.value := 0 |};
+    |} in
     let returndatasize_instruction : Instruction.t WIRE H WIRE_types := {|
       Instruction.fn_ :=
         returndatasize_function (H := H) run_InterpreterTypes_for_WIRE;
@@ -956,15 +982,19 @@ Module FragmentInstructionTable.
         ArrayPairs.t (Instruction.t WIRE H WIRE_types) 204 :=
       ArrayPair.Build_t callvalue_instruction
         (ArrayPair.Build_t calldataload_instruction
+          (ArrayPair.Build_t unknown_instruction
+          (ArrayPair.Build_t calldatacopy_instruction
+          (ArrayPair.Build_t unknown_instruction
+          (ArrayPair.Build_t codecopy_instruction
           (prepend_repeat
             unknown_instruction
-            7
+            3
             195
             (ArrayPair.Build_t
               returndatasize_instruction
               (ArrayPair.Build_t
                 returndatacopy_instruction
-                tail_after_returndatacopy)))) in
+                tail_after_returndatacopy)))))))) in
     let tail_after_bitwise :
         ArrayPairs.t (Instruction.t WIRE H WIRE_types) 225 :=
       prepend_repeat unknown_instruction 21 204 tail_after_callvalue in
