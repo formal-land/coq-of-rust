@@ -79,5 +79,11 @@ Parameter account_info_load_is_empty :
 Parameter account_info_load_code_hash :
   AccountInfoLoad.t -> aliases.B256.t.
 
-Parameter account_info_load_balance :
-  AccountInfoLoad.t -> aliases.U256.t.
+Parameter borrowed_account_balance :
+  '& AccountInfo.t -> aliases.U256.t.
+
+Definition account_info_load_balance (load : AccountInfoLoad.t) : aliases.U256.t :=
+  match load.(AccountInfoLoad.account) with
+  | Cow.Owned account => account.(AccountInfo.balance)
+  | Cow.Borrowed account => borrowed_account_balance account
+  end.
