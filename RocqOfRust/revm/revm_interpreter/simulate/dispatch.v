@@ -47,6 +47,7 @@ Require Import revm.revm_interpreter.instructions.simulate.control.ret.
 Require Import revm.revm_interpreter.instructions.simulate.control.revert.
 Require Import revm.revm_interpreter.instructions.simulate.control.stop.
 Require Import revm.revm_interpreter.instructions.simulate.control.unknown.
+Require Import revm.revm_interpreter.instructions.simulate.host.balance.
 Require Import revm.revm_interpreter.instructions.simulate.host.selfbalance.
 Require Import revm.revm_interpreter.instructions.simulate.host.sload.
 Require Import revm.revm_interpreter.instructions.simulate.host.sstore.
@@ -59,6 +60,7 @@ Require Import revm.revm_interpreter.instructions.simulate.stack.pop.
 Require Import revm.revm_interpreter.instructions.simulate.stack.push.
 Require Import revm.revm_interpreter.instructions.simulate.stack.push0.
 Require Import revm.revm_interpreter.instructions.simulate.stack.swap.
+Require Import revm.revm_interpreter.instructions.simulate.system.address.
 Require Import revm.revm_interpreter.instructions.simulate.system.calldatacopy.
 Require Import revm.revm_interpreter.instructions.simulate.system.calldataload.
 Require Import revm.revm_interpreter.instructions.simulate.system.calldatasize.
@@ -391,6 +393,8 @@ Module InterpreterDispatch.
         InstructionContext.map_interpreter (op_sar)
       else if Z.eqb opcode.(Integer.value) 30 then
         InstructionContext.map_interpreter (op_clz)
+      else if Z.eqb opcode.(Integer.value) 48 then
+        InstructionContext.map_interpreter (address)
       else if Z.eqb opcode.(Integer.value) 52 then
         InstructionContext.map_interpreter (callvalue)
       else if Z.eqb opcode.(Integer.value) 53 then
@@ -1127,7 +1131,19 @@ Module InterpreterDispatch.
       (opcode : u8)
       (state : InstructionContext.State.t H WIRE WIRE_types) :
       InstructionContext.State.t H WIRE WIRE_types :=
-    if Z.eqb opcode.(Integer.value) 70 then
+    if Z.eqb opcode.(Integer.value) 49 then
+      match state with
+      | {|
+          InstructionContext.State.interpreter := interpreter;
+          InstructionContext.State.host := host
+        |} =>
+          let '(interpreter, host) := balance interpreter host in
+          {|
+            InstructionContext.State.interpreter := interpreter;
+            InstructionContext.State.host := host;
+          |}
+      end
+    else if Z.eqb opcode.(Integer.value) 70 then
       match state with
       | {|
           InstructionContext.State.interpreter := interpreter;

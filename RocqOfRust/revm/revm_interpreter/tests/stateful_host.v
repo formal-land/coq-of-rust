@@ -116,6 +116,7 @@ Module RustTransactionTypes :=
   Record t : Set := {
     input : Input.t;
     accounts : list Account.t;
+    accessed_accounts : list Z;
     accessed_storage : list (Z * Z);
     logs : list EvmLog.t;
     state_changes : list Change.t;
@@ -124,6 +125,7 @@ Module RustTransactionTypes :=
   Definition make (input : Input.t) : t :=
     {| input := input;
        accounts := input.(Input.state);
+       accessed_accounts := [];
        accessed_storage := [];
        logs := [];
        state_changes := [] |}.
@@ -264,6 +266,7 @@ Module RustTransactionTypes :=
   Definition append_change (host : t) (change : Change.t) : t :=
     {| input := host.(input);
        accounts := host.(accounts);
+       accessed_accounts := host.(accessed_accounts);
        accessed_storage := host.(accessed_storage);
        logs := host.(logs);
        state_changes := host.(state_changes) ++ [change] |}.
@@ -272,6 +275,7 @@ Module RustTransactionTypes :=
     let data := entry.(Log.data) in
     {| input := host.(input);
        accounts := host.(accounts);
+       accessed_accounts := host.(accessed_accounts);
        accessed_storage := host.(accessed_storage);
        logs := host.(logs) ++
          [{| EvmLog.address := entry.(Log.address).(Address.value);
@@ -383,6 +387,7 @@ Module RustTransactionTypes :=
   Definition with_accounts (host : t) (accounts : list Account.t) : t :=
     {| input := host.(input);
        accounts := accounts;
+       accessed_accounts := host.(accessed_accounts);
        accessed_storage := host.(accessed_storage);
        logs := host.(logs);
        state_changes := host.(state_changes) |}.
@@ -405,6 +410,7 @@ Module RustTransactionTypes :=
     else
       {| input := host.(input);
          accounts := host.(accounts);
+         accessed_accounts := host.(accessed_accounts);
          accessed_storage := (address, key) :: host.(accessed_storage);
          logs := host.(logs);
          state_changes := host.(state_changes) |}.
@@ -427,6 +433,28 @@ Module RustTransactionTypes :=
     | _ => false
     end.
 
+  Definition account_is_warm (host : t) (address : Z) : bool :=
+    List.existsb (Z.eqb address) host.(accessed_accounts).
+
+  Definition warm_account (host : t) (address : Z) : t :=
+    if account_is_warm host address then host
+    else
+      {| input := host.(input);
+         accounts := host.(accounts);
+         accessed_accounts := address :: host.(accessed_accounts);
+         accessed_storage := host.(accessed_storage);
+         logs := host.(logs);
+         state_changes := host.(state_changes) |}.
+
+  Definition warm_access_list (host : t) (entries : list (Z * list Z)) : t :=
+    List.fold_left
+      (fun host entry =>
+        let '(address, keys) := entry in
+        List.fold_left
+          (fun host key => mark_storage_warm host address key)
+          keys (warm_account host address))
+      entries host.
+
   Definition account_info_load
       (host : t) (address : Address.t) : AccountInfoLoad.t :=
     let account :=
@@ -443,13 +471,17 @@ Module RustTransactionTypes :=
                 Impl_From_U256_for_FixedBytes_32.from
                   (rust_word account.(Account.code_hash));
               AccountInfo.code := None |};
-       AccountInfoLoad.is_cold := false;
+       AccountInfoLoad.is_cold := negb (account_is_warm host address.(Address.value));
        AccountInfoLoad.is_empty := account_is_empty account |}.
 
   Definition load_account_info_skip_cold_load
-      (host : t) (address : Address.t) :
+      (host : t) (address : Address.t) (skip_cold_load : bool) :
       Result.t AccountInfoLoad.t LoadError.t * t :=
-    (Result.Ok (account_info_load host address), host).
+    if skip_cold_load && negb (account_is_warm host address.(Address.value)) then
+      (Result.Err LoadError.ColdLoadSkipped, host)
+    else
+      (Result.Ok (account_info_load host address),
+       warm_account host address.(Address.value)).
 
   Definition load_account_delegated
       (host : t) (address : Address.t) :
@@ -684,8 +716,8 @@ Module RustTransactionTypes :=
     {| Host.TransactionGetter_for_Self := TransactionGetterForHost;
        Host.BlockGetter_for_Self := BlockGetterForHost;
        Host.CfgGetter_for_Self := CfgGetterForHost;
-       Host.load_account_info_skip_cold_load self address _ _ :=
-         load_account_info_skip_cold_load self address;
+       Host.load_account_info_skip_cold_load self address _ skip_cold_load :=
+         load_account_info_skip_cold_load self address skip_cold_load;
        Host.load_account_delegated := load_account_delegated;
        Host.load_account_code := load_account_code;
        Host.block_hash := block_hash;

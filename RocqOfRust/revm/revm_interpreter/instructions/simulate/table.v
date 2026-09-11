@@ -25,11 +25,13 @@ Require Import revm.revm_interpreter.instructions.links.control.ret.
 Require Import revm.revm_interpreter.instructions.links.control.revert.
 Require Import revm.revm_interpreter.instructions.links.control.stop.
 Require Import revm.revm_interpreter.instructions.links.control.unknown.
+Require Import revm.revm_interpreter.instructions.links.host.balance.
 Require Import revm.revm_interpreter.instructions.links.memory.mload.
 Require Import revm.revm_interpreter.instructions.links.memory.msize.
 Require Import revm.revm_interpreter.instructions.links.memory.mstore.
 Require Import revm.revm_interpreter.instructions.links.memory.mstore8.
 Require Import revm.revm_interpreter.instructions.links.stack.
+Require Import revm.revm_interpreter.instructions.links.system.address.
 Require Import revm.revm_interpreter.instructions.links.system.calldatacopy.
 Require Import revm.revm_interpreter.instructions.links.system.calldataload.
 Require Import revm.revm_interpreter.instructions.links.system.calldatasize.
@@ -469,6 +471,24 @@ Module FragmentInstructionTable.
     Function1.of_run
       (fun context =>
         run_returndatacopy run_InterpreterTypes_for_WIRE context).
+
+  Definition address_function
+      {WIRE H : Set} `{Link WIRE} `{Link H}
+      {WIRE_types : InterpreterTypes.Types.t}
+      `{InterpreterTypes.Types.AreLinks WIRE_types}
+      (run_types : InterpreterTypes.Run WIRE WIRE_types) :
+    Function1.t (InstructionContext.t H WIRE WIRE_types) unit :=
+    Function1.of_run (fun context => run_address run_types context).
+
+  Definition balance_function
+      {WIRE H : Set} `{Link WIRE} `{Link H}
+      {WIRE_types : InterpreterTypes.Types.t}
+      `{InterpreterTypes.Types.AreLinks WIRE_types}
+      {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
+      (run_types : InterpreterTypes.Run WIRE WIRE_types)
+      (run_host : Host.Run H H_types) :
+    Function1.t (InstructionContext.t H WIRE WIRE_types) unit :=
+    Function1.of_run (fun context => run_balance run_types run_host context).
 
   Definition callvalue_function
       {WIRE H : Set} `{Link WIRE} `{Link H}
@@ -1037,7 +1057,14 @@ Module FragmentInstructionTable.
                 tail_after_returndatacopy)))))))) in
     let tail_after_bitwise :
         ArrayPairs.t (Instruction.t WIRE H WIRE_types) 225 :=
-      prepend_repeat unknown_instruction 21 204 tail_after_callvalue in
+      prepend_repeat unknown_instruction 17 208
+        (ArrayPair.Build_t
+          {| Instruction.fn_ := address_function (H := H) run_InterpreterTypes_for_WIRE;
+             Instruction.static_gas := {| Integer.value := 2 |} |}
+          (ArrayPair.Build_t
+            {| Instruction.fn_ := balance_function run_InterpreterTypes_for_WIRE run_host;
+               Instruction.static_gas := {| Integer.value := 0 |} |}
+            (prepend_repeat unknown_instruction 2 204 tail_after_callvalue))) in
     let bitwise_instructions :
         ArrayPairs.t (Instruction.t WIRE H WIRE_types) 240 :=
       ArrayPair.Build_t lt_instruction
